@@ -152,6 +152,8 @@
     <ClInclude Include="AnimObject.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="BoxCollider.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="CallbackTest.h" />
     <ClInclude Include="Cam.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />
@@ -198,6 +200,7 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TriggerTest.h" />
     <ClInclude Include="UIBase.h" />
+    <ClInclude Include="UIMouseEvent.h" />
     <ClInclude Include="UIRenderer.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="Vector2.h" />
@@ -211,6 +214,8 @@
     <ClCompile Include="AnimObject.cpp" />
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="BoxCollider.cpp" />
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="CallbackTest.cpp" />
     <ClCompile Include="Cam.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraManager.cpp" />
@@ -256,6 +261,7 @@
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TriggerTest.cpp" />
     <ClCompile Include="UIBase.cpp" />
+    <ClCompile Include="UIMouseEvent.cpp" />
     <ClCompile Include="UIRenderer.cpp" />
     <ClCompile Include="utils.cpp" />
     <ClCompile Include="Vector2.cpp" />

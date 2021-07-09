@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "SampleScene.h"
 #include "TriggerTest.h"
+#include "UIMouseEvent.h"
+#include "CallbackTest.h"
 HRESULT SampleScene::Init()
 {
     Scene::Init();
@@ -23,6 +25,8 @@ HRESULT SampleScene::Init()
 	testAnimObj.AddComponent(new TriggerTest());
 	testAnimObj.GetComponent<TriggerTest>()->Init();
 	testAnimObj.GetComponent<TriggerTest>()->testObject = &testUIObj;
+	testAnimObj.AddComponent(new CallbackTest());
+	testAnimObj.GetComponent<CallbackTest>()->testObject = &testUIObj;
 
 	testAnimObj2.Init();
 	testAnimObj2.transform->SetPosition(100, 100);
@@ -44,6 +48,17 @@ HRESULT SampleScene::Init()
 	background.renderer->Init("background");
 	background.transform->SetPosition(MAPWIDTH / 2, MAPHEIGHT / 2);
 
+	testButton.Init();
+	testButton.uiRenderer->Init("trapobject");
+	testButton.transform->SetPosition(WINSIZEX - 150, 150);
+	testButton.GetComponent<UIMouseEvent>()->Init();
+
+	testButton.GetComponent<UIMouseEvent>()->
+		RegistCallback(std::bind(&CallbackTest::TestCallback, testAnimObj.GetComponent<CallbackTest>()), EVENT::ENTER);
+	testButton.GetComponent<UIMouseEvent>()->
+		RegistCallback(std::bind(&CallbackTest::TestCallback, testAnimObj.GetComponent<CallbackTest>()), EVENT::EXIT);
+	testButton.GetComponent<UIMouseEvent>()->
+		RegistCallback(std::bind(&CallbackTest::TestCallback, testAnimObj.GetComponent<CallbackTest>()), EVENT::CLICK);
 	_sceneChangeTime = 0;
     return S_OK;
 }
@@ -55,6 +70,7 @@ void SampleScene::Update()
 	testAnimObj.Update();
 	testAnimObj2.Update();
 	testUIObj.Update();
+	testButton.Update();
 	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 	{
 		//MainCam->transform->MoveX(5.f);
@@ -110,6 +126,7 @@ void SampleScene::Render()
 			1.f,
 			DWRITE_TEXT_ALIGNMENT_LEADING, L"배달의민족 한나체 Pro");
 		testUIObj.Render();
+		testButton.Render();
     }
 }
 

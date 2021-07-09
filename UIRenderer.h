@@ -21,5 +21,6 @@ public:
     float GetFrameWidth() const { return _frameWidth; }
     float GetFrameHeight() const { return _frameHeight; }
     float GetAlpha() const { return _alpha; }
+    Rect GetRc() const { return _rc; }
 };
 

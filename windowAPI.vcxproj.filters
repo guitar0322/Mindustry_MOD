@@ -151,6 +151,13 @@
     <ClCompile Include="TriggerTest.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="UIMouseEvent.cpp">
+      <Filter>Component\Framwork</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Gameobject\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="CallbackTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h" />
@@ -310,6 +317,13 @@
     <ClInclude Include="TriggerTest.h">
       <Filter>Component</Filter>
     </ClInclude>
+    <ClInclude Include="UIMouseEvent.h">
+      <Filter>Component\Framwork</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Gameobject\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="CallbackTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="windowAPI.rc" />
