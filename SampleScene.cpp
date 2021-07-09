@@ -8,11 +8,11 @@ HRESULT SampleScene::Init()
     Scene::Init();
 	CLIPMANAGER->AddClip("bomb", "bomb.png", 240, 80, 3, 1, 0.12f);
 	CLIPMANAGER->AddClip("trapobject", "trapObject.png", 64, 128);
-	CLIPMANAGER->AddClip("background", "scene1_background.png", 1024, 560);
+	//CLIPMANAGER->AddClip("background", "scene1_background.png", 1024, 560);
 	_stayTime = 0;
-	SetBackBufferSize(1024, 560);
-	MainCam->SetScreenStart(250, 0);
-	MainCam->SetScreenSize(400, WINSIZEY);
+	//SetBackBufferSize(1024, 560);
+	//MainCam->SetScreenStart(250, 0);
+	//MainCam->SetScreenSize(400, WINSIZEY);
 	testAnimObj.Init();
 	testAnimObj.renderer->Init("bomb");
 	testAnimObj.animator->AddClip(CLIPMANAGER->FindClip("bomb"));
@@ -44,9 +44,9 @@ HRESULT SampleScene::Init()
 	testUIObj.transform->SetPosition(100, 100);
 	testUIObj.SetActive(false);
 
-	background.Init();
+	/*background.Init();
 	background.renderer->Init("background");
-	background.transform->SetPosition(MAPWIDTH / 2, MAPHEIGHT / 2);
+	background.transform->SetPosition(MAPWIDTH / 2, MAPHEIGHT / 2);*/
 
 	testButton.Init();
 	testButton.uiRenderer->Init("trapobject");
@@ -66,7 +66,7 @@ HRESULT SampleScene::Init()
 void SampleScene::Update()
 {
 	testInt++;
-	background.Update();
+	//background.Update();
 	testAnimObj.Update();
 	testAnimObj2.Update();
 	testUIObj.Update();
@@ -111,10 +111,10 @@ void SampleScene::Render()
 			D2DRenderer::DefaultBrush::Red,
 			1.f
 		);
-		background.Render();
+		//background.Render();
 		testAnimObj.Render();
 		testAnimObj2.Render();
-		MainCam->Render();
+		//MainCam->Render();
 		char debug[128];
 		sprintf_s(debug, "%d", testInt);
 		std::wstring wstr(debug, &debug[128]);

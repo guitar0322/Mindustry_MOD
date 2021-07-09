@@ -158,6 +158,12 @@
       <Filter>Gameobject\Framework</Filter>
     </ClCompile>
     <ClCompile Include="CallbackTest.cpp" />
+    <ClCompile Include="MapScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="MapTool.cpp">
+      <Filter>Component\Framwork</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h" />
@@ -324,6 +330,15 @@
       <Filter>Gameobject\Framework</Filter>
     </ClInclude>
     <ClInclude Include="CallbackTest.h" />
+    <ClInclude Include="MapScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TileInfo.h">
+      <Filter>헤더파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MapTool.h">
+      <Filter>Component\Framwork</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="windowAPI.rc" />
