@@ -53,17 +53,38 @@ namespace HDY_UTIL
 
 	Vector2 WorldToScreen(float x, float y)
 	{
-		return Vector2();
+		Vector2 result;
+		if (MainCam == nullptr)
+			throw("카메라가 할당되지 않았습니다");
+		result.x = x - (MainCam->transform->GetX() - MainCam->GetRenderWidth() / 2);
+		result.y = y - (MainCam->transform->GetY() - MainCam->GetRenderHeight() / 2);
+		return result;
 	}
 
 	Vector2 ScreenToWorld(Vector2 screenPoint)
 	{
-		return Vector2();
+		Vector2 result;
+		float camX = MainCam->transform->GetX();
+		float camY = MainCam->transform->GetY();
+		float screenX = screenPoint.x - MainCam->GetScreenStart().first - MainCam->GetRenderWidth() / 2;
+		float screenY = screenPoint.y - MainCam->GetScreenStart().second - MainCam->GetRenderHeight() / 2;
+		result.x = camX + screenX;
+		result.y = camY + screenY;
+
+		return result;
 	}
 
 	Vector2 ScreenToWorld(float x, float y)
 	{
-		return Vector2();
+		Vector2 result;
+		float camX = MainCam->transform->GetX();
+		float camY = MainCam->transform->GetY();
+		float mouseX = WINSIZEX / 2 - x;
+		float mouseY = WINSIZEY / 2 - y;
+		result.x = camX - mouseX;
+		result.y = camY - mouseY;
+
+		return result;
 	}
 
 	POINTF GetCenterF(RECT rc)

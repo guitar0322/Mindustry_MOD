@@ -175,6 +175,7 @@
     <ClInclude Include="Line.h" />
     <ClInclude Include="ManagerHeader.h" />
     <ClInclude Include="MapScene.h" />
+    <ClInclude Include="MapTool.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Outline.h" />
     <ClInclude Include="ParticleSystem.h" />
@@ -194,6 +195,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="TextDataManager.h" />
+    <ClInclude Include="TileInfo.h" />
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
@@ -233,6 +235,7 @@
     <ClCompile Include="keyManager.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="MapScene.cpp" />
+    <ClCompile Include="MapTool.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Outline.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />

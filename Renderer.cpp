@@ -28,6 +28,10 @@ void Renderer::Render()
 {
 	int renderStartX = transform->GetX() - _frameWidth / 2;
 	int renderStartY = transform->GetY() - _frameHeight / 2;
+	if (KEYMANAGER->isToggleKey(VK_TAB))
+	{
+		D2DRENDERER->DrawRectangle(_rc);
+	}
 	//그려질 영역
 	D2D1_RECT_F clipArea = 
 		D2D1::RectF

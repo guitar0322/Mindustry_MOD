@@ -5,13 +5,11 @@ class MapScene :
 {
 private:
 	ImageObject _background;
-
+	GameObject _mapTool;
 public:
 	virtual HRESULT Init();
 	virtual void Update();
 	virtual void Render();
 	virtual void Release();
-
-
 };
 

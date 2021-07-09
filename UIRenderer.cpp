@@ -26,7 +26,8 @@ void UIRenderer::Init(string clipName)
 
 void UIRenderer::Update()
 {
-
+	_rc = RectMakePivot(Vector2(transform->GetX(), transform->GetY()),
+		Vector2(_frameWidth, _frameHeight), Pivot::Center);
 }
 
 void UIRenderer::Render()
