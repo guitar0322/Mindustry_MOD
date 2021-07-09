@@ -42,7 +42,8 @@ private:
 public:
 	void CreateNewBackBuffer(int width, int height);
 	void AddTextFormat(const wstring& font, const float& defaultSize = 1.f);
-	void DrawBackBuffer(float startX, float startY, float endX, float endY);
+	void DrawBackBuffer(float startX, float startY, float endX, float endY,
+		float screenStartX, float screenStartY, float screenEndX, float screenEndY);
 	inline ID2D1RenderTarget* const GetRenderTarget()const { return this->mD2DRenderTarget; }
 	inline ID2D1BitmapRenderTarget* const GetBackBuffer() { return this->mD2DBitmapRenderTarget; }
 public:

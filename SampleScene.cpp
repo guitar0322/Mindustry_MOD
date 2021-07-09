@@ -9,6 +9,8 @@ HRESULT SampleScene::Init()
 	CLIPMANAGER->AddClip("background", "scene1_background.png", 1024, 560);
 	_stayTime = 0;
 	SetBackBufferSize(1024, 560);
+	MainCam->SetScreenStart(250, 0);
+	MainCam->SetScreenSize(400, WINSIZEY);
 	testAnimObj.Init();
 	testAnimObj.renderer->Init("bomb");
 	testAnimObj.animator->AddClip(CLIPMANAGER->FindClip("bomb"));
