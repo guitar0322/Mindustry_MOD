@@ -97,7 +97,7 @@ using namespace HDY_UTIL;
 //==================================
 extern HINSTANCE _hInstance;
 extern HWND _hWnd;
-extern POINT _ptMouse;
+extern Vector2 _ptMouse;
 extern char debug[3][128];
 extern char error[128];
 extern HDC _hdc;

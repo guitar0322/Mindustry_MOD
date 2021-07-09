@@ -41,6 +41,31 @@ namespace HDY_UTIL
 		return angle;
 	}
 
+	Vector2 WorldToScreen(Vector2 worldPoint)
+	{
+		Vector2 result;
+		if (MainCam == nullptr)
+			throw("카메라가 할당되지 않았습니다");
+		result.x = worldPoint.x - (MainCam->transform->GetX() - MainCam->GetRenderWidth() / 2);
+		result.y = worldPoint.y - (MainCam->transform->GetY() - MainCam->GetRenderHeight() / 2);
+		return result;
+	}
+
+	Vector2 WorldToScreen(float x, float y)
+	{
+		return Vector2();
+	}
+
+	Vector2 ScreenToWorld(Vector2 screenPoint)
+	{
+		return Vector2();
+	}
+
+	Vector2 ScreenToWorld(float x, float y)
+	{
+		return Vector2();
+	}
+
 	POINTF GetCenterF(RECT rc)
 	{
 		return { (float)GetCenter(rc.left, rc.right) , (float)GetCenter(rc.top, rc.bottom) };
