@@ -151,6 +151,9 @@
     <ClCompile Include="TriggerTest.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="MapScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h" />
@@ -309,6 +312,9 @@
     </ClInclude>
     <ClInclude Include="TriggerTest.h">
       <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="MapScene.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

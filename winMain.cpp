@@ -3,7 +3,7 @@
 
 HINSTANCE _hInstance;
 HWND _hWnd;
-POINT _ptMouse;
+Vector2 _ptMouse;
 HDC _hdc;
 char debug[3][128];
 char error[128];
