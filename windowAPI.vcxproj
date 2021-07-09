@@ -163,7 +163,7 @@
     <ClInclude Include="D2DRenderer.h" />
     <ClInclude Include="EffectManager.h" />
     <ClInclude Include="DebugText.h" />
-    <ClInclude Include="Ellipse.h" />
+    <ClInclude Include="Circle.h" />
     <ClInclude Include="gameNode.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Geometry.h" />
@@ -196,6 +196,7 @@
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="TriggerTest.h" />
     <ClInclude Include="UIBase.h" />
     <ClInclude Include="UIRenderer.h" />
     <ClInclude Include="utils.h" />
@@ -221,7 +222,7 @@
     <ClCompile Include="D2DRenderer.cpp" />
     <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="DebugText.cpp" />
-    <ClCompile Include="Ellipse.cpp" />
+    <ClCompile Include="Circle.cpp" />
     <ClCompile Include="gameNode.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Geometry.cpp" />
@@ -253,6 +254,7 @@
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="TriggerTest.cpp" />
     <ClCompile Include="UIBase.cpp" />
     <ClCompile Include="UIRenderer.cpp" />
     <ClCompile Include="utils.cpp" />

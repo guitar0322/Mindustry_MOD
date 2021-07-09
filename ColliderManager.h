@@ -7,10 +7,10 @@ class BoxCollider;
 class ColliderManager : public singletonBase<ColliderManager>
 {
 private:
-	map<pair<int,int>, BoxCollider*> _colliderMap;
-	map<pair<int,int>, BoxCollider*>::iterator _colliderMapIter;
+	map<BoxCollider*, pair<int, int>> _colliderMap;
+	map<BoxCollider*, pair<int, int>>::iterator _colliderMapIter;
+	vector<BoxCollider*> _colliderV;
 public:
-	vector<BoxCollider*> colliderList;
 	ColliderManager();
 	~ColliderManager();
 	HRESULT Init();
@@ -20,5 +20,7 @@ public:
 	void InsertCollider(BoxCollider* newCollider);
 	void RemoveCollider(BoxCollider* targetCollider);
 	vector<BoxCollider*> GetAroundCollider(BoxCollider* pivotCollider, int offset);
+	int GetColliderNum() { return _colliderV.size(); }
+	vector<BoxCollider*> GetColliderVector() { return _colliderV; }
 };
 

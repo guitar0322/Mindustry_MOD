@@ -121,7 +121,7 @@
     <ClCompile Include="utils.cpp">
       <Filter>Util</Filter>
     </ClCompile>
-    <ClCompile Include="Ellipse.cpp">
+    <ClCompile Include="Circle.cpp">
       <Filter>소스파일</Filter>
     </ClCompile>
     <ClCompile Include="Vector2.cpp">
@@ -147,6 +147,9 @@
     </ClCompile>
     <ClCompile Include="SampleScene2.cpp">
       <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="TriggerTest.cpp">
+      <Filter>Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -283,7 +286,7 @@
     <ClInclude Include="Math.h">
       <Filter>소스파일</Filter>
     </ClInclude>
-    <ClInclude Include="Ellipse.h">
+    <ClInclude Include="Circle.h">
       <Filter>소스파일</Filter>
     </ClInclude>
     <ClInclude Include="Rect.h">
@@ -303,6 +306,9 @@
     </ClInclude>
     <ClInclude Include="SampleScene2.h">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TriggerTest.h">
+      <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -5,10 +5,22 @@ using namespace std;
 
 class GameObject;
 
-/****************************
-Framework Transform
-By 홍대영
-*****************************/
+/************************************************************************
+* Framework Transform
+*	월드에서 오브젝트의 기하학 정보를 담고 있는 클래스(좌표, 회전, 크기 등)
+*	부모, 자식 오브젝트의 연결고리
+* by 홍대영
+* up to date : 21-07-09
+* #Property @Function
+* # Vector2 position : 월드에서 오브젝트의 x,y 위치정보
+* # Vector2 size : 월드에서 오브젝트의 가로 세로 크기 비율
+* # float angle : 오브젝트이 rotation값
+* # vector<Transform*> child : 자식 오브젝트 목록
+* # Transform* parent : 부모 오브젝트의 Transform 포인터
+* # GameObject* gameObject : Transform을 소유하고 있는 오브젝트 포인터
+* # int siblingIdx : 부모 오브젝트 기준 자기 자신의 자식 목록 인덱스
+* @ Function은 cpp를 참고
+*************************************************************************/
 class Transform
 {
 	typedef struct tagPOSITION {

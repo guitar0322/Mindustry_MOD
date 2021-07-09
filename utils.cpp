@@ -3,6 +3,12 @@
 
 namespace HDY_UTIL
 {
+	float GetDistance(Vector2 v1, Vector2 v2)
+	{
+		float deltaX = v1.x - v2.y;
+		float deltaY = v1.y - v2.y;
+		return sqrtf(deltaX * deltaX + deltaY * deltaY);
+	}
 	float GetDistance(float x1, float y1, float x2, float y2)
 	{
 		float x = x2 - x1;
@@ -35,19 +41,6 @@ namespace HDY_UTIL
 		return angle;
 	}
 
-	int GetCenterX(RECT rc)
-	{
-		return GetCenter(rc.left, rc.right);
-
-	}
-	int GetCenterY(RECT rc)
-	{
-		return GetCenter(rc.top, rc.bottom);
-	}
-	POINT GetCenter(RECT rc)
-	{
-		return { GetCenter(rc.left, rc.right) , GetCenter(rc.top , rc.bottom) };
-	}
 	POINTF GetCenterF(RECT rc)
 	{
 		return { (float)GetCenter(rc.left, rc.right) , (float)GetCenter(rc.top, rc.bottom) };

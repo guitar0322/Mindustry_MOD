@@ -7,9 +7,12 @@ class SampleScene :
 private:
     AnimObject testAnimObj;
     AnimObject testAnimObj2;
+    float _stayTime;
     ImageObject background;
     UIBase testUIObj;
     float _sceneChangeTime;
+    int testInt;
+    wstring debugWstring;
 public:
     virtual HRESULT Init();
     virtual void Update();

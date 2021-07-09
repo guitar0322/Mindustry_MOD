@@ -191,7 +191,7 @@ void D2DRenderer::DrawBackBuffer(float startX, float startY, float endX, float e
 		mD2DBitmap,
 		&renderTargetArea,
 		1.f,
-		D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR,
+		D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
 		&bitmapArea
 	);
 
