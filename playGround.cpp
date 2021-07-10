@@ -2,6 +2,7 @@
 #include "playGround.h"
 #include "SampleScene.h"
 #include "SampleScene2.h"
+#include "ShootingScene.h"
 playGround::playGround()
 {
 
@@ -20,10 +21,14 @@ HRESULT playGround::init()
 
 	SampleScene* sampleScene = new SampleScene();
 	SCENEMANAGER->AddScene("sample", sampleScene);
-	SCENEMANAGER->LoadScene("sample");
+	//SCENEMANAGER->LoadScene("sample");
 
 	SampleScene2* sampleScene2 = new SampleScene2();
 	SCENEMANAGER->AddScene("sample2", sampleScene2);
+	
+	ShootingScene* shootingScene = new ShootingScene();
+	SCENEMANAGER->AddScene("ShootingScene", shootingScene);
+	SCENEMANAGER->LoadScene("ShootingScene");
 	//_mainCam.transform->SetX(_mainCam.transform->GetX() + 100);
 	//testParticle = new image();
 	//testParticle->init("full_charge_hit_effect_left.bmp", 240, 88, 4, 1, true, RGB(255, 0, 255));

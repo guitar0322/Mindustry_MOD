@@ -17,6 +17,7 @@
 #include "ZOrder.h"
 #include "DebugText.h"
 #include <typeinfo>
+#include "EnemyObject.h"
 
 namespace HDY_UTIL
 {

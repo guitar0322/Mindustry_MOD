@@ -164,6 +164,11 @@
     <ClInclude Include="EffectManager.h" />
     <ClInclude Include="DebugText.h" />
     <ClInclude Include="Circle.h" />
+    <ClInclude Include="EnemyControler.h" />
+    <ClInclude Include="EnemyInfo.h" />
+    <ClInclude Include="EnemyObject.h" />
+    <ClInclude Include="EnemyPlane.h" />
+    <ClInclude Include="EnemyPlaneControler.h" />
     <ClInclude Include="gameNode.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Geometry.h" />
@@ -186,6 +191,7 @@
     <ClInclude Include="SampleScene2.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="ShootingScene.h" />
     <ClInclude Include="singletonBase.h" />
     <ClInclude Include="soundManager.h" />
     <ClInclude Include="stdafx.h" />
@@ -223,6 +229,11 @@
     <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="DebugText.cpp" />
     <ClCompile Include="Circle.cpp" />
+    <ClCompile Include="EnemyControler.cpp" />
+    <ClCompile Include="EnemyInfo.cpp" />
+    <ClCompile Include="EnemyObject.cpp" />
+    <ClCompile Include="EnemyPlane.cpp" />
+    <ClCompile Include="EnemyPlaneControler.cpp" />
     <ClCompile Include="gameNode.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Geometry.cpp" />
@@ -241,6 +252,7 @@
     <ClCompile Include="SampleScene2.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="ShootingScene.cpp" />
     <ClCompile Include="soundManager.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

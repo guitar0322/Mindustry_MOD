@@ -151,6 +151,24 @@
     <ClCompile Include="TriggerTest.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="ShootingScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyControler.cpp">
+      <Filter>Enemy\EnemyControler</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyPlaneControler.cpp">
+      <Filter>Enemy\EnemyControler</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyInfo.cpp">
+      <Filter>Enemy\EnemyFunction</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyObject.cpp">
+      <Filter>Enemy\EnemyUnit</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyPlane.cpp">
+      <Filter>Enemy\EnemyUnit</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h" />
@@ -310,6 +328,24 @@
     <ClInclude Include="TriggerTest.h">
       <Filter>Component</Filter>
     </ClInclude>
+    <ClInclude Include="ShootingScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyPlaneControler.h">
+      <Filter>Enemy\EnemyControler</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyControler.h">
+      <Filter>Enemy\EnemyControler</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyInfo.h">
+      <Filter>Enemy\EnemyFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyObject.h">
+      <Filter>Enemy\EnemyUnit</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyPlane.h">
+      <Filter>Enemy\EnemyUnit</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="windowAPI.rc" />
@@ -348,6 +384,18 @@
     </Filter>
     <Filter Include="Scene">
       <UniqueIdentifier>{8c1e3ca4-f72a-411b-b346-bd0aa24e763a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy">
+      <UniqueIdentifier>{4d60e2be-b37d-43d9-88a1-aade9f61fe91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\EnemyFunction">
+      <UniqueIdentifier>{5fa20ed1-9e4b-400d-83ff-373026e46790}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\EnemyControler">
+      <UniqueIdentifier>{f65fd3a2-c163-438c-86cb-bc5cfccca309}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\EnemyUnit">
+      <UniqueIdentifier>{f04d7d50-bb99-40ae-b3d3-47935ff62d0f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
