@@ -64,5 +64,6 @@ void UIRenderer::Render()
 		transform->GetScaleY(),
 		D2D1::Point2F(transform->GetX(), transform->GetY())
 	);
+	D2DRENDERER->GetRenderTarget()->SetTransform(rotation * scale);
 	D2DRENDERER->GetRenderTarget()->DrawBitmap(_targetBitmap, backbufferArea, _alpha, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, clipArea);
 }

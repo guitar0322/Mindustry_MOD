@@ -3,6 +3,20 @@
 
 namespace HDY_UTIL
 {
+	/*****************************************************
+	* 기존 Winapi용으로 구현된 GetAngle(라디안)값을
+	* D2D Angle(디그리)로 변환해주는 함수
+	*****************************************************/
+	float ConvertAngleD2D(const float& angle)
+	{
+		float degree = Math::ToDegree(angle);
+		float result = 90.f - degree;
+		if (result < 0)
+		{
+			result += 360;
+		}
+		return result;
+	}
 	float GetDistance(Vector2 v1, Vector2 v2)
 	{
 		float deltaX = v1.x - v2.y;
@@ -21,8 +35,8 @@ namespace HDY_UTIL
 	T GetDistance(T a, T b) {
 		return a - b;
 	}
-	float GetAngle(float x1, float y1, float x2, float y2)
-	{
+
+	float GetAngle(float x1, float y1, float x2, float y2)  	{
 		float x = x2 - x1;
 		float y = y2 - y1;
 
@@ -41,6 +55,32 @@ namespace HDY_UTIL
 		return angle;
 	}
 
+	float GetAngle(Vector2& v1, Vector2& v2)
+	{
+		float deltaX = v2.x - v1.x;
+		float deltaY = v2.y - v1.y;
+		
+		float distance = sqrtf(deltaX * deltaX + deltaY * deltaY);
+
+		float angle = acosf(deltaX / distance);
+
+		if (v2.y > v1.y)
+		{
+			angle = Math::PI2 - angle;
+			if (angle >= Math::PI2) angle -= Math::PI2;
+		}
+		return angle;
+	}
+
+	float GetAngleDegree(float x1, float y1, float x2, float y2)
+	{
+		return Math::ToDegree(GetAngle(x1, y1, x2, y2));
+	}
+	
+	float GetAngleDegree(Vector2& v1, Vector2& v2)
+	{
+		return Math::ToDegree(GetAngle(v1,v2));
+	}
 	Vector2 WorldToScreen(Vector2 worldPoint)
 	{
 		Vector2 result;
@@ -64,26 +104,24 @@ namespace HDY_UTIL
 	Vector2 ScreenToWorld(Vector2 screenPoint)
 	{
 		Vector2 result;
-		float camX = MainCam->transform->GetX();
-		float camY = MainCam->transform->GetY();
-		float screenX = screenPoint.x - MainCam->GetScreenStart().first - MainCam->GetRenderWidth() / 2;
-		float screenY = screenPoint.y - MainCam->GetScreenStart().second - MainCam->GetRenderHeight() / 2;
-		result.x = camX + screenX;
-		result.y = camY + screenY;
-
+		float virtualX = MainCam->GetRenderWidth() / MainCam->_zoomScale * (screenPoint.x - MainCam->GetScreenStart().first) / MainCam->GetScreenWidth();
+		float virtualY = MainCam->GetRenderHeight() / MainCam->_zoomScale * (screenPoint.y - MainCam->GetScreenStart().second) / MainCam->GetScreenHeight();
+		float cameraStartX = MainCam->transform->GetX() - (MainCam->GetRenderWidth() / MainCam->_zoomScale) / 2;
+		float cameraStartY = MainCam->transform->GetY() - (MainCam->GetRenderHeight() / MainCam->_zoomScale) / 2;
+		result.x = cameraStartX + virtualX;
+		result.y = cameraStartY + virtualY;
 		return result;
 	}
 
 	Vector2 ScreenToWorld(float x, float y)
 	{
 		Vector2 result;
-		float camX = MainCam->transform->GetX();
-		float camY = MainCam->transform->GetY();
-		float mouseX = WINSIZEX / 2 - x;
-		float mouseY = WINSIZEY / 2 - y;
-		result.x = camX - mouseX;
-		result.y = camY - mouseY;
-
+		float virtualX = MainCam->GetRenderWidth() / MainCam->_zoomScale * (x - MainCam->GetScreenStart().first) / MainCam->GetScreenWidth();
+		float virtualY = MainCam->GetRenderHeight() / MainCam->_zoomScale * (y - MainCam->GetScreenStart().second) / MainCam->GetScreenHeight();
+		float cameraStartX = MainCam->transform->GetX() - (MainCam->GetRenderWidth() / MainCam->_zoomScale) / 2;
+		float cameraStartY = MainCam->transform->GetY() - (MainCam->GetRenderHeight() / MainCam->_zoomScale) / 2;
+		result.x = cameraStartX + virtualX;
+		result.y = cameraStartY + virtualY;
 		return result;
 	}
 
@@ -99,24 +137,47 @@ namespace HDY_UTIL
 	{
 		return GetDistance(rc.bottom, rc.top);
 	}
-	POINTF MoveTowardTo(float x1, float y1, float x2, float y2, float speed, int limit)
+	Vector2 MoveTowardTo(float x1, float y1, float x2, float y2, float speed, int limit)
 	{
 		float angle = GetAngle(x1, y1, x2, y2);
 		float nextX, nextY;
 		float distance;
 		distance = GetDistance(x1, y1, x2, y2);
 		float remain = distance - limit;
-		if (remain > speed) {
+		if (remain > speed) 
+		{
 			nextX = x1 + cosf(angle) * speed;
 			nextY = y1 - sinf(angle) * speed;
 		}
-		else {
+		else 
+		{
 			nextX = x1 + cosf(angle) * remain;
 			nextY = y1 - sinf(angle) * remain;
 		}
-		return { nextX, nextY };
+		return Vector2(nextX, nextY);
 	}
-	POINTF MoveTowardTo(RECT& rc1, RECT& rc2, float speed, int limit)
+	Vector2 MoveTowardTo(Transform* moveTr, Transform* targetTr, float speed, float limit)
+	{
+		float angle = GetAngle(moveTr->GetX(), moveTr->GetY(), targetTr->GetX(), targetTr->GetY());
+		float nextX, nextY;
+		float distance;
+		distance = GetDistance(moveTr->GetX(), moveTr->GetY(), targetTr->GetX(), targetTr->GetY());
+		float remain = distance - limit;
+		if (remain > speed)
+		{
+			nextX = moveTr->GetX() + cosf(angle) * speed;
+			nextY = moveTr->GetY() - sinf(angle) * speed;
+		}
+		else
+		{
+			nextX = moveTr->GetX() + cosf(angle) * remain;
+			nextY = moveTr->GetY() - sinf(angle) * remain;
+		}
+		moveTr->Move(cosf(angle) * speed, -sinf(angle) * speed);
+
+		return Vector2(nextX, nextY);
+	}
+	Vector2 MoveTowardTo(RECT& rc1, RECT& rc2, float speed, int limit)
 	{
 		POINTF center1 = GetCenterF(rc1);
 		POINTF center2 = GetCenterF(rc2);
@@ -133,7 +194,7 @@ namespace HDY_UTIL
 			nextY = center1.y - sinf(angle) * remain;
 		}
 		rc1 = RectMakeCenter(nextX, nextY, GetWidth(rc1), GetHeight(rc1));
-		return { nextX, nextY };
+		return Vector2(nextX, nextY);
 	}
 	template<typename T>
 	T GetCenter(T a, T b)

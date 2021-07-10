@@ -164,6 +164,9 @@
     <ClCompile Include="MapTool.cpp">
       <Filter>Component\Framwork</Filter>
     </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h" />
@@ -338,6 +341,9 @@
     </ClInclude>
     <ClInclude Include="MapTool.h">
       <Filter>Component\Framwork</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

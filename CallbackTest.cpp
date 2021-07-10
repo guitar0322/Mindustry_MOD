@@ -4,4 +4,5 @@
 void CallbackTest::TestCallback()
 {
 	testObject->SetActive(!testObject->isActive);
+
 }

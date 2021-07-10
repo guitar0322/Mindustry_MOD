@@ -14,6 +14,7 @@ void UIMouseEvent::Init()
 
 void UIMouseEvent::Update()
 {
+	//마우스가 UI에 진입했을때
 	if (Vector2InRect(&uiRenderer->GetRc(), &_ptMouse))
 	{
 		if (_enterMouse == false)
@@ -23,6 +24,7 @@ void UIMouseEvent::Update()
 				OnMouseEnter();
 		}
 	}
+	//마우스가 UI를 빠져나갈때
 	else
 	{
 		if (_enterMouse == true)
@@ -32,6 +34,7 @@ void UIMouseEvent::Update()
 				OnMouseExit();
 		}
 	}
+	//마우스가 UI를 클릭했을 때
 	if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
 	{
 		if (Vector2InRect(&uiRenderer->GetRc(), &_ptMouse))
@@ -42,10 +45,13 @@ void UIMouseEvent::Update()
 	}
 }
 
-void UIMouseEvent::Render()
-{
-}
-
+/*******************************************************************
+* RegistCallback(Event function, EVENT event)
+* # EVENT : 이벤트 종류 Enum 자료형
+* # Event function : 이벤트 콜백 함수
+* 
+* **자세한 사용방법은 SampleScene.cpp 참고
+********************************************************************/
 void UIMouseEvent::RegistCallback(Event function, EVENT event)
 {
 	switch (event) {

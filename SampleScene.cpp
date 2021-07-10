@@ -8,11 +8,9 @@ HRESULT SampleScene::Init()
     Scene::Init();
 	CLIPMANAGER->AddClip("bomb", "bomb.png", 240, 80, 3, 1, 0.12f);
 	CLIPMANAGER->AddClip("trapobject", "trapObject.png", 64, 128);
-	//CLIPMANAGER->AddClip("background", "scene1_background.png", 1024, 560);
+	CLIPMANAGER->AddClip("background", "scene1_background.png", 1024, 560);
 	_stayTime = 0;
-	//SetBackBufferSize(1024, 560);
-	//MainCam->SetScreenStart(250, 0);
-	//MainCam->SetScreenSize(400, WINSIZEY);
+	SetBackBufferSize(1024, 560);
 	testAnimObj.Init();
 	testAnimObj.renderer->Init("bomb");
 	testAnimObj.animator->AddClip(CLIPMANAGER->FindClip("bomb"));
@@ -42,23 +40,35 @@ HRESULT SampleScene::Init()
 	testUIObj.Init();
 	testUIObj.uiRenderer->Init("trapobject");
 	testUIObj.transform->SetPosition(100, 100);
-	testUIObj.SetActive(false);
 
-	/*background.Init();
+	background.Init();
 	background.renderer->Init("background");
-	background.transform->SetPosition(MAPWIDTH / 2, MAPHEIGHT / 2);*/
+	background.transform->SetPosition(MAPWIDTH / 2, MAPHEIGHT / 2);
 
 	testButton.Init();
 	testButton.uiRenderer->Init("trapobject");
 	testButton.transform->SetPosition(WINSIZEX - 150, 150);
+	testButton.transform->SetAngle(45.f);
 	testButton.GetComponent<UIMouseEvent>()->Init();
 
+	float angle = GetAngle(testUIObj.transform->position, testButton.transform->position);
+	float angle2 = GetAngle(testButton.transform->position, testUIObj.transform->position);
+
+	testUIObj.transform->SetAngle(ConvertAngleD2D(angle));
+	testButton.transform->SetAngle(ConvertAngleD2D(angle2));
+
+	/**********************************************************
+	* UIMouseEvent 콜백함수 등록방법
+	* 첫번째 매개변수 : std::bind(&클래스명::함수명, 오브젝트변수명.GetComponent<컴포넌트명>())
+	* 두번째 매개변수 : EVENT::이벤트종류
+	***********************************************************/
 	testButton.GetComponent<UIMouseEvent>()->
 		RegistCallback(std::bind(&CallbackTest::TestCallback, testAnimObj.GetComponent<CallbackTest>()), EVENT::ENTER);
 	testButton.GetComponent<UIMouseEvent>()->
 		RegistCallback(std::bind(&CallbackTest::TestCallback, testAnimObj.GetComponent<CallbackTest>()), EVENT::EXIT);
 	testButton.GetComponent<UIMouseEvent>()->
 		RegistCallback(std::bind(&CallbackTest::TestCallback, testAnimObj.GetComponent<CallbackTest>()), EVENT::CLICK);
+	
 	_sceneChangeTime = 0;
     return S_OK;
 }
@@ -111,10 +121,10 @@ void SampleScene::Render()
 			D2DRenderer::DefaultBrush::Red,
 			1.f
 		);
-		//background.Render();
+		background.Render();
 		testAnimObj.Render();
 		testAnimObj2.Render();
-		//MainCam->Render();
+		MainCam->Render();
 		char debug[128];
 		sprintf_s(debug, "%d", testInt);
 		std::wstring wstr(debug, &debug[128]);
