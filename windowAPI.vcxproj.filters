@@ -104,16 +104,16 @@
       <Filter>Playground</Filter>
     </ClCompile>
     <ClCompile Include="D2DRenderer.cpp">
-      <Filter>?�스?�일</Filter>
+      <Filter>?�스?�일</Filter>
     </ClCompile>
     <ClCompile Include="D2DRenderer+Draw.cpp">
-      <Filter>?�스?�일</Filter>
+      <Filter>?�스?�일</Filter>
     </ClCompile>
     <ClCompile Include="Geometry.cpp">
-      <Filter>?�스?�일</Filter>
+      <Filter>?�스?�일</Filter>
     </ClCompile>
     <ClCompile Include="Rect.cpp">
-      <Filter>?�스?�일</Filter>
+      <Filter>?�스?�일</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Util</Filter>
@@ -122,16 +122,16 @@
       <Filter>Util</Filter>
     </ClCompile>
     <ClCompile Include="Circle.cpp">
-      <Filter>?�스?�일</Filter>
+      <Filter>?�스?�일</Filter>
     </ClCompile>
     <ClCompile Include="Vector2.cpp">
-      <Filter>?�스?�일</Filter>
+      <Filter>?�스?�일</Filter>
     </ClCompile>
     <ClCompile Include="Math.cpp">
-      <Filter>?�스?�일</Filter>
+      <Filter>?�스?�일</Filter>
     </ClCompile>
     <ClCompile Include="Line.cpp">
-      <Filter>?�스?�일</Filter>
+      <Filter>?�스?�일</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Scene</Filter>
@@ -152,6 +152,13 @@
       <Filter>Component</Filter>
     </ClCompile>
 
+    <ClCompile Include="UIMouseEvent.cpp">
+      <Filter>Component\Framwork</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Gameobject\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="CallbackTest.cpp" />
     <ClCompile Include="MapScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
@@ -175,6 +182,9 @@
     </ClCompile>
     <ClCompile Include="EnemyPlane.cpp">
       <Filter>Enemy\EnemyUnit</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -285,16 +295,16 @@
       <Filter>Playground</Filter>
     </ClInclude>
     <ClInclude Include="ManagerHeader.h">
-      <Filter>?�더?�일</Filter>
+      <Filter>?�더?�일</Filter>
     </ClInclude>
     <ClInclude Include="LibraryHeader.h">
-      <Filter>?�더?�일</Filter>
+      <Filter>?�더?�일</Filter>
     </ClInclude>
     <ClInclude Include="D2DRenderer.h">
-      <Filter>?�더?�일</Filter>
+      <Filter>?�더?�일</Filter>
     </ClInclude>
     <ClInclude Include="Geometry.h">
-      <Filter>?�더?�일</Filter>
+      <Filter>?�더?�일</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Util</Filter>
@@ -303,19 +313,19 @@
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="Line.h">
-      <Filter>?�스?�일</Filter>
+      <Filter>?�스?�일</Filter>
     </ClInclude>
     <ClInclude Include="Vector2.h">
-      <Filter>?�스?�일</Filter>
+      <Filter>?�스?�일</Filter>
     </ClInclude>
     <ClInclude Include="Math.h">
-      <Filter>?�스?�일</Filter>
+      <Filter>?�스?�일</Filter>
     </ClInclude>
     <ClInclude Include="Circle.h">
-      <Filter>?�스?�일</Filter>
+      <Filter>?�스?�일</Filter>
     </ClInclude>
     <ClInclude Include="Rect.h">
-      <Filter>?�스?�일</Filter>
+      <Filter>?�스?�일</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Scene</Filter>
@@ -335,12 +345,18 @@
     <ClInclude Include="TriggerTest.h">
       <Filter>Component</Filter>
     </ClInclude>
-
+    <ClInclude Include="UIMouseEvent.h">
+      <Filter>Component\Framwork</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Gameobject\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="CallbackTest.h" />
     <ClInclude Include="MapScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="TileInfo.h">
-      <Filter>?�더?�일</Filter>
+      <Filter>?�더?�일</Filter>
     </ClInclude>
     <ClInclude Include="MapTool.h">
       <Filter>Component\Framwork</Filter>
@@ -364,6 +380,9 @@
       <Filter>Enemy\EnemyUnit</Filter>
 
     </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="windowAPI.rc" />
@@ -373,10 +392,10 @@
     <Image Include="windowAPI.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="?�더?�일">
+    <Filter Include="?�더?�일">
       <UniqueIdentifier>{c5a74d32-48ac-476c-b67c-3ef4959b80ca}</UniqueIdentifier>
     </Filter>
-    <Filter Include="?�스?�일">
+    <Filter Include="?�스?�일">
       <UniqueIdentifier>{91e16d7c-03fe-4390-86f5-fd7f4552fc0c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Util">

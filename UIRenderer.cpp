@@ -22,12 +22,12 @@ void UIRenderer::Init(string clipName)
 	_curFrameX = 0;
 	_curFrameY = 0;
 	_alpha = 1.f;
+	_rc = RectMakePivot(transform->position, Vector2(_frameWidth, _frameHeight), Pivot::Center);
 }
 
 void UIRenderer::Update()
 {
-	_rc = RectMakePivot(Vector2(transform->GetX(), transform->GetY()),
-		Vector2(_frameWidth, _frameHeight), Pivot::Center);
+	_rc = RectMakePivot(transform->position, Vector2(_frameWidth, _frameHeight), Pivot::Center);
 }
 
 void UIRenderer::Render()
@@ -64,5 +64,6 @@ void UIRenderer::Render()
 		transform->GetScaleY(),
 		D2D1::Point2F(transform->GetX(), transform->GetY())
 	);
+	D2DRENDERER->GetRenderTarget()->SetTransform(rotation * scale);
 	D2DRENDERER->GetRenderTarget()->DrawBitmap(_targetBitmap, backbufferArea, _alpha, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, clipArea);
 }

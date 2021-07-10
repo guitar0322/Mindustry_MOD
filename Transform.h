@@ -65,6 +65,11 @@ public:
 	float GetScaleX() { return size.x; }
 	float GetScaleY() { return size.y; }
 
+	/******************************************************
+	* angle : 오브젝트의 회전값
+	* GetAngle을 통해 각도를 정할 경우 ConvertAngleD2D함수를
+	* 통해 변환을 거친후 호출해야한다
+	******************************************************/
 	void SetAngle(float angle) { this->angle = angle; }
 	float GetAngle() const { return angle; }
 };
