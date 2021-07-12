@@ -152,6 +152,8 @@
     <ClInclude Include="AnimObject.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="BoxCollider.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="CallbackTest.h" />
     <ClInclude Include="Cam.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />
@@ -166,6 +168,7 @@
     <ClInclude Include="Circle.h" />
     <ClInclude Include="gameNode.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameScene.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="ImageManager.h" />
@@ -201,6 +204,8 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TriggerTest.h" />
     <ClInclude Include="UIBase.h" />
+    <ClInclude Include="UIControler.h" />
+    <ClInclude Include="UIMouseEvent.h" />
     <ClInclude Include="UIRenderer.h" />
     <ClInclude Include="utils.h" />
     <ClInclude Include="Vector2.h" />
@@ -214,6 +219,8 @@
     <ClCompile Include="AnimObject.cpp" />
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="BoxCollider.cpp" />
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="CallbackTest.cpp" />
     <ClCompile Include="Cam.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraManager.cpp" />
@@ -228,6 +235,7 @@
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="gameNode.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="ImageManager.cpp" />
@@ -261,6 +269,8 @@
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TriggerTest.cpp" />
     <ClCompile Include="UIBase.cpp" />
+    <ClCompile Include="UIControler.cpp" />
+    <ClCompile Include="UIMouseEvent.cpp" />
     <ClCompile Include="UIRenderer.cpp" />
     <ClCompile Include="utils.cpp" />
     <ClCompile Include="Vector2.cpp" />
