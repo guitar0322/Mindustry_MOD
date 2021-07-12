@@ -12,7 +12,7 @@ void UIControler::Update()
 void UIControler::ClickCategoryIcon(GameObject* clickedButton, int category)
 {
 	categorySelect->transform->SetPosition(clickedButton->transform->GetX(), clickedButton->transform->GetY());
-
+	propSelect->SetActive(false);
 	for (int i = 0; i < preIconV->size(); i++)
 	{
 		(*preIconV)[i]->SetActive(false);
@@ -36,4 +36,18 @@ void UIControler::ClickCategoryIcon(GameObject* clickedButton, int category)
 	{
 		(*preIconV)[i]->SetActive(true);
 	}
+}
+
+void UIControler::ClickPropIcon(GameObject* clickedButton)
+{
+	if (preSelectProp == clickedButton && propSelect->isActive == true)
+	{
+		propSelect->SetActive(false);
+	}
+	else
+	{
+		propSelect->SetActive(true);
+		propSelect->transform->SetPosition(clickedButton->transform->GetX(), clickedButton->transform->GetY());
+	}
+	preSelectProp = clickedButton;
 }

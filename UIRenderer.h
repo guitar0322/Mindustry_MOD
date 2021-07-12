@@ -15,6 +15,7 @@ public:
     UIRenderer();
     ~UIRenderer();
     virtual void Init(string clipName);
+    virtual void Init(float width, float height);
     virtual void Update();
     virtual void Render();
     void SetAlpha(float alpha) { _alpha = alpha; }

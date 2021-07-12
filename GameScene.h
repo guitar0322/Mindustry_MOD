@@ -1,8 +1,8 @@
 #pragma once
 #include "Scene.h"
 #include "Button.h"
-#define PROP_UI_STARTX WINSIZEX - 170
-#define PROP_UI_STARTY WINSIZEY - 140
+#define PROP_UI_STARTX WINSIZEX - 230
+#define PROP_UI_STARTY WINSIZEY - 187
 class GameScene :
     public Scene
 {

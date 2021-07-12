@@ -9,6 +9,7 @@ HRESULT GameScene::Init()
     uiControler.AddComponent(new UIControler());
     uiControler.GetComponent<UIControler>()->Init();
     uiControler.GetComponent<UIControler>()->categorySelect = &categorySelect;
+    uiControler.GetComponent<UIControler>()->propSelect = &propSelect;
     uiControler.GetComponent<UIControler>()->railIconV = &railIconV;
     uiControler.GetComponent<UIControler>()->drillIconV = &drillIconV;
     uiControler.GetComponent<UIControler>()->turretIconV = &turretIconV;
@@ -38,6 +39,7 @@ void GameScene::Update()
         conveyorIcon.Update();
     }
     categorySelect.Update();
+    propSelect.Update();
 }
 
 void GameScene::Render()
@@ -59,6 +61,7 @@ void GameScene::Render()
         conveyorIcon.Render();
     }
     categorySelect.Render();
+    propSelect.Render();
 }
 
 void GameScene::Release()
@@ -70,10 +73,10 @@ void GameScene::InitClip()
     CLIPMANAGER->AddClip("ui_frame", "sprites/ui/pane-build.png", 378, 318);
     //카테고리 아이콘 클립
     {
-		CLIPMANAGER->AddClip("defense_icon", "icons/defense.png", 16, 16);
-		CLIPMANAGER->AddClip("rail_icon", "icons/distribution.png", 20, 20);
-		CLIPMANAGER->AddClip("turret_icon", "icons/turret.png", 20, 20);
-		CLIPMANAGER->AddClip("production_icon", "icons/production.png", 20, 20);
+		CLIPMANAGER->AddClip("defense_icon", "icons/defense.png", 32, 32);
+		CLIPMANAGER->AddClip("rail_icon", "icons/distribution.png", 32, 32);
+		CLIPMANAGER->AddClip("turret_icon", "icons/turret.png", 32, 32);
+		CLIPMANAGER->AddClip("production_icon", "icons/production.png", 32, 32);
     }
 
     //설치물 아이콘 클립
@@ -84,18 +87,18 @@ void GameScene::InitClip()
 		CLIPMANAGER->AddClip("conveyor", "sprites/blocks/distribution/conveyors/conveyor-0-0.png", 32, 32);
     }
 
-    CLIPMANAGER->AddClip("button_select", "sprites/ui/button-select.9.png", 30, 30);
+    CLIPMANAGER->AddClip("button_select", "sprites/ui/button-select.10.png", 52, 52);
 }
 
 void GameScene::InitCategoryUI()
 {
     buildingCategoryFrame.uiRenderer->Init("ui_frame");
     buildingCategoryFrame.uiRenderer->SetAlpha(0.7f);
-    buildingCategoryFrame.transform->SetPosition(WINSIZEX - 94, WINSIZEY - 80);
-    buildingCategoryFrame.transform->SetScale(0.5f, 0.5f);
+    buildingCategoryFrame.transform->SetPosition(WINSIZEX - 132, WINSIZEY - 111);
+    buildingCategoryFrame.transform->SetScale(0.7f, 0.7f);
 
     defenseIcon.uiRenderer->Init("defense_icon");
-    defenseIcon.transform->SetPosition(WINSIZEX - 15, WINSIZEY - 115);
+    defenseIcon.transform->SetPosition(WINSIZEX - 20, WINSIZEY - 150);
     /**********************************************************
     * 버튼 콜백함수 등록방법
     * RegistCallback 매개변수(std::bind(&클래스명::함수명, 클래스의 인스턴스, 매개변수....), 등록이벤트 종류);
@@ -108,12 +111,12 @@ void GameScene::InitCategoryUI()
         std::bind(&UIControler::ClickCategoryIcon, uiControler.GetComponent<UIControler>(), &defenseIcon, 3), EVENT::CLICK);
 
     railIcon.uiRenderer->Init("rail_icon");
-    railIcon.transform->SetPosition(defenseIcon.transform->GetX() - 30, defenseIcon.transform->GetY());
+    railIcon.transform->SetPosition(defenseIcon.transform->GetX() - 40, defenseIcon.transform->GetY());
     railIcon.uiMouseEvent->RegistCallback(
         std::bind(&UIControler::ClickCategoryIcon, uiControler.GetComponent<UIControler>(), &railIcon, 2), EVENT::CLICK);
 
     turretIcon.uiRenderer->Init("turret_icon");
-    turretIcon.transform->SetPosition(railIcon.transform->GetX(), railIcon.transform->GetY() - 26);
+    turretIcon.transform->SetPosition(railIcon.transform->GetX(), railIcon.transform->GetY() - 40);
     turretIcon.uiMouseEvent->RegistCallback(
         std::bind(&UIControler::ClickCategoryIcon, uiControler.GetComponent<UIControler>(), &turretIcon, 0), EVENT::CLICK);
 
@@ -132,26 +135,36 @@ void GameScene::InitPropUI()
     {
 		copperWallIcon.uiRenderer->Init("copper_wall");
 		copperWallIcon.transform->SetPosition(PROP_UI_STARTX, PROP_UI_STARTY);
-		copperWallIcon.transform->SetScale(0.7f, 0.7f);
+        copperWallIcon.uiMouseEvent->RegistCallback(
+            std::bind(&UIControler::ClickPropIcon, uiControler.GetComponent<UIControler>(), &copperWallIcon), EVENT::CLICK);
 		wallIconV.push_back(&copperWallIcon);
 
-        wallIconV[0]->SetActive(false);
+        for (int i = 0; i < wallIconV.size(); i++)
+        {
+            wallIconV[i]->SetActive(false);
+        }
     }
 
     //드릴 아이콘 초기화
     {
 		mechanicDrillIcon.uiRenderer->Init("mechanical_drill");
 		mechanicDrillIcon.transform->SetPosition(PROP_UI_STARTX, PROP_UI_STARTY);
-		mechanicDrillIcon.transform->SetScale(0.4f, 0.4f);
+		mechanicDrillIcon.transform->SetScale(0.5f, 0.5f);
+        mechanicDrillIcon.uiMouseEvent->RegistCallback(
+            std::bind(&UIControler::ClickPropIcon, uiControler.GetComponent<UIControler>(), &mechanicDrillIcon), EVENT::CLICK);
 		drillIconV.push_back(&mechanicDrillIcon);
 
-        drillIconV[0]->SetActive(false);
+        for (int i = 0; i < drillIconV.size(); i++)
+        {
+            drillIconV[i]->SetActive(false);
+        }
     }
     //터렛 아이콘 초기화
     {
         duoIcon.uiRenderer->Init("duo");
         duoIcon.transform->SetPosition(PROP_UI_STARTX, PROP_UI_STARTY);
-        duoIcon.transform->SetScale(0.7f, 0.7f);
+        duoIcon.uiMouseEvent->RegistCallback(
+            std::bind(&UIControler::ClickPropIcon, uiControler.GetComponent<UIControler>(), &duoIcon), EVENT::CLICK);
         turretIconV.push_back(&duoIcon);
 
     }
@@ -160,10 +173,14 @@ void GameScene::InitPropUI()
     {
         conveyorIcon.uiRenderer->Init("conveyor");
         conveyorIcon.transform->SetPosition(PROP_UI_STARTX, PROP_UI_STARTY);
-        conveyorIcon.transform->SetScale(0.7f, 0.7f);
+        conveyorIcon.uiMouseEvent->RegistCallback(
+            std::bind(&UIControler::ClickPropIcon, uiControler.GetComponent<UIControler>(), &conveyorIcon), EVENT::CLICK);
         railIconV.push_back(&conveyorIcon);
 
-        railIconV[0]->SetActive(false);
+        for (int i = 0; i < railIconV.size(); i++)
+        {
+            railIconV[i]->SetActive(false);
+        }
     }
 
     propSelect.uiRenderer->Init("button_select");

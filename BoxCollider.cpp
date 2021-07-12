@@ -156,7 +156,10 @@ void BoxCollider::AddOverlapCol(BoxCollider* overlapCollider)
 }
 void BoxCollider::Render()
 {
-	D2DRENDERER->DrawRectangle(_rc, D2DRenderer::DefaultBrush::Green);
+	if (KEYMANAGER->isToggleKey(VK_TAB))
+	{
+		D2DRENDERER->DrawRectangle(_rc, D2DRenderer::DefaultBrush::Green);
+	}
 }
 
 void BoxCollider::OnDisable()

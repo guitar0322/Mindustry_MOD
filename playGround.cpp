@@ -26,14 +26,20 @@ HRESULT playGround::init()
 
 	SampleScene* sampleScene = new SampleScene();
 	SCENEMANAGER->AddScene("sample", sampleScene);
-	//SCENEMANAGER->LoadScene("sample");
+	SCENEMANAGER->LoadScene("sample");
 
 	SampleScene2* sampleScene2 = new SampleScene2();
 	SCENEMANAGER->AddScene("sample2", sampleScene2);
 
 	GameScene* gameScene = new GameScene();
 	SCENEMANAGER->AddScene("game", gameScene);
-	SCENEMANAGER->LoadScene("game");
+	//SCENEMANAGER->LoadScene("game");
+
+	//플레이어 회전 설계
+	//앵글을 깍아줄지 늘려줄지 정하는방법
+	//현재앵글 - 목표앵글이 180보다 크면 줄여준다
+	//앵글이 음수가 되면 360 - 음수절대값 으로 바꿔준다
+	//앵글이 360보다 커지면 0 + 남는값으로 바꿔준다.
 
 	//_mainCam.transform->SetX(_mainCam.transform->GetX() + 100);
 	//testParticle = new image();
@@ -100,6 +106,9 @@ void playGround::render()
 	//demoParticleSys->Render();
 
 	SCENEMANAGER->Render();
+	wstring fps = L"FPS : ";
+	fps.append(to_wstring(TIMEMANAGER->getFPS()));
+	D2DRENDERER->RenderText(10, 10, fps, 30);
 	//==================================================
 	//여기도 건들지마라
 	//_ui.Render();

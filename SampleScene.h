@@ -10,7 +10,9 @@ private:
     AnimObject testAnimObj2;
     float _stayTime;
     ImageObject background;
+    ImageObject testNoClipObj;
     UIBase testUIObj;
+    UIBase testNoClipUI;
     float _sceneChangeTime;
     int testInt;
     wstring debugWstring;

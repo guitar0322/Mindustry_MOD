@@ -20,6 +20,7 @@ public:
     Renderer();
     ~Renderer();
     virtual void Init(string clipName);
+    virtual void Init(float width, float height);
     virtual void Render();
     virtual void Update();
     virtual void Release();

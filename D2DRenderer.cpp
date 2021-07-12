@@ -175,6 +175,7 @@ void D2DRenderer::AddTextFormat(const wstring& font, const float& defaultSize)
 void D2DRenderer::DrawBackBuffer(float bitmapStartX, float bitmapStartY, float bitmapEndX, float bitmapEndY,
 	float screenStartX, float screenStartY, float screenEndX, float screenEndY)
 {
+	mD2DBitmapRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 	mD2DBitmapRenderTarget->EndDraw();
 	mD2DBitmapRenderTarget->GetBitmap(&mD2DBitmap);
 
