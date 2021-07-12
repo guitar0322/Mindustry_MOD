@@ -5,10 +5,18 @@ class SampleScene :
     public Scene
 {
 private:
-    AnimObject testAnimObj;
-    AnimObject testAnimObj2;
-    ImageObject background;
-    UIBase testUIObj;
+
+    ImageObject _background;
+    ImageObject _logo;
+    
+    //AnimObject testAnimObj;
+    //AnimObject testAnimObj2;
+        
+    //UIBase _playButtonImage;
+    //UIBase _terrainButtonImage;
+    //UIBase _playButtonImage;
+    //UIBase _playButtonImage;
+
     float _sceneChangeTime;
 public:
     virtual HRESULT Init();
