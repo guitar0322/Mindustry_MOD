@@ -2,15 +2,15 @@
 
 #define TILESIZE 32						//타일 조각 크기
 
-#define TILENUMX 50						//1행 타일 개수
-#define TILENUMY 50						//1열 타일 개수
+#define TILENUMX 100						//1행 타일 개수
+#define TILENUMY 100						//1열 타일 개수
 
 #define TILESIZEX TILESIZE * TILENUMX		//타일 맵의 가로 크기
 #define TILESIZEY TILESIZE * TILENUMY		//타일 맵의 세로 크기
 
 //타일셋 정렬
-#define TILESETX 3 //필요에 따라 늘립시다
-#define TILESETY 3 //추후 늘립시다
+#define TILESETX 4 //필요에 따라 늘립시다
+#define TILESETY 8 //추후 늘립시다
 
 
 //비트필드

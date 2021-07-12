@@ -23,6 +23,8 @@ public:
 	void SetMap();
 
 	void SetTileImage();
+	void SetTileName(int selectNum);
+
 
 
 	tagTile* getTile() { return tile; }
