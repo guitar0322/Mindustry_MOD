@@ -269,6 +269,15 @@ void D2DRenderer::DrawRectangle(const Rect& rc, const DefaultBrush& defaultBrush
 		mDefaultBrushList[(UINT)defaultBrush], strokeWidth);
 
 }
+void D2DRenderer::DrawRectangleUI(const Rect& rc, const DefaultBrush& defaultBrush, const float strokeWidth)
+{
+	Rect rect = rc;
+
+	mD2DRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
+
+	mD2DRenderTarget->DrawRectangle(D2D1::RectF((float)rect.left, (float)rect.top, (float)rect.right, (float)rect.bottom),
+		mDefaultBrushList[(UINT)defaultBrush], strokeWidth);
+}
 /**********************************************************************************************
 ## DrawEllipse ##
 @@ Vector2 origin : ÁßÁ¡

@@ -22,18 +22,22 @@ void UIRenderer::Init(string clipName)
 	_curFrameX = 0;
 	_curFrameY = 0;
 	_alpha = 1.f;
-	_rc = RectMakePivot(transform->position, Vector2(_frameWidth, _frameHeight), Pivot::Center);
+	_rc = RectMakePivot(transform->position, Vector2(_frameWidth * transform->GetScaleX(), _frameHeight * transform->GetScaleX()), Pivot::Center);
 }
 
 void UIRenderer::Update()
 {
-	_rc = RectMakePivot(transform->position, Vector2(_frameWidth, _frameHeight), Pivot::Center);
+	_rc = RectMakePivot(transform->position, Vector2(_frameWidth * transform->GetScaleX(), _frameHeight * transform->GetScaleX()), Pivot::Center);
 }
 
 void UIRenderer::Render()
 {
 	int startX = transform->GetX() - _frameWidth / 2;
 	int startY = transform->GetY() - _frameHeight / 2;
+	if (KEYMANAGER->isToggleKey(VK_TAB))
+	{
+		D2DRENDERER->DrawRectangleUI(_rc, D2DRenderer::DefaultBrush::Gray);
+	}
 	D2D1_SIZE_F bitmapSize = _targetBitmap->GetSize();
 	//그려질 영역
 	D2D1_RECT_F clipArea =

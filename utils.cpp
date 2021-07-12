@@ -17,7 +17,7 @@ namespace HDY_UTIL
 		}
 		return result;
 	}
-	float GetDistance(Vector2 v1, Vector2 v2)
+	float GetDistance(const Vector2& v1, const Vector2& v2)
 	{
 		float deltaX = v1.x - v2.y;
 		float deltaY = v1.y - v2.y;

@@ -30,11 +30,18 @@ class UIMouseEvent :
 private:
 
     typedef std::function<void()> Event;
+    //typedef std::function<void()> EventParam;
 
     bool _enterMouse;
+    void* mouseEnterParam;
+    void* mouseExitParam;
+    void* clickParam;
     Event OnMouseEnter;
     Event OnMouseExit;
     Event OnClick;
+    //EventParam OnMouseEnterParam;
+    //EventParam OnMouseExitParam;
+    //EventParam OnClickParam;
 public:
     UIMouseEvent() {};
     ~UIMouseEvent() {};
@@ -42,5 +49,6 @@ public:
     virtual void Init();
     virtual void Update();
     void RegistCallback(Event function, EVENT event);
+    //void RegistParamCallback(EventParam function, void* param, EVENT event);
 };
 
