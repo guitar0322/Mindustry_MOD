@@ -1,23 +1,20 @@
 #pragma once
 #include "Scene.h"
 #include "AnimObject.h"
+#include "Button.h"
 class SampleScene :
     public Scene
 {
 private:
-
-    ImageObject _background;
-    ImageObject _logo;
-    
-    //AnimObject testAnimObj;
-    //AnimObject testAnimObj2;
-        
-    //UIBase _playButtonImage;
-    //UIBase _terrainButtonImage;
-    //UIBase _playButtonImage;
-    //UIBase _playButtonImage;
-
+    AnimObject testAnimObj;
+    AnimObject testAnimObj2;
+    float _stayTime;
+    ImageObject background;
+    UIBase testUIObj;
     float _sceneChangeTime;
+    int testInt;
+    wstring debugWstring;
+    Button testButton;
 public:
     virtual HRESULT Init();
     virtual void Update();

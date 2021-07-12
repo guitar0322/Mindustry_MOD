@@ -56,7 +56,8 @@ void Camera::Render()
 		transform->SetY(MAPHEIGHT - _renderHeight / _zoomScale / 2);
 	}
 
-	D2DRENDERER->DrawBackBuffer(startX, startY, startX + _renderWidth / _zoomScale, startY + _renderHeight / _zoomScale);
+	D2DRENDERER->DrawBackBuffer(startX, startY, startX + _renderWidth / _zoomScale, startY + _renderHeight / _zoomScale,
+		_screenStartX, _screenStartY, _screenStartX + _screenWidth, _screenStartY + _screenHeight);
 }
 
 void Camera::Update()

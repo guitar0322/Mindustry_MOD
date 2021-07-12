@@ -41,7 +41,7 @@ D2DRenderer::~D2DRenderer()
 void D2DRenderer::BeginRender(const D2D1::ColorF& backgroundColor)
 {
 	mD2DRenderTarget->BeginDraw();
-	mD2DRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White, 1.0f));
+	mD2DRenderTarget->Clear(backgroundColor);
 
 	mD2DBitmapRenderTarget->BeginDraw();
 	mD2DBitmapRenderTarget->Clear(backgroundColor);
@@ -172,17 +172,16 @@ void D2DRenderer::AddTextFormat(const wstring& font, const float& defaultSize)
 	this->mFontList.insert(make_pair(font, format));
 }
 
-void D2DRenderer::DrawBackBuffer(float startX, float startY, float endX, float endY)
+void D2DRenderer::DrawBackBuffer(float bitmapStartX, float bitmapStartY, float bitmapEndX, float bitmapEndY,
+	float screenStartX, float screenStartY, float screenEndX, float screenEndY)
 {
 	mD2DBitmapRenderTarget->EndDraw();
 	mD2DBitmapRenderTarget->GetBitmap(&mD2DBitmap);
 
-	//TODO
-	//가로 세로가 같은 사각형을 그려도 찌그러져 나오는 이유
-	/*D2D1_SIZE_F size = mD2DRenderTarget->GetSize();*/
-	D2D1_SIZE_F size = D2D1::SizeF(endX - startX, endY - startY);
-	D2D1_RECT_F renderTargetArea = D2D1::RectF(0, 0, WINSIZEX, WINSIZEY);
-	D2D1_RECT_F bitmapArea = D2D1::RectF(startX, startY, startX + size.width, startY + size.height);
+	D2D1_SIZE_F bitmapSize = D2D1::SizeF(bitmapEndX - bitmapStartX, bitmapEndY - bitmapStartY);
+	D2D1_SIZE_F screenSize = D2D1::SizeF(screenEndX - screenStartX, screenEndY - screenStartY);
+	D2D1_RECT_F renderTargetArea = D2D1::RectF(screenStartX, screenStartY, screenStartX + screenSize.width, screenStartY + screenSize.height);
+	D2D1_RECT_F bitmapArea = D2D1::RectF(bitmapStartX, bitmapStartY, bitmapStartX + bitmapSize.width, bitmapStartY + bitmapSize.height);
 
 	/***************************************
 	DrawBitmap(그려질 비트맵, 그릴 렌더타겟의 영역, 알파값, 렌더링 모드, 그려질 비트맵의 영역)
@@ -191,7 +190,7 @@ void D2DRenderer::DrawBackBuffer(float startX, float startY, float endX, float e
 		mD2DBitmap,
 		&renderTargetArea,
 		1.f,
-		D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR,
+		D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
 		&bitmapArea
 	);
 

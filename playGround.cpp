@@ -2,6 +2,8 @@
 #include "playGround.h"
 #include "SampleScene.h"
 #include "SampleScene2.h"
+#include "MapScene.h"
+#include "GameScene.h"
 playGround::playGround()
 {
 
@@ -17,13 +19,22 @@ HRESULT playGround::init()
 {
 	gameNode::init(true);
 	_camShakeFrame = 0;
+	
+	MapScene* mapScene = new MapScene();
+	SCENEMANAGER->AddScene("background", mapScene);
+	//SCENEMANAGER->LoadScene("background");
 
 	SampleScene* sampleScene = new SampleScene();
 	SCENEMANAGER->AddScene("sample", sampleScene);
-	SCENEMANAGER->LoadScene("sample");
+	//SCENEMANAGER->LoadScene("sample");
 
 	SampleScene2* sampleScene2 = new SampleScene2();
 	SCENEMANAGER->AddScene("sample2", sampleScene2);
+
+	GameScene* gameScene = new GameScene();
+	SCENEMANAGER->AddScene("game", gameScene);
+	SCENEMANAGER->LoadScene("game");
+
 	//_mainCam.transform->SetX(_mainCam.transform->GetX() + 100);
 	//testParticle = new image();
 	//testParticle->init("full_charge_hit_effect_left.bmp", 240, 88, 4, 1, true, RGB(255, 0, 255));

@@ -31,7 +31,6 @@ namespace Direction
 
 //라이브러리 헤더 파일
 #include "LibraryHeader.h"
-
 #include "Vector2.h"
 #include "Math.h"
 #include "Geometry.h"
@@ -60,10 +59,10 @@ using namespace HDY_UTIL;
 //==================================
 
 #define WINNAME (LPTSTR)(TEXT("28기 API"))
-#define WINSTARTX 200	//윈도우 창 시작좌표 (left)
-#define WINSTARTY 50	//윈도우 창 시작좌표 (top)
-#define WINSIZEX 900	//윈도우 가로크기
-#define WINSIZEY 568	//윈도우 세로크기
+#define WINSTARTX 10	//윈도우 창 시작좌표 (left)
+#define WINSTARTY 0	//윈도우 창 시작좌표 (top)
+#define WINSIZEX 1350	//윈도우 가로크기
+#define WINSIZEY 852	//윈도우 세로크기
 #define WINSTYLE WS_CAPTION | WS_SYSMENU
 
 #define RND randomFunction::getSingleton()
@@ -98,7 +97,7 @@ using namespace HDY_UTIL;
 //==================================
 extern HINSTANCE _hInstance;
 extern HWND _hWnd;
-extern POINT _ptMouse;
+extern Vector2 _ptMouse;
 extern char debug[3][128];
 extern char error[128];
 extern HDC _hdc;

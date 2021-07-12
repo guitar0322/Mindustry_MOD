@@ -42,7 +42,8 @@ private:
 public:
 	void CreateNewBackBuffer(int width, int height);
 	void AddTextFormat(const wstring& font, const float& defaultSize = 1.f);
-	void DrawBackBuffer(float startX, float startY, float endX, float endY);
+	void DrawBackBuffer(float startX, float startY, float endX, float endY,
+		float screenStartX, float screenStartY, float screenEndX, float screenEndY);
 	inline ID2D1RenderTarget* const GetRenderTarget()const { return this->mD2DRenderTarget; }
 	inline ID2D1BitmapRenderTarget* const GetBackBuffer() { return this->mD2DBitmapRenderTarget; }
 public:
@@ -74,6 +75,8 @@ public:
 	void DrawRectangle(const Rect& rc, const D2D1::ColorF::Enum& color, const float alpha,
 		const float strokeWidth = 1.f);
 	void DrawRectangle(const Rect& rc, const DefaultBrush& defaultBrush = DefaultBrush::Black,
+		const float strokeWidth = 1.f);
+	void DrawRectangleUI(const Rect& rc, const DefaultBrush& defaultBrush = DefaultBrush::Black,
 		const float strokeWidth = 1.f);
 	void DrawEllipse(const Vector2& origin, const float radius, const DefaultBrush& defaultBrush = DefaultBrush::Black,
 		 const float strokeWidth = 1.f);

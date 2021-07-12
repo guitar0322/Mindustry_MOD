@@ -1,25 +1,25 @@
 #pragma once
 
 #include "Rect.h"
-#include "Ellipse.h"
+#include "Circle.h"
 /**********************************
-Framework Geometry::Collision
+Framework Geometry
 By 홍대영 21/07/05
 ***********************************/
 namespace MyGeometry 
 {
-	inline Vector2 GetCenter(Rect& rect)
+	inline Vector2 GetCenter(Rect rect)
 	{
 		Vector2 result;
 		result.x = (rect.right + rect.left) / 2;
 		result.y = (rect.bottom + rect.top) / 2;
 		return result;
 	}
-	inline float GetCenterX(Rect& rect)
+	inline float GetCenterX(Rect rect)
 	{
 		return (rect.right + rect.left) / 2;
 	}
-	inline float GetCenterY(Rect& rect)
+	inline float GetCenterY(Rect rect)
 	{
 		return (rect.top + rect.bottom) / 2;
 	}
@@ -53,7 +53,7 @@ namespace MyGeometry
 		return result;
 	}
 
-	inline Rect RectmakeCenter(const Vector2& pos, const Vector2& size)
+	inline Rect RectMakeCenter(const Vector2& pos, const Vector2& size)
 	{
 		Rect result;
 		result.left = pos.x - size.x / 2.f;
@@ -89,8 +89,8 @@ namespace MyGeometry
 	*****************************************/
 	inline bool IntersectRect(const Rect* const rc1, const Rect* const rc2)
 	{
-		if (rc1->right < rc2->left || rc1->left > rc2->right) return false;
-		if (rc1->bottom < rc2->top || rc1->top > rc2->bottom) return false;
+		if (rc1->right <= rc2->left || rc1->left >= rc2->right) return false;
+		if (rc1->bottom <= rc2->top || rc1->top >= rc2->bottom) return false;
 		return true;
 	}
 
@@ -270,7 +270,6 @@ namespace MyGeometry
 					*pOutDirection = (Direction::Enum)((*pOutDirection) | Direction::Top);
 			}
 		}
-
 		return true;
 	}
 
@@ -295,7 +294,7 @@ namespace MyGeometry
 	Eliipse* pEllipse : 원
 	return bool : 결과를 반환
 	*********************************/
-	inline bool Vector2InEllipse(const Vector2* const pVector, const Ellipse* const pEllipse)
+	inline bool Vector2InCircle(const Vector2* const pVector, const Circle* const pEllipse)
 	{
 		float deltaX = pVector->x - pEllipse->center.x;
 		float deltaY = pVector->y - pEllipse->center.y;
@@ -315,7 +314,7 @@ namespace MyGeometry
 	FloatEllipse* ellipse2 : 원
 	return bool : 결과 반환값
 	*******************************/
-	inline bool IntersectEllipseToEllipse(const Ellipse* const ellipse1, const Ellipse* const ellipse2)
+	inline bool IntersectCircleToCircle(const Circle* const ellipse1, const Circle* const ellipse2)
 	{
 		Vector2 dirVector;
 		dirVector.x = ellipse1->center.x - ellipse2->center.x;
