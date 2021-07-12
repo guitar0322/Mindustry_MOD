@@ -15,11 +15,13 @@ public:
     UIRenderer();
     ~UIRenderer();
     virtual void Init(string clipName);
+    virtual void Init(float width, float height);
     virtual void Update();
     virtual void Render();
     void SetAlpha(float alpha) { _alpha = alpha; }
     float GetFrameWidth() const { return _frameWidth; }
     float GetFrameHeight() const { return _frameHeight; }
     float GetAlpha() const { return _alpha; }
+	Rect GetRc() const { return _rc; }
 };
 

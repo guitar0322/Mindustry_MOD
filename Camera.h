@@ -1,5 +1,17 @@
 #pragma once
 #include "Component.h"
+/*************************************************************
+* Framework Camera Component
+* by 홍대영
+* up to date 21-07-09
+* # Property @ Function
+* # int _screenWidth, int _screenHeight : 카메라 스크린 크기
+* # int _renderWidth, _renderHeight : 카메라 촬영 범위
+* # bool _isShake : 카메라 흔들림 여부
+* # shakeWeight : 카메라 흔들림 강도
+* # float _zoomScale : 카메라 확대 축소 비율
+* 
+*************************************************************/
 class Camera : public Component
 {
 private :
@@ -40,6 +52,5 @@ public:
 	int GetRenderWidth() { return _renderWidth; }
 	int GetRenderHeight() { return _renderHeight; }
 	pair<int, int> GetRenderSize() { return { _renderWidth, _renderHeight }; }
-
 };
 

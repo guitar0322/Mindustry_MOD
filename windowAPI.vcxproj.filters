@@ -103,17 +103,11 @@
     <ClCompile Include="playGround.cpp">
       <Filter>Playground</Filter>
     </ClCompile>
-    <ClCompile Include="D2DRenderer.cpp">
-      <Filter>소스파일</Filter>
-    </ClCompile>
-    <ClCompile Include="D2DRenderer+Draw.cpp">
-      <Filter>소스파일</Filter>
-    </ClCompile>
     <ClCompile Include="Geometry.cpp">
-      <Filter>소스파일</Filter>
+      <Filter>Geometry</Filter>
     </ClCompile>
     <ClCompile Include="Rect.cpp">
-      <Filter>소스파일</Filter>
+      <Filter>Geometry</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Util</Filter>
@@ -121,17 +115,17 @@
     <ClCompile Include="utils.cpp">
       <Filter>Util</Filter>
     </ClCompile>
-    <ClCompile Include="Ellipse.cpp">
-      <Filter>소스파일</Filter>
+    <ClCompile Include="Circle.cpp">
+      <Filter>Geometry</Filter>
     </ClCompile>
     <ClCompile Include="Vector2.cpp">
-      <Filter>소스파일</Filter>
+      <Filter>Geometry</Filter>
     </ClCompile>
     <ClCompile Include="Math.cpp">
-      <Filter>소스파일</Filter>
+      <Filter>Geometry</Filter>
     </ClCompile>
     <ClCompile Include="Line.cpp">
-      <Filter>소스파일</Filter>
+      <Filter>Geometry</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Scene</Filter>
@@ -156,6 +150,36 @@
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Gameobject</Filter>
+    </ClCompile>
+    <ClCompile Include="TriggerTest.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="UIMouseEvent.cpp">
+      <Filter>Component\Framwork</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Gameobject\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="MapScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="MapTool.cpp">
+      <Filter>Component\Framwork</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CallbackTest.cpp">
+      <Filter>헤더파일</Filter>
+    </ClCompile>
+    <ClCompile Include="D2DRenderer.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="D2DRenderer+Draw.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="UIControler.cpp">
+      <Filter>Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -271,12 +295,6 @@
     <ClInclude Include="LibraryHeader.h">
       <Filter>헤더파일</Filter>
     </ClInclude>
-    <ClInclude Include="D2DRenderer.h">
-      <Filter>헤더파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Geometry.h">
-      <Filter>헤더파일</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Util</Filter>
     </ClInclude>
@@ -284,19 +302,19 @@
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="Line.h">
-      <Filter>소스파일</Filter>
+      <Filter>Geometry</Filter>
     </ClInclude>
     <ClInclude Include="Vector2.h">
-      <Filter>소스파일</Filter>
+      <Filter>Geometry</Filter>
     </ClInclude>
     <ClInclude Include="Math.h">
-      <Filter>소스파일</Filter>
+      <Filter>Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="Ellipse.h">
-      <Filter>소스파일</Filter>
+    <ClInclude Include="Circle.h">
+      <Filter>Geometry</Filter>
     </ClInclude>
     <ClInclude Include="Rect.h">
-      <Filter>소스파일</Filter>
+      <Filter>Geometry</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Scene</Filter>
@@ -322,6 +340,39 @@
     <ClInclude Include="Player.h">
       <Filter>Gameobject</Filter>
     </ClInclude>
+    <ClInclude Include="TriggerTest.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="UIMouseEvent.h">
+      <Filter>Component\Framwork</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Gameobject\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="MapScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TileInfo.h">
+      <Filter>헤더파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MapTool.h">
+      <Filter>Component\Framwork</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="CallbackTest.h">
+      <Filter>헤더파일</Filter>
+    </ClInclude>
+    <ClInclude Include="D2DRenderer.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="UIControler.h">
+      <Filter>Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="windowAPI.rc" />
@@ -333,9 +384,6 @@
   <ItemGroup>
     <Filter Include="헤더파일">
       <UniqueIdentifier>{c5a74d32-48ac-476c-b67c-3ef4959b80ca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스파일">
-      <UniqueIdentifier>{91e16d7c-03fe-4390-86f5-fd7f4552fc0c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Util">
       <UniqueIdentifier>{0c5effe2-8e72-4e52-b540-eb3ecf943f38}</UniqueIdentifier>
@@ -360,6 +408,9 @@
     </Filter>
     <Filter Include="Scene">
       <UniqueIdentifier>{8c1e3ca4-f72a-411b-b346-bd0aa24e763a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Geometry">
+      <UniqueIdentifier>{91e16d7c-03fe-4390-86f5-fd7f4552fc0c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

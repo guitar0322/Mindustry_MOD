@@ -16,15 +16,24 @@ Transform::~Transform()
 {
 
 }
+/***************************************************************
+* float x : 가로 방향으로 움직일 거리
+* float y : 세로 방향으로 움직일 거리
+* MoeX, MoveY를 각각 호출
+****************************************************************/
 bool Transform::Move(float x, float y)
 {
-	int childCount = GetChildCount();
 	bool result = true;
 	result = MoveX(x);
 	result = MoveY(y);
 	return result;
 }
 
+/***************************************************************
+* float x : 가로 방향으로 움직일 거리
+* 모든 자식 오브젝트의 MoveX(x)를 호출
+* 자신의 위치를 변경한 후 충돌 체크 함수 호출
+****************************************************************/
 bool Transform::MoveX(float x)
 {
 	int childCount = GetChildCount();
@@ -51,6 +60,24 @@ bool Transform::MoveY(float y)
 	return true;
 }
 
+/**************************************************************
+* 오브젝트를 회전
+* 결과 angle값이 음수가 되거나 360보다 커지면 0~360의 값으로 보정
+***************************************************************/
+void Transform::Rotate(float degree)
+{
+	angle += degree;
+	if (angle < 0.f)
+		angle = 360 - (-angle);
+	if (angle > 360.f)
+		angle -= 360.f;
+}
+
+/***************************************************************
+* 움직인 후 충돌 여부를 체크
+* BoxCollider 컴포넌트가 없다면 충돌체크를 수행하지 않음
+* BoxColldier에서 충돌 연산에 의해 겹쳐진 만큼 Move함수가 다시 호출
+****************************************************************/
 bool Transform::CheckCollision()
 {
 	BoxCollider* collider;
@@ -64,6 +91,10 @@ bool Transform::CheckCollision()
 	return false;
 }
 
+/***************************************************************
+* int i : 가져올 자식 오브젝트의 인덱스
+* 자식 오브젝트의 Transform* 를 반환
+****************************************************************/
 Transform* Transform::GetChild(int i)
 {
 	if (i >= GetChildCount()) {
@@ -74,6 +105,10 @@ Transform* Transform::GetChild(int i)
 	}
 }
 
+/***************************************************************
+* GameObject* gameObject : 자식 오브젝트의 포인터
+* 자식오브젝트 목록에 추가
+****************************************************************/
 void Transform::AddChild(GameObject* gameObject)
 {
 	child.push_back(gameObject->transform);
@@ -81,6 +116,10 @@ void Transform::AddChild(GameObject* gameObject)
 	gameObject->transform->siblingIdx = GetChildCount() - 1;
 }
 
+/***************************************************************
+* GameObject* gameObject : 자식 오브젝트의 Transform 포인터
+* 자식오브젝트 목록에 추가
+****************************************************************/
 void Transform::AddChild(Transform* transform)
 {
 	child.push_back(transform);
@@ -88,11 +127,14 @@ void Transform::AddChild(Transform* transform)
 	transform->siblingIdx = GetChildCount() - 1;
 }
 
+/***************************************************************
+* int idx : 제거할 자식 오브젝트 인덱스
+* idx번째 자식 오브젝트와의 연결을 해제
+****************************************************************/
 void Transform::DetachChild(int idx)
 {
 	if (idx > GetChildCount() - 1)
 	{
-		sprintf_s(error, "DetachChild오류 : idx가 옳지 않습니다", idx);
 		throw "자식삭제 idx가 옳지 않습니다";
 		return;
 	}
@@ -101,6 +143,10 @@ void Transform::DetachChild(int idx)
 	child.erase(child.begin() + idx);
 }
 
+/***************************************************************
+* 부모와의 연결을 해제
+* 부모의 DetachChild() 함수 호출
+****************************************************************/
 void Transform::DetachParent()
 {
 	if (parent == nullptr) {

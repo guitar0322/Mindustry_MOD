@@ -4,7 +4,7 @@ class Zone :
     public Box
 {
 public:
-    Zone() { collider->isTrigger = true; };
+    Zone() { collider->SetIsTrigger(true);};
     ~Zone() {};
 };
 

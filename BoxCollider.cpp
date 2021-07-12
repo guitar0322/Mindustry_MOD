@@ -6,7 +6,7 @@ BoxCollider::BoxCollider()
 	_width = 100;
 	_height = 100;
 	_isTrigger = true;
-	_colliderCheckOffset = 50;
+	//_colliderCheckOffset = 50;
 }
 
 BoxCollider::~BoxCollider()
@@ -16,231 +16,89 @@ BoxCollider::~BoxCollider()
 
 void BoxCollider::Init()
 {
-	COLLIDERMANAGER->InsertCollider(this);
+	//COLLIDERMANAGER->InsertCollider(this);
+	COLLIDERMANAGER->AddCollider(this);
 }
 
 void BoxCollider::Update()
 {
 	_rc = RectMakeCenter(transform->GetX(), transform->GetY(), _width, _height);
 	TriggerEventHandler();
-	//if (isTrigger == false) return;
-	//int colNum = COLLIDERMANAGER->colliderList.size();
-	//for (int i = 0; i < colNum; i++) {
-	//	if (CheckCollision(GetCenterX(_rc), GetCenterY(_rc), i)) {
-	//		vCol.push_back(i);
-	//	}
-	//}
-	//for (int i = 0; i < vCol.size(); i++) {
-	//	bool isExist = false;
-	//	for (int j = 0; j < prevCol.size(); j++) {
-	//		 if(vCol[i] == prevCol[j]) {
-	//			if (gameObject->isActive == true)
-	//				gameObject->OnTriggerStay(COLLIDERMANAGER->colliderList[prevCol[j]]->gameObject);
-	//			isExist = true;
-	//			break;
-	//		}
-	//	}
-	//	if (isExist == false) {
-	//		if(gameObject->isActive == true)
-	//			gameObject->OnTriggerEnter(COLLIDERMANAGER->colliderList[vCol[i]]->gameObject);
-	//	}
-	//}
-
-	//for (int i = 0; i < prevCol.size(); i++) {
-	//	bool isExist = false;
-	//	for (int j = 0; j < vCol.size(); j++) {
-	//		if (vCol[j] == prevCol[i]) {
-	//			isExist = true;
-	//			break;
-	//		}
-	//	}
-	//	if (isExist == false) {
-	//		if (gameObject->isActive == true)
-	//			gameObject->OnTriggerExit(COLLIDERMANAGER->colliderList[prevCol[i]]->gameObject);
-	//	}
-	//}
-
-	//prevCol.clear();
-	//prevCol.assign(vCol.begin(), vCol.end());
-	//vCol.clear();
 }
-bool BoxCollider::CheckCollision(float tempX, float tempY) {
-	if (enable == false) {
-		return false;
-	}
-	
-	/*int colNum = COLLIDERMANAGER->colliderList.size();
-	int deltaX = tempX - transform->GetX();
-	int deltaY = tempY - transform->GetY();
-	int marginX = 0, marginY = 0;
-	for (int i = 0; i < colNum; i++) {
-		if (CheckCollision(tempX, tempY, i)) {
-			if (COLLIDERMANAGER->colliderList[i]->isTrigger == false && this->isTrigger == false) {
-				int w = intersectRc.right - intersectRc.left;
-				int h = intersectRc.bottom - intersectRc.top;
-				if (w <= h) {
-					deltaX >= 0 ? marginX = deltaX - w : marginX = deltaX + w;
-				}
-				else {
-					deltaY >= 0 ? marginY = deltaY - h : marginY = deltaY + h;
-				}
-				string targetName = COLLIDERMANAGER->colliderList[i]->gameObject->name;
-				gameObject->OnCollision(COLLIDERMANAGER->colliderList[i]->gameObject);
-				if (weight > COLLIDERMANAGER->colliderList[i]->weight) {
-					bool isLack = false;
-					for (int j = 0; j < colNum; j++) {
-						if (COLLIDERMANAGER->colliderList[j]->isTrigger == false  &&
-							COLLIDERMANAGER->colliderList[j] != COLLIDERMANAGER->colliderList[i] &&
-							CheckCollision(COLLIDERMANAGER->colliderList[i]->rc, j)) {
-							string name = COLLIDERMANAGER->colliderList[j]->gameObject->name;
-							int bottom = COLLIDERMANAGER->colliderList[i]->rc.bottom;
-							int top = COLLIDERMANAGER->colliderList[j]->rc.top;
-   							isLack = true;
-							break;
-						}
-					}
-					if (isLack == true) {
-						COLLIDERMANAGER->colliderList[i]->isTrigger = true;
-					}
-					else {
-						COLLIDERMANAGER->colliderList[i]->transform->Move(deltaX - marginX, deltaY - marginY);
-					}
-					return false;
-				}
-				else {
-					bool isLack = false;
-					for (int j = 0; j < colNum; j++) {
-						if (COLLIDERMANAGER->colliderList[j]->isTrigger == false &&
-							COLLIDERMANAGER->colliderList[j] != COLLIDERMANAGER->colliderList[i] && 
-							CheckCollision(transform->GetX() + marginX, transform->GetY() + marginY, j)) {
-							isLack = true;
-							string name = COLLIDERMANAGER->colliderList[j]->gameObject->name;
-  							break;
-						}
-					}
-					if (isLack == true) {
-						this->isTrigger = true;
-					}
-					else {
-						transform->Move(marginX, marginY);
-					}
-					return true;
-				}
-			}
-		}
-	}*/
-	return false;
-}
-
+/********************************************************************
+* @bool CheckCollision : 씬의 모든 충돌체와 충돌여부 검사
+* 충돌이 발생하면 true, 아니면 false를 반환
+* 충돌이 발생했을때 OnCollision이벤트 호출, 
+* 겹쳐진 _intersectRc의 크기만큼 밀어냄
+* isTrigger가 true면 OnCollisionEnter를 발생, _overlapColV에 충돌체 추가
+*********************************************************************/
 bool BoxCollider::CheckCollision()
 {
-	vector<BoxCollider*> aroundColliderV = COLLIDERMANAGER->GetAroundCollider(this, _colliderCheckOffset);
+	vector<BoxCollider*> colV = COLLIDERMANAGER->GetColliderVector();
 	_rc = RectMakeCenter(transform->GetX(), transform->GetY(), _width, _height);
 	bool result = false;
-	for (int i = 0; i < aroundColliderV.size(); i++)
+	for (int i = 0; i < colV.size(); i++)
 	{
-		if (aroundColliderV[i]->gameObject->isActive == false) continue;
-		if (aroundColliderV[i]->enable == false) continue;
+		if (colV[i] == this) continue;
+		if (colV[i]->gameObject->isActive == false) continue;
+		if (colV[i]->enable == false) continue;
 
-		if (IntersectRect(&_intersectRc, &this->_rc, &aroundColliderV[i]->_rc))
+		if (IntersectRect(&_intersectRc, &this->_rc, &colV[i]->_rc))
 		{
-			if (this->_isTrigger == false && aroundColliderV[i]->_isTrigger == false)
+			if (this->_isTrigger == false && colV[i]->_isTrigger == false)
 			{
-				int w = _intersectRc.right - _intersectRc.left;
-				int h = _intersectRc.bottom - _intersectRc.top;
+				float w = _intersectRc.right - _intersectRc.left;
+				float h = _intersectRc.bottom - _intersectRc.top;
 				if (w > h)
 				{
-					if (_intersectRc.bottom == aroundColliderV[i]->_rc.bottom)
+					if (_intersectRc.bottom == colV[i]->_rc.bottom)
 					{
 						this->transform->MoveY(h);
 					}
-					else if(_intersectRc.top == aroundColliderV[i]->_rc.top)
+					else if(_intersectRc.top == colV[i]->_rc.top)
 					{
 						this->transform->MoveY(-h);
 					}
 				}
 				else
 				{
-					if (_intersectRc.left == aroundColliderV[i]->_rc.left)
+					if (_intersectRc.left == colV[i]->_rc.left)
 					{
 						this->transform->MoveX(-w);
 					}
-					else if (_intersectRc.right == aroundColliderV[i]->_rc.right)
+					else if (_intersectRc.right == colV[i]->_rc.right)
 					{
 						this->transform->MoveX(w);
 					}
 				}
 				result = true;
-				this->gameObject->OnCollision(aroundColliderV[i]->gameObject);
+				this->gameObject->OnCollision(colV[i]->gameObject);
 			}
-			else if (this->_isTrigger == true)
+			else
 			{
-				_overlapColV.push_back(aroundColliderV[i]);
-				this->gameObject->OnTriggerEnter(aroundColliderV[i]->gameObject);
-				aroundColliderV[i]->_overlapColV.push_back(this);
-				aroundColliderV[i]->gameObject->OnTriggerEnter(this->gameObject);
+				AddOverlapCol(colV[i]);
+				colV[i]->AddOverlapCol(this);
 			}
 		}
 	}
 
 	return result;
 }
-
-bool BoxCollider::CheckCollision(float tempX, float tempY, int colIdx)
-{
-	Rect tempRc = RectMakePivot(Vector2(tempX, tempY), Vector2(_width, _height), Pivot::Center);
-	Rect targetRc;
-	if (&(this->_rc) == &(COLLIDERMANAGER->colliderList[colIdx]->_rc)) return false;
-	if (COLLIDERMANAGER->colliderList[colIdx]->gameObject->isActive == false) return false;
-	if (COLLIDERMANAGER->colliderList[colIdx]->enable == false) return false;
-	targetRc = COLLIDERMANAGER->colliderList[colIdx]->_rc;
-	if (IntersectRect(&_intersectRc, &tempRc, &targetRc)) {
-		int w = _intersectRc.right - _intersectRc.left;
-		int h = _intersectRc.bottom - _intersectRc.top;
-		if (h >= w) {
-			if (_intersectRc.right <= (targetRc.right + targetRc.left) / 2) {
-			}
-			else {
-			}
-		}
-		else {
-		}
-		return true;
-	}
-	return false;
-}
-
-bool BoxCollider::CheckCollision(Rect rc, int colIdx)
-{
-	Rect targetRc;
-	if (&(this->_rc) == &(COLLIDERMANAGER->colliderList[colIdx]->_rc)) return false;
-	if (COLLIDERMANAGER->colliderList[colIdx]->gameObject->isActive == false) return false;
-	if (COLLIDERMANAGER->colliderList[colIdx]->enable == false) return false;
-	targetRc = COLLIDERMANAGER->colliderList[colIdx]->_rc;
-	if (IntersectRect(&_intersectRc, &rc, &targetRc)) {
-		int w = _intersectRc.right - _intersectRc.left;
-		int h = _intersectRc.bottom - _intersectRc.top;
-		if (h >= w) {
-			if (_intersectRc.right <= GetCenterX(targetRc)) {
-			}
-			else {
-			}
-		}
-		else {
-		}
-		return true;
-	}
-	return false;
-}
+/***********************************************************
+* @void TriggerEventHandler : _overlapColV를 통해 TriggerEvent함수 호출
+* _overlapColV에 있는 충돌체와 Intersect연산 수행
+* 겹쳐져 있을 경우 OnTriggerStay를 호출
+* 겹쳐져 있을 경우 OnTriggerExit을 호출
+************************************************************/
 void BoxCollider::TriggerEventHandler()
 {
 	for (int i = 0; i < _overlapColV.size(); i++)
 	{
 		if (!IntersectRect(&_overlapColV[i]->_rc, &this->_rc))
 		{
-			RemoveOverlapCol(_overlapColV[i]);
 			this->gameObject->OnTriggerExit(_overlapColV[i]->gameObject);
 			_overlapColV[i]->gameObject->OnTriggerExit(this->gameObject);
+			RemoveOverlapCol(_overlapColV[i]);
 		}
 		else
 		{
@@ -249,6 +107,7 @@ void BoxCollider::TriggerEventHandler()
 		}
 	}
 }
+
 void BoxCollider::SetWidth(float width)
 {
 	this->_width = width;
@@ -265,7 +124,9 @@ void BoxCollider::SetSize(float width, float height)
 	this->_height = height;
 	_rc = RectMakeCenter(transform->GetX(), transform->GetY(), width, height);
 }
-
+/*****************************************************************
+* @void RemoveOverlapCol : _overlapColV에서 충돌체를 제거
+*******************************************************************/
 void BoxCollider::RemoveOverlapCol(BoxCollider* exitCollider)
 {
 	for (int i = 0; i < _overlapColV.size(); i++)
@@ -277,19 +138,38 @@ void BoxCollider::RemoveOverlapCol(BoxCollider* exitCollider)
 		}
 	}
 }
+/**************************************************************
+* @void AddOverlapCol : _overlapColV에 충돌체를 추가
+* _overlapColV에 이미 같은 충돌체가 있을 경우 추가하지 않음
+***************************************************************/
+void BoxCollider::AddOverlapCol(BoxCollider* overlapCollider)
+{
+	for (int i = 0; i < _overlapColV.size(); i++)
+	{
+		if (_overlapColV[i] == overlapCollider)
+		{
+			return;
+		}
+	}
+	_overlapColV.push_back(overlapCollider);
+	gameObject->OnTriggerEnter(overlapCollider->gameObject);
+}
 void BoxCollider::Render()
 {
-	D2DRENDERER->DrawRectangle(_rc, D2DRenderer::DefaultBrush::Green);
+	if (KEYMANAGER->isToggleKey(VK_TAB))
+	{
+		D2DRENDERER->DrawRectangle(_rc, D2DRenderer::DefaultBrush::Green);
+	}
 }
 
 void BoxCollider::OnDisable()
 {
-	//COLLIDERMANAGER->EraseCollider(this);
-	COLLIDERMANAGER->RemoveCollider(this);
+	COLLIDERMANAGER->EraseCollider(this);
+	//COLLIDERMANAGER->RemoveCollider(this);
 }
 
 void BoxCollider::OnEnable()
 {
-	//COLLIDERMANAGER->AddCollider(this);
-	COLLIDERMANAGER->InsertCollider(this);
+	COLLIDERMANAGER->AddCollider(this);
+	//COLLIDERMANAGER->InsertCollider(this);
 }
