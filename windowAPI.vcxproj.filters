@@ -148,6 +148,15 @@
     <ClCompile Include="SampleScene2.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerControler.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Gameobject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h" />
@@ -303,6 +312,15 @@
     </ClInclude>
     <ClInclude Include="SampleScene2.h">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerControler.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Gameobject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

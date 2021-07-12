@@ -177,6 +177,9 @@
     <ClInclude Include="Math.h" />
     <ClInclude Include="Outline.h" />
     <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerControler.h" />
+    <ClInclude Include="PlayerScene.h" />
     <ClInclude Include="playGround.h" />
     <ClInclude Include="randomFunction.h" />
     <ClInclude Include="Rect.h" />
@@ -233,6 +236,9 @@
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Outline.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerControler.cpp" />
+    <ClCompile Include="PlayerScene.cpp" />
     <ClCompile Include="playGround.cpp" />
     <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Renderer.cpp" />
