@@ -178,14 +178,6 @@
     <ClCompile Include="GameScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="D2DRenderer+Draw.cpp" />
-    <ClCompile Include="D2DRenderer.cpp" />
-    <ClCompile Include="Circle.cpp" />
-    <ClCompile Include="Geometry.cpp" />
-    <ClCompile Include="Line.cpp" />
-    <ClCompile Include="Math.cpp" />
-    <ClCompile Include="Rect.cpp" />
-    <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Projectile.cpp">
       <Filter>Projectile</Filter>
     </ClCompile>
@@ -398,16 +390,9 @@
     <ClInclude Include="GameScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="D2DRenderer.h" />
-    <ClInclude Include="Circle.h" />
-    <ClInclude Include="Geometry.h" />
     <ClInclude Include="LibraryHeader.h" />
-    <ClInclude Include="Line.h" />
     <ClInclude Include="ManagerHeader.h" />
-    <ClInclude Include="Math.h" />
-    <ClInclude Include="Rect.h" />
     <ClInclude Include="TileInfo.h" />
-    <ClInclude Include="Vector2.h" />
     <ClInclude Include="ProjectileObject.h">
       <Filter>Projectile</Filter>
     </ClInclude>
