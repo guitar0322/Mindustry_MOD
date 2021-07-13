@@ -24,13 +24,17 @@ void EnemyControler::Init()
 
 	_speedX = 0.f;
 	_speedY = 0.f;*/
+	//_angle = _enemyInfo->GetCoreAngle();
+	_speedX = 0.f;
+	_speedY = 0.f;
+
 }
 
 void EnemyControler::Update()
 {
-	_speedX = cosf(_angle) * _speed * TIMEMANAGER->getElapsedTime();
-	_speedY = -sinf(_angle) * _speed * TIMEMANAGER->getElapsedTime();
-
-	transform->Move(_speedX, _speedY);
+	//_speedX = cosf(_angle) * _speed * TIMEMANAGER->getElapsedTime();
+	//_speedY = -sinf(_angle) * _speed * TIMEMANAGER->getElapsedTime();
+	//
+	//transform->Move(_speedX, _speedY);
 }
 

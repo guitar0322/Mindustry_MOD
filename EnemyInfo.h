@@ -7,6 +7,7 @@ class EnemyInfo :
 private:
 	float _speed;
 	float _angle;
+	float _enemyAngle;
 
 	float _speedX;
 	float _speedY;
@@ -20,8 +21,10 @@ private:
 	
 	GameObject* _testCore;
 	//현재 testCore을 GameObject로 선언함 (값 없는 빈 껍데기)
+	
 	Transform* _testCoreTransform;
 	//testCore의 transform을 갖고 오기 위해 transform 선언
+
 	
 public:
 	EnemyInfo();
@@ -31,14 +34,17 @@ public:
 	virtual void Update();
 
 	void SetTestCore(GameObject* testCore) {_testCore = testCore;
+	_testCoreTransform = testCore->transform;}
+
 	//testCore에 값을 주었다. _testCore의 transform는 이제 빈값이 아니니
-	_testCoreTransform = testCore->transform;
-	}
 	//_testCoreTransform 에 값 주기
+
 	void SetSpeed(float speed) { _speed = speed; }
 	float GetSpeed() const { return _speed; }
-	//float GetAngle() const { return _angle; }
+	float GetCoreAngle() const { return _angle; }
 	float GetSpeedX() const { return _speedX; }
 	float GetSpeedY() const { return _speedY; }
+
+	float GetEnemyAngle() const { return _enemyAngle; }
 };
 

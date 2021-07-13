@@ -4,6 +4,8 @@
 #include "AnimObject.h"
 #include "EnemyObject.h"
 #include "EnemyPlaneControler.h"
+#include "EnemyGround.h"
+#include "EnemyGroundControler.h"
 
 class ShootingScene :
 	public Scene
@@ -16,8 +18,8 @@ private:
 	AnimObject* _testCore;					//TEST용입니다 삭제해도 됩니다
 	
 	EnemyPlane* _enemyPlane;
-	EnemyPlaneControler* _enemyPlaneControler;
-
+	EnemyGround* _enemyGround;
+	GameObject* _projectileManager;
 public:
 	ShootingScene();
 	~ShootingScene();
@@ -30,5 +32,6 @@ public:
 	void SetScene();
 	void SetEnemy();
 	void TestCore();						//TEST용 삭제해도 됩니당
+	void SetProjectile();
 };
 

@@ -11,11 +11,10 @@ EnemyInfo::~EnemyInfo()
 
 void EnemyInfo::Init()
 {
-
-	//_speed = 100.f;
+	_angle = GetAngle(transform->position, _testCoreTransform->position);
 }
 
 void EnemyInfo::Update()
 {
-
+	_angle = GetAngle(transform->position, _testCoreTransform->position);
 }

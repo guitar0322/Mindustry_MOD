@@ -167,6 +167,8 @@
     <ClInclude Include="DebugText.h" />
     <ClInclude Include="Circle.h" />
     <ClInclude Include="EnemyControler.h" />
+    <ClInclude Include="EnemyGround.h" />
+    <ClInclude Include="EnemyGroundControler.h" />
     <ClInclude Include="EnemyInfo.h" />
     <ClInclude Include="EnemyObject.h" />
     <ClInclude Include="EnemyPlane.h" />
@@ -188,6 +190,9 @@
     <ClInclude Include="Outline.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="playGround.h" />
+    <ClInclude Include="Projectile.h" />
+    <ClInclude Include="ProjectileManager.h" />
+    <ClInclude Include="ProjectileObject.h" />
     <ClInclude Include="randomFunction.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Renderer.h" />
@@ -239,6 +244,8 @@
     <ClCompile Include="DebugText.cpp" />
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="EnemyControler.cpp" />
+    <ClCompile Include="EnemyGround.cpp" />
+    <ClCompile Include="EnemyGroundControler.cpp" />
     <ClCompile Include="EnemyInfo.cpp" />
     <ClCompile Include="EnemyObject.cpp" />
     <ClCompile Include="EnemyPlane.cpp" />
@@ -258,6 +265,9 @@
     <ClCompile Include="Outline.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="playGround.cpp" />
+    <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="ProjectileManager.cpp" />
+    <ClCompile Include="ProjectileObject.cpp" />
     <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="SampleScene.cpp" />

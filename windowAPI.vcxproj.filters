@@ -103,35 +103,11 @@
     <ClCompile Include="playGround.cpp">
       <Filter>Playground</Filter>
     </ClCompile>
-    <ClCompile Include="D2DRenderer.cpp">
-      <Filter>?�스?�일</Filter>
-    </ClCompile>
-    <ClCompile Include="D2DRenderer+Draw.cpp">
-      <Filter>?�스?�일</Filter>
-    </ClCompile>
-    <ClCompile Include="Geometry.cpp">
-      <Filter>?�스?�일</Filter>
-    </ClCompile>
-    <ClCompile Include="Rect.cpp">
-      <Filter>?�스?�일</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Util</Filter>
     </ClCompile>
     <ClCompile Include="utils.cpp">
       <Filter>Util</Filter>
-    </ClCompile>
-    <ClCompile Include="Circle.cpp">
-      <Filter>?�스?�일</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector2.cpp">
-      <Filter>?�스?�일</Filter>
-    </ClCompile>
-    <ClCompile Include="Math.cpp">
-      <Filter>?�스?�일</Filter>
-    </ClCompile>
-    <ClCompile Include="Line.cpp">
-      <Filter>?�스?�일</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Scene</Filter>
@@ -151,7 +127,6 @@
     <ClCompile Include="TriggerTest.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-
     <ClCompile Include="UIMouseEvent.cpp">
       <Filter>Component\Framwork</Filter>
     </ClCompile>
@@ -164,7 +139,7 @@
     </ClCompile>
     <ClCompile Include="MapTool.cpp">
       <Filter>Component\Framwork</Filter>
-
+    </ClCompile>
     <ClCompile Include="ShootingScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
@@ -185,6 +160,29 @@
     </ClCompile>
     <ClCompile Include="GameScene.cpp">
       <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="D2DRenderer+Draw.cpp" />
+    <ClCompile Include="D2DRenderer.cpp" />
+    <ClCompile Include="Circle.cpp" />
+    <ClCompile Include="Geometry.cpp" />
+    <ClCompile Include="Line.cpp" />
+    <ClCompile Include="Math.cpp" />
+    <ClCompile Include="Rect.cpp" />
+    <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="Projectile.cpp">
+      <Filter>Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectileManager.cpp">
+      <Filter>Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectileObject.cpp">
+      <Filter>Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyGround.cpp">
+      <Filter>Enemy\EnemyUnit</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyGroundControler.cpp">
+      <Filter>Enemy\EnemyControler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -294,38 +292,11 @@
     <ClInclude Include="playGround.h">
       <Filter>Playground</Filter>
     </ClInclude>
-    <ClInclude Include="ManagerHeader.h">
-      <Filter>?�더?�일</Filter>
-    </ClInclude>
-    <ClInclude Include="LibraryHeader.h">
-      <Filter>?�더?�일</Filter>
-    </ClInclude>
-    <ClInclude Include="D2DRenderer.h">
-      <Filter>?�더?�일</Filter>
-    </ClInclude>
-    <ClInclude Include="Geometry.h">
-      <Filter>?�더?�일</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="utils.h">
       <Filter>Util</Filter>
-    </ClInclude>
-    <ClInclude Include="Line.h">
-      <Filter>?�스?�일</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector2.h">
-      <Filter>?�스?�일</Filter>
-    </ClInclude>
-    <ClInclude Include="Math.h">
-      <Filter>?�스?�일</Filter>
-    </ClInclude>
-    <ClInclude Include="Circle.h">
-      <Filter>?�스?�일</Filter>
-    </ClInclude>
-    <ClInclude Include="Rect.h">
-      <Filter>?�스?�일</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Scene</Filter>
@@ -355,12 +326,9 @@
     <ClInclude Include="MapScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="TileInfo.h">
-      <Filter>?�더?�일</Filter>
-    </ClInclude>
     <ClInclude Include="MapTool.h">
       <Filter>Component\Framwork</Filter>
-
+    </ClInclude>
     <ClInclude Include="ShootingScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
@@ -378,10 +346,34 @@
     </ClInclude>
     <ClInclude Include="EnemyPlane.h">
       <Filter>Enemy\EnemyUnit</Filter>
-
     </ClInclude>
     <ClInclude Include="GameScene.h">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="D2DRenderer.h" />
+    <ClInclude Include="Circle.h" />
+    <ClInclude Include="Geometry.h" />
+    <ClInclude Include="LibraryHeader.h" />
+    <ClInclude Include="Line.h" />
+    <ClInclude Include="ManagerHeader.h" />
+    <ClInclude Include="Math.h" />
+    <ClInclude Include="Rect.h" />
+    <ClInclude Include="TileInfo.h" />
+    <ClInclude Include="Vector2.h" />
+    <ClInclude Include="ProjectileObject.h">
+      <Filter>Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="Projectile.h">
+      <Filter>Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectileManager.h">
+      <Filter>Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyGround.h">
+      <Filter>Enemy\EnemyUnit</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyGroundControler.h">
+      <Filter>Enemy\EnemyControler</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -433,6 +425,9 @@
     </Filter>
     <Filter Include="Enemy\EnemyUnit">
       <UniqueIdentifier>{f04d7d50-bb99-40ae-b3d3-47935ff62d0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projectile">
+      <UniqueIdentifier>{e4ef8ac0-5830-48a5-be0a-5b22c15be392}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
