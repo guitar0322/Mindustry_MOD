@@ -17,11 +17,18 @@ void UIMouseEvent::Update()
 	//마우스가 UI에 진입했을때
 	if (Vector2InRect(&uiRenderer->GetRc(), &_ptMouse))
 	{
+		if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
+		{
+			if (OnClick != NULL)
+				OnClick();
+		}
 		if (_enterMouse == false)
 		{
 			_enterMouse = true;
 			if(OnMouseEnter != NULL)
 				OnMouseEnter();
+			//if (OnMouseEnterParam != NULL)
+			//	OnMouseEnterParam(mouseEnterParam);
 		}
 	}
 	//마우스가 UI를 빠져나갈때
@@ -32,17 +39,12 @@ void UIMouseEvent::Update()
 			_enterMouse = false;
 			if(OnMouseExit != NULL)
 				OnMouseExit();
+			//if (OnMouseExitParam != NULL)
+			//	OnMouseExitParam(mouseExitParam);
 		}
 	}
 	//마우스가 UI를 클릭했을 때
-	if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
-	{
-		if (Vector2InRect(&uiRenderer->GetRc(), &_ptMouse))
-		{
-			if(OnClick != NULL)
-				OnClick();
-		}
-	}
+
 }
 
 /*******************************************************************
@@ -66,3 +68,21 @@ void UIMouseEvent::RegistCallback(Event function, EVENT event)
 		break;
 	}
 }
+
+//void UIMouseEvent::RegistParamCallback(EventParam function, void* param, EVENT event)
+//{
+//	switch (event) {
+//	case ENTER:
+//		OnMouseEnterParam = std::move(function);
+//		mouseEnterParam = param;
+//		break;
+//	case EXIT:
+//		OnMouseExitParam = std::move(function);
+//		mouseExitParam = param;
+//		break;
+//	case CLICK:
+//		OnClickParam = std::move(function);
+//		clickParam = param;
+//		break;
+//	}
+//}

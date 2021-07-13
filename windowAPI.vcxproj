@@ -215,6 +215,7 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TriggerTest.h" />
     <ClInclude Include="UIBase.h" />
+    <ClInclude Include="UIControler.h" />
     <ClInclude Include="UIMouseEvent.h" />
     <ClInclude Include="UIRenderer.h" />
     <ClInclude Include="utils.h" />
@@ -290,6 +291,7 @@
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TriggerTest.cpp" />
     <ClCompile Include="UIBase.cpp" />
+    <ClCompile Include="UIControler.cpp" />
     <ClCompile Include="UIMouseEvent.cpp" />
     <ClCompile Include="UIRenderer.cpp" />
     <ClCompile Include="utils.cpp" />

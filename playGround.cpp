@@ -4,6 +4,7 @@
 #include "SampleScene2.h"
 #include "MapScene.h"
 #include "ShootingScene.h"
+#include "GameScene.h"
 playGround::playGround()
 {
 
@@ -34,6 +35,17 @@ HRESULT playGround::init()
 	ShootingScene* shootingScene = new ShootingScene();
 	SCENEMANAGER->AddScene("ShootingScene", shootingScene);
 	SCENEMANAGER->LoadScene("ShootingScene");
+
+	GameScene* gameScene = new GameScene();
+	SCENEMANAGER->AddScene("game", gameScene);
+	//SCENEMANAGER->LoadScene("game");
+
+	//플레이어 회전 설계
+	//앵글을 깍아줄지 늘려줄지 정하는방법
+	//현재앵글 - 목표앵글이 180보다 크면 줄여준다
+	//앵글이 음수가 되면 360 - 음수절대값 으로 바꿔준다
+	//앵글이 360보다 커지면 0 + 남는값으로 바꿔준다.
+
 	//_mainCam.transform->SetX(_mainCam.transform->GetX() + 100);
 	//testParticle = new image();
 	//testParticle->init("full_charge_hit_effect_left.bmp", 240, 88, 4, 1, true, RGB(255, 0, 255));
@@ -99,6 +111,9 @@ void playGround::render()
 	//demoParticleSys->Render();
 
 	SCENEMANAGER->Render();
+	wstring fps = L"FPS : ";
+	fps.append(to_wstring(TIMEMANAGER->getFPS()));
+	D2DRENDERER->RenderText(10, 10, fps, 30);
 	//==================================================
 	//여기도 건들지마라
 	//_ui.Render();

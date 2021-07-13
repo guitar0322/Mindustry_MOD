@@ -103,11 +103,29 @@
     <ClCompile Include="playGround.cpp">
       <Filter>Playground</Filter>
     </ClCompile>
+    <ClCompile Include="Geometry.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Rect.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Util</Filter>
     </ClCompile>
     <ClCompile Include="utils.cpp">
       <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Circle.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Math.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Line.cpp">
+      <Filter>Geometry</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Scene</Filter>
@@ -133,7 +151,6 @@
     <ClCompile Include="Button.cpp">
       <Filter>Gameobject\Framework</Filter>
     </ClCompile>
-    <ClCompile Include="CallbackTest.cpp" />
     <ClCompile Include="MapScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
@@ -181,8 +198,19 @@
     <ClCompile Include="EnemyGround.cpp">
       <Filter>Enemy\EnemyUnit</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyGroundControler.cpp">
+    <ClCompile></ClCompile> Include="EnemyGroundControler.cpp">
       <Filter>Enemy\EnemyControler</Filter>
+    <ClCompile Include="CallbackTest.cpp">
+      <Filter>헤더파일</Filter>
+    </ClCompile>
+    <ClCompile Include="D2DRenderer.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="D2DRenderer+Draw.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="UIControler.cpp">
+      <Filter>Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -292,11 +320,32 @@
     <ClInclude Include="playGround.h">
       <Filter>Playground</Filter>
     </ClInclude>
+    <ClInclude Include="ManagerHeader.h">
+      <Filter>헤더파일</Filter>
+    </ClInclude>
+    <ClInclude Include="LibraryHeader.h">
+      <Filter>헤더파일</Filter>
+    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="utils.h">
       <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Line.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Circle.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Rect.h">
+      <Filter>Geometry</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Scene</Filter>
@@ -322,7 +371,6 @@
     <ClInclude Include="Button.h">
       <Filter>Gameobject\Framework</Filter>
     </ClInclude>
-    <ClInclude Include="CallbackTest.h" />
     <ClInclude Include="MapScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
@@ -372,8 +420,19 @@
     <ClInclude Include="EnemyGround.h">
       <Filter>Enemy\EnemyUnit</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyGroundControler.h">
+    <ClInclude></ClInclude> Include="EnemyGroundControler.h">
       <Filter>Enemy\EnemyControler</Filter>
+    <ClInclude Include="Geometry.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="CallbackTest.h">
+      <Filter>헤더파일</Filter>
+    </ClInclude>
+    <ClInclude Include="D2DRenderer.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="UIControler.h">
+      <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -426,8 +485,10 @@
     <Filter Include="Enemy\EnemyUnit">
       <UniqueIdentifier>{f04d7d50-bb99-40ae-b3d3-47935ff62d0f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Projectile">
+    <Filter></Filter> Include="Projectile">
       <UniqueIdentifier>{e4ef8ac0-5830-48a5-be0a-5b22c15be392}</UniqueIdentifier>
+    <Filter Include="Geometry">
+      <UniqueIdentifier>{91e16d7c-03fe-4390-86f5-fd7f4552fc0c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

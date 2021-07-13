@@ -76,6 +76,8 @@ public:
 		const float strokeWidth = 1.f);
 	void DrawRectangle(const Rect& rc, const DefaultBrush& defaultBrush = DefaultBrush::Black,
 		const float strokeWidth = 1.f);
+	void DrawRectangleUI(const Rect& rc, const DefaultBrush& defaultBrush = DefaultBrush::Black,
+		const float strokeWidth = 1.f);
 	void DrawEllipse(const Vector2& origin, const float radius, const DefaultBrush& defaultBrush = DefaultBrush::Black,
 		 const float strokeWidth = 1.f);
 	void DrawEllipse(const Vector2& origin, const float radius, const D2D1::ColorF::Enum& color, const float alpha,

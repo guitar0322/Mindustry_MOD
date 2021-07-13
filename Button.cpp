@@ -3,9 +3,9 @@
 #include "UIMouseEvent.h"
 Button::Button()
 {
-	_uiMouseEvent = new UIMouseEvent();
-	AddComponent(_uiMouseEvent);
-	_uiMouseEvent->Init();
+	uiMouseEvent = new UIMouseEvent();
+	AddComponent(uiMouseEvent);
+	uiMouseEvent->Init();
 }
 
 Button::~Button()

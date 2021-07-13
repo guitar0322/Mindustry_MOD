@@ -26,7 +26,7 @@ namespace HDY_UTIL
 	float GetDistance(const Vector2& v1, const Vector2& v2);
 
 	template <typename T>
-	T GetDistance(T x1, T x2);
+	T GetDistance(T a, T b);
 	
 	float ConvertAngleD2D(const float& angle);
 	float GetAngle(float x1, float y1, float x2, float y2);

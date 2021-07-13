@@ -8,7 +8,7 @@ HRESULT MapScene::Init()
 	CLIPMANAGER->AddClip("background", "scene1_background.png", 1024, 560);
 	SetBackBufferSize(1600, 1600);
 	MainCam->SetScreenStart(132, 0);
-	MainCam->SetScreenSize(568, WINSIZEY);
+	MainCam->SetScreenSize(WINSIZEY, WINSIZEY);
 	MainCam->SetRenderSize(1600, 1600);
 	MainCam->transform->SetX(568 / 2);
 	_background.Init();
