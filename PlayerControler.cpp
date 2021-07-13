@@ -34,27 +34,134 @@ void PlayerControler::Update()
 			transform->GetChild(1)->SetY(transform->GetY() - 4);
 		}
 	}
+	//플레이어 회전 설계
+	//앵글을 깍아줄지 늘려줄지 정하는방법
+	//현재앵글 - 목표앵글이 180보다 크면 줄여준다
+	//앵글이 음수가 되면 360 - 음수절대값 으로 바꿔준다
+	//앵글이 360보다 커지면 0 + 남는값으로 바꿔준다.
+	if (KEYMANAGER->isOnceKeyDown('A'))
+	{
+		if (KEYMANAGER->isStayKeyDown('W'))
+			_targetAngle = 315.f;
+		if (KEYMANAGER->isOnceKeyUp('W')||KEYMANAGER->isOnceKeyUp('S'))
+		{
+
+		}
+		else if (KEYMANAGER->isStayKeyDown('S'))
+			_targetAngle = 225.f;
+		else
+			_targetAngle = 270.f;
+	}
+	if (KEYMANAGER->isOnceKeyDown('D'))
+	{
+		if (KEYMANAGER->isStayKeyDown('W'))
+			_targetAngle = 45.f;
+		else if (KEYMANAGER->isStayKeyDown('S'))
+			_targetAngle = 135.f;
+		else
+		_targetAngle = 90.f;
+		
+	}
+	if (KEYMANAGER->isOnceKeyDown('W'))
+	{
+		if (KEYMANAGER->isStayKeyDown('A'))
+			_targetAngle = 315.f;
+		else if (KEYMANAGER->isStayKeyDown('D'))
+			_targetAngle = 45.f;
+		else
+		_targetAngle = 0.f;
+	}
+	if (KEYMANAGER->isOnceKeyDown('S'))
+	{
+		if (KEYMANAGER->isStayKeyDown('A'))
+			_targetAngle = 225.f;
+		else if (KEYMANAGER->isStayKeyDown('D'))
+			_targetAngle = 135.f;
+		else
+		_targetAngle = 180.f;
+	}
 	if (KEYMANAGER->isStayKeyDown('A'))
 	{
+		float deltaAngle = transform->GetAngle() - _targetAngle;
+		if (deltaAngle > 180)
+		{
+			if(transform->GetAngle() != _targetAngle)
+				transform->Rotate(2.f);
+			if (transform->GetAngle() > _targetAngle)
+				transform->SetAngle(_targetAngle);
+		}
+		else
+		{
+			if (transform->GetAngle() != _targetAngle)
+				transform->Rotate(-2.f);
+
+			if (transform->GetAngle() < _targetAngle)
+				transform->SetAngle(_targetAngle);
+		}
 		_dir = LEFT;
 		transform->MoveX(-_speed * TIMEMANAGER->getElapsedTime());
-
 
 	}
 	if (KEYMANAGER->isStayKeyDown('D'))
 	{
+		float deltaAngle = transform->GetAngle() - _targetAngle;
+		if (deltaAngle < 180)
+		{
+			if (transform->GetAngle() != _targetAngle)
+				transform->Rotate(2.f);
+			if (transform->GetAngle() > _targetAngle)
+				transform->SetAngle(_targetAngle);
+		}
+		else
+		{
+			if (transform->GetAngle() != _targetAngle)
+				transform->Rotate(-2.f);
+			if (transform->GetAngle() < _targetAngle)
+				transform->SetAngle(_targetAngle);
+		}
 		_dir = RIGHT;
 		transform->MoveX(_speed * TIMEMANAGER->getElapsedTime());
 
 	}
 	if (KEYMANAGER->isStayKeyDown('W'))
 	{
+		float deltaAngle = transform->GetAngle() - _targetAngle;
+		if (deltaAngle > 180)
+		{
+			if (transform->GetAngle() != _targetAngle)
+				transform->Rotate(2.f);
+			if (transform->GetAngle() > _targetAngle)
+				transform->SetAngle(_targetAngle);
+		}
+		else
+		{
+			if (transform->GetAngle() != _targetAngle)
+				transform->Rotate(-2.f);
+
+			if (transform->GetAngle() < _targetAngle)
+				transform->SetAngle(_targetAngle);
+		}
 		_dir = UP;
 		transform->MoveY(-_speed * TIMEMANAGER->getElapsedTime());
 
 	}
 	if (KEYMANAGER->isStayKeyDown('S'))
 	{
+		float deltaAngle = transform->GetAngle() - _targetAngle;
+		if (deltaAngle < 180)
+		{
+			if (transform->GetAngle() != _targetAngle)
+				transform->Rotate(2.f);
+			if (transform->GetAngle() > _targetAngle)
+				transform->SetAngle(_targetAngle);
+		}
+		else
+		{
+			if (transform->GetAngle() != _targetAngle)
+				transform->Rotate(-2.f);
+			if (transform->GetAngle() < _targetAngle)
+				transform->SetAngle(_targetAngle);
+		}
 		_dir = DOWN;
 		transform->MoveY(_speed * TIMEMANAGER->getElapsedTime());
 
