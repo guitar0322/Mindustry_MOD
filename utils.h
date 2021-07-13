@@ -17,11 +17,14 @@
 #include "ZOrder.h"
 #include "DebugText.h"
 #include <typeinfo>
+#include "EnemyObject.h"
+#include "Projectile.h"
 
 namespace HDY_UTIL
 {
 	float GetDistance(float x1, float y1, float x2, float y2);
 	float GetDistance(const Vector2& v1, const Vector2& v2);
+
 	template <typename T>
 	T GetDistance(T a, T b);
 	

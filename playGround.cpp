@@ -4,6 +4,7 @@
 #include "SampleScene2.h"
 #include "PlayerScene.h"
 #include "MapScene.h"
+#include "ShootingScene.h"
 #include "GameScene.h"
 playGround::playGround()
 {
@@ -35,9 +36,16 @@ HRESULT playGround::init()
 	PlayerScene* playerScene = new PlayerScene();
 	SCENEMANAGER->AddScene("player", playerScene);
 	SCENEMANAGER->LoadScene("player");
+	SampleScene* sampleScene = new SampleScene();
+	SCENEMANAGER->AddScene("sample", sampleScene);
+	//SCENEMANAGER->LoadScene("sample");
 
 	SampleScene2* sampleScene2 = new SampleScene2();
 	SCENEMANAGER->AddScene("sample2", sampleScene2);
+	
+	ShootingScene* shootingScene = new ShootingScene();
+	SCENEMANAGER->AddScene("ShootingScene", shootingScene);
+	SCENEMANAGER->LoadScene("ShootingScene");
 
 	GameScene* gameScene = new GameScene();
 	SCENEMANAGER->AddScene("game", gameScene);
