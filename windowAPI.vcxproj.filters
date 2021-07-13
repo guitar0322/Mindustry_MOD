@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Timer.cpp" />
@@ -157,49 +157,9 @@
     <ClCompile Include="MapTool.cpp">
       <Filter>Component\Framwork</Filter>
     </ClCompile>
-    <ClCompile Include="ShootingScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyControler.cpp">
-      <Filter>Enemy\EnemyControler</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyPlaneControler.cpp">
-      <Filter>Enemy\EnemyControler</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyInfo.cpp">
-      <Filter>Enemy\EnemyFunction</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyObject.cpp">
-      <Filter>Enemy\EnemyUnit</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyPlane.cpp">
-      <Filter>Enemy\EnemyUnit</Filter>
-    </ClCompile>
     <ClCompile Include="GameScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="D2DRenderer+Draw.cpp" />
-    <ClCompile Include="D2DRenderer.cpp" />
-    <ClCompile Include="Circle.cpp" />
-    <ClCompile Include="Geometry.cpp" />
-    <ClCompile Include="Line.cpp" />
-    <ClCompile Include="Math.cpp" />
-    <ClCompile Include="Rect.cpp" />
-    <ClCompile Include="Vector2.cpp" />
-    <ClCompile Include="Projectile.cpp">
-      <Filter>Projectile</Filter>
-    </ClCompile>
-    <ClCompile Include="ProjectileManager.cpp">
-      <Filter>Projectile</Filter>
-    </ClCompile>
-    <ClCompile Include="ProjectileObject.cpp">
-      <Filter>Projectile</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyGround.cpp">
-      <Filter>Enemy\EnemyUnit</Filter>
-    </ClCompile>
-    <ClCompile></ClCompile> Include="EnemyGroundControler.cpp">
-      <Filter>Enemy\EnemyControler</Filter>
     <ClCompile Include="CallbackTest.cpp">
       <Filter>헤더파일</Filter>
     </ClCompile>
@@ -211,6 +171,9 @@
     </ClCompile>
     <ClCompile Include="UIControler.cpp">
       <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="TileFactory.cpp">
+      <Filter>Util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -374,54 +337,15 @@
     <ClInclude Include="MapScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
+    <ClInclude Include="TileInfo.h">
+      <Filter>헤더파일</Filter>
+    </ClInclude>
     <ClInclude Include="MapTool.h">
       <Filter>Component\Framwork</Filter>
-    </ClInclude>
-    <ClInclude Include="ShootingScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyPlaneControler.h">
-      <Filter>Enemy\EnemyControler</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyControler.h">
-      <Filter>Enemy\EnemyControler</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyInfo.h">
-      <Filter>Enemy\EnemyFunction</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyObject.h">
-      <Filter>Enemy\EnemyUnit</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyPlane.h">
-      <Filter>Enemy\EnemyUnit</Filter>
     </ClInclude>
     <ClInclude Include="GameScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="D2DRenderer.h" />
-    <ClInclude Include="Circle.h" />
-    <ClInclude Include="Geometry.h" />
-    <ClInclude Include="LibraryHeader.h" />
-    <ClInclude Include="Line.h" />
-    <ClInclude Include="ManagerHeader.h" />
-    <ClInclude Include="Math.h" />
-    <ClInclude Include="Rect.h" />
-    <ClInclude Include="TileInfo.h" />
-    <ClInclude Include="Vector2.h" />
-    <ClInclude Include="ProjectileObject.h">
-      <Filter>Projectile</Filter>
-    </ClInclude>
-    <ClInclude Include="Projectile.h">
-      <Filter>Projectile</Filter>
-    </ClInclude>
-    <ClInclude Include="ProjectileManager.h">
-      <Filter>Projectile</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyGround.h">
-      <Filter>Enemy\EnemyUnit</Filter>
-    </ClInclude>
-    <ClInclude></ClInclude> Include="EnemyGroundControler.h">
-      <Filter>Enemy\EnemyControler</Filter>
     <ClInclude Include="Geometry.h">
       <Filter>Geometry</Filter>
     </ClInclude>
@@ -434,6 +358,9 @@
     <ClInclude Include="UIControler.h">
       <Filter>Component</Filter>
     </ClInclude>
+    <ClInclude Include="TileFactory.h">
+      <Filter>Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="windowAPI.rc" />
@@ -443,11 +370,8 @@
     <Image Include="windowAPI.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="?�더?�일">
+    <Filter Include="헤더파일">
       <UniqueIdentifier>{c5a74d32-48ac-476c-b67c-3ef4959b80ca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="?�스?�일">
-      <UniqueIdentifier>{91e16d7c-03fe-4390-86f5-fd7f4552fc0c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Util">
       <UniqueIdentifier>{0c5effe2-8e72-4e52-b540-eb3ecf943f38}</UniqueIdentifier>
@@ -473,20 +397,6 @@
     <Filter Include="Scene">
       <UniqueIdentifier>{8c1e3ca4-f72a-411b-b346-bd0aa24e763a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Enemy">
-      <UniqueIdentifier>{4d60e2be-b37d-43d9-88a1-aade9f61fe91}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Enemy\EnemyFunction">
-      <UniqueIdentifier>{5fa20ed1-9e4b-400d-83ff-373026e46790}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Enemy\EnemyControler">
-      <UniqueIdentifier>{f65fd3a2-c163-438c-86cb-bc5cfccca309}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Enemy\EnemyUnit">
-      <UniqueIdentifier>{f04d7d50-bb99-40ae-b3d3-47935ff62d0f}</UniqueIdentifier>
-    </Filter>
-    <Filter></Filter> Include="Projectile">
-      <UniqueIdentifier>{e4ef8ac0-5830-48a5-be0a-5b22c15be392}</UniqueIdentifier>
     <Filter Include="Geometry">
       <UniqueIdentifier>{91e16d7c-03fe-4390-86f5-fd7f4552fc0c}</UniqueIdentifier>
     </Filter>
