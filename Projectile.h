@@ -1,16 +1,17 @@
 #pragma once
 #include "Component.h"
 
-class ProjectileManager;
+//class ProjectileManager;
 class Projectile :
 	public Component
 {
 private:
-	ProjectileManager* _projectileManager;
+	//ProjectileManager* _projectileManager;
 	float _speed;
 	float _angle;
 	float _speedX, _speedY;
 	float _radius;
+
 
 public:
 	Projectile();

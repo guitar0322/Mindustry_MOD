@@ -15,7 +15,7 @@ void ProjectileManager::Init()
 	{
 		_enemyProjectile = new ProjectileObject();
 		_enemyProjectile->GetRendererComponent()->Init("enemy_projectile");
-		_enemyProjectile->GetProjectileComponent()->SetSpeed(250.f);
+		_enemyProjectile->GetProjectileComponent()->SetSpeed(500.f);
 		_enemyProjectile->SetActive(false);
 		_enemyProjectileV.push_back(_enemyProjectile);
 	}
@@ -27,6 +27,7 @@ void ProjectileManager::Init()
 		_playerProjectile->SetActive(false);
 		_playerProjectileV.push_back(_playerProjectile);
 	}
+	//_deltaAngle = _enemyPlaneControlerTransform->angle;
 }
 
 void ProjectileManager::Update()
@@ -73,6 +74,7 @@ void ProjectileManager::FireProjectile(float x, float y, float angle, PROJECTILE
 			_enemyProjectileV[i]->SetActive(true);
 			_enemyProjectileV[i]->transform->SetPosition(x, y);
 			_enemyProjectileV[i]->transform->SetAngle(angle);
+			//_enemyProjectileV[i]->transform->SetAngle(_deltaAngle);
 			break;
 		}
 		break;

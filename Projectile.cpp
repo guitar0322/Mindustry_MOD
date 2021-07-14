@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Projectile.h"
-#include "ProjectileManager.h"
+//#include "ProjectileManager.h"
 
 Projectile::Projectile()
 {
@@ -15,8 +15,9 @@ void Projectile::Init()
 	_speed = 0.f;
 	_angle = 0.f;
 	_speedX, _speedY = 0.f;
-	gameObject->GetComponent<BoxCollider>();
-	_projectileManager = gameObject->GetComponent<ProjectileManager>();
+	//gameObject->GetComponent<BoxCollider>();
+	transform->SetScale(3, 3);
+	//_projectileManager = gameObject->GetComponent<ProjectileManager>();
 }
 
 void Projectile::Update()
@@ -34,6 +35,9 @@ void Projectile::Move()
 
 void Projectile::OnTriggerEnter(GameObject * gameObject)
 {
-	if(gameObject->tag == TAGMANAGER->GetTag("player"))
+	if (gameObject->tag == TAGMANAGER->GetTag("player"))
+	{
 		transform->gameObject->isActive = false;
+	}
 }
+
