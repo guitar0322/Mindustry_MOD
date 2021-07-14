@@ -8,8 +8,5 @@ private:
 public:
 	EnemyGround();
 	~EnemyGround();
-
-	virtual void Init();
-	virtual void Update();
 };
 

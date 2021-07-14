@@ -14,5 +14,7 @@ public:
 
 	virtual void Init();
 	virtual void Update();
+
+	void SetTestCore(GameObject* testCore) { _testCore = testCore; _testCoreTransform = testCore->transform; }
 };
 
