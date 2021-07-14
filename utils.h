@@ -29,6 +29,7 @@ namespace HDY_UTIL
 	float GetAngle(float x1, float y1, float x2, float y2);
 	float GetAngle(Vector2& v1, Vector2& v2);
 
+
 	Vector2 WorldToScreen(Vector2 worldPoint);
 	Vector2 WorldToScreen(float x, float y);
 	Vector2 ScreenToWorld(Vector2 screenPoint);
