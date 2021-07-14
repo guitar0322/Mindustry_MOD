@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Timer.cpp" />
@@ -172,20 +172,38 @@
     <ClCompile Include="UIControler.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="PropFactory.cpp">
-      <Filter>Util</Filter>
+    <ClCompile Include="EnemyControler.cpp">
+      <Filter>Enemy\EnemyControler</Filter>
     </ClCompile>
-    <ClCompile Include="PropContainer.cpp">
-      <Filter>Util</Filter>
+    <ClCompile Include="EnemyGroundControler.cpp">
+      <Filter>Enemy\EnemyControler</Filter>
     </ClCompile>
-    <ClCompile Include="EditText.cpp">
-      <Filter>Component\Framwork</Filter>
+    <ClCompile Include="EnemyPlaneControler.cpp">
+      <Filter>Enemy\EnemyControler</Filter>
     </ClCompile>
-    <ClCompile Include="UIManager.cpp">
-      <Filter>Manager</Filter>
+    <ClCompile Include="EnemyObject.cpp">
+      <Filter>Enemy\EnemyObject</Filter>
     </ClCompile>
-    <ClCompile Include="EditableText.cpp">
-      <Filter>Gameobject\Framework</Filter>
+    <ClCompile Include="EnemyPlane.cpp">
+      <Filter>Enemy\EnemyObject</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyGround.cpp">
+      <Filter>Enemy\EnemyObject</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyInfo.cpp">
+      <Filter>Enemy\EnemyFunction</Filter>
+    </ClCompile>
+    <ClCompile Include="Projectile.cpp">
+      <Filter>Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectileManager.cpp">
+      <Filter>Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectileObject.cpp">
+      <Filter>Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="ShootingScene.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -370,23 +388,38 @@
     <ClInclude Include="UIControler.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="PropFactory.h">
-      <Filter>Util</Filter>
+    <ClInclude Include="EnemyControler.h">
+      <Filter>Enemy\EnemyControler</Filter>
     </ClInclude>
-    <ClInclude Include="PropContainer.h">
-      <Filter>Util</Filter>
+    <ClInclude Include="EnemyGroundControler.h">
+      <Filter>Enemy\EnemyControler</Filter>
     </ClInclude>
-    <ClInclude Include="PropInfo.h">
-      <Filter>헤더파일</Filter>
+    <ClInclude Include="EnemyPlaneControler.h">
+      <Filter>Enemy\EnemyControler</Filter>
     </ClInclude>
-    <ClInclude Include="EditText.h">
-      <Filter>Component\Framwork</Filter>
+    <ClInclude Include="EnemyObject.h">
+      <Filter>Enemy\EnemyObject</Filter>
     </ClInclude>
-    <ClInclude Include="UIManager.h">
-      <Filter>Manager</Filter>
+    <ClInclude Include="EnemyPlane.h">
+      <Filter>Enemy\EnemyObject</Filter>
     </ClInclude>
-    <ClInclude Include="EditableText.h">
-      <Filter>Gameobject\Framework</Filter>
+    <ClInclude Include="EnemyGround.h">
+      <Filter>Enemy\EnemyObject</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyInfo.h">
+      <Filter>Enemy\EnemyFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="Projectile.h">
+      <Filter>Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectileManager.h">
+      <Filter>Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectileObject.h">
+      <Filter>Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="ShootingScene.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -426,6 +459,21 @@
     </Filter>
     <Filter Include="Geometry">
       <UniqueIdentifier>{91e16d7c-03fe-4390-86f5-fd7f4552fc0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy">
+      <UniqueIdentifier>{7550888f-5980-4910-84a4-a7fd32b07c60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\EnemyControler">
+      <UniqueIdentifier>{d5b31eaf-5bab-4f1d-bfd0-9290b1c8deeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\EnemyObject">
+      <UniqueIdentifier>{67d8ac83-9425-4bfa-8c15-f98b8b08c104}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\EnemyFunction">
+      <UniqueIdentifier>{a671c367-1f80-456c-b5ff-8b782465ba49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projectile">
+      <UniqueIdentifier>{650faf36-bfab-4a06-b718-a458d5ed9c51}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

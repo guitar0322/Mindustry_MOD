@@ -18,6 +18,7 @@ private :
 	int _screenWidth, _screenHeight;
 	int _screenStartX, _screenStartY;
 	int _renderWidth, _renderHeight;
+	float _cameraStartX, _cameraStartY;
 	bool _isShake;
 	int _shakeWeight;
 	int _shakeNum;
@@ -36,6 +37,11 @@ public:
 
 	void SetScreenStart(int x, int y) { _screenStartX = x; _screenStartY = y; }
 	pair<int, int> GetScreenStart() { return { _screenStartX, _screenStartY }; }
+
+	float GetCameraStartX() { return _cameraStartX; }
+	float GetCameraStartY() { return  _cameraStartY; }
+
+	//pair<float, float> GetCameraStart() { return { _cameraStartX, _cameraStartY }; }
 
 	void SetScreenWidth(int width) { _screenWidth = width; }
 	void SetScreenHeight(int height) { _screenHeight = height; }

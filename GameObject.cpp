@@ -26,7 +26,7 @@ void GameObject::Update()
 	for (int i = 0; i < component_num; i++) {
 		if (components[i]->enable == true)
 			components[i]->Update();
-	}
+ 	}
 }
 //@ void Render : 오브젝트에 있는 모든 Component의 Render함수를 호출
 void GameObject::Render()

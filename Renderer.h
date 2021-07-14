@@ -1,4 +1,4 @@
-#pragma once
+ #pragma once
 #include "Component.h"
 /**********************************
 Framework Renderer Component For D2D

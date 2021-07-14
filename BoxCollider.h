@@ -23,6 +23,7 @@ private:
     bool _isTrigger;
     //int _colliderCheckOffset;//근처 충돌체 탐색 범위
     vector<BoxCollider*> _overlapColV;
+
 public:
     BoxCollider();
     ~BoxCollider();

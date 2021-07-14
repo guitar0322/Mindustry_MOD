@@ -97,6 +97,7 @@ namespace HDY_UTIL
 	{
 		return Math::ToDegree(GetAngle(v1,v2));
 	}
+
 	Vector2 WorldToScreen(Vector2 worldPoint)
 	{
 		Vector2 result;
@@ -122,10 +123,8 @@ namespace HDY_UTIL
 		Vector2 result;
 		float virtualX = MainCam->GetRenderWidth() / MainCam->_zoomScale * (screenPoint.x - MainCam->GetScreenStart().first) / MainCam->GetScreenWidth();
 		float virtualY = MainCam->GetRenderHeight() / MainCam->_zoomScale * (screenPoint.y - MainCam->GetScreenStart().second) / MainCam->GetScreenHeight();
-		float cameraStartX = MainCam->transform->GetX() - (MainCam->GetRenderWidth() / MainCam->_zoomScale) / 2;
-		float cameraStartY = MainCam->transform->GetY() - (MainCam->GetRenderHeight() / MainCam->_zoomScale) / 2;
-		result.x = cameraStartX + virtualX;
-		result.y = cameraStartY + virtualY;
+		result.x = MainCam->GetCameraStartX() + virtualX;
+		result.y = MainCam->GetCameraStartY() + virtualY;
 		return result;
 	}
 
@@ -134,10 +133,13 @@ namespace HDY_UTIL
 		Vector2 result;
 		float virtualX = MainCam->GetRenderWidth() / MainCam->_zoomScale * (x - MainCam->GetScreenStart().first) / MainCam->GetScreenWidth();
 		float virtualY = MainCam->GetRenderHeight() / MainCam->_zoomScale * (y - MainCam->GetScreenStart().second) / MainCam->GetScreenHeight();
-		float cameraStartX = MainCam->transform->GetX() - (MainCam->GetRenderWidth() / MainCam->_zoomScale) / 2;
-		float cameraStartY = MainCam->transform->GetY() - (MainCam->GetRenderHeight() / MainCam->_zoomScale) / 2;
-		result.x = cameraStartX + virtualX;
-		result.y = cameraStartY + virtualY;
+		result.x = MainCam->GetCameraStartX() + virtualX;
+		result.y = MainCam->GetCameraStartY() + virtualY;
+		
+		/*MainCam->SetCameraStart(MainCam->transform->GetX() - (MainCam->GetRenderWidth() / MainCam->_zoomScale) / 2,
+								MainCam->transform->GetY() - (MainCam->GetRenderHeight() / MainCam->_zoomScale) / 2);
+		result.x = MainCam->GetCameraStart().first + virtualX;
+		result.y = MainCam->GetCameraStart().second + virtualY;*/
 		return result;
 	}
 
