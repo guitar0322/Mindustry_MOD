@@ -30,6 +30,7 @@ private:
 	Rect		_menuRect[5];
 
 	/* 21.07.13 SETTING IMG */
+	bool		_grab;
 	bool		_inSetting;
 	bool		_inInfo;
 	bool		_alphaTrigger;

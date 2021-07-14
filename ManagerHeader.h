@@ -12,3 +12,4 @@
 #include "soundManager.h"
 #include "ClipManager.h"
 #include "EffectManager.h"
+#include "UIManager.h"

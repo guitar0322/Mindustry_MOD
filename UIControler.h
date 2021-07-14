@@ -1,23 +1,34 @@
 #pragma once
-#include "Component.h"
-class UIControler :
-    public Component
+#include "PropFactory.h"
+#include <unordered_map>
+
+using namespace std;
+#define CATEGORY_NUM 4
+class UIControler
 {
 private:
+    int _selectCategoryIdx;
+    int _selectPropIdx;
+    vector<string> _clipArr[CATEGORY_NUM];
+    unordered_map<int, ImageObject> _previewMap;
+    unordered_map<int, ImageObject>::iterator _previewMapIter;
+    PropFactory* _propFactory;
 public:
+    UIControler();
+    ~UIControler();
     GameObject* categorySelect;
     GameObject* propSelect;
-    GameObject* preSelectProp;
-
+    ImageObject* propPreview;
     vector<GameObject*>* wallIconV;
     vector<GameObject*>* drillIconV;
     vector<GameObject*>* turretIconV;
     vector<GameObject*>* railIconV;
-
     vector<GameObject*>* preIconV;
-    virtual void Init();
-    virtual void Update();
+    void Init();
+    void Update();
+    void Release();
+    void Render();
     void ClickCategoryIcon(GameObject* clickedButton, int category);
-    void ClickPropIcon(GameObject* clickedButton);
+    void ClickPropIcon(GameObject* clickedButton, int propIdx);
 };
 

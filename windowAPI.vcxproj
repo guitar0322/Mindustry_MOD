@@ -163,6 +163,8 @@
     <ClInclude Include="commonMacroFunction.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="D2DRenderer.h" />
+    <ClInclude Include="EditableText.h" />
+    <ClInclude Include="EditText.h" />
     <ClInclude Include="EffectManager.h" />
     <ClInclude Include="DebugText.h" />
     <ClInclude Include="Circle.h" />
@@ -194,6 +196,7 @@
     <ClInclude Include="PlayerControler.h" />
     <ClInclude Include="PlayerScene.h" />
     <ClInclude Include="playGround.h" />
+    <ClInclude Include="PropInfo.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="ProjectileManager.h" />
     <ClInclude Include="ProjectileObject.h" />
@@ -213,6 +216,8 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="TextDataManager.h" />
+    <ClInclude Include="PropContainer.h" />
+    <ClInclude Include="PropFactory.h" />
     <ClInclude Include="TileInfo.h" />
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="Timer.h" />
@@ -221,6 +226,7 @@
     <ClInclude Include="TriggerTest.h" />
     <ClInclude Include="UIBase.h" />
     <ClInclude Include="UIControler.h" />
+    <ClInclude Include="UIManager.h" />
     <ClInclude Include="UIMouseEvent.h" />
     <ClInclude Include="UIRenderer.h" />
     <ClInclude Include="utils.h" />
@@ -246,6 +252,8 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="D2DRenderer+Draw.cpp" />
     <ClCompile Include="D2DRenderer.cpp" />
+    <ClCompile Include="EditableText.cpp" />
+    <ClCompile Include="EditText.cpp" />
     <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="DebugText.cpp" />
     <ClCompile Include="Circle.cpp" />
@@ -295,6 +303,8 @@
     <ClCompile Include="TagManager.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="TextDataManager.cpp" />
+    <ClCompile Include="PropContainer.cpp" />
+    <ClCompile Include="PropFactory.cpp" />
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TitleScene.cpp" />
@@ -302,6 +312,7 @@
     <ClCompile Include="TriggerTest.cpp" />
     <ClCompile Include="UIBase.cpp" />
     <ClCompile Include="UIControler.cpp" />
+    <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="UIMouseEvent.cpp" />
     <ClCompile Include="UIRenderer.cpp" />
     <ClCompile Include="utils.cpp" />

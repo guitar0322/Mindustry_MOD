@@ -4,6 +4,7 @@
 HINSTANCE _hInstance;
 HWND _hWnd;
 Vector2 _ptMouse;
+char _inputChar;
 HDC _hdc;
 char debug[3][128];
 char error[128];

@@ -3,6 +3,7 @@
 
 void UIMouseEvent::Init()
 {
+	focusable = false;
 	uiRenderer = gameObject->GetComponent<UIRenderer>();
 	if (uiRenderer == nullptr)
 	{
@@ -21,6 +22,8 @@ void UIMouseEvent::Update()
 		{
 			if (OnClick != NULL)
 				OnClick();
+			if(focusable == true)
+				UIMANAGER->SetFocusUI((UIBase*)gameObject);
 		}
 		if (_enterMouse == false)
 		{

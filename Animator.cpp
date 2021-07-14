@@ -71,7 +71,7 @@ void Animator::SetClip(AnimationClip* newClip)
 	_isEnd = false;
 	_curFrameX = 0;
 	_frameTime = 0;
-	renderer->ChangeTargetBitmap(curClip->GetBitmap(), curClip->GetFrameWidth(), curClip->GetFrameHeight());
+	renderer->ChangeTargetBitmap(newClip->GetLoadName());
 }
 
 void Animator::SetClip(AnimationClip* newClip, int startFrame)
@@ -81,7 +81,7 @@ void Animator::SetClip(AnimationClip* newClip, int startFrame)
 	_isEnd = false;
 	_curFrameX = startFrame;
 	_frameTime = 0;
-	renderer->ChangeTargetBitmap(curClip->GetBitmap(), curClip->GetFrameWidth(), curClip->GetFrameHeight());
+	renderer->ChangeTargetBitmap(newClip->GetLoadName(), startFrame);
 }
 
 void Animator::SetClip(string clipName)
@@ -91,7 +91,7 @@ void Animator::SetClip(string clipName)
 	_isEnd = false;
 	_curFrameX = 0;
 	_frameTime = 0;
-	renderer->ChangeTargetBitmap(curClip->GetBitmap(), curClip->GetFrameWidth(), curClip->GetFrameHeight());
+	renderer->ChangeTargetBitmap(clipName);
 }
 
 void Animator::SetClip(string clipName, int startFrame)
@@ -101,7 +101,7 @@ void Animator::SetClip(string clipName, int startFrame)
 	_isEnd = false;
 	_curFrameX = startFrame;
 	_frameTime = 0;
-	renderer->ChangeTargetBitmap(curClip->GetBitmap(), curClip->GetFrameWidth(), curClip->GetFrameHeight());
+	renderer->ChangeTargetBitmap(clipName, startFrame);
 }
 
 void Animator::AddClip(string clipName, AnimationClip* newClip)

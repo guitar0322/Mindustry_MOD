@@ -10,12 +10,14 @@ void MapTool::Init()
 	isErase = false;
 	isDraw = true;
 
+
 	for (int i = 0; i < TILESETY; ++i)
 	{
 		for (int j = 0; j < TILESETX; ++j)
 		{
 			tileUI[i* TILESETX + j].Init();
 			tileUI[i* TILESETX + j].uiRenderer->Init("water");
+			tileUI[i * TILESETX + j].uiMouseEvent->enable = false;
 			tileUI[i* TILESETX + j].transform->SetPosition(WINSIZEX - 40*j -50, 100 + 40*i);
 			
 			//각 타일에 이미지 부여
@@ -30,6 +32,7 @@ void MapTool::Init()
 		{
 			toolUI[i* 3 + j].Init();
 			toolUI[i* 3 + j].uiRenderer->Init("save");
+			toolUI[i * 3 + j].uiMouseEvent->enable = false;
 			toolUI[i* 3 + j].transform->SetPosition(60 * j + 50, 50 + 60 * i);
 
 			//각 도구에 이미지 부여

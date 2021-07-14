@@ -21,23 +21,17 @@ playGround::~playGround()
 //초기화는 여기다 하세요 제발
 HRESULT playGround::init()
 {
+	CLIPMANAGER->AddClip("ui_frame", "sprites/ui/pane-build.png", 378, 318);
+
 	gameNode::init(true);
 	_camShakeFrame = 0;
 	
 	MapScene* mapScene = new MapScene();
 	SCENEMANAGER->AddScene("background", mapScene);
-	//SCENEMANAGER->LoadScene("background");
-
-	//SampleScene* sampleScene = new SampleScene();
-	//SCENEMANAGER->AddScene("sample", sampleScene);
-	//SCENEMANAGER->LoadScene("sample");
-
-	//SampleScene2* sampleScene2 = new SampleScene2();
-	//SCENEMANAGER->AddScene("sample2", sampleScene2);
 
 	PlayerScene* playerScene = new PlayerScene();
 	SCENEMANAGER->AddScene("player", playerScene);
-	//SCENEMANAGER->LoadScene("player");
+
 	SampleScene* sampleScene = new SampleScene();
 	SCENEMANAGER->AddScene("sample", sampleScene);
 
@@ -54,10 +48,10 @@ HRESULT playGround::init()
 	/* SHUNG 21.07.12 */
 	IntroScene* introScene = new IntroScene();
 	SCENEMANAGER->AddScene("intro", introScene);
+;
+	TitleScene* titleScene = new TitleScene();
+	SCENEMANAGER->AddScene("title", titleScene);
 
-	//TitleScene* titleScene = new TitleScene();
-	//SCENEMANAGER->AddScene("title", titleScene);
-	//SCENEMANAGER->LoadScene("title");
 
 	//_mainCam.transform->SetX(_mainCam.transform->GetX() + 100);
 	//testParticle = new image();

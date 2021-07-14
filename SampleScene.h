@@ -6,6 +6,7 @@ class SampleScene :
     public Scene
 {
 private:
+    Button* testEditText;
     AnimObject testAnimObj;
     AnimObject testAnimObj2;
     float _stayTime;
