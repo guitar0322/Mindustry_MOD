@@ -24,15 +24,23 @@ void Renderer::Init(string clipName)
 	_alpha = 1.f;
 }
 
+void Renderer::Init(float width, float height)
+{
+	_frameWidth = width;
+	_frameHeight = height;
+	_curFrameX = 0;
+	_curFrameY = 0;
+	_alpha = 1.f;
+}
+
 void Renderer::Render()
 {
 	int renderStartX = transform->GetX() - _frameWidth / 2;
 	int renderStartY = transform->GetY() - _frameHeight / 2;
 	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
-		D2DRENDERER->DrawRectangle(_rc);
+		D2DRENDERER->DrawRectangle(_rc, D2DRenderer::DefaultBrush::Gray);
 	}
-	//그려질 영역
 	D2D1_RECT_F clipArea = 
 		D2D1::RectF
 		(
@@ -62,7 +70,14 @@ void Renderer::Render()
 		D2D1::Point2F(transform->GetX(), transform->GetY())
 	);
 	BackBuffer->SetTransform(rotation * scale);
+
+	if (_targetBitmap == nullptr)
+	{
+		BackBuffer->SetTransform(D2D1::Matrix3x2F::Identity());
+		return;
+	}
 	BackBuffer->DrawBitmap(_targetBitmap, backbufferArea, _alpha, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, clipArea);
+	BackBuffer->SetTransform(D2D1::Matrix3x2F::Identity());
 }
 
 

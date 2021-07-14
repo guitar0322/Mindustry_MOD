@@ -11,6 +11,13 @@ HRESULT SampleScene::Init()
 	CLIPMANAGER->AddClip("background", "scene1_background.png", 1024, 560);
 	_stayTime = 0;
 	SetBackBufferSize(1024, 560);
+	testNoClipUI.Init();
+	testNoClipUI.uiRenderer->Init(100.f, 100.f);
+	testNoClipUI.SetActive(false);
+
+	testNoClipObj.Init();
+	testNoClipObj.renderer->Init(100.f, 100.f);
+
 	testAnimObj.Init();
 	testAnimObj.renderer->Init("bomb");
 	testAnimObj.animator->AddClip(CLIPMANAGER->FindClip("bomb"));
@@ -81,6 +88,8 @@ void SampleScene::Update()
 	testAnimObj2.Update();
 	testUIObj.Update();
 	testButton.Update();
+	testNoClipUI.Update();
+	testNoClipObj.Update();
 	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 	{
 		//MainCam->transform->MoveX(5.f);
@@ -124,11 +133,8 @@ void SampleScene::Render()
 		background.Render();
 		testAnimObj.Render();
 		testAnimObj2.Render();
+		testNoClipObj.Render();
 		MainCam->Render();
-		char debug[128];
-		sprintf_s(debug, "%d", testInt);
-		std::wstring wstr(debug, &debug[128]);
-		D2DRENDERER->RenderText(10, 10, wstr, 20);
 		D2DRENDERER->RenderText(250, 400, L"다람쥐 헌 쳇바퀴에 타고파", 50);
 		//D2DRENDERER->RenderText(700, 400, L"테스트 텍스트", 20, D2DRenderer::DefaultBrush::Black, DWRITE_TEXT_ALIGNMENT_CENTER,
 		//	L"BMHANNAPro");
@@ -137,6 +143,7 @@ void SampleScene::Render()
 			DWRITE_TEXT_ALIGNMENT_LEADING, L"배달의민족 한나체 Pro");
 		testUIObj.Render();
 		testButton.Render();
+		testNoClipUI.Render();
     }
 }
 

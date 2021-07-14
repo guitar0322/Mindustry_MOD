@@ -6,6 +6,8 @@ class UIControler :
 private:
 public:
     GameObject* categorySelect;
+    GameObject* propSelect;
+    GameObject* preSelectProp;
 
     vector<GameObject*>* wallIconV;
     vector<GameObject*>* drillIconV;
@@ -16,5 +18,6 @@ public:
     virtual void Init();
     virtual void Update();
     void ClickCategoryIcon(GameObject* clickedButton, int category);
+    void ClickPropIcon(GameObject* clickedButton);
 };
 

@@ -45,6 +45,7 @@ public:
 	bool Move(float x, float y);
 	bool MoveX(float x);
 	bool MoveY(float y);
+	void Rotate(float degree);
 	bool CheckCollision();
 	int GetChildCount() { return child.size(); }
 	Transform* GetChild(int i);
