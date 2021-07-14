@@ -138,7 +138,7 @@ void SampleScene::Render()
 		D2DRENDERER->RenderText(250, 400, L"다람쥐 헌 쳇바퀴에 타고파", 50);
 		//D2DRENDERER->RenderText(700, 400, L"테스트 텍스트", 20, D2DRenderer::DefaultBrush::Black, DWRITE_TEXT_ALIGNMENT_CENTER,
 		//	L"BMHANNAPro");
-		D2DRENDERER->RenderTextField(400, 400, L"다람쥐 헌 쳇바퀴에 타고파", D2D1::ColorF::Black, 50, 500, 200, 
+		D2DRENDERER->RenderTextField(400, 400, L"다람쥐 헌 쳇바퀴에 타고파", D2D1::ColorF::Black, 50, 500, 200,
 			1.f,
 			DWRITE_TEXT_ALIGNMENT_LEADING, L"배달의민족 한나체 Pro");
 		testUIObj.Render();

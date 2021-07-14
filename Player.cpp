@@ -9,6 +9,7 @@ Player::Player()
 	controler = new PlayerControler();
 	AddComponent(controler);
 	controler->Init();
+
 }
 Player::~Player()
 {

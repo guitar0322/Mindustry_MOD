@@ -15,40 +15,26 @@ HRESULT PlayerScene::Init()
 	Scene::Init();
 
 	CLIPMANAGER->AddClip("player", "player/alpha.png", 48, 48);
-	CLIPMANAGER->AddClip("playercell", "player/alpha-cell.png",48, 48);
-	CLIPMANAGER->AddClip("playerleft", "player/small-basic-weapon-L.png", 48, 48);
-	CLIPMANAGER->AddClip("playerright", "player/small-basic-weapon-R.png", 48, 48);
-	CLIPMANAGER->AddClip("back", "Night.png", 900, 568);
-	SetBackBufferSize(900, 568);
+	CLIPMANAGER->AddClip("back", "Night.png", 900,568);
+	CLIPMANAGER->AddClip("enemy_projectile", "sprites/units/weapons/missiles-mount.png", 48, 48);
+	SetBackBufferSize(3000, 2272);
 
 	backGround.Init();
 	backGround.renderer->Init("back");
-	backGround.transform->SetPosition(900 / 2,568 /2);
+	backGround.transform->SetPosition(1800,1136);
 
 	player = new Player();
 	player->Init();
 	player->renderer->Init("player");
-	player->transform->SetPosition(WINSIZEX/2,WINSIZEY/2);
+	player->transform->SetPosition(1500,900);
 	player->transform->SetAngle(0.0f);
+	MainCam->transform->SetPosition(player->transform->position.x,player->transform->position.y);
 
-	playerCell = new ImageObject();
-	playerCell->Init();
-	playerCell->renderer->Init("playercell");
-	playerCell->transform->SetPosition(WINSIZEX / 2, WINSIZEY / 2);
+	_projectileManager = new GameObject();
+	_projectileManager->AddComponent(new ProjectileManager());
+	_projectileManager->GetComponent<ProjectileManager>()->Init();
 
-	playerLeft = new ImageObject();
-	playerLeft->Init();
-	playerLeft->renderer->Init("playerleft");
-	playerLeft->transform->SetPosition(WINSIZEX / 2 - 12, WINSIZEY / 2 - 4);
-
-	playerRight = new ImageObject();
-	playerRight->Init();
-	playerRight->renderer->Init("playerright");
-	playerRight->transform->SetPosition(WINSIZEX / 2 + 11, WINSIZEY / 2 - 4);
-
-	player->transform->AddChild(playerCell); // 본체 이미지(?)의 자식 함수를 따라가게 한다. 0번째 자식함수
-	player->transform->AddChild(playerLeft); // 1번째 자식함수.
-	player->transform->AddChild(playerRight); // 2번째 자식함수.
+	player->controler->SetProjectileManager(_projectileManager->GetComponent<ProjectileManager>());
 	return S_OK;
 }
 
@@ -56,9 +42,9 @@ void PlayerScene::Update()
 {
 	backGround.Update();
 	player->Update();
-	playerCell->Update();
-	playerLeft->Update();
-	playerRight->Update();
+	_projectileManager->Update();
+	mainCam->transform->SetPosition(player->transform->position.x, player->transform->position.y);
+	MainCam->Update();
 }
 
 void PlayerScene::Render()
@@ -69,10 +55,12 @@ void PlayerScene::Render()
 
 	backGround.Render();
 	player->Render();
-	playerCell->Render();
-	playerLeft->Render();
-	playerRight->Render();
+	_projectileManager->Render();
+
 	MainCam->Render();
+	wstring wstr = L"player speed : ";
+	wstr.append(to_wstring(player->controler->GetSpeed()));
+	D2DRENDERER->RenderText(100, 100, wstr, 20, L"맑은고딕", D2DRenderer::DefaultBrush::White);
 }
 
 void PlayerScene::Release()

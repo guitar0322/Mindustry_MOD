@@ -45,7 +45,7 @@ HRESULT playGround::init()
 	
 	ShootingScene* shootingScene = new ShootingScene();
 	SCENEMANAGER->AddScene("ShootingScene", shootingScene);
-	SCENEMANAGER->LoadScene("ShootingScene");
+	//SCENEMANAGER->LoadScene("ShootingScene");
 
 	GameScene* gameScene = new GameScene();
 	SCENEMANAGER->AddScene("game", gameScene);

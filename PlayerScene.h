@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene.h"
+#include "ProjectileManager.h"
 
 class Player;
 
@@ -11,6 +12,7 @@ private:
 	ImageObject* playerCell;
 	ImageObject* playerLeft;
 	ImageObject* playerRight;
+	GameObject* _projectileManager;
 
 public:
 	PlayerScene();
