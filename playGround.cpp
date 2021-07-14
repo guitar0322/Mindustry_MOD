@@ -4,11 +4,13 @@
 #include "SampleScene2.h"
 #include "MapScene.h"
 #include "GameScene.h"
+/* SHUNG 21.07.12 */
+#include "IntroScene.h"
+#include "TitleScene.h"
+
 playGround::playGround()
 {
-
 }
-
 
 playGround::~playGround()
 {
@@ -33,7 +35,14 @@ HRESULT playGround::init()
 
 	GameScene* gameScene = new GameScene();
 	SCENEMANAGER->AddScene("game", gameScene);
-	SCENEMANAGER->LoadScene("game");
+	
+	/* SHUNG 21.07.12 */
+	IntroScene* introScene = new IntroScene();
+	SCENEMANAGER->AddScene("intro", introScene);
+
+	TitleScene* titleScene = new TitleScene();
+	SCENEMANAGER->AddScene("title", titleScene);
+	SCENEMANAGER->LoadScene("title");
 
 	//_mainCam.transform->SetX(_mainCam.transform->GetX() + 100);
 	//testParticle = new image();

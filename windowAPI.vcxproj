@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -173,6 +173,7 @@
     <ClInclude Include="image.h" />
     <ClInclude Include="ImageManager.h" />
     <ClInclude Include="ImageObject.h" />
+    <ClInclude Include="IntroScene.h" />
     <ClInclude Include="keyManager.h" />
     <ClInclude Include="LibraryHeader.h" />
     <ClInclude Include="Line.h" />
@@ -201,6 +202,7 @@
     <ClInclude Include="TileInfo.h" />
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="TitleScene.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TriggerTest.h" />
     <ClInclude Include="UIBase.h" />
@@ -240,6 +242,7 @@
     <ClCompile Include="image.cpp" />
     <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="ImageObject.cpp" />
+    <ClCompile Include="IntroScene.cpp" />
     <ClCompile Include="keyManager.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="MapScene.cpp" />
@@ -266,6 +269,7 @@
     <ClCompile Include="TextDataManager.cpp" />
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TriggerTest.cpp" />
     <ClCompile Include="UIBase.cpp" />

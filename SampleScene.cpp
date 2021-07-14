@@ -176,7 +176,6 @@ void SampleScene::Render()
 			D2DRenderer::DefaultBrush::Red,
 			1.f
 		);
-		_background.Render();
 		testAnimObj.Render();
 		testAnimObj2.Render();
 		MainCam->Render();
