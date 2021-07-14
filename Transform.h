@@ -57,6 +57,7 @@ public:
 	void SetX(float x) { position.x = x; }
 	void SetY(float y) { position.y = y; }
 	void SetPosition(float x, float y) { position.x = x; position.y = y; }
+	void SetPosition(Vector2 position) { this->position = position; }
 	float GetX() { return position.x; }
 	float GetY() { return position.y; }
 
