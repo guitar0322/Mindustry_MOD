@@ -6,11 +6,13 @@
 #include "MapScene.h"
 #include "ShootingScene.h"
 #include "GameScene.h"
+/* SHUNG 21.07.12 */
+#include "IntroScene.h"
+#include "TitleScene.h"
+
 playGround::playGround()
 {
-
 }
-
 
 playGround::~playGround()
 {
@@ -24,7 +26,7 @@ HRESULT playGround::init()
 	
 	MapScene* mapScene = new MapScene();
 	SCENEMANAGER->AddScene("background", mapScene);
-	//SCENEMANAGER->LoadScene("background");
+	SCENEMANAGER->LoadScene("background");
 
 	//SampleScene* sampleScene = new SampleScene();
 	//SCENEMANAGER->AddScene("sample", sampleScene);
@@ -38,7 +40,6 @@ HRESULT playGround::init()
 	SCENEMANAGER->LoadScene("player");
 	SampleScene* sampleScene = new SampleScene();
 	SCENEMANAGER->AddScene("sample", sampleScene);
-	//SCENEMANAGER->LoadScene("sample");
 
 	SampleScene2* sampleScene2 = new SampleScene2();
 	SCENEMANAGER->AddScene("sample2", sampleScene2);
@@ -49,9 +50,14 @@ HRESULT playGround::init()
 
 	GameScene* gameScene = new GameScene();
 	SCENEMANAGER->AddScene("game", gameScene);
-	//SCENEMANAGER->LoadScene("game");
+	
+	/* SHUNG 21.07.12 */
+	IntroScene* introScene = new IntroScene();
+	SCENEMANAGER->AddScene("intro", introScene);
 
-
+	TitleScene* titleScene = new TitleScene();
+	SCENEMANAGER->AddScene("title", titleScene);
+	SCENEMANAGER->LoadScene("title");
 
 	//_mainCam.transform->SetX(_mainCam.transform->GetX() + 100);
 	//testParticle = new image();

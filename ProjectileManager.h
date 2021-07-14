@@ -22,6 +22,10 @@ private:
 
 	ProjectileObject* _enemyProjectile;
 	ProjectileObject* _playerProjectile;
+	GameObject* _enemyPlaneControler;
+	Transform* _enemyPlaneControlerTransform;
+
+	float _deltaAngle;
 
 public:
 	ProjectileManager();
@@ -34,5 +38,6 @@ public:
 	void ProjectileMove();
 	void FireProjectile(float x, float y, float angle, PROJECTILE_TYPE type);
 
+	void SetEnemyPlanecontrolerTransform(GameObject* enemyPlaneControler) { _enemyPlaneControler = enemyPlaneControler; _enemyPlaneControlerTransform = enemyPlaneControler->transform; }
 };
 

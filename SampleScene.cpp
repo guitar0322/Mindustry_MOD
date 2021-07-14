@@ -48,9 +48,35 @@ HRESULT SampleScene::Init()
 	testUIObj.uiRenderer->Init("trapobject");
 	testUIObj.transform->SetPosition(100, 100);
 
+	SetBackBufferSize(1125, 875);
+
 	background.Init();
 	background.renderer->Init("background");
 	background.transform->SetPosition(MAPWIDTH / 2, MAPHEIGHT / 2);
+
+	testAnimObj.Init();
+	testAnimObj.renderer->Init("bomb");
+	testAnimObj.animator->AddClip(CLIPMANAGER->FindClip("bomb"));
+	testAnimObj.animator->SetClip("bomb");
+	testAnimObj.transform->SetScale(2.f, 2.f);
+	testAnimObj.transform->SetAngle(45.f);
+	testAnimObj.AddComponent(new BoxCollider());
+	testAnimObj.GetComponent<BoxCollider>()->Init();
+	testAnimObj.GetComponent<BoxCollider>()->SetSize(30.f, 30.f);
+
+	testAnimObj2.Init();
+	testAnimObj2.transform->SetPosition(100, 100);
+	testAnimObj2.renderer->Init("bomb");
+	testAnimObj2.animator->AddClip(CLIPMANAGER->FindClip("bomb"));
+	testAnimObj2.animator->SetClip("bomb");
+	testAnimObj2.transform->SetScale(1.f, 1.f);
+	testAnimObj2.transform->SetAngle(270.f);
+
+	testUIObj.Init();
+	testUIObj.uiRenderer->Init("trapobject");
+	testUIObj.transform->SetPosition(100, 100);
+
+	_sceneChangeTime = 0;
 
 	testButton.Init();
 	testButton.uiRenderer->Init("trapobject");
@@ -77,13 +103,42 @@ HRESULT SampleScene::Init()
 		RegistCallback(std::bind(&CallbackTest::TestCallback, testAnimObj.GetComponent<CallbackTest>()), EVENT::CLICK);
 	
 	_sceneChangeTime = 0;
+
     return S_OK;
 }
 
 void SampleScene::Update()
 {
+	background.Update();
+	testAnimObj.Update();
+	testAnimObj2.Update();
+	testUIObj.Update();
+	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
+	{
+		//MainCam->transform->MoveX(5.f);
+		testAnimObj.transform->MoveX(5.f);
+	}
+	else if (KEYMANAGER->isStayKeyDown(VK_LEFT))
+	{
+		//MainCam->transform->MoveX(-5.f);
+		testAnimObj.transform->MoveX(-5.f);
+	}
+	else if (KEYMANAGER->isStayKeyDown(VK_UP))
+	{
+		//MainCam->transform->MoveY(-5.f);
+		testAnimObj.transform->MoveY(-5.f);
+	}
+	else if (KEYMANAGER->isStayKeyDown(VK_DOWN))
+	{
+		//MainCam->transform->MoveY(5.f);
+		testAnimObj.transform->MoveY(5.f);
+	}
+	_sceneChangeTime += TIMEMANAGER->getElapsedTime();
+	if (_sceneChangeTime >= 5.f)
+	{
+		//SCENEMANAGER->LoadScene("sample2");
+	}
 	testInt++;
-	//background.Update();
 	testAnimObj.Update();
 	testAnimObj2.Update();
 	testUIObj.Update();
@@ -130,7 +185,6 @@ void SampleScene::Render()
 			D2DRenderer::DefaultBrush::Red,
 			1.f
 		);
-		background.Render();
 		testAnimObj.Render();
 		testAnimObj2.Render();
 		testNoClipObj.Render();
