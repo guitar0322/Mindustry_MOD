@@ -25,7 +25,6 @@ HRESULT playGround::init()
 	
 	MapScene* mapScene = new MapScene();
 	SCENEMANAGER->AddScene("background", mapScene);
-	SCENEMANAGER->LoadScene("background");
 
 	SampleScene* sampleScene = new SampleScene();
 	SCENEMANAGER->AddScene("sample", sampleScene);
@@ -35,7 +34,6 @@ HRESULT playGround::init()
 	
 	ShootingScene* shootingScene = new ShootingScene();
 	SCENEMANAGER->AddScene("ShootingScene", shootingScene);
-	SCENEMANAGER->LoadScene("ShootingScene");
 
 	GameScene* gameScene = new GameScene();
 	SCENEMANAGER->AddScene("game", gameScene);
@@ -115,7 +113,7 @@ void playGround::render()
 	SCENEMANAGER->Render();
 	wstring fps = L"FPS : ";
 	fps.append(to_wstring(TIMEMANAGER->getFPS()));
-	D2DRENDERER->RenderText(10, 10, fps, 30);
+	D2DRENDERER->RenderText(10, 10, fps, 30, L"맑은고딕", D2DRenderer::DefaultBrush::White);
 	//==================================================
 	//여기도 건들지마라
 	//_ui.Render();

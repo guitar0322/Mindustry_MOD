@@ -203,10 +203,6 @@
       <Filter>Projectile</Filter>
     </ClCompile>
     <ClCompile Include="ShootingScene.cpp">
-    <ClCompile Include="TitleScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="IntroScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
   </ItemGroup>
@@ -423,10 +419,6 @@
       <Filter>Projectile</Filter>
     </ClInclude>
     <ClInclude Include="ShootingScene.h">
-    <ClInclude Include="TitleScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="IntroScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
