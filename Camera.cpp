@@ -34,29 +34,30 @@ void Camera::Init()
 
 void Camera::Render()
 {
-	int startX = transform->GetX() - _renderWidth / _zoomScale / 2;
-	int startY = transform->GetY() - _renderHeight / _zoomScale / 2;
-	if (startX < 0) {
-		startX = 0;
+	_cameraStartX = transform->GetX() - _renderWidth / _zoomScale / 2;
+	_cameraStartY = transform->GetY() - _renderHeight / _zoomScale / 2;
+	if (_cameraStartX < 0) {
+		_cameraStartX = 0;
 		transform->SetX(_renderWidth / _zoomScale / 2);
 	}
 
 	if (transform->GetX() + _renderWidth / _zoomScale / 2 > MAPWIDTH) {
-		startX = MAPWIDTH - _renderWidth / _zoomScale;
+		_cameraStartX = MAPWIDTH - _renderWidth / _zoomScale;
 		transform->SetX(MAPWIDTH - _renderWidth / _zoomScale / 2);
 	}
 
-	if (startY < 0) {
-		startY = 0;
+	if (_cameraStartY < 0) {
+		_cameraStartY = 0;
 		transform->SetY(_renderHeight / _zoomScale / 2);
 	}
 
 	if (transform->GetY() + _renderHeight / _zoomScale / 2 > MAPHEIGHT) {
-		startY = MAPHEIGHT - _renderHeight / _zoomScale;
+		_cameraStartY = MAPHEIGHT - _renderHeight / _zoomScale;
 		transform->SetY(MAPHEIGHT - _renderHeight / _zoomScale / 2);
 	}
 
-	D2DRENDERER->DrawBackBuffer(startX, startY, startX + _renderWidth / _zoomScale, startY + _renderHeight / _zoomScale,
+	D2DRENDERER->DrawBackBuffer(_cameraStartX, _cameraStartY, 
+		_cameraStartX + _renderWidth / _zoomScale, _cameraStartY + _renderHeight / _zoomScale,
 		_screenStartX, _screenStartY, _screenStartX + _screenWidth, _screenStartY + _screenHeight);
 }
 

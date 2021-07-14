@@ -23,7 +23,7 @@ HRESULT playGround::init()
 	
 	MapScene* mapScene = new MapScene();
 	SCENEMANAGER->AddScene("background", mapScene);
-	//SCENEMANAGER->LoadScene("background");
+	SCENEMANAGER->LoadScene("background");
 
 	SampleScene* sampleScene = new SampleScene();
 	SCENEMANAGER->AddScene("sample", sampleScene);
