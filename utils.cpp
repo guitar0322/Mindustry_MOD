@@ -6,6 +6,7 @@ namespace HDY_UTIL
 	/*****************************************************
 	* 기존 Winapi용으로 구현된 GetAngle(라디안)값을
 	* D2D Angle(디그리)로 변환해주는 함수
+	* const float& angle : 라디안 각도
 	*****************************************************/
 	float ConvertAngleD2D(const float& angle)
 	{
@@ -14,6 +15,21 @@ namespace HDY_UTIL
 		if (result < 0)
 		{
 			result += 360;
+		}
+		return result;
+	}
+	/*****************************************************
+	* D2D Angle(디그리)값을
+	* WinApi(라디안) 앵글로 변환
+	* const float& angle : 디그리 각도
+	*****************************************************/
+	float ConvertAngleAPI(const float& angle)
+	{
+		float radian = Math::ToRadian(angle);
+		float result = Math::PI / 2 - radian;
+		if (result < 0)
+		{
+			result *= -1;
 		}
 		return result;
 	}

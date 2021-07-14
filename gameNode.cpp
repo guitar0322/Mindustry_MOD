@@ -38,6 +38,7 @@ HRESULT gameNode::init(bool managerInit)
 		TXTDATAMANAGER->Init();
 		CLIPMANAGER->Init();
 		EFFECTMANAGER->Init();
+		UIMANAGER->Init();
 	}
 
 	return S_OK;
@@ -75,6 +76,9 @@ void gameNode::release()
 
 	EFFECTMANAGER->Release();
 	EFFECTMANAGER->releaseSingleton();
+
+	UIMANAGER->Release();
+	UIMANAGER->releaseSingleton();
 }
 
 void gameNode::update()
@@ -103,6 +107,10 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 			this->update();
 		break;
 	
+		case WM_CHAR:
+			_inputChar = wParam;
+			UIMANAGER->OnKeyDown(wParam);
+			break;
 		case WM_PAINT:
 		{
 			hdc = BeginPaint(hWnd, &ps);

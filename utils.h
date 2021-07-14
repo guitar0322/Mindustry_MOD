@@ -6,6 +6,8 @@
 #include "Animator.h"
 #include "BoxCollider.h"
 #include "UIRenderer.h"
+#include "UIMouseEvent.h"
+#include "EditText.h"
 #include "Cam.h"
 #include "Camera.h"
 #include "UIBase.h"
@@ -26,6 +28,7 @@ namespace HDY_UTIL
 	T GetDistance(T a, T b);
 	
 	float ConvertAngleD2D(const float& angle);
+	float ConvertAngleAPI(const float& angle);
 	float GetAngle(float x1, float y1, float x2, float y2);
 	float GetAngle(Vector2& v1, Vector2& v2);
 

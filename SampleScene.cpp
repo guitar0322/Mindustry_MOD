@@ -3,6 +3,7 @@
 #include "TriggerTest.h"
 #include "UIMouseEvent.h"
 #include "CallbackTest.h"
+#include "EditText.h"
 HRESULT SampleScene::Init()
 {
     Scene::Init();
@@ -11,6 +12,12 @@ HRESULT SampleScene::Init()
 	CLIPMANAGER->AddClip("background", "scene1_background.png", 1024, 560);
 	_stayTime = 0;
 	SetBackBufferSize(1024, 560);
+	testEditText = new Button();
+	testEditText->Init();
+	testEditText->uiRenderer->Init(100, 32);
+	testEditText->AddComponent(new EditText());
+	testEditText->GetComponent<EditText>()->Init();
+
 	testNoClipUI.Init();
 	testNoClipUI.uiRenderer->Init(100.f, 100.f);
 	testNoClipUI.SetActive(false);
@@ -83,6 +90,7 @@ HRESULT SampleScene::Init()
 void SampleScene::Update()
 {
 	testInt++;
+	testEditText->Update();
 	//background.Update();
 	testAnimObj.Update();
 	testAnimObj2.Update();
@@ -135,12 +143,13 @@ void SampleScene::Render()
 		testAnimObj2.Render();
 		testNoClipObj.Render();
 		MainCam->Render();
-		D2DRENDERER->RenderText(250, 400, L"다람쥐 헌 쳇바퀴에 타고파", 50);
+		testEditText->Render();
+		//D2DRENDERER->RenderText(250, 400, L"다람쥐 헌 쳇바퀴에 타고파", 50);
 		//D2DRENDERER->RenderText(700, 400, L"테스트 텍스트", 20, D2DRenderer::DefaultBrush::Black, DWRITE_TEXT_ALIGNMENT_CENTER,
 		//	L"BMHANNAPro");
-		D2DRENDERER->RenderTextField(400, 400, L"다람쥐 헌 쳇바퀴에 타고파", D2D1::ColorF::Black, 50, 500, 200, 
-			1.f,
-			DWRITE_TEXT_ALIGNMENT_LEADING, L"배달의민족 한나체 Pro");
+		//D2DRENDERER->RenderTextField(400, 400, L"다람쥐 헌 쳇바퀴에 타고파", D2D1::ColorF::Black, 50, 500, 200, 
+		//	1.f,
+		//	DWRITE_TEXT_ALIGNMENT_LEADING, L"배달의민족 한나체 Pro");
 		testUIObj.Render();
 		testButton.Render();
 		testNoClipUI.Render();

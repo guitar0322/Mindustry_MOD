@@ -172,6 +172,21 @@
     <ClCompile Include="UIControler.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="PropFactory.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="PropContainer.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="EditText.cpp">
+      <Filter>Component\Framwork</Filter>
+    </ClCompile>
+    <ClCompile Include="UIManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="EditableText.cpp">
+      <Filter>Gameobject\Framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h" />
@@ -354,6 +369,24 @@
     </ClInclude>
     <ClInclude Include="UIControler.h">
       <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="PropFactory.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="PropContainer.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="PropInfo.h">
+      <Filter>헤더파일</Filter>
+    </ClInclude>
+    <ClInclude Include="EditText.h">
+      <Filter>Component\Framwork</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="EditableText.h">
+      <Filter>Gameobject\Framework</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

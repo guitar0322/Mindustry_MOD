@@ -16,6 +16,7 @@ void UIRenderer::Init(string clipName)
 	{
 		throw("UIrenderer Init error. Invalid AnimationClip");
 	}
+	_clipName = clipName;
 	_targetBitmap = targetClip->GetBitmap();
 	_frameWidth = targetClip->GetFrameWidth();
 	_frameHeight = targetClip->GetFrameHeight();
@@ -27,6 +28,7 @@ void UIRenderer::Init(string clipName)
 
 void UIRenderer::Init(float width, float height)
 {
+	_clipName = "";
 	_frameWidth = width;
 	_frameHeight = height;
 	_curFrameX = 0;
@@ -47,6 +49,10 @@ void UIRenderer::Render()
 	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
 		D2DRENDERER->DrawRectangleUI(_rc, D2DRenderer::DefaultBrush::Gray);
+	}
+	if (_targetBitmap == nullptr)
+	{
+		return;
 	}
 	D2D1_SIZE_F bitmapSize = _targetBitmap->GetSize();
 	//그려질 영역
@@ -80,11 +86,7 @@ void UIRenderer::Render()
 	);
 	D2DRENDERER->GetRenderTarget()->SetTransform(rotation * scale);
 
-	if (_targetBitmap == nullptr)
-	{
-		D2DRENDERER->GetRenderTarget()->SetTransform(D2D1::Matrix3x2F::Identity());
-		return;
-	}
+
 	D2DRENDERER->GetRenderTarget()->DrawBitmap(_targetBitmap, backbufferArea, _alpha, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, clipArea);
 	D2DRENDERER->GetRenderTarget()->SetTransform(D2D1::Matrix3x2F::Identity());
 }

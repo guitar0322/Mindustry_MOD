@@ -17,6 +17,8 @@ playGround::~playGround()
 //초기화는 여기다 하세요 제발
 HRESULT playGround::init()
 {
+	CLIPMANAGER->AddClip("ui_frame", "sprites/ui/pane-build.png", 378, 318);
+
 	gameNode::init(true);
 	_camShakeFrame = 0;
 	
@@ -26,14 +28,14 @@ HRESULT playGround::init()
 
 	SampleScene* sampleScene = new SampleScene();
 	SCENEMANAGER->AddScene("sample", sampleScene);
-	SCENEMANAGER->LoadScene("sample");
+	//SCENEMANAGER->LoadScene("sample");
 
 	SampleScene2* sampleScene2 = new SampleScene2();
 	SCENEMANAGER->AddScene("sample2", sampleScene2);
 
 	GameScene* gameScene = new GameScene();
 	SCENEMANAGER->AddScene("game", gameScene);
-	//SCENEMANAGER->LoadScene("game");
+	SCENEMANAGER->LoadScene("game");
 
 	//플레이어 회전 설계
 	//앵글을 깍아줄지 늘려줄지 정하는방법

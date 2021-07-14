@@ -16,6 +16,7 @@ private:
     int _curFrameX;
     int _curFrameY;
     Rect _rc;
+    string _clipName;
 public:
     Renderer();
     ~Renderer();
@@ -32,9 +33,9 @@ public:
     int GetWidth() const { return _frameWidth; }
     int GetHeight() const { return _frameHeight; }
     Rect GetRc() { return _rc; }
-
-    void ChangeTargetBitmap(ID2D1Bitmap* newBitmap, float frameWidth, float frameHeight);
-    void ChangeTargetBitmap(ID2D1Bitmap* newBitmap, float frameWidth, float frameHeight, bool isInitFrame);
+    string GetClipName() const { return _clipName; }
+    void ChangeTargetBitmap(string newClipName);
+    void ChangeTargetBitmap(string newClipName, int startFrame);
     void SetFrameX(int frameX) { _curFrameX = frameX; }
     void SetFrameY(int frameY) { _curFrameY = frameY; }
 };
