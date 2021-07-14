@@ -93,7 +93,6 @@ void TitleScene::Update()
 		_choiceGoBackButton = true;
 		if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 		{
-			_grab = false;
 			_inInfo = false;
 			_inSetting = false;
 			_alphaTrigger = false;
