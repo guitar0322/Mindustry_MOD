@@ -13,6 +13,7 @@ D2DRenderer::D2DRenderer()
 	this->AddTextFormat(L"¸¼Àº°íµñ");
 	this->AddTextFormat(L"¹è´ÞÀÇ¹ÎÁ· ÇÑ³ªÃ¼ Pro");
 	this->AddTextFormat(L"-À±µðÀÚÀÎÀ¥µ¸¿ò");
+	this->AddTextFormat(L"fontello");
 	mD2DRenderTarget->SetAntialiasMode(D2D1_ANTIALIAS_MODE_ALIASED);
 }
 

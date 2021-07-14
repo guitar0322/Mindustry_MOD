@@ -5,11 +5,13 @@
 #include "MapScene.h"
 #include "ShootingScene.h"
 #include "GameScene.h"
+/* SHUNG 21.07.12 */
+#include "IntroScene.h"
+#include "TitleScene.h"
+
 playGround::playGround()
 {
-
 }
-
 
 playGround::~playGround()
 {
@@ -27,7 +29,6 @@ HRESULT playGround::init()
 
 	SampleScene* sampleScene = new SampleScene();
 	SCENEMANAGER->AddScene("sample", sampleScene);
-	//SCENEMANAGER->LoadScene("sample");
 
 	SampleScene2* sampleScene2 = new SampleScene2();
 	SCENEMANAGER->AddScene("sample2", sampleScene2);
@@ -38,13 +39,14 @@ HRESULT playGround::init()
 
 	GameScene* gameScene = new GameScene();
 	SCENEMANAGER->AddScene("game", gameScene);
-	//SCENEMANAGER->LoadScene("game");
+	
+	/* SHUNG 21.07.12 */
+	IntroScene* introScene = new IntroScene();
+	SCENEMANAGER->AddScene("intro", introScene);
 
-	//플레이어 회전 설계
-	//앵글을 깍아줄지 늘려줄지 정하는방법
-	//현재앵글 - 목표앵글이 180보다 크면 줄여준다
-	//앵글이 음수가 되면 360 - 음수절대값 으로 바꿔준다
-	//앵글이 360보다 커지면 0 + 남는값으로 바꿔준다.
+	TitleScene* titleScene = new TitleScene();
+	SCENEMANAGER->AddScene("title", titleScene);
+	SCENEMANAGER->LoadScene("title");
 
 	//_mainCam.transform->SetX(_mainCam.transform->GetX() + 100);
 	//testParticle = new image();
