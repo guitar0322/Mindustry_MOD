@@ -79,6 +79,7 @@ using namespace HDY_UTIL;
 #define TXTDATAMANAGER TextDataManager::getSingleton()
 #define CLIPMANAGER ClipManager::getSingleton()
 #define EFFECTMANAGER EffectManager::getSingleton()
+#define UIMANAGER UIManager::getSingleton()
 #define D2DRENDERER D2DRenderer::GetInstance()
 
 #define MainCam CAMERAMANAGER->GetMainCam()
@@ -98,6 +99,7 @@ using namespace HDY_UTIL;
 extern HINSTANCE _hInstance;
 extern HWND _hWnd;
 extern Vector2 _ptMouse;
+extern char _inputChar;
 extern char debug[3][128];
 extern char error[128];
 extern HDC _hdc;

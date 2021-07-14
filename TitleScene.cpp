@@ -195,7 +195,7 @@ void TitleScene::ClipManager()
 	CLIPMANAGER->AddClip("editor", "sprites/title/editor.png", 42, 42);
 	CLIPMANAGER->AddClip("settings", "sprites/title/settings.png", 42, 42);
 	CLIPMANAGER->AddClip("about", "sprites/title/about.png", 42, 42);
-	CLIPMANAGER->AddClip("exit", "sprites/title/exit.png", 42, 42);
+	CLIPMANAGER->AddClip("title_exit", "sprites/title/exit.png", 42, 42);
 
 	/* Menu Board */
 	CLIPMANAGER->AddClip("board", "sprites/title/board.png", 480, 3000);
@@ -228,7 +228,7 @@ void TitleScene::RenderAndPositionManager()
 	_settingButtonImg.transform->SetPosition(BACKGROUND_WIDTH / 2 - 400, BACKGROUND_HEIGHT / 2);
 	_abuotButtonImg.renderer->Init("about");
 	_abuotButtonImg.transform->SetPosition(BACKGROUND_WIDTH / 2 - 400, BACKGROUND_HEIGHT / 2 + 100);
-	_exitButtonImg.renderer->Init("exit");
+	_exitButtonImg.renderer->Init("title_exit");
 	_exitButtonImg.transform->SetPosition(BACKGROUND_WIDTH / 2 - 400, BACKGROUND_HEIGHT / 2 + 200);
 
 	/* Menu Board */

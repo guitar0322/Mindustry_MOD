@@ -5,6 +5,10 @@ UIBase::UIBase()
 {
 	uiRenderer = new UIRenderer();
 	AddComponent(uiRenderer);
+
+	uiMouseEvent = new UIMouseEvent();
+	AddComponent(uiMouseEvent);
+	uiMouseEvent->Init();
 }
 
 UIBase::~UIBase()
