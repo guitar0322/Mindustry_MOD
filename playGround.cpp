@@ -26,7 +26,7 @@ HRESULT playGround::init()
 	
 	MapScene* mapScene = new MapScene();
 	SCENEMANAGER->AddScene("background", mapScene);
-	SCENEMANAGER->LoadScene("background");
+	//SCENEMANAGER->LoadScene("background");
 
 	//SampleScene* sampleScene = new SampleScene();
 	//SCENEMANAGER->AddScene("sample", sampleScene);
@@ -37,7 +37,7 @@ HRESULT playGround::init()
 
 	PlayerScene* playerScene = new PlayerScene();
 	SCENEMANAGER->AddScene("player", playerScene);
-	SCENEMANAGER->LoadScene("player");
+	//SCENEMANAGER->LoadScene("player");
 	SampleScene* sampleScene = new SampleScene();
 	SCENEMANAGER->AddScene("sample", sampleScene);
 
@@ -46,7 +46,7 @@ HRESULT playGround::init()
 	
 	ShootingScene* shootingScene = new ShootingScene();
 	SCENEMANAGER->AddScene("ShootingScene", shootingScene);
-	//SCENEMANAGER->LoadScene("ShootingScene");
+	SCENEMANAGER->LoadScene("ShootingScene");
 
 	GameScene* gameScene = new GameScene();
 	SCENEMANAGER->AddScene("game", gameScene);
@@ -55,9 +55,9 @@ HRESULT playGround::init()
 	IntroScene* introScene = new IntroScene();
 	SCENEMANAGER->AddScene("intro", introScene);
 
-	TitleScene* titleScene = new TitleScene();
-	SCENEMANAGER->AddScene("title", titleScene);
-	SCENEMANAGER->LoadScene("title");
+	//TitleScene* titleScene = new TitleScene();
+	//SCENEMANAGER->AddScene("title", titleScene);
+	//SCENEMANAGER->LoadScene("title");
 
 	//_mainCam.transform->SetX(_mainCam.transform->GetX() + 100);
 	//testParticle = new image();

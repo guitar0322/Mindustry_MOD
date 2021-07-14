@@ -27,6 +27,5 @@ void EnemyGroundControler::Update()
 	_speedY = -sinf(_angle) * _speed * TIMEMANAGER->getElapsedTime();
 
 	transform->Move(_speedX, _speedY);
-
 	transform->SetAngle(ConvertAngleD2D(_angle));
 }

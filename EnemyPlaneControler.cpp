@@ -43,7 +43,7 @@ void EnemyPlaneControler::Update()
 {
 	_angle = _enemyInfo->GetCoreAngle();						//deltaAngle값을 저장
 
-	if (_chaseCore)							
+	if (_chaseCore)
 	{
 		_isAttack = false;
 		_weaponRebound = false;
@@ -58,7 +58,7 @@ void EnemyPlaneControler::Update()
 
 		_deltaX = _projectileRadius * cosf(_deltaAngle);
 		_deltaY = _projectileRadius * -sinf(_deltaAngle);
-		 
+
 		_projectileManager->FireProjectile(transform->GetX() + _deltaX, transform->GetY() + _deltaY, _deltaAngle, PROJECTILE_TYPE::ENEMY);
 		_weaponRebound = true;
 	}
@@ -75,7 +75,7 @@ void EnemyPlaneControler::Update()
 			}
 		}
 	}
-	
+
 	if (GetDistance(transform->position, _testCoreTransform->position) >= 900)
 	{
 		RandomAngle();
@@ -85,47 +85,12 @@ void EnemyPlaneControler::Update()
 	_speedY = -sinf(_deltaAngle) * _speed * TIMEMANAGER->getElapsedTime();	//deltaAngle 
 
 	transform->Move(_speedX, _speedY);
-	
+
 	_weaponCorrectionX = cosf(_deltaAngle) * _weaponRadius;
 	_weaponCorrectionY = -sinf(_deltaAngle) * _weaponRadius;
 
-	transform->GetChild(0)->SetPosition(transform->GetX() + _weaponCorrectionX * 1.5f, transform->GetY() + _weaponCorrectionY * 1.5f);
-	//transform->GetChild(0)->SetScale(3, 3);
-
-	_x = GetAngle(transform->position, _testCoreTransform->position);
-	_x = _y;
-
-	float PI = Math::PI;
-	if(_weaponRebound)
-	{
-		if (_x <= Math ::PI || _x >= -Math::PI)
-		{
-			transform->GetChild(0)->Move(_rebound * TIMEMANAGER->getElapsedTime(), _rebound * TIMEMANAGER->getElapsedTime() + _y);
-			_reboundTime += TIMEMANAGER->getElapsedTime();
-			     
-			if (_reboundTime >= 1.f)
-			{
-				transform->GetChild(0)->Move(-_rebound * TIMEMANAGER->getElapsedTime(), -_rebound * TIMEMANAGER->getElapsedTime());
-				_reboundTime = 0.f;
-				_weaponRebound = false;
-			}
-		}
-		//else
-		//{
-		//	transform->GetChild(0)->Move(-_rebound * TIMEMANAGER->getElapsedTime() , -_rebound * TIMEMANAGER->getElapsedTime()- _y);
-		//	_reboundTime += TIMEMANAGER->getElapsedTime();
-		//
-		//	if (transform->GetChild(0)->GetX() >= transform->GetX() && _reboundTime >= 1.f)
-		//	{
-		//		transform->GetChild(0)->Move(_rebound * TIMEMANAGER->getElapsedTime(), _rebound * TIMEMANAGER->getElapsedTime());
-		//		_reboundTime = 0.f;
-		//		_weaponRebound = false;
-		//	}
-		//}
-	}
-
 	transform->SetAngle(ConvertAngleD2D(_deltaAngle));
-	transform->GetChild(0)->SetAngle(ConvertAngleD2D(_deltaAngle));
+
 }
 
 void EnemyPlaneControler::RandomAngle()		

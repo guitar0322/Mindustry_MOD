@@ -245,6 +245,7 @@ void TitleScene::RenderAndPositionManager()
 	_inSetting = false;
 	_alphaTrigger = false;
 	_choiceSoundSettingButton = false;
+	_grab = false;
 
 	/* 최상단 황금색 설정 부분 */
 	_settingTitleImg.renderer->Init("settingtitle");

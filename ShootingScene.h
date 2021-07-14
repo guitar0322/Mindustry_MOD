@@ -18,14 +18,8 @@ private:
 	AnimObject* _testCore;					//TEST용입니다 삭제해도 됩니다
 	
 	EnemyPlane* _enemyPlane;
-	GameObject* _enemyPlaneWeapon;
 
 	EnemyGround* _enemyGround;
-	GameObject* _enemyGround_Leg_Right;
-	GameObject* _enemyGround_Leg_Left;
-	GameObject* _enemyGround_Weapon_Right;
-	GameObject* _enemyGround_Weapon_Left;
-
 	GameObject* _projectileManager;
 
 public:
