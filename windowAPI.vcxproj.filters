@@ -236,6 +236,21 @@
     <ClCompile Include="Prop.cpp">
       <Filter>Prop\Object</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerControler.cpp" />
+    <ClCompile Include="PlayerScene.cpp" />
+    <ClCompile Include="CopperWall.cpp">
+      <Filter>Prop\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Turret.cpp">
+      <Filter>Prop\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Duo.cpp">
+      <Filter>Prop\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Conveyor.cpp">
+      <Filter>Prop\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h" />
@@ -483,6 +498,21 @@
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="GameMap.h" />
     <ClInclude Include="Prop.h">
+      <Filter>Prop\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerControler.h" />
+    <ClInclude Include="PlayerScene.h" />
+    <ClInclude Include="CopperWall.h">
+      <Filter>Prop\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Turret.h">
+      <Filter>Prop\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Duo.h">
+      <Filter>Prop\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Conveyor.h">
       <Filter>Prop\Object</Filter>
     </ClInclude>
   </ItemGroup>

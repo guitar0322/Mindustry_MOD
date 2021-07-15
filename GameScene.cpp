@@ -15,6 +15,7 @@ HRESULT GameScene::Init()
     propContainer = new PropContainer();
     propFactory = new PropFactory();
     propFactory->Init();
+    propFactory->propContainer = propContainer;
 
     uiControler = new UIControler();
     uiControler->Init();
@@ -28,6 +29,7 @@ HRESULT GameScene::Init()
     uiControler->wallIconV = &wallIconV;
     uiControler->preIconV = &turretIconV;
 
+    uiControler->propFactory = propFactory;
 	gameMap = new GameMap;
 	gameMap->Init();
 
@@ -41,6 +43,8 @@ HRESULT GameScene::Init()
 void GameScene::Update()
 {
     buildingCategoryFrame.Update();
+    propFactory->Update();
+    propContainer->Update();
     uiControler->Update();
     propPreview.Update();
 	gameMap->Update();
@@ -66,6 +70,8 @@ void GameScene::Update()
 void GameScene::Render()
 {
 	gameMap->Render();
+    propFactory->Render();
+    propContainer->Render();
     propPreview.Render();
     uiControler->Render();
 

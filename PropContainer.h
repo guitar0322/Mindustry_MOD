@@ -1,10 +1,12 @@
 #pragma once
+#include <map>
+class Prop;
+
 class PropContainer
 {
 private:
-	typedef ImageObject TILE;
-	vector<TILE*> _tileV;
-	vector<TILE*> _tilePreview;
+	map<wstring, vector<Prop*>> _propVectorMap;
+	map<wstring, vector<Prop*>>::iterator _propVectorMapIter;
 public:
 	PropContainer();
 	~PropContainer();
@@ -13,5 +15,6 @@ public:
 	void Update();
 	void Render();
 	void LoadTileMap();
+	void AddProp(wstring propName, Prop* newProp);
 };
 
