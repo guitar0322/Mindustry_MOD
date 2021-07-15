@@ -214,6 +214,18 @@
     <ClCompile Include="ShootingScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="EditableText.cpp" />
+    <ClCompile Include="EditText.cpp" />
+    <ClCompile Include="PropContainer.cpp" />
+    <ClCompile Include="PropFactory.cpp" />
+    <ClCompile Include="UIManager.cpp" />
+    <ClCompile Include="TitleUIControler.cpp" />
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="IntroScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h" />
@@ -437,6 +449,19 @@
       <Filter>Projectile</Filter>
     </ClInclude>
     <ClInclude Include="ShootingScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="EditableText.h" />
+    <ClInclude Include="EditText.h" />
+    <ClInclude Include="PropInfo.h" />
+    <ClInclude Include="PropContainer.h" />
+    <ClInclude Include="PropFactory.h" />
+    <ClInclude Include="UIManager.h" />
+    <ClInclude Include="TitleUIControler.h" />
+    <ClInclude Include="TitleScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>

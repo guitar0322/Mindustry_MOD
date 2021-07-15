@@ -36,6 +36,11 @@ private:
     vector<GameObject*> railIconV;
 
     int selectCategoryIdx;
+
+    /* SHUNG 210715 */
+    UIBase _choiceImg;
+    Button _CoreSlice;
+
 public:
     virtual HRESULT Init();
     virtual void Update();
