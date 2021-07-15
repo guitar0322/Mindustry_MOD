@@ -58,7 +58,7 @@ HRESULT playGround::init()
 	TitleScene* titleScene = new TitleScene();
 	SCENEMANAGER->AddScene("title", titleScene);
 
-	SCENEMANAGER->LoadScene("background");
+	SCENEMANAGER->LoadScene("title");
 
 	//_mainCam.transform->SetX(_mainCam.transform->GetX() + 100);
 	//testParticle = new image();
@@ -127,7 +127,7 @@ void playGround::render()
 	SCENEMANAGER->Render();
 	wstring fps = L"FPS : ";
 	fps.append(to_wstring(TIMEMANAGER->getFPS()));
-	D2DRENDERER->RenderText(10, 10, fps, 30);
+	D2DRENDERER->RenderText(10, 10, fps, 30, L"맑은고딕", D2DRenderer::DefaultBrush::White);
 	//==================================================
 	//여기도 건들지마라
 	//_ui.Render();

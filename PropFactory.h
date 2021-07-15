@@ -9,13 +9,15 @@ private:
 	typedef struct tagPropInfo {
 		float buildTime;
 		int size;
+		int resources;
 		string clipName;
 	}PROPINFO;
 
 	typedef struct tagQueueProp {
 		int x;
 		int y;
-		GameObject* prop;
+		int catagory;
+		int propIdx;
 	}ELEMPROP;
 private:
 	queue<ELEMPROP> _propQueue;

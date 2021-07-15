@@ -55,8 +55,8 @@ public:
 	void SetRenderSize(int width, int height) { _renderWidth = width; _renderHeight = height;}
 	void Shake(int weight, int mode);
 	void ShakeOff();
-	int GetRenderWidth() { return _renderWidth; }
-	int GetRenderHeight() { return _renderHeight; }
-	pair<int, int> GetRenderSize() { return { _renderWidth, _renderHeight }; }
+	float GetRenderWidth() { return _renderWidth / _zoomScale; }
+	float GetRenderHeight() { return _renderHeight / _zoomScale; }
+	pair<int, int> GetRenderSize() { return { _renderWidth / _zoomScale, _renderHeight / _zoomScale }; }
 };
 

@@ -14,6 +14,7 @@ void ProjectileManager::Init()
 	for (int i = 0; i < ENEMY_PROJECTILE_MAX;  i++)
 	{
 		_enemyProjectile = new ProjectileObject();
+		_enemyProjectile->tag = TAGMANAGER->GetTag("enemy");
 		_enemyProjectile->GetRendererComponent()->Init("enemy_projectile");
 		_enemyProjectile->GetProjectileComponent()->SetSpeed(500.f);
 		_enemyProjectile->SetActive(false);
@@ -54,12 +55,12 @@ void ProjectileManager::ProjectileMove()
 	for (int i = 0; i < ENEMY_PROJECTILE_MAX; i++)
 	{
 		if (_enemyProjectileV[i]->isActive == false) continue;
-		_enemyProjectileV[i]->GetProjectileComponent()->Update();
+		_enemyProjectileV[i]->Update();
 	}
 	for (int i = 0; i < PLAYER_PROJECTILE_MAX; i++)
 	{
 		if (_playerProjectileV[i]->isActive == false) continue;
-		_playerProjectileV[i]->GetProjectileComponent()->Update();
+		_playerProjectileV[i]->Update();
 	}
 }
 

@@ -42,6 +42,7 @@ void PropFactory::AddPropElem(unordered_map<int, ImageObject>* propList,int cate
 	unordered_map<int, ImageObject>::iterator mapIter;
 	for (mapIter = (*propList).begin(); mapIter != (*propList).end(); mapIter++)
 	{
+		ELEMPROP newProp;
 		tileX = mapIter->first % TILENUMX;
 		tileY = mapIter->first / TILENUMX;
 	}
@@ -49,8 +50,8 @@ void PropFactory::AddPropElem(unordered_map<int, ImageObject>* propList,int cate
 
 void PropFactory::InitPropInfo()
 {
-	_propInfoV[TURRET].push_back({ 0.3f, 1, "duo" });
-	_propInfoV[PRODUCTION].push_back({ 0.1f, 2, "mechanical_drill" });
-	_propInfoV[RAIL].push_back({ 0.1f, 1, "conveyor" });
-	_propInfoV[DEFENSE].push_back({ 0.3f, 1, "copper_wall" });
+	_propInfoV[TURRET].push_back({ 0.3f, 1, 10, "duo" });
+	_propInfoV[PRODUCTION].push_back({ 0.1f, 2, 10, "mechanical_drill" });
+	_propInfoV[RAIL].push_back({ 0.1f, 1, 10, "conveyor" });
+	_propInfoV[DEFENSE].push_back({ 0.3f, 1, 10, "copper_wall" });
 }

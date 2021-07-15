@@ -200,6 +200,7 @@
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="ProjectileManager.h" />
     <ClInclude Include="ProjectileObject.h" />
+    <ClInclude Include="PropStat.h" />
     <ClInclude Include="randomFunction.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Renderer.h" />
@@ -286,6 +287,7 @@
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="ProjectileManager.cpp" />
     <ClCompile Include="ProjectileObject.cpp" />
+    <ClCompile Include="PropStat.cpp" />
     <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="SampleScene.cpp" />

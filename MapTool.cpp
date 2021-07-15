@@ -168,7 +168,7 @@ void MapTool::Render()
 	int tileEnd = (MainCam->GetCameraStartX() + MainCam->GetRenderWidth()) / TILESIZE + 2;
 	if (tileEnd > TILENUMX - 1)
 		tileEnd = TILENUMX - 1;
-
+	cout << tileEnd << endl;
 	for (int i = tileStart; i < tileEnd; ++i)
 	{
 		for (int j = tileStart; j < tileEnd; ++j)
@@ -511,7 +511,7 @@ bool MapTool::MouseInTile()
 	int tileY = mouseWorldY / TILESIZE;
 
 	//undo Iter
-	_undoHashIter = _undoHash.find(tileY * 10 + tileX);
+	_undoHashIter = _undoHash.find(tileY * TILENUMX + tileX);
 
 	if (_undoHashIter != _undoHash.end())
 	{
@@ -523,7 +523,7 @@ bool MapTool::MouseInTile()
 	}
 
 	//resources Iter
-	_resourcesHashIter = _resourcesHash.find(tileY * 10 + tileX);
+	_resourcesHashIter = _resourcesHash.find(tileY * TILENUMX + tileX);
 
 	if (_resourcesHashIter != _resourcesHash.end())
 	{
