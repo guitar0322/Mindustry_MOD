@@ -76,6 +76,7 @@ bool BoxCollider::CheckCollision()
 			}
 			else
 			{
+
 				AddOverlapCol(colV[i]);
 				colV[i]->AddOverlapCol(this);
 			}
@@ -165,11 +166,12 @@ void BoxCollider::Render()
 void BoxCollider::OnDisable()
 {
 	COLLIDERMANAGER->EraseCollider(this);
-	for (int i = 0; i < _overlapColV.size(); i++)
+	int colNum = _overlapColV.size();
+	for (int i = 0; i < colNum; i++)
 	{
-		this->gameObject->OnTriggerExit(_overlapColV[i]->gameObject);
-		_overlapColV[i]->gameObject->OnTriggerExit(this->gameObject);
-		RemoveOverlapCol(_overlapColV[i]);
+		this->gameObject->OnTriggerExit(_overlapColV[0]->gameObject);
+		_overlapColV[0]->gameObject->OnTriggerExit(this->gameObject);
+		RemoveOverlapCol(_overlapColV[0]);
 	}
 	//COLLIDERMANAGER->RemoveCollider(this);
 }

@@ -35,9 +35,8 @@ void Projectile::Move()
 
 void Projectile::OnTriggerEnter(GameObject * gameObject)
 {
-	if(gameObject->tag == TAGMANAGER->GetTag("enemy"))
 	if (gameObject->tag == TAGMANAGER->GetTag("player"))
 	{
-		transform->gameObject->isActive = false;
+		transform->gameObject->SetActive(false);
 	}
 }

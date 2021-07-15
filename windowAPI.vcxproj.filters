@@ -205,6 +205,52 @@
     <ClCompile Include="ShootingScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="PropContainer.cpp" />
+    <ClCompile Include="PropFactory.cpp" />
+    <ClCompile Include="EditText.cpp">
+      <Filter>Component\Framwork</Filter>
+    </ClCompile>
+    <ClCompile Include="IntroScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="UIManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="EditableText.cpp">
+      <Filter>Gameobject\Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="PropStat.cpp">
+      <Filter>Prop\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="EditableText.cpp" />
+    <ClCompile Include="EditText.cpp" />
+    <ClCompile Include="IntroScene.cpp" />
+    <ClCompile Include="PropContainer.cpp" />
+    <ClCompile Include="PropFactory.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="UIManager.cpp" />
+    <ClCompile Include="GameMap.cpp" />
+    <ClCompile Include="Prop.cpp">
+      <Filter>Prop\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerControler.cpp" />
+    <ClCompile Include="PlayerScene.cpp" />
+    <ClCompile Include="CopperWall.cpp">
+      <Filter>Prop\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Turret.cpp">
+      <Filter>Prop\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Duo.cpp">
+      <Filter>Prop\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Conveyor.cpp">
+      <Filter>Prop\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h" />
@@ -421,6 +467,54 @@
     <ClInclude Include="ShootingScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
+    <ClInclude Include="PropInfo.h" />
+    <ClInclude Include="PropContainer.h" />
+    <ClInclude Include="PropFactory.h" />
+    <ClInclude Include="EditText.h">
+      <Filter>Component\Framwork</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="EditableText.h">
+      <Filter>Gameobject\Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="PropStat.h">
+      <Filter>Prop\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="EditableText.h" />
+    <ClInclude Include="EditText.h" />
+    <ClInclude Include="IntroScene.h" />
+    <ClInclude Include="PropInfo.h" />
+    <ClInclude Include="PropContainer.h" />
+    <ClInclude Include="PropFactory.h" />
+    <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="UIManager.h" />
+    <ClInclude Include="GameMap.h" />
+    <ClInclude Include="Prop.h">
+      <Filter>Prop\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerControler.h" />
+    <ClInclude Include="PlayerScene.h" />
+    <ClInclude Include="CopperWall.h">
+      <Filter>Prop\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Turret.h">
+      <Filter>Prop\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Duo.h">
+      <Filter>Prop\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Conveyor.h">
+      <Filter>Prop\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="windowAPI.rc" />
@@ -454,9 +548,6 @@
     <Filter Include="Playground">
       <UniqueIdentifier>{41108d82-d3b9-4357-bfd1-b83526e48e1a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene">
-      <UniqueIdentifier>{8c1e3ca4-f72a-411b-b346-bd0aa24e763a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Geometry">
       <UniqueIdentifier>{91e16d7c-03fe-4390-86f5-fd7f4552fc0c}</UniqueIdentifier>
     </Filter>
@@ -474,6 +565,18 @@
     </Filter>
     <Filter Include="Projectile">
       <UniqueIdentifier>{650faf36-bfab-4a06-b718-a458d5ed9c51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Prop">
+      <UniqueIdentifier>{c80d18fe-0522-4c85-b073-726fc815a3cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Prop\Component">
+      <UniqueIdentifier>{c8620b5d-a4da-4111-8037-af6d838ee9f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Prop\Object">
+      <UniqueIdentifier>{0dc91057-20d9-4dbc-abec-ada6ce731c6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{8c1e3ca4-f72a-411b-b346-bd0aa24e763a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

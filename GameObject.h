@@ -26,7 +26,7 @@ public:
 	GameObject();
 	~GameObject();
 	Transform* transform;
-	string name;
+	wstring name;
 	bool isActive;
 	int tag;
 	virtual void Init();

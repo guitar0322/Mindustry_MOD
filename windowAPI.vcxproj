@@ -162,7 +162,10 @@
     <ClInclude Include="ColliderManager.h" />
     <ClInclude Include="commonMacroFunction.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="Conveyor.h" />
+    <ClInclude Include="CopperWall.h" />
     <ClInclude Include="D2DRenderer.h" />
+    <ClInclude Include="Duo.h" />
     <ClInclude Include="EditableText.h" />
     <ClInclude Include="EditText.h" />
     <ClInclude Include="EffectManager.h" />
@@ -175,6 +178,7 @@
     <ClInclude Include="EnemyObject.h" />
     <ClInclude Include="EnemyPlane.h" />
     <ClInclude Include="EnemyPlaneControler.h" />
+    <ClInclude Include="GameMap.h" />
     <ClInclude Include="gameNode.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameScene.h" />
@@ -196,10 +200,12 @@
     <ClInclude Include="PlayerControler.h" />
     <ClInclude Include="PlayerScene.h" />
     <ClInclude Include="playGround.h" />
+    <ClInclude Include="Prop.h" />
     <ClInclude Include="PropInfo.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="ProjectileManager.h" />
     <ClInclude Include="ProjectileObject.h" />
+    <ClInclude Include="PropStat.h" />
     <ClInclude Include="randomFunction.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Renderer.h" />
@@ -224,6 +230,7 @@
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TriggerTest.h" />
+    <ClInclude Include="Turret.h" />
     <ClInclude Include="UIBase.h" />
     <ClInclude Include="UIControler.h" />
     <ClInclude Include="UIManager.h" />
@@ -250,8 +257,11 @@
     <ClCompile Include="ClipManager.cpp" />
     <ClCompile Include="ColliderManager.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="Conveyor.cpp" />
+    <ClCompile Include="CopperWall.cpp" />
     <ClCompile Include="D2DRenderer+Draw.cpp" />
     <ClCompile Include="D2DRenderer.cpp" />
+    <ClCompile Include="Duo.cpp" />
     <ClCompile Include="EditableText.cpp" />
     <ClCompile Include="EditText.cpp" />
     <ClCompile Include="EffectManager.cpp" />
@@ -264,6 +274,7 @@
     <ClCompile Include="EnemyObject.cpp" />
     <ClCompile Include="EnemyPlane.cpp" />
     <ClCompile Include="EnemyPlaneControler.cpp" />
+    <ClCompile Include="GameMap.cpp" />
     <ClCompile Include="gameNode.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameScene.cpp" />
@@ -286,6 +297,8 @@
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="ProjectileManager.cpp" />
     <ClCompile Include="ProjectileObject.cpp" />
+    <ClCompile Include="Prop.cpp" />
+    <ClCompile Include="PropStat.cpp" />
     <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="SampleScene.cpp" />
@@ -310,6 +323,7 @@
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TriggerTest.cpp" />
+    <ClCompile Include="Turret.cpp" />
     <ClCompile Include="UIBase.cpp" />
     <ClCompile Include="UIControler.cpp" />
     <ClCompile Include="UIManager.cpp" />

@@ -10,7 +10,8 @@ HRESULT MapScene::Init()
 	MainCam->SetScreenStart(240, 0);
 	MainCam->SetScreenSize(WINSIZEY, WINSIZEY);
 	MainCam->SetRenderSize(1600, 1600);
-	MainCam->transform->SetX(568 / 2);
+	MainCam->transform->SetPosition(1600 / 2, 1600 / 2);
+
 	_background.Init();
 	_background.renderer->Init("background");
 	_background.transform->SetPosition(MAPWIDTH / 2, MAPHEIGHT / 2);
@@ -30,13 +31,13 @@ HRESULT MapScene::Init()
 
 void MapScene::Update()
 {
-	_background.Update();
+	//_background.Update();
 	_mapTool.Update();
 }
 
 void MapScene::Render()
 {
-	_background.Render();
+	//_background.Render();
 	_mapTool.Render();
 	MainCam->Render();
 }

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ShootingScene.h"
 #include "ProjectileManager.h"
+#include <iostream>
 ShootingScene::ShootingScene()
 {
 }

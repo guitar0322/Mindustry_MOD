@@ -2,7 +2,6 @@
 #include "playGround.h"
 #include "SampleScene.h"
 #include "SampleScene2.h"
-#include "PlayerScene.h"
 #include "MapScene.h"
 #include "ShootingScene.h"
 #include "GameScene.h"
@@ -28,19 +27,21 @@ HRESULT playGround::init()
 	
 	MapScene* mapScene = new MapScene();
 	SCENEMANAGER->AddScene("background", mapScene);
+	//SCENEMANAGER->LoadScene("background");
 
 	PlayerScene* playerScene = new PlayerScene();
 	SCENEMANAGER->AddScene("player", playerScene);
 
+
 	SampleScene* sampleScene = new SampleScene();
 	SCENEMANAGER->AddScene("sample", sampleScene);
+	//SCENEMANAGER->LoadScene("sample");
 
 	SampleScene2* sampleScene2 = new SampleScene2();
 	SCENEMANAGER->AddScene("sample2", sampleScene2);
 	
 	ShootingScene* shootingScene = new ShootingScene();
 	SCENEMANAGER->AddScene("ShootingScene", shootingScene);
-	SCENEMANAGER->LoadScene("ShootingScene");
 
 	GameScene* gameScene = new GameScene();
 	SCENEMANAGER->AddScene("game", gameScene);
@@ -52,6 +53,7 @@ HRESULT playGround::init()
 	TitleScene* titleScene = new TitleScene();
 	SCENEMANAGER->AddScene("title", titleScene);
 
+	SCENEMANAGER->LoadScene("ShootingScene");
 
 	//_mainCam.transform->SetX(_mainCam.transform->GetX() + 100);
 	//testParticle = new image();
@@ -120,7 +122,7 @@ void playGround::render()
 	SCENEMANAGER->Render();
 	wstring fps = L"FPS : ";
 	fps.append(to_wstring(TIMEMANAGER->getFPS()));
-	D2DRENDERER->RenderText(10, 10, fps, 30);
+	D2DRENDERER->RenderText(10, 10, fps, 30, L"맑은고딕", D2DRenderer::DefaultBrush::White);
 	//==================================================
 	//여기도 건들지마라
 	//_ui.Render();

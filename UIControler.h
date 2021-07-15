@@ -1,6 +1,7 @@
 #pragma once
 #include "PropFactory.h"
-#include <unordered_map>
+#include <map>
+#include <queue>
 
 using namespace std;
 #define CATEGORY_NUM 4
@@ -10,10 +11,11 @@ private:
     int _selectCategoryIdx;
     int _selectPropIdx;
     vector<string> _clipArr[CATEGORY_NUM];
-    unordered_map<int, ImageObject> _previewMap;
-    unordered_map<int, ImageObject>::iterator _previewMapIter;
-    PropFactory* _propFactory;
+    map<int, ImageObject> _previewMap;
+    map<int, ImageObject>::iterator _previewMapIter;
+    queue<int> _propQueue;
 public:
+    PropFactory* propFactory;
     UIControler();
     ~UIControler();
     GameObject* categorySelect;
