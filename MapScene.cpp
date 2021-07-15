@@ -11,6 +11,7 @@ HRESULT MapScene::Init()
 	MainCam->SetScreenSize(WINSIZEY, WINSIZEY);
 	MainCam->SetRenderSize(1600, 1600);
 	MainCam->transform->SetX(568 / 2);
+
 	_background.Init();
 	_background.renderer->Init("background");
 	_background.transform->SetPosition(MAPWIDTH / 2, MAPHEIGHT / 2);

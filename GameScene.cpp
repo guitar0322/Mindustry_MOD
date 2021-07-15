@@ -21,6 +21,15 @@ HRESULT GameScene::Init()
     uiControler->wallIconV = &wallIconV;
     uiControler->preIconV = &turretIconV;
 
+	gameMap = new GameMap;
+	gameMap->Init();
+
+	SetBackBufferSize(2400, 1600);
+	MainCam->SetScreenStart(0, 0);
+	MainCam->SetScreenSize(WINSIZEX, WINSIZEY);
+	MainCam->SetRenderSize(2400, 1600);
+
+
     InitClip();
     InitCategoryUI();
     InitPropUI();
@@ -32,6 +41,8 @@ void GameScene::Update()
     buildingCategoryFrame.Update();
     uiControler->Update();
     propPreview.Update();
+	gameMap->Update();
+
     //카테고리 아이콘 업데이트
     {
 		defenseIcon.Update();
@@ -54,6 +65,8 @@ void GameScene::Render()
 {
     propPreview.Render();
     uiControler->Render();
+	gameMap->Render();
+
     MainCam->Render();
     //카테고리 아이콘 렌더
     {
