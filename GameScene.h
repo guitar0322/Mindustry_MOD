@@ -2,6 +2,9 @@
 #include "Scene.h"
 #include "Button.h"
 #include "GameMap.h"
+#include "Player.h"
+#include "ProjectileManager.h"
+
 #define PROP_UI_STARTX WINSIZEX - 230
 #define PROP_UI_STARTY WINSIZEY - 187
 #define CATEGORY_UI_STARTX WINSIZEX - 65
@@ -13,6 +16,10 @@ class GameScene :
     public Scene
 {
 private:
+	Player* _player;
+	GameObject* _projectileManager;
+
+	//======
     PropContainer* propContainer;
     UIControler* uiControler;
     UIBase categorySelect;
