@@ -28,6 +28,7 @@ HRESULT playGround::init()
 	
 	MapScene* mapScene = new MapScene();
 	SCENEMANAGER->AddScene("background", mapScene);
+	//SCENEMANAGER->LoadScene("background");
 
 	//SampleScene* sampleScene = new SampleScene();
 	//SCENEMANAGER->AddScene("sample", sampleScene);
@@ -41,7 +42,7 @@ HRESULT playGround::init()
 
 	SampleScene* sampleScene = new SampleScene();
 	SCENEMANAGER->AddScene("sample", sampleScene);
-
+	//SCENEMANAGER->LoadScene("sample");
 	SampleScene2* sampleScene2 = new SampleScene2();
 	SCENEMANAGER->AddScene("sample2", sampleScene2);
 	
