@@ -5,7 +5,7 @@
 
 void PlayerControler::Init()
 {
-	_speed = 160.f;
+	_speed = 250.f;
 	_armRecoverySpeed = 10;
 	_targetAngle = 0.f;
 	_breakTime = 0.f;
@@ -24,7 +24,7 @@ void PlayerControler::Update()
 
 	if (_isSlow == true)
 	{
-		_breakTime = 60.f;
+		_breakTime = 180.f;
 		_speed -= _breakTime * TIMEMANAGER->getElapsedTime();
 		
 		//감속할 시간 변수 하나 생성 float
@@ -38,11 +38,13 @@ void PlayerControler::Update()
 			_isSlow = false;
 		}
 	}
-	//플레이어 회전 설계
-	//앵글을 깍아줄지 늘려줄지 정하는방법
-	//현재앵글 - 목표앵글이 180보다 크면 줄여준다
-	//앵글이 음수가 되면 360 - 음수절대값 으로 바꿔준다
-	//앵글이 360보다 커지면 0 + 남는값으로 바꿔준다.
+	/***************************************************************
+	1. 타겟앵글에서 플레이어 앵글을 빼준다
+	2. 결과가 음수일 경우 360을 더한다.
+	3. 그 결과는 타겟앵글과 플레이어 앵글의 시계방향 각도차이
+	4. 시계방향 각도차이가 180도 보다 작다면 시계방향으로 움직인다.
+	5. 아니라면 반시계방향으로 움직인다.
+	 ****************************************************************/
 
 	switch (_dir)
 	{
@@ -98,7 +100,6 @@ void PlayerControler::Update()
 		_targetAngle = 45.f;
 		_dir = RIGHT_UP;
 	}
-
 
 	if (KEYMANAGER->isOnceKeyUp('W') || KEYMANAGER->isOnceKeyUp('S')) // 만약에 W또는 S키를 떼면?
 	{
@@ -206,111 +207,28 @@ void PlayerControler::Update()
 		}
 	}
 
-
 	if (KEYMANAGER->isStayKeyDown('A')) // A키를 누르면
 	{
-	
-		_speed = 160.0f;
-		/*if (_speed > 300.0f)
-		{
-			_speed = 300.0f;
-		}*/
-		float deltaAngle = transform->GetAngle() - _targetAngle; //델타앵글은 겟 앵글(가져온 앵글)에 타겟앵글(목표 앵글) 값을 뺀 값
-		if (deltaAngle > 180) //만약에 델타 앵글이 180도 이상이라면?
-		{
-			if(transform->GetAngle() != _targetAngle) // 또한 겟 앵글이 타겟 앵글과 같지 않다면?
-				transform->Rotate(2.f); // 값 2만큼 시계방향으로 돌아간다.(마이너스이므로 역방향(반시계)으로 돈다)
-			if (transform->GetAngle() > _targetAngle) //만약에 겟 앵글이 타겟 앵글값보다 크다면?
-				transform->SetAngle(_targetAngle); // 타겟앵글값으로 세팅(더이상 돌리기 진행 불가)
-		}
-		else // 나머지(델타 앵글이 180보다 작다면?)
-		{
-			if (transform->GetAngle() != _targetAngle) // 겟 엥글 값이 타겟 앵글값과 같지 않으면? 
-				transform->Rotate(-2.f); // 값 2만큼 시계 반대방향으로 돌아간다.
-
-			if (transform->GetAngle() < _targetAngle) //겟 앵글이 목표 앵글보다 값이 작으면?
-				transform->SetAngle(_targetAngle);// 타겟 앵글값 만큼 세팅(더이상 돌리기 X)
-		}
+		_speed = 250.f;
+		PlayerDirection();
 	}
 
 	if (KEYMANAGER->isStayKeyDown('D'))
 	{
-		_speed = 160.0f;
-
-		/*_speed += 3.0f;
-		if (_speed > 300.0f)
-		{
-			_speed = 300.0f;
-		}*/
-		float deltaAngle = transform->GetAngle() - _targetAngle;
-		if (deltaAngle < 180)
-		{
-			if (transform->GetAngle() != _targetAngle)
-				transform->Rotate(2.f);
-			if (transform->GetAngle() > _targetAngle)
-				transform->SetAngle(_targetAngle);
-		}
-		else
-		{
-			if (transform->GetAngle() != _targetAngle)
-				transform->Rotate(-2.f);
-			if (transform->GetAngle() < _targetAngle)
-				transform->SetAngle(_targetAngle);
-		}
+		_speed = 250.f;
+		PlayerDirection();
 	}
-
 
 	if (KEYMANAGER->isStayKeyDown('W'))
 	{
-		_speed = 160.0f;
-
-		//_speed += 3.0f;
-		//if (_speed > 300.0f)
-		//{
-		//	_speed = 300.0f;
-		//}
-		float deltaAngle = transform->GetAngle() - _targetAngle;
-		if (deltaAngle > 360)
-		{
-			if (transform->GetAngle() != _targetAngle)
-				transform->Rotate(2.f);
-			if (transform->GetAngle() > _targetAngle)
-				transform->SetAngle(_targetAngle);
-		}
-		else
-		{
-			if (transform->GetAngle() != _targetAngle)
-				transform->Rotate(-2.f);
-
-			if (transform->GetAngle() < _targetAngle)
-				transform->SetAngle(_targetAngle);
-		}
+		_speed = 250.f;
+		PlayerDirection();
 	}
 
 	if (KEYMANAGER->isStayKeyDown('S'))
 	{
-		_speed = 160.0f;
-
-	/*	_speed += 3.0f;
-		if (_speed > 300.0f)
-		{
-			_speed = 300.0f;
-		}*/
-		float deltaAngle = transform->GetAngle() - _targetAngle;
-		if (deltaAngle < 180)
-		{
-			if (transform->GetAngle() != _targetAngle)
-				transform->Rotate(2.f);
-			if (transform->GetAngle() > _targetAngle)
-				transform->SetAngle(_targetAngle);
-		}
-		else
-		{
-			if (transform->GetAngle() != _targetAngle)
-				transform->Rotate(-2.f);
-			if (transform->GetAngle() < _targetAngle)
-				transform->SetAngle(_targetAngle);
-		}
+		_speed = 250.f;
+		PlayerDirection();
 	}
 
 	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
@@ -326,7 +244,6 @@ void PlayerControler::Update()
 			{
 				transform->Rotate(2.0f);
 			}
-
 		}
 		else
 		{
@@ -360,6 +277,28 @@ void PlayerControler::Update()
 		}
 		_isLeft = !_isLeft; // 반복되게 하기
 
+	}
+}
+
+void PlayerControler::PlayerDirection()
+{
+	float deltaAngle = _targetAngle - transform->GetAngle();
+
+	if (deltaAngle < 0) deltaAngle += 360;
+
+	if (deltaAngle > 180)
+	{
+		if (transform->GetAngle() != _targetAngle)
+			transform->Rotate(-2.f);
+		if (Math::FloatEqual(_targetAngle, transform->GetAngle()))
+			transform->SetAngle(_targetAngle);
+	}
+	else
+	{
+		if (transform->GetAngle() != _targetAngle)
+			transform->Rotate(2.f);
+		if (Math::FloatEqual(_targetAngle, transform->GetAngle()))
+			transform->SetAngle(_targetAngle);
 	}
 }
 
