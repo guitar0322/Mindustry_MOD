@@ -21,6 +21,8 @@ playGround::~playGround()
 //초기화는 여기다 하세요 제발
 HRESULT playGround::init()
 {
+	CLIPMANAGER->AddClip("ui_frame", "sprites/ui/pane-build.png", 378, 318);
+
 	gameNode::init(true);
 	_camShakeFrame = 0;
 	
@@ -37,7 +39,7 @@ HRESULT playGround::init()
 
 	PlayerScene* playerScene = new PlayerScene();
 	SCENEMANAGER->AddScene("player", playerScene);
-	SCENEMANAGER->LoadScene("player");
+
 	SampleScene* sampleScene = new SampleScene();
 	SCENEMANAGER->AddScene("sample", sampleScene);
 	//SCENEMANAGER->LoadScene("sample");
@@ -46,7 +48,6 @@ HRESULT playGround::init()
 	
 	ShootingScene* shootingScene = new ShootingScene();
 	SCENEMANAGER->AddScene("ShootingScene", shootingScene);
-	//SCENEMANAGER->LoadScene("ShootingScene");
 
 	GameScene* gameScene = new GameScene();
 	SCENEMANAGER->AddScene("game", gameScene);
@@ -126,7 +127,7 @@ void playGround::render()
 	SCENEMANAGER->Render();
 	wstring fps = L"FPS : ";
 	fps.append(to_wstring(TIMEMANAGER->getFPS()));
-	D2DRENDERER->RenderText(10, 10, fps, 30);
+	D2DRENDERER->RenderText(10, 10, fps, 30, L"맑은고딕", D2DRenderer::DefaultBrush::White);
 	//==================================================
 	//여기도 건들지마라
 	//_ui.Render();

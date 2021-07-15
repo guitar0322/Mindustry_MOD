@@ -205,6 +205,14 @@
     <ClCompile Include="ShootingScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="EditableText.cpp" />
+    <ClCompile Include="EditText.cpp" />
+    <ClCompile Include="IntroScene.cpp" />
+    <ClCompile Include="PropContainer.cpp" />
+    <ClCompile Include="PropFactory.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="UIManager.cpp" />
+    <ClCompile Include="GameMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h" />
@@ -421,6 +429,15 @@
     <ClInclude Include="ShootingScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
+    <ClInclude Include="EditableText.h" />
+    <ClInclude Include="EditText.h" />
+    <ClInclude Include="IntroScene.h" />
+    <ClInclude Include="PropInfo.h" />
+    <ClInclude Include="PropContainer.h" />
+    <ClInclude Include="PropFactory.h" />
+    <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="UIManager.h" />
+    <ClInclude Include="GameMap.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="windowAPI.rc" />

@@ -16,12 +16,14 @@ void Renderer::Init(string clipName)
 	{
 		throw("renderer Init error");
 	}
+	_clipName = clipName;
 	_targetBitmap = targetClip->GetBitmap();
 	_frameWidth = targetClip->GetFrameWidth();
 	_frameHeight = targetClip->GetFrameHeight();
 	_curFrameX = 0;
 	_curFrameY = 0;
 	_alpha = 1.f;
+	_rc = RectMakePivot(transform->position, Vector2(_frameWidth, _frameHeight), Pivot::Center);
 }
 
 void Renderer::Init(float width, float height)
@@ -31,6 +33,8 @@ void Renderer::Init(float width, float height)
 	_curFrameX = 0;
 	_curFrameY = 0;
 	_alpha = 1.f;
+	_clipName = "";
+	_rc = RectMakePivot(transform->position, Vector2(_frameWidth, _frameHeight), Pivot::Center);
 }
 
 void Renderer::Render()
@@ -106,11 +110,17 @@ newBitmap : 새로운 대상 비트맵
 frameWidth : 새로운 비트맵의 프레임당 넓이
 frameHeight : 새로운 비트맵의 새로운 높이
 ***********************************************/
-void Renderer::ChangeTargetBitmap(ID2D1Bitmap* newBitmap, float frameWidth, float frameHeight)
+void Renderer::ChangeTargetBitmap(string clipName)
 {
-	_targetBitmap = newBitmap;
-	_frameWidth = frameWidth;
-	_frameHeight = frameHeight;
+	AnimationClip* targetClip = CLIPMANAGER->FindClip(clipName);
+	if (targetClip == nullptr)
+	{
+		throw("renderer error");
+	}
+	_clipName = clipName;
+	_targetBitmap = targetClip->GetBitmap();
+	_frameWidth = targetClip->GetFrameWidth();
+	_frameHeight = targetClip->GetFrameHeight();
 	_curFrameX = 0;
 }
 
@@ -121,13 +131,16 @@ frameWidth : 새로운 비트맵의 프레임당 넓이
 frameHeight : 새로운 비트맵의 새로운 높이
 inInitFrmae : true면 프레임 인덱스를 0으로 초기화
 ***********************************************/
-void Renderer::ChangeTargetBitmap(ID2D1Bitmap* newBitmap, float frameWidth, float frameHeight, bool isInitFrame)
+void Renderer::ChangeTargetBitmap(string clipName, int startFrame)
 {
-	_targetBitmap = newBitmap;
-	_frameWidth = frameWidth;
-	_frameHeight = frameHeight;
-	if (isInitFrame == true)
+	AnimationClip* targetClip = CLIPMANAGER->FindClip(clipName);
+	if (targetClip == nullptr)
 	{
-		_curFrameX = 0;
+		throw("renderer error");
 	}
+	_clipName = clipName;
+	_targetBitmap = targetClip->GetBitmap();
+	_frameWidth = targetClip->GetFrameWidth();
+	_frameHeight = targetClip->GetFrameHeight();
+	_curFrameX = startFrame;
 }
