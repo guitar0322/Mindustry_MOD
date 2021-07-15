@@ -2,12 +2,19 @@
 #include "GameScene.h"
 #include "UIControler.h"
 #include "PropContainer.h"
+#include "PropFactory.h"
 #include "UIMouseEvent.h"
 HRESULT GameScene::Init()
 {
     Scene::Init();
+	SetBackBufferSize(2400, 1600);
+	MainCam->SetRenderSize(2400, 1600);
+    MainCam->transform->SetPosition(1200, 800);
+
     selectCategoryIdx = 0;
-    propContainer = new PropContainer;
+    propContainer = new PropContainer();
+    propFactory = new PropFactory();
+    propFactory->Init();
 
     uiControler = new UIControler();
     uiControler->Init();
@@ -23,11 +30,6 @@ HRESULT GameScene::Init()
 
 	gameMap = new GameMap;
 	gameMap->Init();
-
-	SetBackBufferSize(2400, 1600);
-	MainCam->SetScreenStart(0, 0);
-	MainCam->SetScreenSize(WINSIZEX, WINSIZEY);
-	MainCam->SetRenderSize(2400, 1600);
 
 
     InitClip();
@@ -63,9 +65,9 @@ void GameScene::Update()
 
 void GameScene::Render()
 {
+	gameMap->Render();
     propPreview.Render();
     uiControler->Render();
-	gameMap->Render();
 
     MainCam->Render();
     //카테고리 아이콘 렌더
@@ -122,7 +124,7 @@ void GameScene::InitCategoryUI()
     buildingCategoryFrame.uiRenderer->SetAlpha(0.7f);
     buildingCategoryFrame.transform->SetPosition(WINSIZEX - 132, WINSIZEY - 111);
     buildingCategoryFrame.transform->SetScale(0.7f, 0.7f);
-
+    buildingCategoryFrame.uiMouseEvent->enable = false;
 
     turretIcon.uiRenderer->Init("turret_icon");
     turretIcon.transform->SetPosition(CATEGORY_UI_STARTX, CATEGORY_UI_STARTY);

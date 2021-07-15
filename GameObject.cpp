@@ -3,7 +3,7 @@
 
 GameObject::GameObject()
 {
-	name = "gameobject";
+	name = L"gameobject";
 	transform = new Transform();
 	transform->gameObject = this;
 	isActive = true;

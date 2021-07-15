@@ -39,9 +39,6 @@ private:
     Event OnMouseEnter;
     Event OnMouseExit;
     Event OnClick;
-    //EventParam OnMouseEnterParam;
-    //EventParam OnMouseExitParam;
-    //EventParam OnClickParam;
 public:
     bool focusable;
     UIMouseEvent() {};
@@ -50,6 +47,5 @@ public:
     virtual void Init();
     virtual void Update();
     void RegistCallback(Event function, EVENT event);
-    //void RegistParamCallback(EventParam function, void* param, EVENT event);
 };
 

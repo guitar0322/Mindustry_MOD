@@ -43,7 +43,7 @@ void Renderer::Render()
 	int renderStartY = transform->GetY() - _frameHeight / 2;
 	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
-		D2DRENDERER->DrawRectangle(_rc, D2DRenderer::DefaultBrush::Gray);
+		D2DRENDERER->DrawRectangle(_rc);
 	}
 	D2D1_RECT_F clipArea = 
 		D2D1::RectF
