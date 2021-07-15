@@ -31,13 +31,13 @@ HRESULT MapScene::Init()
 
 void MapScene::Update()
 {
-	_background.Update();
+	//_background.Update();
 	_mapTool.Update();
 }
 
 void MapScene::Render()
 {
-	_background.Render();
+	//_background.Render();
 	_mapTool.Render();
 	MainCam->Render();
 }

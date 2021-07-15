@@ -7,24 +7,60 @@
 HRESULT SampleScene::Init()
 {
     Scene::Init();
-	CLIPMANAGER->AddClip("bomb", "bomb.png", 240, 80, 3, 1, 0.12f);
+	CLIPMANAGER->AddClip("bomb", "bomb.png", 240, 80, 3, 1, 0.3f);
 	CLIPMANAGER->AddClip("trapobject", "trapObject.png", 64, 128);
 	CLIPMANAGER->AddClip("background", "scene1_background.png", 1024, 560);
+	CLIPMANAGER->AddClip("spark_particle", "sprites/effects/spark-particle.png", 4, 20);
+	CLIPMANAGER->AddClip("spark_circle", "sprites/effects/spark-circle.png", 180, 36, 5, 1, 0.08f);
 	_stayTime = 0;
 	SetBackBufferSize(1024, 560);
+	
+	//애너미 매니저
+	//vectr<enemy*> 이거는 웨이브에 생성될 애너미 목록
+	//DeadEvent(enemy* deadEnemy)
+	//for으로 찾아가지고
+	//vector[i] == deadEnemy
+	//vector[i]->SetActive(false);
+	//for(vector)
+	//if(vector[i]->isActive == true)
+	//return
+	//Clear();
+
+	//파티클 시스템 예시
+	testParticleSystem = new GameObject();
+	testParticleSystem->AddComponent(new ParticleSystem());
+	testParticleSystem->GetComponent<ParticleSystem>()->Init("spark_particle", 12);
+	testParticleSystem->GetComponent<ParticleSystem>()->SetDuration(0.3f);
+	//testParticleSystem->GetComponent<ParticleSystem>()->SetPivotDistance(10.f);
+	testParticleSystem->GetComponent<ParticleSystem>()->SetEmissionTerm(0.5f);
+	testParticleSystem->GetComponent<ParticleSystem>()->SetScaleY(0.1f, 1.f);
+	testParticleSystem->GetComponent<ParticleSystem>()->SetSpeed(1.f, 2.f);
+
+	testCircleParticle = new GameObject();
+	testCircleParticle->AddComponent(new ParticleSystem());
+	testCircleParticle->GetComponent<ParticleSystem>()->Init("spark_circle", 1);
+	testCircleParticle->GetComponent<ParticleSystem>()->SetDuration(0.3f);
+	testCircleParticle->GetComponent<ParticleSystem>()->SetEmissionTerm(0.5f);
+	testCircleParticle->GetComponent<ParticleSystem>()->SetSpeed(0);
+
+
+	//테스트 editableText 초기화
 	testEditText = new Button();
 	testEditText->Init();
 	testEditText->uiRenderer->Init(100, 32);
 	testEditText->AddComponent(new EditText());
 	testEditText->GetComponent<EditText>()->Init();
 
+	//클립없이 UIRenderer초기화 하는법
 	testNoClipUI.Init();
 	testNoClipUI.uiRenderer->Init(100.f, 100.f);
 	testNoClipUI.SetActive(false);
 
+	//클립없이 Renderer 초기화 하는법
 	testNoClipObj.Init();
 	testNoClipObj.renderer->Init(100.f, 100.f);
 
+	//게임오브젝트 구성하는예시
 	testAnimObj.Init();
 	testAnimObj.renderer->Init("bomb");
 	testAnimObj.animator->AddClip(CLIPMANAGER->FindClip("bomb"));
@@ -120,6 +156,8 @@ void SampleScene::Update()
 	testAnimObj.Update();
 	testAnimObj2.Update();
 	testUIObj.Update();
+	testParticleSystem->Update();
+	testCircleParticle->Update();
 	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 	{
 		//MainCam->transform->MoveX(5.f);
@@ -147,7 +185,7 @@ void SampleScene::Update()
 	}
 	testInt++;
 	testEditText->Update();
-	//background.Update();
+	background.Update();
 	testAnimObj.Update();
 	testAnimObj2.Update();
 	testUIObj.Update();
@@ -197,6 +235,9 @@ void SampleScene::Render()
 		testAnimObj.Render();
 		testAnimObj2.Render();
 		testNoClipObj.Render();
+		background.Render();
+		testParticleSystem->Render();
+		testCircleParticle->Render();
 		MainCam->Render();
 		testEditText->Render();
 		//D2DRENDERER->RenderText(250, 400, L"다람쥐 헌 쳇바퀴에 타고파", 50);

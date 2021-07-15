@@ -121,34 +121,6 @@ float Math::FixFloat(float f)
 
 	return sqrt(x * x + y * y);
 }
-/*******************************************************************************
-## GetAngle ##
-두 점 사이의 각을 구한다.
-@@ float x1 : 시작점 X
-@@ float y1 : 시작점 Y
-@@ float x2 : 목표점 X
-@@ float y2 : 목표점 Y
-*******************************************************************************/
- float Math::GetAngle(const float& x1, const float& y1, const float& x2, const float& y2)
-{
-	//x축과 y축으로의 길이를 구한다. 
-	float x = x2 - x1;
-	float y = y2 - y1;
-	//피타고라스 정리로 대각선의 길이 구함
-	float distance = sqrt((x * x) + (y * y));
-	//삼각함수의 원리에 의해 cos(angle) = x / 빗변  == angle = acos(x / 빗변);
-	float angle = acos(x / distance);
-	//만약 구하려는 각이 뒤집어져 있는 상황이라면 
-	if (y2 > y1)
-	{
-		//역으로 360에서 -한값을 구한다. 
-		angle = Math::Math::PI * 2.0f - angle;
-		if (angle >= Math::Math::PI * 2.0f)
-			angle -= Math::Math::PI * 2.0f;
-	}
-
-	return angle;
-}
 
 float Math::Floor(const float & f, const int & cipher)
 {

@@ -12,8 +12,8 @@ private:
     vector<string> _clipArr[CATEGORY_NUM];
     unordered_map<int, ImageObject> _previewMap;
     unordered_map<int, ImageObject>::iterator _previewMapIter;
-    PropFactory* _propFactory;
 public:
+    PropFactory* propFactory;
     UIControler();
     ~UIControler();
     GameObject* categorySelect;

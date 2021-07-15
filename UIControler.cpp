@@ -12,7 +12,6 @@ UIControler::~UIControler()
 
 void UIControler::Init()
 {
-	_propFactory = new PropFactory();
 
 }
 
@@ -39,7 +38,7 @@ void UIControler::Update()
 
 		if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
 		{
-			_propFactory->AddPropElem(&_previewMap, _selectCategoryIdx, _selectPropIdx);
+			propFactory->AddPropElem(&_previewMap, _selectCategoryIdx, _selectPropIdx);
 			_previewMap.clear();
 			propPreview->SetActive(false);
 			propSelect->SetActive(false);
@@ -49,8 +48,8 @@ void UIControler::Update()
 
 void UIControler::Release()
 {
-	NEW_SAFE_RELEASE(_propFactory);
-	SAFE_DELETE(_propFactory);
+	NEW_SAFE_RELEASE(propFactory);
+	SAFE_DELETE(propFactory);
 }
 
 void UIControler::Render()

@@ -34,30 +34,30 @@ void Camera::Init()
 
 void Camera::Render()
 {
-	_cameraStartX = transform->GetX() - _renderWidth / _zoomScale / 2;
-	_cameraStartY = transform->GetY() - _renderHeight / _zoomScale / 2;
+	_cameraStartX = transform->GetX() - GetRenderWidth() / 2;
+	_cameraStartY = transform->GetY() - GetRenderHeight() / 2;
 	if (_cameraStartX < 0) {
 		_cameraStartX = 0;
-		transform->SetX(_renderWidth / _zoomScale / 2);
+		transform->SetX(GetRenderWidth() / 2);
 	}
 
-	if (transform->GetX() + _renderWidth / _zoomScale / 2 > MAPWIDTH) {
-		_cameraStartX = MAPWIDTH - _renderWidth / _zoomScale;
-		transform->SetX(MAPWIDTH - _renderWidth / _zoomScale / 2);
+	if (transform->GetX() + GetRenderWidth() / 2 > MAPWIDTH) {
+		_cameraStartX = MAPWIDTH - GetRenderWidth();
+		transform->SetX(MAPWIDTH - GetRenderWidth() / 2);
 	}
 
 	if (_cameraStartY < 0) {
 		_cameraStartY = 0;
-		transform->SetY(_renderHeight / _zoomScale / 2);
+		transform->SetY(GetRenderHeight()/ 2);
 	}
 
-	if (transform->GetY() + _renderHeight / _zoomScale / 2 > MAPHEIGHT) {
-		_cameraStartY = MAPHEIGHT - _renderHeight / _zoomScale;
-		transform->SetY(MAPHEIGHT - _renderHeight / _zoomScale / 2);
+	if (transform->GetY() + GetRenderHeight() / 2 > MAPHEIGHT) {
+		_cameraStartY = MAPHEIGHT - GetRenderHeight();
+		transform->SetY(MAPHEIGHT - GetRenderHeight() / 2);
 	}
 
 	D2DRENDERER->DrawBackBuffer(_cameraStartX, _cameraStartY, 
-		_cameraStartX + _renderWidth / _zoomScale, _cameraStartY + _renderHeight / _zoomScale,
+		_cameraStartX + GetRenderWidth(), _cameraStartY + GetRenderHeight(),
 		_screenStartX, _screenStartY, _screenStartX + _screenWidth, _screenStartY + _screenHeight);
 }
 

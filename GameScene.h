@@ -2,18 +2,27 @@
 #include "Scene.h"
 #include "Button.h"
 #include "GameMap.h"
+#include "Player.h"
+#include "ProjectileManager.h"
+
 #define PROP_UI_STARTX WINSIZEX - 230
 #define PROP_UI_STARTY WINSIZEY - 187
 #define CATEGORY_UI_STARTX WINSIZEX - 65
 #define CATEGORY_UI_STARTY WINSIZEY - 190
 class PropContainer;
+class PropFactory;
 class UIControler;
 
 class GameScene :
     public Scene
 {
 private:
+	Player* _player;
+	GameObject* _projectileManager;
+
+	//======
     PropContainer* propContainer;
+    PropFactory* propFactory;
     UIControler* uiControler;
     UIBase categorySelect;
     UIBase propSelect;
@@ -21,15 +30,15 @@ private:
     ImageObject propPreview;
 
     UIBase buildingCategoryFrame;
-    Button defenseIcon;
-    Button railIcon;
-    Button turretIcon;
-    Button productionIcon;
+    UIBase defenseIcon;
+    UIBase railIcon;
+    UIBase turretIcon;
+    UIBase productionIcon;
 
-    Button copperWallIcon;
-    Button mechanicDrillIcon;
-    Button duoIcon;
-    Button conveyorIcon;
+    UIBase copperWallIcon;
+    UIBase mechanicDrillIcon;
+    UIBase duoIcon;
+    UIBase conveyorIcon;
 
     vector<GameObject*> wallIconV;
     vector<GameObject*> drillIconV;

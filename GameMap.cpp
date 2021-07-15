@@ -45,16 +45,23 @@ void GameMap::Update()
 
 void GameMap::Render()
 {
-	int tileStart = MainCam->GetCameraStartX() / TILESIZE - 2;
-	if (tileStart < 0)
-		tileStart = 0;
-	int tileEnd = (MainCam->GetCameraStartX() + MainCam->GetRenderWidth()) / TILESIZE + 2;
-	if (tileEnd > TILENUMX - 1)
-		tileEnd = TILENUMX - 1;
+	int tileStartX = MainCam->GetCameraStartX() / TILESIZE - 2;
+	if (tileStartX < 0)
+		tileStartX = 0;
+	int tileEndX = (MainCam->GetCameraStartX() + MainCam->GetRenderWidth()) / TILESIZE + 2;
+	if (tileEndX > TILENUMX - 1)
+		tileEndX = TILENUMX - 1;
 
-	for (int i = tileStart; i < tileEnd; ++i)
+	int tileStartY = MainCam->GetCameraStartY() / TILESIZE - 2;
+	if (tileStartY < 0)
+		tileStartY = 0;
+	int tileEndY = (MainCam->GetCameraStartY() + MainCam->GetRenderHeight()) / TILESIZE + 2;
+	if (tileEndY > TILENUMX - 1)
+		tileEndY = TILENUMX - 1;
+
+	for (int i = tileStartY; i < tileEndY; ++i)
 	{
-		for (int j = tileStart; j < tileEnd; ++j)
+		for (int j = tileStartX; j < tileEndX; ++j)
 		{
 			_tile[i * TILENUMX + j].Render();
 			if (_tileInfo[i * TILENUMX + j].resources != RES_NONE)
