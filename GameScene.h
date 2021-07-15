@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene.h"
 #include "Button.h"
+#include "GameMap.h"
 #define PROP_UI_STARTX WINSIZEX - 230
 #define PROP_UI_STARTY WINSIZEY - 187
 #define CATEGORY_UI_STARTX WINSIZEX - 65
@@ -34,6 +35,9 @@ private:
     vector<GameObject*> drillIconV;
     vector<GameObject*> turretIconV;
     vector<GameObject*> railIconV;
+
+	//¿Œ∞‘¿” ∏ 
+	GameMap* gameMap;
 
     int selectCategoryIdx;
 public:

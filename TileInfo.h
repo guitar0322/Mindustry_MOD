@@ -66,21 +66,10 @@ struct tagTile
 	OBJECT			object;
 
 };
-//struct tagUndoTile
-//{
-//	int x;
-//	int y;
-//	tagTile tile;
-//};
+
 struct tagTileSet
 {
 	Rect rcTile;
 	int TileX;
 	int TileY;
-};
-
-struct tagCurrentTile
-{
-	int x;
-	int y;
 };
