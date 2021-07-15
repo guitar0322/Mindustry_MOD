@@ -12,6 +12,7 @@ void MapTool::Init()
 	isFill = false;
 
 
+
 	for (int i = 0; i < TILESETY; ++i)
 	{
 		for (int j = 0; j < TILESETX; ++j)
