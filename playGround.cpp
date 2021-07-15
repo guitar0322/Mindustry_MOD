@@ -2,7 +2,6 @@
 #include "playGround.h"
 #include "SampleScene.h"
 #include "SampleScene2.h"
-#include "PlayerScene.h"
 #include "MapScene.h"
 #include "ShootingScene.h"
 #include "GameScene.h"
@@ -28,12 +27,15 @@ HRESULT playGround::init()
 	
 	MapScene* mapScene = new MapScene();
 	SCENEMANAGER->AddScene("background", mapScene);
+	//SCENEMANAGER->LoadScene("background");
 
 	PlayerScene* playerScene = new PlayerScene();
 	SCENEMANAGER->AddScene("player", playerScene);
 
+
 	SampleScene* sampleScene = new SampleScene();
 	SCENEMANAGER->AddScene("sample", sampleScene);
+	//SCENEMANAGER->LoadScene("sample");
 
 	SampleScene2* sampleScene2 = new SampleScene2();
 	SCENEMANAGER->AddScene("sample2", sampleScene2);
@@ -125,6 +127,7 @@ void playGround::render()
 	//wstring elapse = L"ElapseTime : ";
 	//elapse.append(to_wstring(TIMEMANAGER->getElapsedTime()));
 	//D2DRENDERER->RenderText(10, 50, elapse, 30, L"¸¼Àº°íµñ", D2DRenderer::DefaultBrush::White);
+	//D2DRENDERER->RenderText(10, 10, fps, 30, L"¸¼Àº°íµñ", D2DRenderer::DefaultBrush::White);
 	//==================================================
 	//¿©±âµµ °ÇµéÁö¸¶¶ó
 	//_ui.Render();

@@ -16,6 +16,7 @@ private:
 		RIGHT_UP,
 		LEFT_DOWN,
 		RIGHT_DOWN,
+		IDLE
 	};
 private:
 	float _speed;
@@ -25,14 +26,21 @@ private:
 	float _breakTime;
 	DIRECTION _dir;
 	bool _isLeft;
+	bool _isDiagonal;
 	bool _shootLeft;
 	bool _shootRight;
 	bool _isSlow;
+	bool _isGathering;
+	bool _isFire;
 	ProjectileManager* _projectileManager;
 public:
 	virtual void Init();
 	virtual void Update();
+
+	void PlayerDirection();
+
 	float GetSpeed() const { return _speed; }
+	float GetTargetAngle() const { return _targetAngle; }
 	void SetProjectileManager(ProjectileManager* projectileManager) { _projectileManager = projectileManager; }
 };
 

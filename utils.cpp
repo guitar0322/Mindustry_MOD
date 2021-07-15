@@ -18,6 +18,7 @@ namespace HDY_UTIL
 		}
 		return result;
 	}
+	
 	/*****************************************************
 	* D2D Angle(디그리)값을
 	* WinApi(라디안) 앵글로 변환
@@ -35,12 +36,14 @@ namespace HDY_UTIL
 
 		return result;
 	}
+
 	float GetDistance(const Vector2& v1, const Vector2& v2)
 	{
 		float deltaX = v1.x - v2.y;
 		float deltaY = v1.y - v2.y;
 		return sqrtf(deltaX * deltaX + deltaY * deltaY);
 	}
+
 	float GetDistance(float x1, float y1, float x2, float y2)
 	{
 		float x = x2 - x1;
@@ -123,25 +126,20 @@ namespace HDY_UTIL
 	Vector2 ScreenToWorld(Vector2 screenPoint)
 	{
 		Vector2 result;
-		float virtualX = MainCam->GetRenderWidth() / MainCam->_zoomScale * (screenPoint.x - MainCam->GetScreenStart().first) / MainCam->GetScreenWidth();
-		float virtualY = MainCam->GetRenderHeight() / MainCam->_zoomScale * (screenPoint.y - MainCam->GetScreenStart().second) / MainCam->GetScreenHeight();
-		result.x = MainCam->GetCameraStartX() + virtualX;
-		result.y = MainCam->GetCameraStartY() + virtualY;
+		float worldX = MainCam->GetRenderWidth() * (screenPoint.x - MainCam->GetScreenStart().first) / MainCam->GetScreenWidth();
+		float worldY = MainCam->GetRenderHeight() * (screenPoint.y - MainCam->GetScreenStart().second) / MainCam->GetScreenHeight();
+		result.x = MainCam->GetCameraStartX() + worldX;
+		result.y = MainCam->GetCameraStartY() + worldY;
 		return result;
 	}
 
 	Vector2 ScreenToWorld(float x, float y)
 	{
 		Vector2 result;
-		float virtualX = MainCam->GetRenderWidth() / MainCam->_zoomScale * (x - MainCam->GetScreenStart().first) / MainCam->GetScreenWidth();
-		float virtualY = MainCam->GetRenderHeight() / MainCam->_zoomScale * (y - MainCam->GetScreenStart().second) / MainCam->GetScreenHeight();
-		result.x = MainCam->GetCameraStartX() + virtualX;
-		result.y = MainCam->GetCameraStartY() + virtualY;
-		
-		/*MainCam->SetCameraStart(MainCam->transform->GetX() - (MainCam->GetRenderWidth() / MainCam->_zoomScale) / 2,
-								MainCam->transform->GetY() - (MainCam->GetRenderHeight() / MainCam->_zoomScale) / 2);
-		result.x = MainCam->GetCameraStart().first + virtualX;
-		result.y = MainCam->GetCameraStart().second + virtualY;*/
+		float worldX = MainCam->GetRenderWidth() / MainCam->_zoomScale * (x - MainCam->GetScreenStart().first) / MainCam->GetScreenWidth();
+		float worldY = MainCam->GetRenderHeight() / MainCam->_zoomScale * (y - MainCam->GetScreenStart().second) / MainCam->GetScreenHeight();
+		result.x = MainCam->GetCameraStartX() + worldX;
+		result.y = MainCam->GetCameraStartY() + worldY;
 		return result;
 	}
 

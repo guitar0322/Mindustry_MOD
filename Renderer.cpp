@@ -23,6 +23,7 @@ void Renderer::Init(string clipName)
 	_curFrameX = 0;
 	_curFrameY = 0;
 	_alpha = 1.f;
+	_rc = RectMakePivot(transform->position, Vector2(_frameWidth, _frameHeight), Pivot::Center);
 }
 
 void Renderer::Init(float width, float height)
@@ -33,6 +34,7 @@ void Renderer::Init(float width, float height)
 	_curFrameY = 0;
 	_alpha = 1.f;
 	_clipName = "";
+	_rc = RectMakePivot(transform->position, Vector2(_frameWidth, _frameHeight), Pivot::Center);
 }
 
 void Renderer::Render()
@@ -41,7 +43,7 @@ void Renderer::Render()
 	int renderStartY = transform->GetY() - _frameHeight / 2;
 	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
-		D2DRENDERER->DrawRectangle(_rc, D2DRenderer::DefaultBrush::Gray);
+		D2DRENDERER->DrawRectangle(_rc);
 	}
 	D2D1_RECT_F clipArea = 
 		D2D1::RectF

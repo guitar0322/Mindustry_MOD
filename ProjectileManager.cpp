@@ -15,6 +15,7 @@ void ProjectileManager::Init()
 	for (int i = 0; i < ENEMY_PROJECTILE_MAX;  i++)
 	{
 		_enemyProjectile = new ProjectileObject();
+		_enemyProjectile->tag = TAGMANAGER->GetTag("enemy");
 		_enemyProjectile->GetRendererComponent()->Init("enemy_projectile");
 		_enemyProjectile->GetProjectileComponent()->SetSpeed(1000.f);
 		_enemyProjectile->SetActive(false);

@@ -30,7 +30,6 @@ void ZOrderManager::Update()
 void ZOrderManager::Render()
 {
 	for (int i = 0; i < _zOrderV.size(); i++) {
-		string name = _zOrderV[i]->gameObject->name;
 		_zOrderV[i]->gameObject->Render();
 	}
 }
