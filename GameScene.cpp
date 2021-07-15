@@ -11,7 +11,6 @@ HRESULT GameScene::Init()
     Scene::Init();
 
 	InitClip();
-	
 	SetBackBufferSize(2400, 1600);
 	MainCam->SetRenderSize(2400, 1600);
     MainCam->transform->SetPosition(1200, 800);
