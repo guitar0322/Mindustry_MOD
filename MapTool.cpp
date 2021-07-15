@@ -9,6 +9,8 @@ void MapTool::Init()
 
 	isErase = false;
 	isDraw = true;
+	isFill = false;
+
 
 	for (int i = 0; i < TILESETY; ++i)
 	{
@@ -16,6 +18,7 @@ void MapTool::Init()
 		{
 			tileUI[i* TILESETX + j].Init();
 			tileUI[i* TILESETX + j].uiRenderer->Init("water");
+			tileUI[i * TILESETX + j].uiMouseEvent->enable = false;
 			tileUI[i* TILESETX + j].transform->SetPosition(WINSIZEX - 40*j -50, 100 + 40*i);
 			
 			//각 타일에 이미지 부여
@@ -30,6 +33,7 @@ void MapTool::Init()
 		{
 			toolUI[i* 3 + j].Init();
 			toolUI[i* 3 + j].uiRenderer->Init("save");
+			toolUI[i * 3 + j].uiMouseEvent->enable = false;
 			toolUI[i* 3 + j].transform->SetPosition(60 * j + 50, 50 + 60 * i);
 
 			//각 도구에 이미지 부여
@@ -81,11 +85,22 @@ void MapTool::Update()
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
 		if (_ptMouse.x >= MainCam->GetScreenStart().first && _ptMouse.x <= MainCam->GetScreenStart().first + MainCam->GetScreenWidth())
+		{
 			_undoHash.clear();
+
+			if (isFill)
+			{
+				startMouseWorldX = ScreenToWorld(_ptMouse).x;
+				startMouseWorldY = ScreenToWorld(_ptMouse).y;
+				startX = startMouseWorldX / TILESIZE;
+				startY = startMouseWorldY / TILESIZE;
+			}
+		}
 	}
 
 	if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
 	{
+
 		//타일셋 클릭 시
 		for (int i = 0; i < TILESETY; ++i)
 		{
@@ -99,6 +114,20 @@ void MapTool::Update()
 			}
 		}
 
+		if (isFill)
+		{
+			if (_ptMouse.x >= MainCam->GetScreenStart().first && _ptMouse.x <= MainCam->GetScreenStart().first + MainCam->GetScreenWidth())
+			{
+				endMouseWorldX = ScreenToWorld(_ptMouse).x;
+				endMouseWorldY = ScreenToWorld(_ptMouse).y;
+				endX = endMouseWorldX / TILESIZE;
+				endY = endMouseWorldY / TILESIZE;
+
+				RectinTile();
+			}
+		}
+		
+
 		//도구모음 클릭 시
 		for (int i = 0; i < 3; ++i)
 		{
@@ -108,6 +137,7 @@ void MapTool::Update()
 				{
 					isErase = false;
 					isDraw = true;
+					isFill = false;
 					selectTool = i * 3 + j;
 					switch (selectTool) {
 					case 0:
@@ -119,12 +149,17 @@ void MapTool::Update()
 					case 3:
 						Undo();
 						break;
+					case 4:
+						isDraw = false;
+						isFill = true;
+						break;
 					case 5:
 						isDraw = true;
 						break;
 					case 6:
 						isErase = true;
 						isDraw = false;
+						isFill = false;
 						break;
 
 					}
@@ -133,11 +168,13 @@ void MapTool::Update()
 				}
 			}
 		}
+
 	}
 
 	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 	{
 		MouseInTile();
+
 	}
 }
 
@@ -175,6 +212,9 @@ void MapTool::Render()
 				resourcesTile[i * TILENUMX + j].Render();
 		}
 	}
+
+	if(isFill) 
+	D2DRENDERER->DrawRectangle(dragRc, D2DRenderer::DefaultBrush::Red);
 
 }
 
@@ -496,6 +536,41 @@ void MapTool::Undo()
 	}
 }
 
+bool MapTool::RectinTile()
+{
+	if (isFill == false) return false;
+
+	if (_ptMouse.x <= MainCam->GetScreenStart().first || _ptMouse.x >= MainCam->GetScreenStart().first + MainCam->GetScreenWidth())
+		return false;
+
+	dragRcWidth = endX - startX;
+	dragRcHeight = endY - startY;
+
+	dragRc= RectMakePivot(Vector2(startX * TILESIZE, startY* TILESIZE), Vector2(dragRcWidth* TILESIZE, dragRcHeight* TILESIZE), Pivot::LeftTop);
+	
+	for (int i = startY; i < endY; i++)
+	{
+		for (int j = startX; j < endX; j++)
+		{
+			_undoHash.insert(pair<int, tagTile>(i * TILENUMX + j, tileInfo[i * TILENUMX + j]));
+
+			if (selectTile >= 18 && selectTile <= 26)
+			{
+				tileInfo[i * TILENUMX + j].resources = (RESOURCES)(selectTile - 18);
+				resourcesTile[i * TILENUMX + j].renderer->Init(tileName[selectTile]);
+			}
+			else
+			{
+				tileInfo[i * TILENUMX + j].environment = (ENVIRONMENT)selectTile;
+				tile[i * TILENUMX + j].renderer->Init(tileName[selectTile]);
+			}
+
+		}
+	}
+
+	return true;
+}
+
 
 bool MapTool::MouseInTile()
 {
@@ -508,7 +583,7 @@ bool MapTool::MouseInTile()
 	int tileY = mouseWorldY / TILESIZE;
 
 	//undo Iter
-	_undoHashIter = _undoHash.find(tileY * 10 + tileX);
+	_undoHashIter = _undoHash.find(tileY * TILENUMX + tileX);
 
 	if (_undoHashIter != _undoHash.end())
 	{
@@ -519,17 +594,17 @@ bool MapTool::MouseInTile()
 		_undoHash.insert(pair<int, tagTile>(tileY * TILENUMX + tileX, tileInfo[tileY * TILENUMX + tileX]));
 	}
 
-	//resources Iter
-	_resourcesHashIter = _resourcesHash.find(tileY * 10 + tileX);
+	////resources Iter
+	//_resourcesHashIter = _resourcesHash.find(tileY * TILENUMX + tileX);
 
-	if (_resourcesHashIter != _resourcesHash.end())
-	{
-		return false;
-	}
-	else
-	{
-		_resourcesHash.insert(pair<int, ImageObject>(tileY * TILENUMX + tileX, resourcesTile[tileY * TILENUMX + tileX]));
-	}
+	//if (_resourcesHashIter != _resourcesHash.end())
+	//{
+	//	return false;
+	//}
+	//else
+	//{
+	//	_resourcesHash.insert(pair<int, ImageObject>(tileY * TILENUMX + tileX, resourcesTile[tileY * TILENUMX + tileX]));
+	//}
 
 	if (isErase)
 	{
@@ -539,16 +614,20 @@ bool MapTool::MouseInTile()
 	}
 	else
 	{
-		if (selectTile >= 18 && selectTile <= 26)
+		if (isDraw)
 		{
-			tileInfo[tileY * TILENUMX + tileX].resources = (RESOURCES)(selectTile - 18);
-			resourcesTile[tileY * TILENUMX + tileX].renderer->Init(tileName[selectTile]);
+			if (selectTile >= 18 && selectTile <= 26)
+			{
+				tileInfo[tileY * TILENUMX + tileX].resources = (RESOURCES)(selectTile - 18);
+				resourcesTile[tileY * TILENUMX + tileX].renderer->Init(tileName[selectTile]);
+			}
+			else
+			{
+				tileInfo[tileY * TILENUMX + tileX].environment = (ENVIRONMENT)selectTile;
+				tile[tileY * TILENUMX + tileX].renderer->Init(tileName[selectTile]);
+			}
 		}
-		else
-		{
-			tileInfo[tileY * TILENUMX + tileX].environment = (ENVIRONMENT)selectTile;
-			tile[tileY * TILENUMX + tileX].renderer->Init(tileName[selectTile]);
-		}
+		
 	}
 
 	return true;

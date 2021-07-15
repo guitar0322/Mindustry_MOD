@@ -17,9 +17,9 @@ public:
 	unordered_map<int, tagTile> _undoHash;
 	unordered_map<int, tagTile>::iterator _undoHashIter;
 
-	//resources 해쉬
-	unordered_map<int, ImageObject> _resourcesHash;
-	unordered_map<int, ImageObject>::iterator _resourcesHashIter;
+	////resources 해쉬
+	//unordered_map<int, ImageObject> _resourcesHash;
+	//unordered_map<int, ImageObject>::iterator _resourcesHashIter;
 
 	//타일 정보
 	tagTile tileInfo[TILENUMX * TILENUMY];
@@ -43,10 +43,21 @@ public:
 	string tileName[TILESETX * TILESETY];
 
 
+	Rect dragRc;
+
 	int selectTile;
 	int selectTool;
+
+	int dragRcWidth, dragRcHeight;
+	int startX, startY;
+	int endX, endY;
+	float startMouseWorldX, startMouseWorldY;
+	float endMouseWorldX, endMouseWorldY;
+
 	bool isErase;
 	bool isDraw;
+	bool isFill;
+	
 
 	virtual void Init();
 	virtual void Update();
@@ -63,7 +74,8 @@ public:
 	void Save();
 	void Load();
 	void Undo();
-
+	
+	bool RectinTile();
 
 	//tagTile* getTile() { return tile; }
 	bool MouseInTile();

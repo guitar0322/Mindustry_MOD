@@ -43,6 +43,7 @@ private:
     //EventParam OnMouseExitParam;
     //EventParam OnClickParam;
 public:
+    bool focusable;
     UIMouseEvent() {};
     ~UIMouseEvent() {};
     UIRenderer* uiRenderer;

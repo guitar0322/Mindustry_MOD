@@ -3,9 +3,12 @@
 #include "UIMouseEvent.h"
 Button::Button()
 {
-	uiMouseEvent = new UIMouseEvent();
-	AddComponent(uiMouseEvent);
-	uiMouseEvent->Init();
+	if (uiMouseEvent == nullptr)
+	{
+		uiMouseEvent = new UIMouseEvent();
+		AddComponent(uiMouseEvent);
+		uiMouseEvent->Init();
+	}
 }
 
 Button::~Button()

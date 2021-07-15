@@ -1,17 +1,70 @@
 #include "stdafx.h"
 #include "UIControler.h"
+#include "TileInfo.h"
+
+UIControler::UIControler()
+{
+}
+
+UIControler::~UIControler()
+{
+}
 
 void UIControler::Init()
 {
+	_propFactory = new PropFactory();
+
 }
 
 void UIControler::Update()
 {
+	if (propPreview->isActive == true)
+	{
+		Vector2 worldMouse = ScreenToWorld(_ptMouse);
+		int tileX = worldMouse.x / TILESIZE;
+		int tileY = worldMouse.y / TILESIZE;
+		propPreview->transform->SetPosition(tileX * TILESIZE + 16, tileY * TILESIZE + 16);
+		if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
+		{
+			_previewMapIter = _previewMap.find(tileX + tileY * TILENUMX);
+			if (_previewMapIter == _previewMap.end())
+			{
+				ImageObject preView;
+				preView.renderer->Init(propPreview->renderer->GetClipName());
+				preView.renderer->SetAlpha(0.5f);
+				preView.transform->SetPosition(tileX * TILESIZE + 16, tileY * TILESIZE + 16);
+				_previewMap.insert(pair<int, ImageObject>(tileX + tileY * TILENUMX, preView));
+			}
+		}
+
+		if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
+		{
+			_propFactory->AddPropElem(&_previewMap, _selectCategoryIdx, _selectPropIdx);
+			_previewMap.clear();
+			propPreview->SetActive(false);
+			propSelect->SetActive(false);
+		}
+	}
+}
+
+void UIControler::Release()
+{
+	NEW_SAFE_RELEASE(_propFactory);
+	SAFE_DELETE(_propFactory);
+}
+
+void UIControler::Render()
+{
+	for (_previewMapIter = _previewMap.begin(); _previewMapIter != _previewMap.end(); _previewMapIter++)
+	{
+		_previewMapIter->second.Render();
+	}
 }
 
 void UIControler::ClickCategoryIcon(GameObject* clickedButton, int category)
 {
 	categorySelect->transform->SetPosition(clickedButton->transform->GetX(), clickedButton->transform->GetY());
+	_selectCategoryIdx = category;
 	propSelect->SetActive(false);
 	for (int i = 0; i < preIconV->size(); i++)
 	{
@@ -38,16 +91,20 @@ void UIControler::ClickCategoryIcon(GameObject* clickedButton, int category)
 	}
 }
 
-void UIControler::ClickPropIcon(GameObject* clickedButton)
+void UIControler::ClickPropIcon(GameObject* clickedButton, int propIdx)
 {
-	if (preSelectProp == clickedButton && propSelect->isActive == true)
+	if (propSelect->transform->position == clickedButton->transform->position && propSelect->isActive == true)
 	{
 		propSelect->SetActive(false);
+		propPreview->SetActive(false);
+		_selectPropIdx = -1;
 	}
 	else
 	{
 		propSelect->SetActive(true);
+		propPreview->SetActive(true);
+		propPreview->renderer->ChangeTargetBitmap(clickedButton->GetComponent<UIRenderer>()->GetClipName());
 		propSelect->transform->SetPosition(clickedButton->transform->GetX(), clickedButton->transform->GetY());
+		_selectPropIdx = propIdx;
 	}
-	preSelectProp = clickedButton;
 }

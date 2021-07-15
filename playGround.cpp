@@ -2,6 +2,7 @@
 #include "playGround.h"
 #include "SampleScene.h"
 #include "SampleScene2.h"
+#include "PlayerScene.h"
 #include "MapScene.h"
 #include "ShootingScene.h"
 #include "GameScene.h"
@@ -20,11 +21,23 @@ playGround::~playGround()
 //초기화는 여기다 하세요 제발
 HRESULT playGround::init()
 {
+	CLIPMANAGER->AddClip("ui_frame", "sprites/ui/pane-build.png", 378, 318);
+
 	gameNode::init(true);
 	_camShakeFrame = 0;
 	
 	MapScene* mapScene = new MapScene();
 	SCENEMANAGER->AddScene("background", mapScene);
+
+	//SampleScene* sampleScene = new SampleScene();
+	//SCENEMANAGER->AddScene("sample", sampleScene);
+	//SCENEMANAGER->LoadScene("sample");
+
+	//SampleScene2* sampleScene2 = new SampleScene2();
+	//SCENEMANAGER->AddScene("sample2", sampleScene2);
+
+	PlayerScene* playerScene = new PlayerScene();
+	SCENEMANAGER->AddScene("player", playerScene);
 
 	SampleScene* sampleScene = new SampleScene();
 	SCENEMANAGER->AddScene("sample", sampleScene);

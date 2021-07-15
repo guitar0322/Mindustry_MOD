@@ -66,6 +66,10 @@ bool Transform::MoveY(float y)
 ***************************************************************/
 void Transform::Rotate(float degree)
 {
+	int childCount = GetChildCount();
+	for (int i = 0; i < childCount; i++) {
+		child[i]->Rotate(degree);
+	}
 	angle += degree;
 	if (angle < 0.f)
 		angle = 360 - (-angle);

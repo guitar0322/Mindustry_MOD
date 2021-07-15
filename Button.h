@@ -5,7 +5,6 @@ class Button :
     public UIBase
 {
 public:
-    UIMouseEvent* uiMouseEvent;
     Button();
     ~Button();
 };

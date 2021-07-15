@@ -2,7 +2,7 @@
 #include "Component.h"
 
 #define ENEMY_PROJECTILE_MAX 20
-#define PLAYER_PROJECTILE_MAX 5
+#define PLAYER_PROJECTILE_MAX 200
 
 class Projectile;
 class ProjectileObject;

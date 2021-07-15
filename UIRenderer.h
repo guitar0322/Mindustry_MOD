@@ -11,6 +11,7 @@ private:
     int _curFrameX;
     int _curFrameY;
     Rect _rc;
+    string _clipName;
 public:
     UIRenderer();
     ~UIRenderer();
@@ -23,5 +24,6 @@ public:
     float GetFrameHeight() const { return _frameHeight; }
     float GetAlpha() const { return _alpha; }
 	Rect GetRc() const { return _rc; }
+    string GetClipName() const { return _clipName; }
 };
 
