@@ -42,7 +42,22 @@ void MapTool::Init()
 
 void MapTool::Update()
 {
-
+	if (KEYMANAGER->isStayKeyDown('W'))
+	{
+		MainCam->transform->MoveY(-15.f);
+	}
+	if (KEYMANAGER->isStayKeyDown('A'))
+	{
+		MainCam->transform->MoveX(-15.f);
+	}
+	if (KEYMANAGER->isStayKeyDown('S'))
+	{
+		MainCam->transform->MoveY(15.f);
+	}
+	if (KEYMANAGER->isStayKeyDown('D'))
+	{
+		MainCam->transform->MoveX(15.f);
+	}
 	/* =====UI 구현=====*/
 
 	//타일셋
