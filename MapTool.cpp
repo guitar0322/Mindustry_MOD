@@ -125,7 +125,6 @@ void MapTool::Update()
 			}
 		}
 		
-
 		//도구모음 클릭 시
 		for (int i = 0; i < 3; ++i)
 		{
@@ -201,7 +200,7 @@ void MapTool::Render()
 	int tileEnd = (MainCam->GetCameraStartX() + MainCam->GetRenderWidth()) / TILESIZE + 2;
 	if (tileEnd > TILENUMX - 1)
 		tileEnd = TILENUMX - 1;
-
+	cout << tileEnd << endl;
 	for (int i = tileStart; i < tileEnd; ++i)
 	{
 		for (int j = tileStart; j < tileEnd; ++j)
