@@ -2,6 +2,7 @@
 #include "EnemyControler.h"
 #include "EnemyObject.h"
 #include "EnemyInfo.h"
+#include "ProjectileManager.h"
 EnemyControler::EnemyControler()
 {
 }
@@ -16,7 +17,7 @@ void EnemyControler::Init()
 	//그리고 PlaneControler Init을 했다
 	//PlaneControler의 Init이 없어서 그 부모인
 	//EnemyControler의 Init이 실행됨
-	//그래서 EnemyInfo를 GetComponent으로 바로 가져올수 있음
+	//그래서 EnemyInfo를 GetComponent으로 바로 가져올수 있음	
 
 	/*_enemyInfo = gameObject->GetComponent<EnemyInfo>();
 	_speed = _enemyInfo->GetSpeed();
@@ -25,6 +26,8 @@ void EnemyControler::Init()
 	_speedX = 0.f;
 	_speedY = 0.f;*/
 	//_angle = _enemyInfo->GetCoreAngle();
+
+	//_projectileManager = gameObject->GetComponent<ProjectileManager>();
 	_speedX = 0.f;
 	_speedY = 0.f;
 

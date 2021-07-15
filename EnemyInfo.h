@@ -36,6 +36,7 @@ public:
 	void SetTestCore(GameObject* testCore) {_testCore = testCore;
 	_testCoreTransform = testCore->transform;}
 
+	Transform* GetCoreTransform() const { return _testCoreTransform; }
 	//testCore에 값을 주었다. _testCore의 transform는 이제 빈값이 아니니
 	//_testCoreTransform 에 값 주기
 

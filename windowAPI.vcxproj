@@ -172,6 +172,7 @@
     <ClInclude Include="EnemyGround.h" />
     <ClInclude Include="EnemyGroundControler.h" />
     <ClInclude Include="EnemyInfo.h" />
+    <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="EnemyObject.h" />
     <ClInclude Include="EnemyPlane.h" />
     <ClInclude Include="EnemyPlaneControler.h" />
@@ -261,6 +262,7 @@
     <ClCompile Include="EnemyGround.cpp" />
     <ClCompile Include="EnemyGroundControler.cpp" />
     <ClCompile Include="EnemyInfo.cpp" />
+    <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="EnemyObject.cpp" />
     <ClCompile Include="EnemyPlane.cpp" />
     <ClCompile Include="EnemyPlaneControler.cpp" />

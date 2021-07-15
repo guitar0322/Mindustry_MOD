@@ -104,7 +104,7 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 	switch (iMessage)
 	{
 		case WM_TIMER:
-			this->update();
+			//this->update();
 		break;
 	
 		case WM_CHAR:

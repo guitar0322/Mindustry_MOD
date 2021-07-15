@@ -205,6 +205,19 @@
     <ClCompile Include="ShootingScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="EditableText.cpp" />
+    <ClCompile Include="EditText.cpp" />
+    <ClCompile Include="IntroScene.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerControler.cpp" />
+    <ClCompile Include="PlayerScene.cpp" />
+    <ClCompile Include="PropContainer.cpp" />
+    <ClCompile Include="PropFactory.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="UIManager.cpp" />
+    <ClCompile Include="EnemyManager.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h" />
@@ -420,6 +433,20 @@
     </ClInclude>
     <ClInclude Include="ShootingScene.h">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="EditableText.h" />
+    <ClInclude Include="EditText.h" />
+    <ClInclude Include="IntroScene.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerControler.h" />
+    <ClInclude Include="PlayerScene.h" />
+    <ClInclude Include="PropInfo.h" />
+    <ClInclude Include="PropContainer.h" />
+    <ClInclude Include="PropFactory.h" />
+    <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="UIManager.h" />
+    <ClInclude Include="EnemyManager.h">
+      <Filter>Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

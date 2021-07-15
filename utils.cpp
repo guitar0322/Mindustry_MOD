@@ -26,11 +26,13 @@ namespace HDY_UTIL
 	float ConvertAngleAPI(const float& angle)
 	{
 		float radian = Math::ToRadian(angle);
-		float result = Math::PI / 2 - radian;
-		if (result < 0)
+		radian = radian - Math::PI / 2;
+		float result = Math::PI2 - radian;
+		if (result >= Math::PI2)
 		{
-			result *= -1;
+			result -= Math::PI2;
 		}
+
 		return result;
 	}
 	float GetDistance(const Vector2& v1, const Vector2& v2)

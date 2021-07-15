@@ -50,6 +50,7 @@ void Component::OnCollision(GameObject* gameObject)
 
 void Component::OnTriggerEnter(GameObject* gameObject)
 {
+
 }
 
 void Component::OnTriggerStay(GameObject* gameObject)

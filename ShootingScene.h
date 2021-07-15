@@ -21,6 +21,7 @@ private:
 
 	EnemyGround* _enemyGround;
 	GameObject* _projectileManager;
+	GameObject* _enemyManager;
 
 public:
 	ShootingScene();
@@ -32,8 +33,8 @@ public:
 	virtual void Render();
 
 	void SetScene();
-	void SetEnemy();
 	void TestCore();						//TEST용 삭제해도 됩니당
 	void SetProjectile();
+	void SetEnemyManager();
 };
 
