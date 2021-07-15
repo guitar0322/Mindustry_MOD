@@ -42,6 +42,11 @@ private:
 	GameMap* gameMap;
 
     int selectCategoryIdx;
+
+    /* SHUNG 210715 */
+    UIBase _choiceImg;
+    Button _CoreSlice;
+
 public:
     virtual HRESULT Init();
     virtual void Update();

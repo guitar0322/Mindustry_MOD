@@ -4,6 +4,7 @@
 #include "PropContainer.h"
 #include "PropFactory.h"
 #include "UIMouseEvent.h"
+
 HRESULT GameScene::Init()
 {
     Scene::Init();
@@ -31,10 +32,13 @@ HRESULT GameScene::Init()
 	gameMap = new GameMap;
 	gameMap->Init();
 
-
     InitClip();
     InitCategoryUI();
     InitPropUI();
+
+    /* SHUNG 210715 */
+    uiControler->choiceImg = &_choiceImg;
+
     return S_OK;
 }
 
@@ -61,11 +65,16 @@ void GameScene::Update()
     }
     categorySelect.Update();
     propSelect.Update();
+
+    /* SHUNG 210715 */
+    _CoreSlice.Update();
+    _choiceImg.Update();
 }
 
 void GameScene::Render()
 {
 	gameMap->Render();
+
     propPreview.Render();
     uiControler->Render();
 
@@ -87,6 +96,10 @@ void GameScene::Render()
     }
     categorySelect.Render();
     propSelect.Render();
+
+    /* SHUNG 210715 */
+    _CoreSlice.Render();
+    _choiceImg.Render();
 }
 
 void GameScene::Release()
@@ -116,6 +129,10 @@ void GameScene::InitClip()
     }
 
     CLIPMANAGER->AddClip("button_select", "sprites/ui/button-select.10.png", 52, 52);
+
+    /* SHUNG 210715 */
+    CLIPMANAGER->AddClip("research_core", "sprites/game/core.png", 74, 56);
+    CLIPMANAGER->AddClip("research_choice", "sprites/game/choice.png", 75, 56);
 }
 
 void GameScene::InitCategoryUI()
@@ -156,6 +173,21 @@ void GameScene::InitCategoryUI()
 
     categorySelect.uiRenderer->Init("button_select");
     categorySelect.transform->SetPosition(turretIcon.transform->GetX(), turretIcon.transform->GetY());
+
+    /* SHUNG 210715 */
+    _choiceImg.uiRenderer->Init("research_choice");
+    _choiceImg.transform->SetPosition(WINSIZEX / 2, WINSIZEY / 2);
+    _choiceImg.transform->SetScale(0.75f, 0.75f);
+    _choiceImg.SetActive(false);
+
+    _CoreSlice.uiRenderer->Init("research_core");
+    _CoreSlice.transform->SetPosition(WINSIZEX / 2, WINSIZEY / 2);
+    _CoreSlice.transform->SetScale(0.75f, 0.75f);
+
+    _CoreSlice.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::ActiveChoiceImg, uiControler, _CoreSlice.transform, true), EVENT::ENTER);
+    _CoreSlice.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::ActiveChoiceImg, uiControler, _CoreSlice.transform, false), EVENT::EXIT);
 }
 
 void GameScene::InitPropUI()
@@ -221,4 +253,6 @@ void GameScene::InitPropUI()
     propPreview.renderer->Init(32, 32);
     propPreview.renderer->SetAlpha(0.5f);
     propPreview.SetActive(false);
+
+    /* SHUNG 210715 */
 }

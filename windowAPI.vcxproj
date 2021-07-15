@@ -225,6 +225,7 @@
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="TitleUIControler.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TriggerTest.h" />
     <ClInclude Include="UIBase.h" />
@@ -314,6 +315,7 @@
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="TitleUIControler.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TriggerTest.cpp" />
     <ClCompile Include="UIBase.cpp" />
