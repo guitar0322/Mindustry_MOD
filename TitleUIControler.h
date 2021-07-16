@@ -18,6 +18,7 @@ public:
 	void SetActiveCallback2(vector<GameObject*> gameObject, bool* name, bool* name2, bool isActive);
 	void SetActiveCallback3(vector<GameObject*> gameObject, bool isActive);
 	void SetActiveCallback4(vector<GameObject*> gameObject, bool* name, bool* name2, bool* name3, bool isActive);
-	void ChaneScene(string SceneName);
+	void ChangeScene(string SceneName);
 	void GameExit();
+
 };

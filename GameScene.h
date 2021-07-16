@@ -19,6 +19,8 @@ class GameScene :
 private:
 	Player* _player;
 	GameObject* _projectileManager;
+	float _musicTime;
+	bool test;
 
 	//======
     PropContainer* propContainer;

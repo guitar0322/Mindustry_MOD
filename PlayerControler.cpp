@@ -17,6 +17,8 @@ void PlayerControler::Init()
 	_isDiagonal = false;
 	_isGathering = false;
 	_dir = IDLE;
+	SOUNDMANAGER->addSound("shoot", "sounds/shoot.ogg", false, false);
+
 }
 
 void PlayerControler::Update()
@@ -236,22 +238,7 @@ void PlayerControler::Update()
 		float worldX = ScreenToWorld(_ptMouse).x;
 		float worldY = ScreenToWorld(_ptMouse).y;
 		_targetAngle = ConvertAngleD2D(GetAngle(transform->position.x, transform->position.y, worldX, worldY));
-		float deltaAngle = transform->GetAngle() - _targetAngle;
-
-		if (deltaAngle > 180 )
-		{
-			if (transform->GetAngle() != _targetAngle)
-			{
-				transform->Rotate(2.0f);
-			}
-		}
-		else
-		{
-			if (transform->GetAngle() != _targetAngle)
-			{
-				transform->Rotate(-2.0f);
-			}
-		}
+		PlayerDirection();
 
 		//플레이어 위치, 마우스 위치 GetAngle로 각도 구하기
 		//targetAngle이 위에서 구한 Angle로 바뀌고
@@ -264,7 +251,7 @@ void PlayerControler::Update()
 
 	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
 	{
-		
+		SOUNDMANAGER->play("shoot", 1.0f);
 		if (_isLeft == false) // 만약에 왼쪽이 발동 안할 경우
 		{
 				_projectileManager->FireProjectile(transform->GetX()+10, transform->GetY(),
@@ -284,9 +271,9 @@ void PlayerControler::PlayerDirection()
 {
 	float deltaAngle = _targetAngle - transform->GetAngle();
 
-	if (deltaAngle < 0) deltaAngle += 360;
+	if (deltaAngle < 0) deltaAngle += 360; // 델타 엥글이 0보다 작으면 360을 더해준다.
 
-	if (deltaAngle > 180)
+	if (deltaAngle > 180) // 만약에 델타엥글이 180보다 크다면?
 	{
 		if (transform->GetAngle() != _targetAngle)
 			transform->Rotate(-2.f);

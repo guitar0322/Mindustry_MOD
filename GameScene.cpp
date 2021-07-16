@@ -44,6 +44,12 @@ HRESULT GameScene::Init()
     /* SHUNG 210715 */
     uiControler->choiceImg = &_choiceImg;
 
+	/*°ÔÀÓ »ç¿îµå Ãß°¡ ±¤Ã¶ 210716*/
+	SOUNDMANAGER->addSound("startbgm", "music/land.mp3", true, false);
+	SOUNDMANAGER->addSound("gamebgm", "music/game2.mp3", true, false);
+	SOUNDMANAGER->play("startbgm", 10.f);
+
+
 	/* ÇÃ·¹ÀÌ¾î ºÎºÐ*/
 	_player = new Player();
 	_player->Init();
@@ -55,6 +61,7 @@ HRESULT GameScene::Init()
 	_projectileManager = new GameObject();
 	_projectileManager->AddComponent(new ProjectileManager());
 	_projectileManager->GetComponent<ProjectileManager>()->Init();
+	_musicTime = 0.0f;
 
 	_player->controler->SetProjectileManager(_projectileManager->GetComponent<ProjectileManager>());
 	//========================================
@@ -70,6 +77,7 @@ void GameScene::Update()
     uiControler->Update();
     propPreview.Update();
 	gameMap->Update();
+	_musicTime += TIMEMANAGER->getElapsedTime();
 
 	/* ÇÃ·¹ÀÌ¾î ºÎºÐ*/
 	_player->Update();
@@ -98,6 +106,13 @@ void GameScene::Update()
     /* SHUNG 210715 */
     _CoreSlice.Update();
     _choiceImg.Update();
+
+	if (_musicTime >= 15)
+	{
+		_musicTime = -90.f;
+		SOUNDMANAGER->play("gamebgm", 10.f);		
+	}
+
 }
 
 void GameScene::Render()
@@ -142,6 +157,10 @@ void GameScene::Render()
 	wstrangle.append(to_wstring(_player->controler->GetTargetAngle()));
 	D2DRENDERER->RenderText(100, 150, wstrangle, 20, L"¸¼Àº°íµñ", D2DRenderer::DefaultBrush::White);
 	
+	wstring wtime = L"TIME : ";
+	wtime.append(to_wstring(_musicTime));
+	D2DRENDERER->RenderText(100, 200, wtime, 20, L"¸¼Àº°íµñ", D2DRenderer::DefaultBrush::White);
+
 	/*wstring mineCount = L"";
 	mineCount.append(to_wstring(_mineCount));
 	D2DRENDERER->RenderText(WINSIZEX / 2 - 50, 10, mineCount, 20, L"fontello", D2DRenderer::DefaultBrush::White);*/
