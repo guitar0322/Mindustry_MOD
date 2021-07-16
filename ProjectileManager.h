@@ -4,7 +4,6 @@
 #define ENEMY_PROJECTILE_MAX 20
 #define PLAYER_PROJECTILE_MAX 200
 
-//class Projectile;
 class ProjectileObject;
 class EnemyManager;
 
@@ -26,7 +25,6 @@ private:
 
 	Transform* _enemyControlerTransform;
 	EnemyManager* _enemyManager;
-	//GameObject* _enemyManager;
 
 	float _deltaAngle;
 
@@ -42,6 +40,5 @@ public:
 	void FireProjectile(float x, float y, float angle, PROJECTILE_TYPE type);
 
 	void SetEnemyManager(EnemyManager* enemyManager) { _enemyManager = enemyManager; }
-	//void SetEnemyManager(GameObject* enemyManager) { _enemyManager = enemyManager; }
 };
 

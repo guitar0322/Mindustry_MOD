@@ -76,7 +76,7 @@ void ProjectileManager::FireProjectile(float x, float y, float angle, PROJECTILE
 			if (_enemyProjectileV[i]->isActive == true) continue;
 			_enemyProjectileV[i]->SetActive(true);
 			_enemyProjectileV[i]->transform->SetPosition(x, y);
-			_enemyProjectileV[i]->transform->SetAngle(ConvertAngleD2D(angle));
+			_enemyProjectileV[i]->transform->SetAngle(angle);
 			break;
 		}
 		break;
@@ -86,7 +86,7 @@ void ProjectileManager::FireProjectile(float x, float y, float angle, PROJECTILE
 			if (_playerProjectileV[i]->isActive == true) continue;
 			_playerProjectileV[i]->SetActive(true);
 			_playerProjectileV[i]->transform->SetPosition(x, y);
-			_playerProjectileV[i]->transform->SetAngle(ConvertAngleD2D(angle));
+			_playerProjectileV[i]->transform->SetAngle(angle);
 			break;
 		}
 		break;

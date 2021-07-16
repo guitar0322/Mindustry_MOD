@@ -2,7 +2,6 @@
 #include "Component.h"
 
 class EnemyInfo;
-class AnimObject;
 class ProjectileManager;
 
 class EnemyControler :
@@ -12,9 +11,7 @@ protected:
 	EnemyInfo* _enemyInfo;
 	EnemyControler* _enemyControler;
 
-	//GameObject* _projectileManager;
-	//ProjectileManager* _projectileManager;
-	//Transform* _projectileManagerTransform;
+	ProjectileManager* _projectileManager;
 
 	float _speed;
 	float _angle;
@@ -31,17 +28,11 @@ protected:
 	float _deltaY;
 	float _deltaAngle;
 	float _enemyRadius;
-private:
-
-	
 public:
 	EnemyControler();
 	~EnemyControler();
 
 	virtual void Init();
 	virtual void Update();
-
-//	void SetProjectileManagerTransform(ProjectileManager* projectileManager) { _projectileManager = projectileManager; }// _projectileManagerTransform = projectileManager->transform;
-	
 };
 

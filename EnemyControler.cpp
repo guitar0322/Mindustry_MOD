@@ -26,8 +26,6 @@ void EnemyControler::Init()
 	_speedX = 0.f;
 	_speedY = 0.f;*/
 	//_angle = _enemyInfo->GetCoreAngle();
-
-	//_projectileManager = gameObject->GetComponent<ProjectileManager>();
 	_speedX = 0.f;
 	_speedY = 0.f;
 
@@ -35,6 +33,7 @@ void EnemyControler::Init()
 
 void EnemyControler::Update()
 {
+	//_projectileManager = gameObject->GetComponent<ProjectileManager>();
 	//_speedX = cosf(_angle) * _speed * TIMEMANAGER->getElapsedTime();
 	//_speedY = -sinf(_angle) * _speed * TIMEMANAGER->getElapsedTime();
 	//

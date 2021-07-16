@@ -24,6 +24,8 @@ private:
 	GameObject* _projectileManager;
 	GameObject* _enemyManager;
 
+	AnimationClip* _enemyDaggerWalk;
+
 public:
 	ShootingScene();
 	~ShootingScene();

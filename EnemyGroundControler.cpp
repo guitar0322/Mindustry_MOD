@@ -14,7 +14,7 @@ EnemyGroundControler::~EnemyGroundControler()
 void EnemyGroundControler::Init()
 {
 	_enemyInfo = gameObject->GetComponent<EnemyInfo>();
-	_speed = gameObject->GetComponent<EnemyInfo>()->GetSpeed();
+	_speed = _enemyInfo->GetSpeed();
 	_testCoreTransform = _enemyInfo->GetCoreTransform();
 
 	_angle = 0.f;
@@ -37,6 +37,7 @@ void EnemyGroundControler::Init()
 void EnemyGroundControler::Update()
 {
 	_testCoreTransform = _enemyInfo->GetCoreTransform();
+	_speed = _enemyInfo->GetSpeed();
 	_angle = GetAngle(transform->position, _testCoreTransform->position);
 
 	if (_chaseCore)
@@ -65,14 +66,14 @@ void EnemyGroundControler::Update()
 
 		if (_attackSpeed >= 1.f && _leftFire == false)
 		{
-			_projectileManager->FireProjectile(transform->GetX() + _deltaX + 50, transform->GetY() + _deltaY, _deltaAngle, PROJECTILE_TYPE::ENEMY);
+			_projectileManager->FireProjectile(transform->GetX() + _deltaX + 50, transform->GetY() + _deltaY, ConvertAngleD2D(_deltaAngle), PROJECTILE_TYPE::ENEMY);
 			_leftFire = true;	
 			_attackSpeed = 0.f;
 		}
 
 		if (_attackSpeed >= 1.f && _leftFire == true)
 		{
-			_projectileManager->FireProjectile(transform->GetX() + _deltaX - 50, transform->GetY() + _deltaY, _deltaAngle, PROJECTILE_TYPE::ENEMY);
+			_projectileManager->FireProjectile(transform->GetX() + _deltaX - 50, transform->GetY() + _deltaY, ConvertAngleD2D(_deltaAngle), PROJECTILE_TYPE::ENEMY);
 			_leftFire = false;
 			_attackSpeed = 0.f;
 		}

@@ -13,13 +13,8 @@ void EnemyPlaneControler::Init()
 {
 	_enemyInfo = gameObject->GetComponent<EnemyInfo>();
 	_testCoreTransform = _enemyInfo->GetCoreTransform();
-	_projectileManager = gameObject->GetComponent<ProjectileManager>();
+	_speed = _enemyInfo->GetSpeed();
 
-	//_enemyInfo->SetSpeed(400.f);
-	//_speed = _enemyInfo->GetSpeed();
-
-	_speed = 200.f;
-	
 	_speedX = 0.f;
 	_speedY = 0.f;
 
@@ -40,6 +35,7 @@ void EnemyPlaneControler::Update()
 {
 	_angle = _enemyInfo->GetCoreAngle();						//deltaAngle값을 저장
 	_testCoreTransform = _enemyInfo->GetCoreTransform();
+	_speed = _enemyInfo->GetSpeed();
 
 	if (_chaseCore)
 	{
@@ -56,7 +52,7 @@ void EnemyPlaneControler::Update()
 		_deltaX = _enemyRadius * cosf(_deltaAngle);
 		_deltaY = _enemyRadius * -sinf(_deltaAngle);
 
-	//	_projectileManager->FireProjectile(transform->GetX() + _deltaX, transform->GetY() + _deltaY, _deltaAngle, PROJECTILE_TYPE::ENEMY);
+		_projectileManager->FireProjectile(transform->GetX() + _deltaX, transform->GetY() + _deltaY, ConvertAngleD2D(_deltaAngle), PROJECTILE_TYPE::ENEMY);
 	}
 
 	if (_isAttack == true)
