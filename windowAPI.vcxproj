@@ -162,7 +162,10 @@
     <ClInclude Include="ColliderManager.h" />
     <ClInclude Include="commonMacroFunction.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="Conveyor.h" />
+    <ClInclude Include="CopperWall.h" />
     <ClInclude Include="D2DRenderer.h" />
+    <ClInclude Include="Duo.h" />
     <ClInclude Include="EditableText.h" />
     <ClInclude Include="EditText.h" />
     <ClInclude Include="EffectManager.h" />
@@ -228,6 +231,7 @@
     <ClInclude Include="TitleUIControler.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TriggerTest.h" />
+    <ClInclude Include="Turret.h" />
     <ClInclude Include="UIBase.h" />
     <ClInclude Include="UIControler.h" />
     <ClInclude Include="UIManager.h" />
@@ -254,8 +258,11 @@
     <ClCompile Include="ClipManager.cpp" />
     <ClCompile Include="ColliderManager.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="Conveyor.cpp" />
+    <ClCompile Include="CopperWall.cpp" />
     <ClCompile Include="D2DRenderer+Draw.cpp" />
     <ClCompile Include="D2DRenderer.cpp" />
+    <ClCompile Include="Duo.cpp" />
     <ClCompile Include="EditableText.cpp" />
     <ClCompile Include="EditText.cpp" />
     <ClCompile Include="EffectManager.cpp" />
@@ -318,6 +325,7 @@
     <ClCompile Include="TitleUIControler.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TriggerTest.cpp" />
+    <ClCompile Include="Turret.cpp" />
     <ClCompile Include="UIBase.cpp" />
     <ClCompile Include="UIControler.cpp" />
     <ClCompile Include="UIManager.cpp" />

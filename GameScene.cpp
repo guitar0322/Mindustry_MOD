@@ -2,12 +2,15 @@
 #include "GameScene.h"
 #include "UIControler.h"
 #include "PropContainer.h"
+#include "PlayerControler.h"
 #include "PropFactory.h"
 #include "UIMouseEvent.h"
 
 HRESULT GameScene::Init()
 {
     Scene::Init();
+
+	InitClip();
 	SetBackBufferSize(2400, 1600);
 	MainCam->SetRenderSize(2400, 1600);
     MainCam->transform->SetPosition(1200, 800);
@@ -16,6 +19,7 @@ HRESULT GameScene::Init()
     propContainer = new PropContainer();
     propFactory = new PropFactory();
     propFactory->Init();
+    propFactory->propContainer = propContainer;
 
     uiControler = new UIControler();
     uiControler->Init();
@@ -29,6 +33,7 @@ HRESULT GameScene::Init()
     uiControler->wallIconV = &wallIconV;
     uiControler->preIconV = &turretIconV;
 
+    uiControler->propFactory = propFactory;
 	gameMap = new GameMap;
 	gameMap->Init();
 
@@ -39,15 +44,39 @@ HRESULT GameScene::Init()
     /* SHUNG 210715 */
     uiControler->choiceImg = &_choiceImg;
 
+	/* 플레이어 부분*/
+	_player = new Player();
+	_player->Init();
+	_player->renderer->Init("player");
+	_player->transform->SetPosition(1500, 900);
+	_player->transform->SetAngle(0.0f);
+	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
+
+	_projectileManager = new GameObject();
+	_projectileManager->AddComponent(new ProjectileManager());
+	_projectileManager->GetComponent<ProjectileManager>()->Init();
+
+	_player->controler->SetProjectileManager(_projectileManager->GetComponent<ProjectileManager>());
+	//========================================
+
     return S_OK;
 }
 
 void GameScene::Update()
 {
     buildingCategoryFrame.Update();
+    propFactory->Update();
+    propContainer->Update();
     uiControler->Update();
     propPreview.Update();
 	gameMap->Update();
+
+	/* 플레이어 부분*/
+	_player->Update();
+	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
+	MainCam->Update();
+	_projectileManager->Update();
+	//========================================
 
     //카테고리 아이콘 업데이트
     {
@@ -75,10 +104,14 @@ void GameScene::Render()
 {
 	gameMap->Render();
 
+    propFactory->Render();
+    propContainer->Render();
     propPreview.Render();
     uiControler->Render();
+	_player->Render();
+	_projectileManager->Render();
+	MainCam->Render();
 
-    MainCam->Render();
     //카테고리 아이콘 렌더
     {
         buildingCategoryFrame.Render();
@@ -100,10 +133,23 @@ void GameScene::Render()
     /* SHUNG 210715 */
     _CoreSlice.Render();
     _choiceImg.Render();
+
+	wstring wstr = L"player speed : ";
+	wstr.append(to_wstring(_player->controler->GetSpeed()));
+	D2DRENDERER->RenderText(100, 100, wstr, 20, L"맑은고딕", D2DRenderer::DefaultBrush::White);
+
+	wstring wstrangle = L"Angle : ";
+	wstrangle.append(to_wstring(_player->controler->GetTargetAngle()));
+	D2DRENDERER->RenderText(100, 150, wstrangle, 20, L"맑은고딕", D2DRenderer::DefaultBrush::White);
+	
+	/*wstring mineCount = L"";
+	mineCount.append(to_wstring(_mineCount));
+	D2DRENDERER->RenderText(WINSIZEX / 2 - 50, 10, mineCount, 20, L"fontello", D2DRenderer::DefaultBrush::White);*/
 }
 
 void GameScene::Release()
 {
+	NEW_SAFE_RELEASE(_player);
     NEW_SAFE_RELEASE(propContainer);
     SAFE_DELETE(propContainer);
     NEW_SAFE_RELEASE(uiControler);
@@ -127,6 +173,10 @@ void GameScene::InitClip()
 		CLIPMANAGER->AddClip("conveyor", "sprites/blocks/distribution/conveyors/conveyor-0-0.png", 32, 32);
 		CLIPMANAGER->AddClip("copper_wall", "sprites/blocks/walls/copper-wall.png", 32, 32);
     }
+
+	//플레이어 클립
+	CLIPMANAGER->AddClip("player", "player/alpha.png", 48, 48);
+	CLIPMANAGER->AddClip("enemy_projectile", "sprites/units/weapons/missiles-mount.png", 48, 48);
 
     CLIPMANAGER->AddClip("button_select", "sprites/ui/button-select.10.png", 52, 52);
 

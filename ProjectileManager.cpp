@@ -75,7 +75,6 @@ void ProjectileManager::FireProjectile(float x, float y, float angle, PROJECTILE
 			_enemyProjectileV[i]->SetActive(true);
 			_enemyProjectileV[i]->transform->SetPosition(x, y);
 			_enemyProjectileV[i]->transform->SetAngle(angle);
-			//_enemyProjectileV[i]->transform->SetAngle(_deltaAngle);
 			break;
 		}
 		break;

@@ -2,7 +2,6 @@
 #include "playGround.h"
 #include "SampleScene.h"
 #include "SampleScene2.h"
-#include "PlayerScene.h"
 #include "MapScene.h"
 #include "ShootingScene.h"
 #include "GameScene.h"
@@ -33,9 +32,11 @@ HRESULT playGround::init()
 	PlayerScene* playerScene = new PlayerScene();
 	SCENEMANAGER->AddScene("player", playerScene);
 
+
 	SampleScene* sampleScene = new SampleScene();
 	SCENEMANAGER->AddScene("sample", sampleScene);
 	//SCENEMANAGER->LoadScene("sample");
+
 	SampleScene2* sampleScene2 = new SampleScene2();
 	SCENEMANAGER->AddScene("sample2", sampleScene2);
 	
@@ -48,10 +49,11 @@ HRESULT playGround::init()
 	/* SHUNG 21.07.12 */
 	IntroScene* introScene = new IntroScene();
 	SCENEMANAGER->AddScene("intro", introScene);
-
+;
 	TitleScene* titleScene = new TitleScene();
 	SCENEMANAGER->AddScene("title", titleScene);
-	SCENEMANAGER->LoadScene("game");
+
+	SCENEMANAGER->LoadScene("ShootingScene");
 
 	//_mainCam.transform->SetX(_mainCam.transform->GetX() + 100);
 	//testParticle = new image();

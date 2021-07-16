@@ -1,6 +1,6 @@
 #pragma once
 #include <queue>
-#include <unordered_map>
+#include <map>
 #include "PropInfo.h"
 class PropContainer;
 class PropFactory
@@ -34,10 +34,10 @@ public:
 	void Release();
 
 	template<typename T>
-	ImageObject* CreateProp(int categoryIdx, int propIdx);
+	ImageObject* CreateProp(int tileX, int tileY);
 
 	ImageObject* CreatePreview(int tileX, int tileY);
-	void AddPropElem(unordered_map<int, ImageObject>* propList, int categoryIdx, int propIdx);
+	void AddPropElem(queue<int>* propList, int categoryIdx, int propIdx);
 	void InitPropInfo();
 };
 

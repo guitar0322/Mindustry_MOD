@@ -33,12 +33,13 @@ void UIControler::Update()
 				preView.renderer->SetAlpha(0.5f);
 				preView.transform->SetPosition(tileX * TILESIZE + 16, tileY * TILESIZE + 16);
 				_previewMap.insert(pair<int, ImageObject>(tileX + tileY * TILENUMX, preView));
+				_propQueue.push(tileX + tileY * TILENUMX);
 			}
 		}
 
 		if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
 		{
-			propFactory->AddPropElem(&_previewMap, _selectCategoryIdx, _selectPropIdx);
+			propFactory->AddPropElem(&_propQueue, _selectCategoryIdx, _selectPropIdx);
 			_previewMap.clear();
 			propPreview->SetActive(false);
 			propSelect->SetActive(false);

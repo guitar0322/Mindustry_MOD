@@ -302,6 +302,7 @@ void TitleScene::Render_SetPosition_MouseEvent()
 	_inInfo = false;
 	_inSetting = false;
 	_alphaTrigger = false;
+	_choiceSoundSettingButton = false;
 
 	#pragma endregion
 

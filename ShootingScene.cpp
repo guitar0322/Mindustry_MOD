@@ -29,12 +29,7 @@ void ShootingScene::Update()
 {
 	_shootingScene.Update();
 	_enemyPlane->Update();
-	_enemyPlaneWeapon->Update();
-	//_enemyGround->Update();
-	_enemyGround_Leg_Right->Update();
-	_enemyGround_Leg_Left->Update();
-	_enemyGround_Weapon_Right->Update();
-	_enemyGround_Weapon_Left->Update();
+	_enemyGround->Update();
 	_testCore->Update();
 	_projectileManager->Update();
 }
@@ -42,14 +37,8 @@ void ShootingScene::Update()
 void ShootingScene::Render()
 {
 	_shootingScene.Render();
-	_enemyPlaneWeapon->Render();
 	_enemyPlane->Render(); 
-	_enemyGround_Leg_Left->Render();
-	_enemyGround_Leg_Right->Render();
 	_enemyGround->Render();
-	_enemyGround_Weapon_Right->Render();
-	_enemyGround_Weapon_Left-> Render();
-
 	_testCore->Render();
 	_projectileManager->Render();
 	MainCam->Render();
@@ -91,25 +80,20 @@ void ShootingScene::SetProjectile()
 }
 void ShootingScene::SetEnemy()   
 {
-	CLIPMANAGER->AddClip("enemy_atrax", "sprites/units/enemy/enemy_atrax.png", 188, 218);
-	CLIPMANAGER->AddClip("enemy_atrax_weapon", "sprites/units/enemy/enemy_atrax_weapon.png", 96, 140);
+	CLIPMANAGER->AddClip("enemy_atrax", "sprites/units/enemy/enemy_atrax.png", 188, 329);
+	
+	//dagger
+	CLIPMANAGER->AddClip("enemy_dagger", "sprites/units/enemy/DAGGER.png", 48, 48);
+	CLIPMANAGER->AddClip("enemy_dagge_walk", "sprites/units/enemy/enemy_dagger_walk.bmp", 369, 114, 3, 1, 0.2f);
+	CLIPMANAGER->AddClip("enemy_dagge_walk_left", "sprites/units/enemy/enemy_dagger_walk_left.bmp", 342, 123, 3, 1, 0.2f);
+	CLIPMANAGER->AddClip("enemy_dagge_walk_right", "sprites/units/enemy/enemy_dagger_walk_right.bmp", 342, 126, 3, 1, 0.2f);
 
-	CLIPMANAGER->AddClip("enemy_dagger", "sprites/units/enemy/enemy_dagger.png", 48, 48);
-	CLIPMANAGER->AddClip("enemy_dagger_leg_right", "sprites/units/enemy/enemy_dagger_leg_right.png",11,25);
-	CLIPMANAGER->AddClip("enemy_dagger_leg_left", "sprites/units/enemy/enemy_dagger_leg_left.png",11,25);
-	CLIPMANAGER->AddClip("enemy_dagger_weapon_right", "sprites/units/enemy/enemy_dagger_weapon_right.png",7,21);
-	CLIPMANAGER->AddClip("enemy_dagger_weapon_left", "sprites/units/enemy/enemy_dagger_weapon_left.png",7,21);
 
 				//////////////////////////EnemyPlane/////////////////////////
-	_enemyPlaneWeapon = new GameObject();
-	_enemyPlaneWeapon->AddComponent(new Renderer());
-	_enemyPlaneWeapon->GetComponent<Renderer>()->Init("enemy_atrax_weapon");
 
 	_enemyPlane = new EnemyPlane();
 	_enemyPlane->GetComponent<Renderer>()->Init("enemy_atrax");
 	_enemyPlane->transform->SetPosition(WINSIZEX / 2 - 500, WINSIZEY / 2 + 250);
-	_enemyPlane->transform->AddChild(_enemyPlaneWeapon);
-	_enemyPlaneWeapon->transform->SetPosition(_enemyPlane->transform->GetX(), _enemyPlane->transform->GetY() - 130);
 	
 	//EnemyObject에 EnemyInfo를 Add해주어서 가져오기만 하면 됨
 	_enemyPlane->GetComponent<EnemyInfo>()->SetTestCore(_testCore);
@@ -130,35 +114,6 @@ void ShootingScene::SetEnemy()
 	_enemyGround->GetComponent<Renderer>()->Init("enemy_dagger");
 	_enemyGround->transform->SetPosition(2000, 500);
 	_enemyGround->transform->SetScale(3, 3);
-
-	_enemyGround_Leg_Left = new GameObject();
-	_enemyGround_Leg_Left->AddComponent(new Renderer());
-	_enemyGround_Leg_Left->GetComponent<Renderer>()->Init("enemy_dagger_leg_left");
-	_enemyGround_Leg_Left->transform->SetPosition(_enemyGround->transform->GetX() - 20, _enemyGround->transform->GetY() + 40);
-	_enemyGround_Leg_Left->transform->SetScale(3, 3);
-
-	_enemyGround_Leg_Right = new GameObject();
-	_enemyGround_Leg_Right->AddComponent(new Renderer());
-	_enemyGround_Leg_Right->GetComponent<Renderer>()->Init("enemy_dagger_leg_right");
-	_enemyGround_Leg_Right->transform->SetPosition(_enemyGround->transform->GetX() + 20, _enemyGround->transform->GetY() + 40);
-	_enemyGround_Leg_Right->transform->SetScale(3, 3);
-
-	_enemyGround_Weapon_Left = new GameObject();
-	_enemyGround_Weapon_Left->AddComponent(new Renderer());
-	_enemyGround_Weapon_Left->GetComponent<Renderer>()->Init("enemy_dagger_weapon_left");
-	_enemyGround_Weapon_Left->transform->SetPosition(_enemyGround->transform->GetX() - 50, _enemyGround->transform->GetY() + 30);
-	_enemyGround_Weapon_Left->transform->SetScale(3, 3);
-
-	_enemyGround_Weapon_Right = new GameObject();
-	_enemyGround_Weapon_Right->AddComponent(new Renderer());
-	_enemyGround_Weapon_Right->GetComponent<Renderer>()->Init("enemy_dagger_weapon_left");
-	_enemyGround_Weapon_Right->transform->SetPosition(_enemyGround->transform->GetX() + 50, _enemyGround->transform->GetY() + 30);
-	_enemyGround_Weapon_Right->transform->SetScale(3, 3);
-
-	_enemyGround->transform->AddChild(_enemyGround_Leg_Left);
-	_enemyGround->transform->AddChild(_enemyGround_Leg_Right);
-	_enemyGround->transform->AddChild(_enemyGround_Weapon_Left);
-	_enemyGround->transform->AddChild(_enemyGround_Weapon_Right);
 
 	_enemyGround->GetComponent<EnemyInfo>()->SetTestCore(_testCore);
 	_enemyGround->GetComponent<EnemyInfo>()->Init();

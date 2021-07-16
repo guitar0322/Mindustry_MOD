@@ -1,6 +1,5 @@
 #pragma once
 #include "Scene.h"
-#include "ProjectileManager.h"
 
 class Player;
 
@@ -8,9 +7,8 @@ class PlayerScene : public Scene
 {
 private:
 	ImageObject _backGround;
-	BoxCollider* _copperZone;
+	//BoxCollider* _copperZone;
 	Player* _player;
-	GameObject* _projectileManager;
 	UIBase _mineUI;
 	long _mineCount;
 public:

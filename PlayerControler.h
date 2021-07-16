@@ -36,6 +36,9 @@ private:
 public:
 	virtual void Init();
 	virtual void Update();
+
+	void PlayerDirection();
+
 	float GetSpeed() const { return _speed; }
 	float GetTargetAngle() const { return _targetAngle; }
 	void SetProjectileManager(ProjectileManager* projectileManager) { _projectileManager = projectileManager; }

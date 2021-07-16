@@ -19,6 +19,8 @@ private:
 	bool		_inSetting;
 	bool		_inInfo;
 	bool		_alphaTrigger;
+	bool		_choiceSoundSettingButton;
+	bool		_choiceGoBackButton;
 
 	/* Background */
 	ImageObject _backgroundImg;
