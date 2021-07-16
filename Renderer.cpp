@@ -73,7 +73,7 @@ void Renderer::Render()
 		transform->GetScaleY(),
 		D2D1::Point2F(transform->GetX(), transform->GetY())
 	);
-	BackBuffer->SetTransform(rotation * scale);
+	BackBuffer->SetTransform(scale * rotation);
 
 	if (_targetBitmap == nullptr)
 	{

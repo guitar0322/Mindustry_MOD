@@ -29,8 +29,8 @@ HRESULT playGround::init()
 	SCENEMANAGER->AddScene("background", mapScene);
 	//SCENEMANAGER->LoadScene("background");
 
-	PlayerScene* playerScene = new PlayerScene();
-	SCENEMANAGER->AddScene("player", playerScene);
+	//PlayerScene* playerScene = new PlayerScene();
+	//SCENEMANAGER->AddScene("player", playerScene);
 
 
 	SampleScene* sampleScene = new SampleScene();
@@ -53,7 +53,7 @@ HRESULT playGround::init()
 	TitleScene* titleScene = new TitleScene();
 	SCENEMANAGER->AddScene("title", titleScene);
 
-	SCENEMANAGER->LoadScene("ShootingScene");
+	SCENEMANAGER->LoadScene("title");
 
 	//_mainCam.transform->SetX(_mainCam.transform->GetX() + 100);
 	//testParticle = new image();

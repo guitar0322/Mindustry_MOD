@@ -18,6 +18,9 @@ class GameScene :
 {
 private:
 	Player* _player;
+	ImageObject* _playerWeaponL;
+	ImageObject* _playerWeaponR;
+
 	GameObject* _projectileManager;
 
 	//======

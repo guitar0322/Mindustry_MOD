@@ -27,8 +27,8 @@ void Projectile::Update()
 
 void Projectile::Move()
 {
-	_speedX = cosf(transform->GetAngle()) * _speed * TIMEMANAGER->getElapsedTime();
-	_speedY = -sinf(transform->GetAngle()) * _speed * TIMEMANAGER->getElapsedTime();
+	_speedX = cosf(ConvertAngleAPI(transform->GetAngle())) * _speed * TIMEMANAGER->getElapsedTime();
+	_speedY = -sinf(ConvertAngleAPI(transform->GetAngle())) * _speed * TIMEMANAGER->getElapsedTime();
 
 	transform->Move(_speedX, _speedY);
 }

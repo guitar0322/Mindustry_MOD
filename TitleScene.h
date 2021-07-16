@@ -36,7 +36,6 @@ private:
 	bool		_alphaTrigger;
 	bool		_choiceSoundSettingButton;
 	bool		_choiceGoBackButton;
-	bool		_grab;
 
 	ImageObject _settingTitleImg;
 	ImageObject _settingMenuBoardImg;
