@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "ProjectileManager.h"
 #include "ProjectileObject.h"
+#include "EnemyManager.h"
+
 ProjectileManager::ProjectileManager()
 {
 }
@@ -16,14 +18,15 @@ void ProjectileManager::Init()
 		_enemyProjectile = new ProjectileObject();
 		_enemyProjectile->tag = TAGMANAGER->GetTag("enemy");
 		_enemyProjectile->GetRendererComponent()->Init("enemy_projectile");
-		_enemyProjectile->GetProjectileComponent()->SetSpeed(500.f);
+		_enemyProjectile->GetProjectileComponent()->SetSpeed(1000.f);
 		_enemyProjectile->SetActive(false);
 		_enemyProjectileV.push_back(_enemyProjectile);
 	}
 	for (int i = 0; i < PLAYER_PROJECTILE_MAX; i++)
 	{
 		_playerProjectile = new ProjectileObject();
-		_playerProjectile->GetRendererComponent()->Init("enemy_projectile");
+		_playerProjectile->GetRendererComponent()->Init("bullet");
+		_playerProjectile->transform->SetScale(0.5f, 0.5f);
 		_playerProjectile->GetProjectileComponent()->SetSpeed(150.f);
 		_playerProjectile->SetActive(false);
 		_playerProjectileV.push_back(_playerProjectile);

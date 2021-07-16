@@ -21,6 +21,7 @@
 #include <typeinfo>
 #include "EnemyObject.h"
 #include "Projectile.h"
+#include "EnemyManager.h"
 
 namespace HDY_UTIL
 {

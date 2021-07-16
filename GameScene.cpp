@@ -11,9 +11,11 @@ HRESULT GameScene::Init()
     Scene::Init();
 
 	InitClip();
-	SetBackBufferSize(2400, 1600);
-	MainCam->SetRenderSize(2400, 1600);
-    MainCam->transform->SetPosition(1200, 800);
+	SetBackBufferSize(1600, 1600);
+
+	MainCam->SetScreenSize(WINSIZEX, WINSIZEY);
+	MainCam->SetRenderSize(1600, 1010);
+    MainCam->transform->SetPosition(1600 / 2, 1600 / 2);
 
     selectCategoryIdx = 0;
     propContainer = new PropContainer();
@@ -58,6 +60,17 @@ HRESULT GameScene::Init()
 	_player->transform->SetAngle(0.0f);
 	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
 
+	_playerWeaponL = new ImageObject;
+	_playerWeaponL->Init();
+	_playerWeaponL->renderer->Init("player_weapon_L");
+
+	_playerWeaponR = new ImageObject;
+	_playerWeaponR->Init();
+	_playerWeaponR->renderer->Init("player_weapon_R");
+
+	_player->transform->AddChild(_playerWeaponL->transform);
+	_player->transform->AddChild(_playerWeaponR->transform);
+
 	_projectileManager = new GameObject();
 	_projectileManager->AddComponent(new ProjectileManager());
 	_projectileManager->GetComponent<ProjectileManager>()->Init();
@@ -81,6 +94,8 @@ void GameScene::Update()
 
 	/* 플레이어 부분*/
 	_player->Update();
+	_playerWeaponL->Update();
+	_playerWeaponR->Update();
 	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
 	MainCam->Update();
 	_projectileManager->Update();
@@ -124,6 +139,8 @@ void GameScene::Render()
     propPreview.Render();
     uiControler->Render();
 	_player->Render();
+	_playerWeaponL->Render();
+	_playerWeaponR->Render();
 	_projectileManager->Render();
 	MainCam->Render();
 
@@ -196,6 +213,9 @@ void GameScene::InitClip()
 	//플레이어 클립
 	CLIPMANAGER->AddClip("player", "player/alpha.png", 48, 48);
 	CLIPMANAGER->AddClip("enemy_projectile", "sprites/units/weapons/missiles-mount.png", 48, 48);
+	CLIPMANAGER->AddClip("bullet", "sprites/effects/bullet.png", 52, 52);
+	CLIPMANAGER->AddClip("player_weapon_L", "player/small-basic-weapon-L.png", 48, 48);
+	CLIPMANAGER->AddClip("player_weapon_R", "player/small-basic-weapon-R.png", 48, 48);
 
     CLIPMANAGER->AddClip("button_select", "sprites/ui/button-select.10.png", 52, 52);
 

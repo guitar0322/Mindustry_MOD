@@ -1,8 +1,7 @@
 #pragma once
 #include "GameObject.h"
-//#include "ProjectileManager.h"
 
-//class Projectile;
+class Projectile;
 
 class ProjectileObject :
 	public GameObject
