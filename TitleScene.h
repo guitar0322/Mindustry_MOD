@@ -3,6 +3,7 @@
 #define BACKGROUND_HEIGHT 875
 #define ENEMY_PLANE_MAX 10
 #include "Scene.h"
+#include "TitleUIControler.h"
 
 /* SHUNG 21.07.12 */
 
@@ -11,25 +12,9 @@ class TitleScene : public Scene
 
 private:
 
-	/* BACKGROUND */
-	ImageObject _backgroundImg;
+	TitleUIControler* titleUIControler;
 
-	/* LOGO */
-	ImageObject _logoImg;
-
-	/* ICON */
-	ImageObject _playButtonImg;
-	ImageObject _editorButtonImg;
-	ImageObject _settingButtonImg;
-	ImageObject _abuotButtonImg;
-	ImageObject _exitButtonImg;
-
-	/* Menu Board */
-	ImageObject _boardImg;
-	ImageObject _choiceImg;
-	Rect		_menuRect[5];
-
-	/* 21.07.13 SETTING IMG */
+	/* Bool */
 	bool		_grab;
 	bool		_inSetting;
 	bool		_inInfo;
@@ -37,14 +22,40 @@ private:
 	bool		_choiceSoundSettingButton;
 	bool		_choiceGoBackButton;
 
+	/* Background */
+	ImageObject _backgroundImg;
+
+	/* Logo */
+	ImageObject _logoImg;
+
+	/* Icon & Button */
+	/* Play */
+	ImageObject _playIconImg;
+	UIBase		_playButton;
+	/* Ediotr */
+	ImageObject _editorIconImg;
+	UIBase		_ediotrButton;
+	/* Setting */
+	ImageObject _settingIconImg;
 	ImageObject _settingTitleImg;
 	ImageObject _settingMenuBoardImg;
-	ImageObject _settingMenuChoiceImg;
+	UIBase		_settingButton;
+	UIBase		_soundButton;
+	/* About */
+	ImageObject _abuotIconImg;
+	UIBase		_aboutButton;
+	/* Exit */
+	ImageObject _exitIconImg;
+	UIBase		_exitButton;
+	/* GoBack */
 	ImageObject _goBackIdleImg;
 	ImageObject _goBackChoiceImg;
+	UIBase		_goBackButton;
 
-	Rect		_settingRect;
-	Rect		_goBackRect;
+	/* Menu Board & Menu Choice */
+	ImageObject _boardImg;
+	ImageObject _choiceImg;
+	ImageObject _choiceImg2;
 
 	/* 비행기 관련 소스 코드 작업 (민재-대영) */
 	GameObject* _enemyPlane[ENEMY_PLANE_MAX];
@@ -64,17 +75,16 @@ public:
 	virtual void Render();
 	virtual void Release();
 	
+	/* Titile */
 	/* Init */
 	virtual void ClipManager();
-	virtual void RenderAndPositionManager();
-	virtual void MakeRect();
-
+	virtual void Render_SetPosition_MouseEvent();
+	
 	/* Render */
 	virtual void AlphaManager();
 	virtual void D2DRendererManager();
 
 	/* Enemy */
-
 	/* Init */
 	void SetTitleSceneEnemy();
 	/* Update */

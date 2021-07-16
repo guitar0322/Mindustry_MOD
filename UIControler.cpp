@@ -108,3 +108,9 @@ void UIControler::ClickPropIcon(GameObject* clickedButton, int propIdx)
 		_selectPropIdx = propIdx;
 	}
 }
+
+void UIControler::ActiveChoiceImg(Transform* menuTr, bool isActive)
+{
+	choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
+	choiceImg->SetActive(isActive);
+}

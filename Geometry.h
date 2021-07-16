@@ -15,6 +15,7 @@ namespace MyGeometry
 		result.y = (rect.bottom + rect.top) / 2;
 		return result;
 	}
+
 	inline float GetCenterX(Rect rect)
 	{
 		return (rect.right + rect.left) / 2;

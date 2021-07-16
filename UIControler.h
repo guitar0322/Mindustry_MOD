@@ -32,5 +32,9 @@ public:
     void Render();
     void ClickCategoryIcon(GameObject* clickedButton, int category);
     void ClickPropIcon(GameObject* clickedButton, int propIdx);
+
+    /* SHUNG 210715 */
+    UIBase* choiceImg;
+    void ActiveChoiceImg(Transform* menuTr, bool isActive);
 };
 
