@@ -12,8 +12,9 @@ EnemyPlaneControler::~EnemyPlaneControler()
 void EnemyPlaneControler::Init()
 {
 	_enemyInfo = gameObject->GetComponent<EnemyInfo>();
+	_testCoreTransform = _enemyInfo->GetCoreTransform();
 	_speed = _enemyInfo->GetSpeed();
-	
+
 	_speedX = 0.f;
 	_speedY = 0.f;
 
@@ -22,31 +23,23 @@ void EnemyPlaneControler::Init()
 
 	_chaseCore = true;				//Core를 향해 가고있는가?
 	_isAttack = false;				//Enemy가 공격을 하고 있는가?
-	_weaponRebound = false;
 
 	_deltaX = 0.f;
 	_deltaY = 0.f;
+
 	_deltaAngle = 0.f;
-	_projectileRadius = 24.f;
-
-	_weaponRadius = 70.f;
-	_rebound = 630.f;
-	_reboundTime = 0.f;
-
-	_x = 0.f;
-	_y = 0.f;
-
-	_weaponCorrectionX, _weaponCorrectionY = 0.f;
+	_enemyRadius = 164.5f;
 }
 
 void EnemyPlaneControler::Update()
 {
 	_angle = _enemyInfo->GetCoreAngle();						//deltaAngle값을 저장
+	_testCoreTransform = _enemyInfo->GetCoreTransform();
+	_speed = _enemyInfo->GetSpeed();
 
 	if (_chaseCore)
 	{
 		_isAttack = false;
-		_weaponRebound = false;
 		_deltaAngle = _angle;
 	}
 
@@ -56,11 +49,10 @@ void EnemyPlaneControler::Update()
 		_isAttack = true;
 		_randomAngle = RND->getInt(2);
 
-		_deltaX = _projectileRadius * cosf(_deltaAngle);
-		_deltaY = _projectileRadius * -sinf(_deltaAngle);
+		_deltaX = _enemyRadius * cosf(_deltaAngle);
+		_deltaY = _enemyRadius * -sinf(_deltaAngle);
 
-		_projectileManager->FireProjectile(transform->GetX() + _deltaX, transform->GetY() + _deltaY, _deltaAngle, PROJECTILE_TYPE::ENEMY);
-		_weaponRebound = true;
+		_projectileManager->FireProjectile(transform->GetX() + _deltaX, transform->GetY() + _deltaY, ConvertAngleD2D(_deltaAngle), PROJECTILE_TYPE::ENEMY);
 	}
 
 	if (_isAttack == true)
@@ -86,11 +78,7 @@ void EnemyPlaneControler::Update()
 
 	transform->Move(_speedX, _speedY);
 
-	_weaponCorrectionX = cosf(_deltaAngle) * _weaponRadius;
-	_weaponCorrectionY = -sinf(_deltaAngle) * _weaponRadius;
-
 	transform->SetAngle(ConvertAngleD2D(_deltaAngle));
-
 }
 
 void EnemyPlaneControler::RandomAngle()		

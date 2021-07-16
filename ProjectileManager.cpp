@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "ProjectileManager.h"
 #include "ProjectileObject.h"
+#include "EnemyManager.h"
+
 ProjectileManager::ProjectileManager()
 {
 }
@@ -16,7 +18,7 @@ void ProjectileManager::Init()
 		_enemyProjectile = new ProjectileObject();
 		_enemyProjectile->tag = TAGMANAGER->GetTag("enemy");
 		_enemyProjectile->GetRendererComponent()->Init("enemy_projectile");
-		_enemyProjectile->GetProjectileComponent()->SetSpeed(500.f);
+		_enemyProjectile->GetProjectileComponent()->SetSpeed(1000.f);
 		_enemyProjectile->SetActive(false);
 		_enemyProjectileV.push_back(_enemyProjectile);
 	}

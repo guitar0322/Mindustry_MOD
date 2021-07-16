@@ -4,14 +4,14 @@
 #define ENEMY_PROJECTILE_MAX 20
 #define PLAYER_PROJECTILE_MAX 200
 
-class Projectile;
 class ProjectileObject;
+class EnemyManager;
 
 static enum PROJECTILE_TYPE
 {
 	ENEMY,
 	PLAYER
-};
+};	
 
 class ProjectileManager :
 	public Component
@@ -22,8 +22,9 @@ private:
 
 	ProjectileObject* _enemyProjectile;
 	ProjectileObject* _playerProjectile;
-	GameObject* _enemyPlaneControler;
-	Transform* _enemyPlaneControlerTransform;
+
+	Transform* _enemyControlerTransform;
+	EnemyManager* _enemyManager;
 
 	float _deltaAngle;
 
@@ -38,6 +39,6 @@ public:
 	void ProjectileMove();
 	void FireProjectile(float x, float y, float angle, PROJECTILE_TYPE type);
 
-	void SetEnemyPlanecontrolerTransform(GameObject* enemyPlaneControler) { _enemyPlaneControler = enemyPlaneControler; _enemyPlaneControlerTransform = enemyPlaneControler->transform; }
+	void SetEnemyManager(EnemyManager* enemyManager) { _enemyManager = enemyManager; }
 };
 

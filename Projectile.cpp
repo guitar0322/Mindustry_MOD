@@ -15,9 +15,7 @@ void Projectile::Init()
 	_speed = 0.f;
 	_angle = 0.f;
 	_speedX, _speedY = 0.f;
-	//gameObject->GetComponent<BoxCollider>();
-	transform->SetScale(3, 3);
-	//_projectileManager = gameObject->GetComponent<ProjectileManager>();
+	transform->SetScale(1.5f, 1.5f);
 }
 
 void Projectile::Update()
@@ -33,8 +31,9 @@ void Projectile::Move()
 	transform->Move(_speedX, _speedY);
 }
 
-void Projectile::OnTriggerEnter(GameObject * gameObject)
+void Projectile::OnTriggerEnter(GameObject* gameObject)
 {
+	if (TAGMANAGER->GetTag("player") == gameObject->tag)
 	if (gameObject->tag == TAGMANAGER->GetTag("player"))
 	{
 		transform->gameObject->SetActive(false);
