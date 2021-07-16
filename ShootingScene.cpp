@@ -94,7 +94,7 @@ void ShootingScene::SetEnemyManager()
 	_enemyManager = new GameObject();
 	_enemyManager->AddComponent(new EnemyManager());
 	_enemyManager->GetComponent<EnemyManager>()->SetTestCoreTransform(_testCore);
-	//_projectileManager->GetComponent<ProjectileManager>()->SetEnemyManager(_enemyManager->GetComponent<EnemyManager>());
-	//_enemyManager->GetComponent<EnemyManager>()->SetProjectileManager(_projectileManager->GetComponent<ProjectileManager>());
 	_enemyManager->GetComponent<EnemyManager>()->Init();
+	_enemyManager->GetComponent<EnemyManager>()->SetProjectileManager(_projectileManager->GetComponent<ProjectileManager>());
+	_projectileManager->GetComponent<ProjectileManager>()->SetEnemyManager(_enemyManager->GetComponent<EnemyManager>());
 }

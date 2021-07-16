@@ -12,6 +12,7 @@ private:
 	GameObject* _testCore;
 	Transform* _testCoreTransform;
 	ProjectileManager* _projectileManager;
+
 public:
 	EnemyPlaneControler();
 	~EnemyPlaneControler();

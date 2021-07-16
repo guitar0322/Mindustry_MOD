@@ -22,6 +22,6 @@ public:
 	virtual void Update();
 
 	void SetTestCore(GameObject* testCore) { _testCore = testCore; _testCoreTransform = testCore->transform; }
-	void SetProjectileManager(ProjectileManager* projectileManager) { _projectileManager = projectileManager; }
+	//void SetProjectileManager(ProjectileManager* projectileManager) { _projectileManager = projectileManager; }
 };
 

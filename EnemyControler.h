@@ -13,7 +13,7 @@ protected:
 	EnemyControler* _enemyControler;
 
 	//GameObject* _projectileManager;
-	ProjectileManager* _projectileManager;
+	//ProjectileManager* _projectileManager;
 	//Transform* _projectileManagerTransform;
 
 	float _speed;
@@ -31,6 +31,7 @@ protected:
 	float _deltaY;
 	float _deltaAngle;
 	float _enemyRadius;
+private:
 
 	
 public:
@@ -40,6 +41,7 @@ public:
 	virtual void Init();
 	virtual void Update();
 
-	void SetProjectileManagerTransform(ProjectileManager* projectileManager) { _projectileManager = projectileManager; }// _projectileManagerTransform = projectileManager->transform;
+//	void SetProjectileManagerTransform(ProjectileManager* projectileManager) { _projectileManager = projectileManager; }// _projectileManagerTransform = projectileManager->transform;
+	
 };
 

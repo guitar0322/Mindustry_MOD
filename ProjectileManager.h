@@ -24,10 +24,9 @@ private:
 	ProjectileObject* _enemyProjectile;
 	ProjectileObject* _playerProjectile;
 
-	GameObject* _enemyControler;
 	Transform* _enemyControlerTransform;
 	EnemyManager* _enemyManager;
-
+	//GameObject* _enemyManager;
 
 	float _deltaAngle;
 
@@ -42,7 +41,7 @@ public:
 	void ProjectileMove();
 	void FireProjectile(float x, float y, float angle, PROJECTILE_TYPE type);
 
-//	ProjectileManager* GetProjectileManager() const { return this; }
 	void SetEnemyManager(EnemyManager* enemyManager) { _enemyManager = enemyManager; }
+	//void SetEnemyManager(GameObject* enemyManager) { _enemyManager = enemyManager; }
 };
 

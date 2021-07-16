@@ -20,6 +20,7 @@ private:
 	EnemyPlane* _enemyPlane;
 
 	EnemyGround* _enemyGround;
+
 	GameObject* _projectileManager;
 	GameObject* _enemyManager;
 

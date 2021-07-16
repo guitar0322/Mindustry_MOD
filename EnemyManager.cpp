@@ -5,6 +5,7 @@
 #include "EnemyGround.h"
 #include "ProjectileManager.h"
 #include "EnemyPlaneControler.h"
+#include "EnemyGroundControler.h"
 
 EnemyManager::EnemyManager()
 {
@@ -25,7 +26,7 @@ void EnemyManager::Init()
 		//_enemyPlane->GetComponent<EnemyInfo>()->SetSpeed(400.f);
 		_enemyPlane->GetComponent<EnemyInfo>()->SetTestCore(_testCore);
 		_enemyPlane->GetComponent<EnemyInfo>()->GetCoreAngle();
-		_enemyPlane->GetComponent<EnemyPlaneControler>()->SetProjectileManagerTransform(_projectileManager);
+		//_enemyPlane->GetComponent<EnemyPlaneControler>()->SetProjectileManagerTransform(_projectileManager);
 		_enemyPlane->SetActive(false);
 		_enemyV.push_back(_enemyPlane);
 	}
@@ -37,7 +38,7 @@ void EnemyManager::Init()
 	//	_enemyGround->GetComponent<EnemyInfo>()->SetSpeed(200.f);
 		_enemyGround->GetComponent<EnemyInfo>()->SetTestCore(_testCore);
 		_enemyGround->GetComponent<EnemyInfo>()->GetCoreAngle();
-		_enemyGround->GetComponent<EnemyControler>()->SetProjectileManagerTransform(_projectileManager);
+	//	_enemyGround->GetComponent<EnemyGroundControler>()->SetProjectileManagerTransform(_projectileManager);
 		_enemyGround->SetActive(false);
 		_enemyV.push_back(_enemyGround);
 	}

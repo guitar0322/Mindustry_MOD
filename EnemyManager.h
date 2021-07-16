@@ -19,6 +19,7 @@ private:
 	EnemyGround* _enemyGround;
 
 	ProjectileManager* _projectileManager;
+	//GameObject* _projectileManager;
 
 	GameObject* _testCore;
 	Transform* _testCoreTransform;
@@ -46,6 +47,7 @@ public:
 	float GetTimeSecond() const { return _timeSecond; }
 	float GetTimeMinute() const { return _timeMinute; }
 
+	//void SetProjectileManager(GameObject* projectileManager){ _projectileManager = projectileManager; }
 	void SetProjectileManager(ProjectileManager* projectileManager){ _projectileManager = projectileManager; }
 	void SetTestCoreTransform(GameObject* testCore) { _testCore = testCore; _testCoreTransform = testCore->transform; }
 };
