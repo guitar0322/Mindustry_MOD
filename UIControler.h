@@ -35,6 +35,7 @@ public:
 
     /* SHUNG 210715 */
     UIBase* choiceImg;
+    UIBase* lockImg;
     void ActiveChoiceImg(Transform* menuTr, bool isActive);
 };
 

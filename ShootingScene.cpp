@@ -78,6 +78,7 @@ void ShootingScene::SetProjectile()
 	_projectileManager->GetComponent<ProjectileManager>()->Init();
 	
 }
+
 void ShootingScene::SetEnemy()   
 {
 	CLIPMANAGER->AddClip("enemy_atrax", "sprites/units/enemy/enemy_atrax.png", 188, 329);
@@ -88,9 +89,7 @@ void ShootingScene::SetEnemy()
 	CLIPMANAGER->AddClip("enemy_dagge_walk_left", "sprites/units/enemy/enemy_dagger_walk_left.bmp", 342, 123, 3, 1, 0.2f);
 	CLIPMANAGER->AddClip("enemy_dagge_walk_right", "sprites/units/enemy/enemy_dagger_walk_right.bmp", 342, 126, 3, 1, 0.2f);
 
-
-				//////////////////////////EnemyPlane/////////////////////////
-
+	//////////////////////////EnemyPlane/////////////////////////
 	_enemyPlane = new EnemyPlane();
 	_enemyPlane->GetComponent<Renderer>()->Init("enemy_atrax");
 	_enemyPlane->transform->SetPosition(WINSIZEX / 2 - 500, WINSIZEY / 2 + 250);

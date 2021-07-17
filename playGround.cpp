@@ -46,11 +46,10 @@ HRESULT playGround::init()
 	/* SHUNG 21.07.12 */
 	IntroScene* introScene = new IntroScene();
 	SCENEMANAGER->AddScene("intro", introScene);
-;
+
 	TitleScene* titleScene = new TitleScene();
 	SCENEMANAGER->AddScene("title", titleScene);
-
-	SCENEMANAGER->LoadScene("ShootingScene");
+	SCENEMANAGER->LoadScene("game");
 
 	//_mainCam.transform->SetX(_mainCam.transform->GetX() + 100);
 	//testParticle = new image();
