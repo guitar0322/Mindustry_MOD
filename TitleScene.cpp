@@ -34,6 +34,12 @@ HRESULT TitleScene::Init()
 
 void TitleScene::Update()
 {
+	MainCam->Update();
+	for (int i = 0; i < ENEMY_PLANE_MAX; i++)
+	{
+		_enemyPlane[i]->Update();
+		_enemyPlaneShadow[i]->Update();
+	}
 	/* Buuton Update */
 	_playButton.Update();
 	_ediotrButton.Update();

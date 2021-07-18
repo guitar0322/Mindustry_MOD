@@ -1,5 +1,4 @@
 #pragma once
-#include "image.h"
 #include "Component.h"
 enum SHAPE {
 	CIRCLE,

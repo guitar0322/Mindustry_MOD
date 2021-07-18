@@ -22,7 +22,7 @@ void BoxCollider::Init()
 
 void BoxCollider::Update()
 {
-	_rc = RectMakeCenter(transform->GetX(), transform->GetY(), _width, _height);
+	//_rc = RectMakeCenter(transform->GetX(), transform->GetY(), _width, _height);
 	TriggerEventHandler();
 }
 /********************************************************************
@@ -103,6 +103,7 @@ void BoxCollider::TriggerEventHandler()
 		}
 		else
 		{
+			wstring name = gameObject->name;
 			this->gameObject->OnTriggerStay(_overlapColV[i]->gameObject);
 			_overlapColV[i]->gameObject->OnTriggerStay(this->gameObject);
 		}

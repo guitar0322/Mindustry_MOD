@@ -85,6 +85,7 @@ using namespace HDY_UTIL;
 
 #define MainCam CAMERAMANAGER->GetMainCam()
 #define BackBuffer D2DRenderer::GetInstance()->GetBackBuffer()
+#define StaticBuffer D2DRenderer::GetInstance()->GetStaticBuffer()
 #define MAPWIDTH BackBuffer->GetSize().width
 #define MAPHEIGHT BackBuffer->GetSize().height
 

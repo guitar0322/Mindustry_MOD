@@ -120,16 +120,34 @@ void D2DRenderer::CreateRenderTarget()
 	);
 
 	assert(SUCCEEDED(hr));
+
+	hr = mD2DRenderTarget->CreateCompatibleRenderTarget
+	(
+		D2D1::SizeF(WINSIZEX, WINSIZEY),
+		D2D1::SizeU(WINSIZEX, WINSIZEY),
+		&mD2DStaticRenderTarget
+	);
+
+	assert(SUCCEEDED(hr));
 }
 void D2DRenderer::CreateNewBackBuffer(int width, int height)
 {
 	HRESULT hr;
 	NEW_SAFE_RELEASE(mD2DBitmapRenderTarget);
+	NEW_SAFE_RELEASE(mD2DStaticRenderTarget);
 	hr = mD2DRenderTarget->CreateCompatibleRenderTarget
 	(
 		D2D1::SizeF(width, height),
 		D2D1::SizeU(width, height),
 		&mD2DBitmapRenderTarget
+	);
+	assert(SUCCEEDED(hr));
+
+	hr = mD2DRenderTarget->CreateCompatibleRenderTarget
+	(
+		D2D1::SizeF(width, height),
+		D2D1::SizeU(width, height),
+		&mD2DStaticRenderTarget
 	);
 	assert(SUCCEEDED(hr));
 }
@@ -191,6 +209,27 @@ void D2DRenderer::DrawBackBuffer(float bitmapStartX, float bitmapStartY, float b
 	mD2DRenderTarget->DrawBitmap(
 		mD2DBitmap,
 		&renderTargetArea,
+		1.f,
+		D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
+		&bitmapArea
+	);
+
+	NEW_SAFE_RELEASE(mD2DBitmap);
+}
+
+void D2DRenderer::DrawStaticBuffer(float bitmapStartX, float bitmapStartY, float bitmapEndX, float bitmapEndY)
+{
+	mD2DStaticRenderTarget->GetBitmap(&mD2DBitmap);
+
+	D2D1_SIZE_F bitmapSize = D2D1::SizeF(bitmapEndX - bitmapStartX, bitmapEndY - bitmapStartY);
+	D2D1_RECT_F bitmapArea = D2D1::RectF(bitmapStartX, bitmapStartY, bitmapStartX + bitmapSize.width, bitmapStartY + bitmapSize.height);
+
+	/***************************************
+	DrawBitmap(그려질 비트맵, 그릴 렌더타겟의 영역, 알파값, 렌더링 모드, 그려질 비트맵의 영역)
+	***************************************/
+	mD2DBitmapRenderTarget->DrawBitmap(
+		mD2DBitmap,
+		&bitmapArea,
 		1.f,
 		D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
 		&bitmapArea

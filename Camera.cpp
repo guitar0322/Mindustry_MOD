@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Camera.h"
-
 Camera::Camera()
 {
 	CAMERAMANAGER->AddCamera(this);
@@ -34,6 +33,13 @@ void Camera::Init()
 
 void Camera::Render()
 {
+	D2DRENDERER->DrawBackBuffer(_cameraStartX, _cameraStartY, 
+		_cameraStartX + GetRenderWidth(), _cameraStartY + GetRenderHeight(),
+		_screenStartX, _screenStartY, _screenStartX + _screenWidth, _screenStartY + _screenHeight);
+}
+
+void Camera::Update()
+{
 	_cameraStartX = transform->GetX() - GetRenderWidth() / 2;
 	_cameraStartY = transform->GetY() - GetRenderHeight() / 2;
 	if (_cameraStartX < 0) {
@@ -48,21 +54,15 @@ void Camera::Render()
 
 	if (_cameraStartY < 0) {
 		_cameraStartY = 0;
-		transform->SetY(GetRenderHeight()/ 2);
+		transform->SetY(GetRenderHeight() / 2);
 	}
 
 	if (transform->GetY() + GetRenderHeight() / 2 > MAPHEIGHT) {
 		_cameraStartY = MAPHEIGHT - GetRenderHeight();
 		transform->SetY(MAPHEIGHT - GetRenderHeight() / 2);
 	}
+	_renderRc = RectMakeCenter(Vector2(transform->GetX(), transform->GetY()), Vector2(GetRenderWidth(), GetRenderHeight()));
 
-	D2DRENDERER->DrawBackBuffer(_cameraStartX, _cameraStartY, 
-		_cameraStartX + GetRenderWidth(), _cameraStartY + GetRenderHeight(),
-		_screenStartX, _screenStartY, _screenStartX + _screenWidth, _screenStartY + _screenHeight);
-}
-
-void Camera::Update()
-{
 	if (_isShake == true) {
 		int nextX = _shakeStart.first;
 		int nextY = _shakeStart.second;
@@ -100,5 +100,11 @@ void Camera::ShakeOff()
 	_isShake = false;
 	transform->position.x = _shakeStart.first;
 	transform->position.y = _shakeStart.second;
+}
+
+void Camera::StaticToBackBuffer()
+{
+	D2DRENDERER->DrawStaticBuffer(_cameraStartX, _cameraStartY,
+		_cameraStartX + GetRenderWidth(), _cameraStartY + GetRenderHeight());
 }
 

@@ -3,13 +3,16 @@
 #include <map>
 #include "PropInfo.h"
 class PropContainer;
+class GameInfo;
+
 class PropFactory
 {
 private:
 	typedef struct tagPropInfo {
 		float buildTime;
 		int size;
-		int resources;
+		int resource;
+		int resourceAmount;
 		string clipName;
 		wstring propName;
 	}PROPINFO;
@@ -23,7 +26,9 @@ private:
 private:
 	float _buildTime;
 	queue<ELEMPROP> _propQueue;
+	vector<ImageObject> _previewV;
 	vector<PROPINFO> _propInfoV[CATEGORY_NUM];
+	GameInfo* _gameInfo;
 public:
 	PropFactory();
 	~PropFactory();
@@ -37,7 +42,8 @@ public:
 	ImageObject* CreateProp(int tileX, int tileY);
 
 	ImageObject* CreatePreview(int tileX, int tileY);
-	void AddPropElem(queue<int>* propList, int categoryIdx, int propIdx);
+	void AddPropElem(vector<ImageObject>& previewV, int categoryIdx, int propIdx);
 	void InitPropInfo();
+	void LinkGameInfo(GameInfo* gameInfo) { _gameInfo = gameInfo; }
 };
 
