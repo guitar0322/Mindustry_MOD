@@ -2,9 +2,10 @@
 #include "Component.h"
 
 class ProjectileManager;
+class PlayerLaser;
 
-#define DEFAULT_WEAPON_DISTANCE 13.69f
-#define ATTACK_WEAPON_DISTANCE 11.41f
+#define DEFAULT_WEAPON_DISTANCE 11.41f
+#define ATTACK_WEAPON_DISTANCE 9.41f
 #define DEFAULT_WEAPON_ANGLE 60.f
 #define BULLET_DISTANCE 17.11f
 #define BULLET_ANGLE 60.f
@@ -38,6 +39,7 @@ private:
 	float _weaponLdistanceAngle;
 	float _weaponRdistanceAngle;
 	float _attackSpeed;
+	float worldX, worldY;
 
 	DIRECTION _dir;
 	bool _isLeft;
@@ -48,14 +50,21 @@ private:
 	bool _isGathering;
 	bool _isFire;
 	ProjectileManager* _projectileManager;
+
+	//자원 추출 레이저
+	PlayerLaser* _playerLaser;
+
+
 public:
 	virtual void Init();
 	virtual void Update();
+	virtual void Render();
 
 	void PlayerDirection();
 
 	float GetSpeed() const { return _speed; }
 	float GetTargetAngle() const { return _targetAngle; }
 	void SetProjectileManager(ProjectileManager* projectileManager) { _projectileManager = projectileManager; }
+
 };
 

@@ -251,6 +251,9 @@
     <ClCompile Include="Conveyor.cpp">
       <Filter>Prop\Object</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyManager.cpp" />
+    <ClCompile Include="TitleUIControler.cpp" />
+    <ClCompile Include="PlayerLaser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h" />
@@ -515,6 +518,9 @@
     <ClInclude Include="Conveyor.h">
       <Filter>Prop\Object</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyManager.h" />
+    <ClInclude Include="TitleUIControler.h" />
+    <ClInclude Include="PlayerLaser.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="windowAPI.rc" />

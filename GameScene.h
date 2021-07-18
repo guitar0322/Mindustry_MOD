@@ -21,6 +21,8 @@ private:
 	ImageObject* _playerWeaponL;
 	ImageObject* _playerWeaponR;
 
+
+
 	GameObject* _projectileManager;
 	float _musicTime;
 	bool test;

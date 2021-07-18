@@ -199,6 +199,7 @@
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerControler.h" />
+    <ClInclude Include="PlayerLaser.h" />
     <ClInclude Include="PlayerScene.h" />
     <ClInclude Include="playGround.h" />
     <ClInclude Include="Prop.h" />
@@ -295,6 +296,7 @@
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerControler.cpp" />
+    <ClCompile Include="PlayerLaser.cpp" />
     <ClCompile Include="PlayerScene.cpp" />
     <ClCompile Include="playGround.cpp" />
     <ClCompile Include="Projectile.cpp" />

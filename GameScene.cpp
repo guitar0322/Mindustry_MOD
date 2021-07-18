@@ -60,6 +60,7 @@ HRESULT GameScene::Init()
 	_player->transform->SetAngle(0.0f);
 	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
 
+	//플레이어 포신 
 	_playerWeaponL = new ImageObject;
 	_playerWeaponL->Init();
 	_playerWeaponL->renderer->Init("player_weapon_L");
@@ -68,6 +69,7 @@ HRESULT GameScene::Init()
 	_playerWeaponR->Init();
 	_playerWeaponR->renderer->Init("player_weapon_R");
 
+	//플레이어에 포신 넣음
 	_player->transform->AddChild(_playerWeaponL->transform);
 	_player->transform->AddChild(_playerWeaponR->transform);
 
@@ -170,15 +172,16 @@ void GameScene::Update()
 
 void GameScene::Render()
 {
+	//맵 렌더
 	gameMap->Render();
 
     propFactory->Render();
     propContainer->Render();
     propPreview.Render();
     uiControler->Render();
+
+	//플레이어 관련 렌더
 	_player->Render();
-	_playerWeaponL->Render();
-	_playerWeaponR->Render();
 	_projectileManager->Render();
 	MainCam->Render();
 
@@ -242,6 +245,7 @@ void GameScene::Render()
     _lockImg.Render();
     _choiceImg.Render();
 
+	/* ================================여기 만지지 마세요 ========================================*/
 	wstring wstr = L"player speed : ";
 	wstr.append(to_wstring(_player->controler->GetSpeed()));
 	D2DRENDERER->RenderText(100, 100, wstr, 20, L"맑은고딕", D2DRenderer::DefaultBrush::White);
