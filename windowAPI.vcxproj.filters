@@ -255,6 +255,14 @@
       <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="GameInfo.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="TitleUIControler.cpp" />
+    <ClCompile Include="Turret.cpp" />
+    <ClCompile Include="UIManager.cpp" />
+    <ClCompile Include="EnemyManager.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Core.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h" />
@@ -523,6 +531,14 @@
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="GameInfo.h" />
+    <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="TitleUIControler.h" />
+    <ClInclude Include="Turret.h" />
+    <ClInclude Include="UIManager.h" />
+    <ClInclude Include="EnemyManager.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Core.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="windowAPI.rc" />

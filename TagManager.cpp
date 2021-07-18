@@ -15,6 +15,7 @@ HRESULT TagManager::init()
 {
 	AddTag("player");
 	AddTag("enemy");
+	AddTag("prop");
 	return S_OK;
 }
 

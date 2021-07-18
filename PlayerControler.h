@@ -2,6 +2,7 @@
 #include "Component.h"
 
 class ProjectileManager;
+class EnemyInfo;
 
 #define DEFAULT_WEAPON_DISTANCE 13.69f
 #define ATTACK_WEAPON_DISTANCE 11.41f
@@ -38,6 +39,8 @@ private:
 	float _weaponLdistanceAngle;
 	float _weaponRdistanceAngle;
 	float _attackSpeed;
+	
+	int _hp;
 
 	DIRECTION _dir;
 	bool _isLeft;
@@ -47,15 +50,21 @@ private:
 	bool _isSlow;
 	bool _isGathering;
 	bool _isFire;
+	bool _isDead;
 	ProjectileManager* _projectileManager;
+	EnemyInfo* _enemyInfo;
 public:
 	virtual void Init();
 	virtual void Update();
 
 	void PlayerDirection();
 
+	float GetHp() const { return _hp; }
 	float GetSpeed() const { return _speed; }
 	float GetTargetAngle() const { return _targetAngle; }
 	void SetProjectileManager(ProjectileManager* projectileManager) { _projectileManager = projectileManager; }
+
+	void Hit(float damage);
+	void Dead();
 };
 

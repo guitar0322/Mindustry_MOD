@@ -10,6 +10,10 @@ Player::Player()
 	AddComponent(controler);
 	controler->Init();
 
+	collider = new BoxCollider();
+	AddComponent(collider);
+	collider->Init();
+
 }
 Player::~Player()
 {
