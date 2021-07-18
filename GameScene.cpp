@@ -67,16 +67,13 @@ HRESULT GameScene::Init()
 
 	_player->transform->AddChild(_playerWeaponL->transform);
 	_player->transform->AddChild(_playerWeaponR->transform);
-
 	
 	//========================================
 	SetProjectileManager();
 	SetCore();
 	SetEnemyManager();
 
-	SetCore();
 	/////////////////////		Enemy Manager »ý¼º			//////////////////////
-	SetEnemyManager();
 
 	SOUNDMANAGER->addSound("start", "music/land.mp3", true, false);
 	SOUNDMANAGER->addSound("bgm1", "music/game1.mp3", true, false);
@@ -127,7 +124,7 @@ void GameScene::Update()
     _choiceImg.Update();
 	_core->Update();
 	_enemyManager->Update();
-	_musicTi	me += TIMEMANAGER->getElapsedTime();
+	_musicTime += TIMEMANAGER->getElapsedTime();
 
 	if (_musicTime>= 15)
 	{
@@ -160,9 +157,9 @@ void GameScene::Render()
 	_player->Render();
 	_playerWeaponL->Render();
 	_playerWeaponR->Render();
+	_enemyManager->Render();
 	_projectileManager->Render();
 	_core->Render();
-	_enemyManager->Render();
 	MainCam->Render();
 
     //Ä«Å×°í¸® ¾ÆÀÌÄÜ ·»´õ
@@ -196,9 +193,9 @@ void GameScene::Render()
 	D2DRENDERER->RenderText(100, 150, wstrangle, 20, L"¸¼Àº°íµñ", D2DRenderer::DefaultBrush::White);*/
 	
 
-	wstring time = L"MusicTime: ";
-	time.append(to_wstring(_musicTime));
-	D2DRENDERER->RenderText(10, 140, time, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
+	//wstring time = L"MusicTime: ";
+	//time.append(to_wstring(_musicTime));
+	//D2DRENDERER->RenderText(10, 140, time, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
 	
 
 	//wstring minute = L"MINUTE : ";
@@ -209,15 +206,15 @@ void GameScene::Render()
 	//second.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeSecond()));
 	//D2DRENDERER->RenderText(10, 60, second, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
 
-	//wstring wave = L"CurWave: ";
-	//wave.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetCurWave()));
-	//D2DRENDERER->RenderText(10, 110, wave, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
+	wstring wave = L"CurWave: ";
+	wave.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetCurWave()));
+	D2DRENDERER->RenderText(10, 110, wave, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
 	
-	//wstring PlayerHp = L"PlayerHP: ";
-	//PlayerHp.append(to_wstring(_player->controler->GetHp()));
-	//D2DRENDERER->RenderText(10, 10, PlayerHp, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
+	wstring PlayerHp = L"PlayerHP: ";
+	PlayerHp.append(to_wstring(_player->controler->GetHp()));
+	D2DRENDERER->RenderText(10, 10, PlayerHp, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
 
-	/*wstring mineCount = L"";
+	/*wstring mineCount = L"mineCount";
 	mineCount.append(to_wstring(_mineCount));
 	D2DRENDERER->RenderText(WINSIZEX / 2 - 50, 10, mineCount, 20, L"fontello", D2DRenderer::DefaultBrush::White);*/
 }

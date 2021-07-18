@@ -41,7 +41,7 @@ private:
 	float _attackSpeed;
 	
 	int _hp;
-
+	char _player;
 	DIRECTION _dir;
 	bool _isLeft;
 	bool _isDiagonal;

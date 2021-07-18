@@ -67,7 +67,7 @@ void EnemyManager::SetEnemy()
 	{
 		_enemyGround = new EnemyGround();
 		_enemyGround->GetComponent<Renderer>()->Init("enemy_dagger_walk");
-		//_enemyGround->GetComponent<Renderer>()->ChangeTargetBitmap("enemy_dagger_walk", 0);
+		_enemyGround->GetComponent<Animator>()->AddClip("enemy_dagger_walk", CLIPMANAGER->FindClip("enemy_dagger_walk"));
 		_enemyGround->GetComponent<Animator>()->SetClip("enemy_dagger_walk", 0);
 		_enemyGround->GetComponent<EnemyInfo>()->SetEnemyManager(this);
 		_enemyGround->GetComponent<EnemyInfo>()->SetTestCore(_testCore);
