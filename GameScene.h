@@ -4,6 +4,7 @@
 #include "GameMap.h"
 #include "Player.h"
 #include "ProjectileManager.h"
+#include "Prop.h"
 
 #define PROP_UI_STARTX WINSIZEX - 230
 #define PROP_UI_STARTY WINSIZEY - 187
@@ -57,6 +58,10 @@ private:
     UIBase _choiceImg;
     Button _CoreSlice;
 
+	// EnemyManager // 
+	GameObject* _enemyManager;
+	Prop* _core;
+
 public:
     virtual HRESULT Init();
     virtual void Update();
@@ -65,5 +70,8 @@ public:
     void InitClip();
     void InitCategoryUI();
     void InitPropUI();
+	void SetProjectileManager();
+	void SetCore();
+	void SetEnemyManager();
 };
 

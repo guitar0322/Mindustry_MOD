@@ -5,6 +5,8 @@
 #include "PlayerControler.h"
 #include "PropFactory.h"
 #include "UIMouseEvent.h"
+#include "EnemyManager.h"
+#include "Prop.h"
 
 HRESULT GameScene::Init()
 {
@@ -49,6 +51,7 @@ HRESULT GameScene::Init()
 	/* 플레이어 부분*/
 	_player = new Player();
 	_player->Init();
+	_player->tag = TAGMANAGER->GetTag("player");
 	_player->renderer->Init("player");
 	_player->transform->SetPosition(1500, 900);
 	_player->transform->SetAngle(0.0f);
@@ -65,12 +68,11 @@ HRESULT GameScene::Init()
 	_player->transform->AddChild(_playerWeaponL->transform);
 	_player->transform->AddChild(_playerWeaponR->transform);
 
-	_projectileManager = new GameObject();
-	_projectileManager->AddComponent(new ProjectileManager());
-	_projectileManager->GetComponent<ProjectileManager>()->Init();
-
-	_player->controler->SetProjectileManager(_projectileManager->GetComponent<ProjectileManager>());
+	
 	//========================================
+	SetProjectileManager();
+	SetCore();
+	SetEnemyManager();
 
     return S_OK;
 }
@@ -113,6 +115,8 @@ void GameScene::Update()
     /* SHUNG 210715 */
     _CoreSlice.Update();
     _choiceImg.Update();
+	_core->Update();
+	_enemyManager->Update();
 }
 
 void GameScene::Render()
@@ -127,6 +131,8 @@ void GameScene::Render()
 	_playerWeaponL->Render();
 	_playerWeaponR->Render();
 	_projectileManager->Render();
+	_core->Render();
+	_enemyManager->Render();
 	MainCam->Render();
 
     //카테고리 아이콘 렌더
@@ -151,14 +157,31 @@ void GameScene::Render()
     _CoreSlice.Render();
     _choiceImg.Render();
 
-	wstring wstr = L"player speed : ";
+	/*wstring wstr = L"player speed : ";
 	wstr.append(to_wstring(_player->controler->GetSpeed()));
 	D2DRENDERER->RenderText(100, 100, wstr, 20, L"맑은고딕", D2DRenderer::DefaultBrush::White);
 
 	wstring wstrangle = L"Angle : ";
 	wstrangle.append(to_wstring(_player->controler->GetTargetAngle()));
-	D2DRENDERER->RenderText(100, 150, wstrangle, 20, L"맑은고딕", D2DRenderer::DefaultBrush::White);
+	D2DRENDERER->RenderText(100, 150, wstrangle, 20, L"맑은고딕", D2DRenderer::DefaultBrush::White);*/
 	
+
+	//wstring minute = L"MINUTE : ";
+	//minute.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeMinute()));
+	//D2DRENDERER->RenderText(10, 10, minute, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
+
+	//wstring second = L"SECOND: ";
+	//second.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeSecond()));
+	//D2DRENDERER->RenderText(10, 60, second, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
+
+	//wstring wave = L"CurWave: ";
+	//wave.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetCurWave()));
+	//D2DRENDERER->RenderText(10, 110, wave, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
+	
+	wstring PlayerHp = L"PlayerHP: ";
+	PlayerHp.append(to_wstring(_player->controler->GetHp()));
+	D2DRENDERER->RenderText(10, 10, PlayerHp, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
+
 	/*wstring mineCount = L"";
 	mineCount.append(to_wstring(_mineCount));
 	D2DRENDERER->RenderText(WINSIZEX / 2 - 50, 10, mineCount, 20, L"fontello", D2DRenderer::DefaultBrush::White);*/
@@ -175,34 +198,44 @@ void GameScene::Release()
 
 void GameScene::InitClip()
 {
-    //카테고리 아이콘 클립
-    {
+	//카테고리 아이콘 클립
+	{
 		CLIPMANAGER->AddClip("turret_icon", "icons/turret.png", 32, 32);
 		CLIPMANAGER->AddClip("production_icon", "icons/production.png", 32, 32);
 		CLIPMANAGER->AddClip("rail_icon", "icons/distribution.png", 32, 32);
 		CLIPMANAGER->AddClip("defense_icon", "icons/defense.png", 32, 32);
-    }
+	}
 
-    //설치물 아이콘 클립
-    {
+	//설치물 아이콘 클립
+	{
 		CLIPMANAGER->AddClip("duo", "sprites/blocks/turrets/duo-icon.png", 32, 32);
 		CLIPMANAGER->AddClip("mechanical_drill", "sprites/blocks/drills/mechanical-drill-icon.png", 64, 64);
 		CLIPMANAGER->AddClip("conveyor", "sprites/blocks/distribution/conveyors/conveyor-0-0.png", 32, 32);
 		CLIPMANAGER->AddClip("copper_wall", "sprites/blocks/walls/copper-wall.png", 32, 32);
-    }
+	}
 
 	//플레이어 클립
-	CLIPMANAGER->AddClip("player", "player/alpha.png", 48, 48);
-	CLIPMANAGER->AddClip("enemy_projectile", "sprites/units/weapons/missiles-mount.png", 48, 48);
-	CLIPMANAGER->AddClip("bullet", "sprites/effects/bullet.png", 52, 52);
-	CLIPMANAGER->AddClip("player_weapon_L", "player/small-basic-weapon-L.png", 48, 48);
-	CLIPMANAGER->AddClip("player_weapon_R", "player/small-basic-weapon-R.png", 48, 48);
+	{
+		CLIPMANAGER->AddClip("player", "player/alpha.png", 48, 48);
+		CLIPMANAGER->AddClip("enemy_projectile", "sprites/units/weapons/missiles-mount.png", 48, 48);
+		CLIPMANAGER->AddClip("bullet", "sprites/effects/bullet.png", 52, 52);
+		CLIPMANAGER->AddClip("player_weapon_L", "player/small-basic-weapon-L.png", 48, 48);
+		CLIPMANAGER->AddClip("player_weapon_R", "player/small-basic-weapon-R.png", 48, 48);
+	}
+		CLIPMANAGER->AddClip("button_select", "sprites/ui/button-select.10.png", 52, 52);
 
-    CLIPMANAGER->AddClip("button_select", "sprites/ui/button-select.10.png", 52, 52);
-
-    /* SHUNG 210715 */
-    CLIPMANAGER->AddClip("research_core", "sprites/game/core.png", 74, 56);
-    CLIPMANAGER->AddClip("research_choice", "sprites/game/choice.png", 75, 56);
+	/* SHUNG 210715 */
+	{
+		CLIPMANAGER->AddClip("research_core", "sprites/game/core.png", 74, 56);
+		CLIPMANAGER->AddClip("research_choice", "sprites/game/choice.png", 75, 56);
+	}
+	//// ENEMY & CORE 클립 /////
+	{
+		CLIPMANAGER->AddClip("core", "sprites/blocks/storage/core.png", 96, 96);
+		CLIPMANAGER->AddClip("enemy_atrax", "sprites/units/enemy/enemy_atrax.png", 188, 329);
+		CLIPMANAGER->AddClip("enemy_dagger_walk", "sprites/units/enemy/enemy_dagger_walk.png", 369, 114, 3, 1, 0.6f);
+		CLIPMANAGER->AddClip("projectile", "sprites/units/enemy/projectile.png", 52, 52);
+	}
 }
 
 void GameScene::InitCategoryUI()
@@ -325,4 +358,32 @@ void GameScene::InitPropUI()
     propPreview.SetActive(false);
 
     /* SHUNG 210715 */
+}
+
+void GameScene::SetProjectileManager()
+{
+	_projectileManager = new GameObject();
+	_projectileManager->AddComponent(new ProjectileManager());
+	_projectileManager->GetComponent<ProjectileManager>()->Init();
+	_projectileManager->GetComponent<ProjectileManager>()->SetPlayer(_player);
+	_player->controler->SetProjectileManager(_projectileManager->GetComponent<ProjectileManager>());
+}
+
+void GameScene::SetCore()
+{
+	_core = new Prop();
+	_core->Init();
+	_core->tag = TAGMANAGER->GetTag("prop");
+	_core->renderer->Init("core");
+	_core->transform->SetPosition(25 * TILESIZE + 16, 36 * TILESIZE + 16);
+}
+
+void GameScene::SetEnemyManager()
+{
+	_enemyManager = new GameObject();
+	_enemyManager->AddComponent(new EnemyManager());
+	_enemyManager->GetComponent<EnemyManager>()->SetTestCoreTransform(_core);
+	_enemyManager->GetComponent<EnemyManager>()->SetProjectileManager(_projectileManager->GetComponent<ProjectileManager>());
+	_enemyManager->GetComponent<EnemyManager>()->Init();
+	_projectileManager->GetComponent<ProjectileManager>()->SetEnemyManager(_enemyManager->GetComponent<EnemyManager>());
 }
