@@ -19,6 +19,7 @@ public:
 
 	virtual void Init();
 	virtual void Update();
+	virtual void OnTriggerEnter(GameObject* gameObject);
 
 	float GetSpeed() const { return _speed; }
 	void SetSpeed(float speed) { _speed = speed; }
@@ -27,6 +28,5 @@ public:
 	void SetAngle(float angle) { _angle = angle; }
 
 	void Move();
-	void OnTriggerEnter(GameObject* gameObject);
 };
 

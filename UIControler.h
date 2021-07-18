@@ -37,6 +37,7 @@ public:
     void SetPreview(float deltaX, float deltaY);
     /* SHUNG 210715 */
     UIBase* choiceImg;
+    UIBase* lockImg;
     void ActiveChoiceImg(Transform* menuTr, bool isActive);
 };
 

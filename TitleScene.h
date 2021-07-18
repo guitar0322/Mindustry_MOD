@@ -16,8 +16,8 @@ private:
 
 	/* Bool */
 	bool		_grab;
-	bool		_inSetting;
 	bool		_inInfo;
+	bool		_inSetting;
 	bool		_alphaTrigger;
 	bool		_choiceSoundSettingButton;
 	bool		_choiceGoBackButton;

@@ -3,6 +3,13 @@
 
 class ProjectileManager;
 
+#define DEFAULT_WEAPON_DISTANCE 13.69f
+#define ATTACK_WEAPON_DISTANCE 11.41f
+#define DEFAULT_WEAPON_ANGLE 60.f
+#define BULLET_DISTANCE 17.11f
+#define BULLET_ANGLE 60.f
+
+
 class PlayerControler :
 	public Component
 {
@@ -24,6 +31,14 @@ private:
 	float _targetAngle;
 	float _angleSpeed;
 	float _breakTime;
+	float _weaponLTrackRadius; //r2
+	float _weaponRTrackRadius; //r2
+	float _weaponLTrackAngle;
+	float _weaponRTrackAngle;
+	float _weaponLdistanceAngle;
+	float _weaponRdistanceAngle;
+	float _attackSpeed;
+
 	DIRECTION _dir;
 	bool _isLeft;
 	bool _isDiagonal;

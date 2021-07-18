@@ -61,8 +61,9 @@ void TitleUIControler::SetActiveCallback4(vector<GameObject*> gameObject, bool* 
 	}
 }
 
-void TitleUIControler::ChaneScene(string SceneName)
+void TitleUIControler::ChangeScene(string SceneName) 
 {
+	SOUNDMANAGER->stop("mainbgm");
 	SCENEMANAGER->LoadScene(SceneName);
 }
 

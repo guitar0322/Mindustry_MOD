@@ -28,7 +28,7 @@ void BoxCollider::Update()
 /********************************************************************
 * @bool CheckCollision : 씬의 모든 충돌체와 충돌여부 검사
 * 충돌이 발생하면 true, 아니면 false를 반환
-* 충돌이 발생했을때 OnCollision이벤트 호출, 
+* 충돌이 발생했을때 OnCollision이벤트 호출,
 * 겹쳐진 _intersectRc의 크기만큼 밀어냄
 * isTrigger가 true면 OnCollisionEnter를 발생, _overlapColV에 충돌체 추가
 *********************************************************************/
@@ -55,7 +55,7 @@ bool BoxCollider::CheckCollision()
 					{
 						this->transform->MoveY(h);
 					}
-					else if(_intersectRc.top == colV[i]->_rc.top)
+					else if (_intersectRc.top == colV[i]->_rc.top)
 					{
 						this->transform->MoveY(-h);
 					}

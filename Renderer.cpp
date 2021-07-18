@@ -83,6 +83,7 @@ void Renderer::Render()
 			D2D1::Point2F(transform->GetX(), transform->GetY())
 		);
 	}
+
 	D2D1_MATRIX_3X2_F rotation = D2D1::Matrix3x2F::Identity();
 	if (transform->angle != 0)
 	{
@@ -91,6 +92,7 @@ void Renderer::Render()
 			D2D1::Point2F(transform->GetX(), transform->GetY())
 		);
 	}
+
 	BackBuffer->SetTransform(scale * rotation);
 
 	if (_targetBitmap == nullptr)

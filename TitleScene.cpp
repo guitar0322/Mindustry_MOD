@@ -12,7 +12,7 @@ TitleScene::~TitleScene()
 HRESULT TitleScene::Init()
 {
 	Scene::Init();
-	
+
 	titleUIControler = new TitleUIControler();
 	titleUIControler->choiceImg = &_choiceImg;
 	titleUIControler->choiceImg2 = &_choiceImg2;
@@ -24,6 +24,10 @@ HRESULT TitleScene::Init()
 	SetBackBufferSize(1125, 875);
 	Render_SetPosition_MouseEvent(); 	/* Render & Setposition */
 	SetTitleSceneEnemy();				/* in Title Scene Enemy Fly~ */
+
+	/* 타이틀 화면 BGM 추가 & 실행 */
+	SOUNDMANAGER->addSound("mainbgm", "music/menu.mp3", true, true);
+	SOUNDMANAGER->play("mainbgm", 10.0f);
 
 	return S_OK;
 }
@@ -164,7 +168,7 @@ void TitleScene::Render_SetPosition_MouseEvent()
 	_playButton.uiMouseEvent->RegistCallback(
 		std::bind(&TitleUIControler::ActiveChoiceImg, titleUIControler, _playButton.transform, true), EVENT::ENTER);
 	_playButton.uiMouseEvent->RegistCallback(
-		std::bind(&TitleUIControler::ChaneScene, titleUIControler, "game"), EVENT::CLICK);
+		std::bind(&TitleUIControler::ChangeScene, titleUIControler, "game"), EVENT::CLICK);
 	_playButton.uiMouseEvent->RegistCallback(
 		std::bind(&TitleUIControler::ActiveChoiceImg, titleUIControler, _playButton.transform, false), EVENT::EXIT);
 	
@@ -182,7 +186,7 @@ void TitleScene::Render_SetPosition_MouseEvent()
 	_ediotrButton.uiMouseEvent->RegistCallback(
 		std::bind(&TitleUIControler::ActiveChoiceImg, titleUIControler, _ediotrButton.transform, true), EVENT::ENTER);
 	_ediotrButton.uiMouseEvent->RegistCallback(
-		std::bind(&TitleUIControler::ChaneScene, titleUIControler, "background"), EVENT::CLICK);
+		std::bind(&TitleUIControler::ChangeScene, titleUIControler, "background"), EVENT::CLICK);
 	_ediotrButton.uiMouseEvent->RegistCallback(
 		std::bind(&TitleUIControler::ActiveChoiceImg, titleUIControler, _ediotrButton.transform, false), EVENT::EXIT);
 

@@ -27,11 +27,9 @@ HRESULT playGround::init()
 	
 	MapScene* mapScene = new MapScene();
 	SCENEMANAGER->AddScene("background", mapScene);
-	//SCENEMANAGER->LoadScene("background");
 
 	SampleScene* sampleScene = new SampleScene();
 	SCENEMANAGER->AddScene("sample", sampleScene);
-	//SCENEMANAGER->LoadScene("sample");
 
 	SampleScene2* sampleScene2 = new SampleScene2();
 	SCENEMANAGER->AddScene("sample2", sampleScene2);
@@ -45,10 +43,9 @@ HRESULT playGround::init()
 	/* SHUNG 21.07.12 */
 	IntroScene* introScene = new IntroScene();
 	SCENEMANAGER->AddScene("intro", introScene);
-;
+
 	TitleScene* titleScene = new TitleScene();
 	SCENEMANAGER->AddScene("title", titleScene);
-
 	SCENEMANAGER->LoadScene("title");
 
 	//_mainCam.transform->SetX(_mainCam.transform->GetX() + 100);
@@ -118,7 +115,12 @@ void playGround::render()
 	SCENEMANAGER->Render();
 	wstring fps = L"FPS : ";
 	fps.append(to_wstring(TIMEMANAGER->getFPS()));
-	D2DRENDERER->RenderText(10, 10, fps, 30, L"¸¼Àº°íµñ", D2DRenderer::DefaultBrush::White);
+	D2DRENDERER->RenderText(10, 10, fps, 30);
+
+	//wstring elapse = L"ElapseTime : ";
+	//elapse.append(to_wstring(TIMEMANAGER->getElapsedTime()));
+	//D2DRENDERER->RenderText(10, 50, elapse, 30, L"¸¼Àº°íµñ", D2DRenderer::DefaultBrush::White);
+	//D2DRENDERER->RenderText(10, 10, fps, 30, L"¸¼Àº°íµñ", D2DRenderer::DefaultBrush::White);
 	//==================================================
 	//¿©±âµµ °ÇµéÁö¸¶¶ó
 	//_ui.Render();

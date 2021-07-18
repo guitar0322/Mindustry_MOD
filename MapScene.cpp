@@ -12,6 +12,9 @@ HRESULT MapScene::Init()
 	MainCam->SetRenderSize(1600, 1600);
 	MainCam->transform->SetPosition(1600 / 2, 1600 / 2);
 
+	SOUNDMANAGER->addSound("editorbgm", "music/editor.mp3", true, true);
+	SOUNDMANAGER->play("editorbgm", 10.0f);
+
 	_background.Init();
 	_background.renderer->Init("background");
 	_background.transform->SetPosition(MAPWIDTH / 2, MAPHEIGHT / 2);
