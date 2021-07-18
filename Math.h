@@ -1,8 +1,4 @@
 #pragma once
-/****************************************************************************
-## Math ##
-@@ Author : 권순우 , Date : 2019.03.19
-*****************************************************************************/
 class Math final
 {
 public:
@@ -14,7 +10,7 @@ public:
 	static const float FloatMin;			//float 최소
 	static const float FloatMax;			//float 최대
 
-	static float NegativeChecking(const float& value);		//음수 양수 판단
+	static float NegativeChecking(const float& value);	//음수 양수 판단
 	static float ToRadian(const float& degree);			//디그리 -> 라디안
 	static float ToDegree(const float& radian);			//라디안 -> 디그리 
 			   

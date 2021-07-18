@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Turret.h"
 #include "ProjectileObject.h"
+#include "Projectile.h"
+
 Turret::Turret()
 	: _projectileSpeed(100.f)
 {

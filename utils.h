@@ -15,12 +15,11 @@
 #include "Box.h"
 #include "Zone.h"
 #include "ImageObject.h"
+#include "AnimObject.h"
 #include "Character.h"
 #include "ZOrder.h"
 #include "DebugText.h"
 #include <typeinfo>
-#include "Projectile.h"
-#include "AnimObject.h"
 
 namespace HDY_UTIL
 {

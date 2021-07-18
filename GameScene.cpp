@@ -14,7 +14,8 @@ HRESULT GameScene::Init()
 
 	InitClip();
 	SetBackBufferSize(1600, 1600);
-
+    COLLIDERMANAGER->PartitionArea(10, 10);
+    StaticBuffer->BeginDraw();
 	MainCam->SetScreenSize(WINSIZEX, WINSIZEY);
 	MainCam->SetRenderSize(1600, 1010);
     MainCam->transform->SetPosition(1600 / 2, 1600 / 2);
@@ -38,6 +39,7 @@ HRESULT GameScene::Init()
     uiControler->preIconV = &turretIconV;
 
     uiControler->propFactory = propFactory;
+
 	gameMap = new GameMap;
 	gameMap->Init();
 
@@ -73,19 +75,19 @@ HRESULT GameScene::Init()
 	SetCore();
 	SetEnemyManager();
 
-	/////////////////////		Enemy Manager »ı¼º			//////////////////////
-
 	SOUNDMANAGER->addSound("start", "music/land.mp3", true, false);
 	SOUNDMANAGER->addSound("bgm1", "music/game1.mp3", true, false);
 	SOUNDMANAGER->addSound("bgm2", "music/game2.mp3", true, false);
 	SOUNDMANAGER->addSound("bgm3", "music/game9.mp3", true, false);
 	SOUNDMANAGER->play("start", 10.0f);
 	_musicTime = 0;
+    StaticBuffer->EndDraw();
     return S_OK;
 }
 
 void GameScene::Update()
 {
+    MainCam->Update();
     buildingCategoryFrame.Update();
     propFactory->Update();
     propContainer->Update();
@@ -98,7 +100,6 @@ void GameScene::Update()
 	_playerWeaponL->Update();
 	_playerWeaponR->Update();
 	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
-	MainCam->Update();
 	_projectileManager->Update();
 	//========================================
 
@@ -148,6 +149,7 @@ void GameScene::Update()
 
 void GameScene::Render()
 {
+    MainCam->StaticToBackBuffer();
 	gameMap->Render();
 
     propFactory->Render();

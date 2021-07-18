@@ -27,7 +27,6 @@ void PlayerControler::Init()
 	_isGathering = false;
 	_isDead = false;
 	_dir = IDLE;
-
 }
 
 void PlayerControler::Update()

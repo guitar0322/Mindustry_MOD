@@ -2,8 +2,8 @@
 #include "ProjectileManager.h"
 #include "ProjectileObject.h"
 #include "EnemyManager.h"
+#include "Projectile.h"
 #include "Player.h"
-
 
 ProjectileManager::ProjectileManager()
 {
@@ -109,7 +109,6 @@ void ProjectileManager::FireProjectile(float x, float y, float angle, PROJECTILE
 		{
 			if (_enemyGroundProjectileV[i]->isActive == true) continue;
 			_enemyGroundProjectileV[i]->SetActive(true);
-			_enemyGroundProjectileV[i]->transform->SetPosition(x, y);
 			_enemyGroundProjectileV[i]->transform->SetAngle(angle);
 			break;
 		}
