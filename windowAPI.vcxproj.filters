@@ -251,6 +251,8 @@
       <Filter>Prop\Object</Filter>
     </ClCompile>
     <ClCompile Include="TitleUIControler.cpp" />
+    <ClCompile Include="PlayerLaser.cpp" />
+    <ClCompile Include="TitleUIControler.cpp" />
     <ClCompile Include="PlayerScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
@@ -265,6 +267,9 @@
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="Transport.cpp">
       <Filter>Prop\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyManager.cpp">
+      <Filter>Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -530,6 +535,8 @@
       <Filter>Prop\Object</Filter>
     </ClInclude>
     <ClInclude Include="TitleUIControler.h" />
+    <ClInclude Include="PlayerLaser.h" />
+    <ClInclude Include="TitleUIControler.h" />
     <ClInclude Include="PlayerScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
@@ -544,6 +551,9 @@
     <ClInclude Include="Core.h" />
     <ClInclude Include="Transport.h">
       <Filter>Prop\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyManager.h">
+      <Filter>Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
