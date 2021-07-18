@@ -12,6 +12,7 @@
 class PropContainer;
 class PropFactory;
 class UIControler;
+class GameInfo;
 
 class GameScene :
     public Scene
@@ -20,10 +21,12 @@ private:
 	Player* _player;
 	GameObject* _projectileManager;
 
-	//======
+	/* 인게임 게임 시스템 객체*/
     PropContainer* propContainer;
     PropFactory* propFactory;
     UIControler* uiControler;
+    GameInfo* gameInfo;
+
     UIBase categorySelect;
     UIBase propSelect;
 

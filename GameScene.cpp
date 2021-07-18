@@ -5,15 +5,17 @@
 #include "PlayerControler.h"
 #include "PropFactory.h"
 #include "UIMouseEvent.h"
+#include "GameInfo.h"
 
 HRESULT GameScene::Init()
 {
     Scene::Init();
 
 	InitClip();
-	SetBackBufferSize(2400, 1600);
-	MainCam->SetRenderSize(2400, 1600);
-    MainCam->transform->SetPosition(1200, 800);
+	SetBackBufferSize(1600, 1600);
+    StaticBuffer->BeginDraw();
+	MainCam->SetRenderSize(1600, 1010);
+    MainCam->transform->SetPosition(800, 505);
 
     selectCategoryIdx = 0;
     propContainer = new PropContainer();
@@ -34,6 +36,13 @@ HRESULT GameScene::Init()
     uiControler->preIconV = &turretIconV;
 
     uiControler->propFactory = propFactory;
+
+    gameInfo = new GameInfo();
+    gameInfo->Init();
+    gameInfo->AddResource(COPPER, 500);
+
+    propFactory->LinkGameInfo(gameInfo);
+
 	gameMap = new GameMap;
 	gameMap->Init();
 
@@ -57,6 +66,7 @@ HRESULT GameScene::Init()
 	_projectileManager->GetComponent<ProjectileManager>()->Init();
 
 	_player->controler->SetProjectileManager(_projectileManager->GetComponent<ProjectileManager>());
+    StaticBuffer->EndDraw();
 	//========================================
 
     return S_OK;
@@ -102,8 +112,8 @@ void GameScene::Update()
 
 void GameScene::Render()
 {
+    MainCam->StaticToBackBuffer();
 	gameMap->Render();
-
     propFactory->Render();
     propContainer->Render();
     propPreview.Render();

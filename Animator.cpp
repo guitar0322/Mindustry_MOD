@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Animator.h"
-
+#include "AnimationClip.h"
 Animator::Animator()
 {
 }

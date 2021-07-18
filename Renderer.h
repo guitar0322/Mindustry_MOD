@@ -15,6 +15,7 @@ private:
     float _alpha;
     int _curFrameX;
     int _curFrameY;
+    bool _isStatic;
     Rect _rc;
     string _clipName;
 public:
@@ -27,7 +28,9 @@ public:
     virtual void Release();
     virtual void OnEnable();
     virtual void OnDisable();
+    void RenderStatic();
 
+    void SetStatic(bool isStatic) { _isStatic = isStatic; }
     void SetAlpha(float alpha) { _alpha = alpha;}//알파값 설정
     float GetAlpha() const { return _alpha; }
     int GetWidth() const { return _frameWidth; }

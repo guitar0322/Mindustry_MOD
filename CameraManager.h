@@ -1,5 +1,5 @@
 #pragma once
-#include "Camera.h"
+class Camera;
 class CameraManager : public singletonBase<CameraManager>
 {
 private:

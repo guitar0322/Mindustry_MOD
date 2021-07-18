@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ClipManager.h"
+#include "AnimationClip.h"
 #include <io.h>
 
 ClipManager::ClipManager()

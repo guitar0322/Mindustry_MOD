@@ -235,21 +235,9 @@
     <ClCompile Include="GameMap.cpp" />
     <ClCompile Include="Prop.cpp">
       <Filter>Prop\Object</Filter>
-    <ClCompile Include="EditableText.cpp" />
-    <ClCompile Include="EditText.cpp" />
-    <ClCompile Include="PropContainer.cpp" />
-    <ClCompile Include="PropFactory.cpp" />
-    <ClCompile Include="UIManager.cpp" />
-    <ClCompile Include="TitleUIControler.cpp" />
-    <ClCompile Include="TitleScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="IntroScene.cpp">
-      <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerControler.cpp" />
-    <ClCompile Include="PlayerScene.cpp" />
     <ClCompile Include="CopperWall.cpp">
       <Filter>Prop\Object</Filter>
     </ClCompile>
@@ -262,6 +250,11 @@
     <ClCompile Include="Conveyor.cpp">
       <Filter>Prop\Object</Filter>
     </ClCompile>
+    <ClCompile Include="TitleUIControler.cpp" />
+    <ClCompile Include="PlayerScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameInfo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h" />
@@ -510,22 +503,9 @@
     <ClInclude Include="GameMap.h" />
     <ClInclude Include="Prop.h">
       <Filter>Prop\Object</Filter>
-    <ClInclude Include="EditableText.h" />
-    <ClInclude Include="EditText.h" />
-    <ClInclude Include="PropInfo.h" />
-    <ClInclude Include="PropContainer.h" />
-    <ClInclude Include="PropFactory.h" />
-    <ClInclude Include="UIManager.h" />
-    <ClInclude Include="TitleUIControler.h" />
-    <ClInclude Include="TitleScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="IntroScene.h">
-      <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerControler.h" />
-    <ClInclude Include="PlayerScene.h" />
     <ClInclude Include="CopperWall.h">
       <Filter>Prop\Object</Filter>
     </ClInclude>
@@ -538,6 +518,11 @@
     <ClInclude Include="Conveyor.h">
       <Filter>Prop\Object</Filter>
     </ClInclude>
+    <ClInclude Include="TitleUIControler.h" />
+    <ClInclude Include="PlayerScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameInfo.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="windowAPI.rc" />

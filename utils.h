@@ -41,15 +41,11 @@ namespace HDY_UTIL
 	Vector2 ScreenToWorld(Vector2 screenPoint);
 	Vector2 ScreenToWorld(float x, float y);
 
-	int GetCenterX(RECT rc);
-	int GetCenterY(RECT rc);
-	POINT GetCenter(RECT rc);
 	POINTF GetCenterF(RECT rc);
 	int GetWidth(RECT rc);
 	int GetHeight(RECT rc);
 	template <typename T>
 	T GetCenter(T a, T b);
-	POINTF GetCollisionPoint(RECT rc1, RECT rc2);
 	Vector2 MoveTowardTo(float x1, float y1, float x2, float y2, float speed, int limit = 0);
 	Vector2 MoveTowardTo(RECT& rc1, RECT& rc2, float speed, int limit = 0);
 }
