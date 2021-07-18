@@ -18,5 +18,6 @@ public:
 	void AddResource(RESOURCE resourceType, int amount);
 	void UseResource(RESOURCE resourceType, int amount);
 	bool IsValidResource(RESOURCE resourceType, int needAmount);
+	
 };
 
