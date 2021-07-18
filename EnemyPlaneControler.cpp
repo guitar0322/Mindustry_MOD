@@ -57,6 +57,7 @@ void EnemyPlaneControler::Update()
 
 	if (_isAttack == true)
 	{
+
 		_attackSpeed += TIMEMANAGER->getElapsedTime();
 		if (GetDistance(transform->position, _testCoreTransform->position) <= 700)
 		{

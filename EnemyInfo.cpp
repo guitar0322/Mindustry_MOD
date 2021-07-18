@@ -21,15 +21,19 @@ void EnemyInfo::Update()
 {
 	_angle = GetAngle(transform->position, _testCoreTransform->position);
 
-	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
-	{
-		_deadTime += TIMEMANAGER->getElapsedTime();
-	}
-	if (_deadTime >= 3)
+	//if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
+	//{
+	//	_deadTime += TIMEMANAGER->getElapsedTime();
+	//}
+	//if (_deadTime >= 3)
+	//{
+	//	HitEnemy();
+	//	//isDeath = true;
+	//	//_enemyManager->DeadEvent();
+	//}
+	if (KEYMANAGER->isOnceKeyDown('P'))
 	{
 		HitEnemy();
-		//isDeath = true;
-		//_enemyManager->DeadEvent();
 	}
 }
 

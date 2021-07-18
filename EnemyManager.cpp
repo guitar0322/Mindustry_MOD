@@ -25,6 +25,9 @@ void EnemyManager::Init()
 	SetEnemyTime();
 	SetEnemy();
 	_curWave = 1;
+	SOUNDMANAGER->addSound("wave", "sounds/wave.ogg", true, false);
+	SOUNDMANAGER->addSound("explosion", "sounds/explosion.ogg", true, false);
+
 }
 
 void EnemyManager::Update()
@@ -101,21 +104,25 @@ void EnemyManager::SetEnemy()
 
 void EnemyManager::EnemyTimer()
 {
-	if (_enemyTime)
-	{
-		_enemySpawnTime -= TIMEMANAGER->getElapsedTime();
-		int _intEnemySpawnTime = int(_enemySpawnTime);
+	//if (_enemyTime)
+	//{
+	//	_enemySpawnTime -= TIMEMANAGER->getElapsedTime();
+	//	int _intEnemySpawnTime = int(_enemySpawnTime);
 
-		_timeSecond = _intEnemySpawnTime % 3;		//60
-		_timeMinute = _intEnemySpawnTime / 3;		//60
+	//	_timeSecond = _intEnemySpawnTime % 3;		//60
+	//	_timeMinute = _intEnemySpawnTime / 3;		//60
 
-		if (_intEnemySpawnTime == 0)
-		{
-			_spawnEnemy = true;
-			_enemyTime = false;
-		}
-	}
-	if (_spawnEnemy == true && _enemyTime == false)
+	//	if (_intEnemySpawnTime == 0)
+	//	{
+	//		_spawnEnemy = true;
+	//		_enemyTime = false;
+	//	}
+	//}
+	//if (_spawnEnemy == true && _enemyTime == false)
+	//{
+	//	SpawnEnemy();
+	//}
+	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 	{
 		SpawnEnemy();
 	}
@@ -142,6 +149,7 @@ void EnemyManager::EnemyRender()
 
 void EnemyManager::SpawnEnemy()
 {
+	SOUNDMANAGER->play("wave", 10.0f);
 	for (int i = 0; i < _waveV[_curWave].size(); i++)
 	{
 		if (_enemyV[i]->isActive == true) continue;
@@ -155,14 +163,15 @@ void EnemyManager::SpawnEnemy()
 
 void EnemyManager::DeadEvent()
 {
-	if (_enemyInfo->isDeath)
-	{
+	SOUNDMANAGER->play("explosion", 40.0f);
+	//if (_enemyInfo->isDeath)
+	//{
 		for (int i = 0; i < _waveV[_curWave].size(); i++)
 		{ 
 			if (_enemyV[_waveV[_curWave][i]]->isActive == false) continue;
 			_enemyV[_waveV[_curWave][i]]->SetActive(false);
 		}
-	}
+	//}
 	_curWave++;
 	return;
 }

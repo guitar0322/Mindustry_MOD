@@ -59,14 +59,12 @@ void EnemyGroundControler::Update()
 	if (_isAttack)
 	{
 		_attackSpeed += TIMEMANAGER->getElapsedTime();
-		
 		_deltaX = cosf(_deltaAngle) * _enemyRadius;
 		_deltaY = -sinf(_deltaAngle) * _enemyRadius;
-
 		if (_attackSpeed >= 1.f && _leftFire == false)
 		{
 			_projectileManager->FireProjectile(transform->GetX() + _deltaX + 50, transform->GetY() + _deltaY, ConvertAngleD2D(_deltaAngle), PROJECTILE_TYPE::ENEMY);
-			_leftFire = true;	
+			_leftFire = true;
 			_attackSpeed = 0.f;
 		}
 

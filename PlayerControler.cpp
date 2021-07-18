@@ -24,6 +24,7 @@ void PlayerControler::Init()
 	_isDiagonal = false;
 	_isGathering = false;
 	_dir = IDLE;
+
 }
 
 void PlayerControler::Update()

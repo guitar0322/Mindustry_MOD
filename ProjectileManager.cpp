@@ -32,6 +32,7 @@ void ProjectileManager::Init()
 		_playerProjectileV.push_back(_playerProjectile);
 	}
 	//_deltaAngle = _enemyPlaneControlerTransform->angle;
+	SOUNDMANAGER->addSound("shooting", "sounds/shoot.ogg", true, false);
 }
 
 void ProjectileManager::Update()
@@ -72,6 +73,7 @@ void ProjectileManager::FireProjectile(float x, float y, float angle, PROJECTILE
 	switch(type) 
 	{
 	case ENEMY:
+		SOUNDMANAGER->play("shooting", 20.0f);
 		for (int i = 0; i < ENEMY_PROJECTILE_MAX; i++)
 		{
 			if (_enemyProjectileV[i]->isActive == true) continue;
@@ -82,6 +84,7 @@ void ProjectileManager::FireProjectile(float x, float y, float angle, PROJECTILE
 		}
 		break;
 	case PLAYER:
+		SOUNDMANAGER->play("shooting", 20.0f);
 		for (int i = 0; i < PLAYER_PROJECTILE_MAX; i++)
 		{
 			if (_playerProjectileV[i]->isActive == true) continue;

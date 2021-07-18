@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 
-#define ENEMY_PROJECTILE_MAX 20
+#define ENEMY_PROJECTILE_MAX 100
 #define PLAYER_PROJECTILE_MAX 200
 
 class ProjectileObject;
