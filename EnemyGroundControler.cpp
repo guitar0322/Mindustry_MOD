@@ -16,7 +16,6 @@ void EnemyGroundControler::Init()
 	_enemyInfo = gameObject->GetComponent<EnemyInfo>();
 	_speed = _enemyInfo->GetSpeed();
 	_testCoreTransform = _enemyInfo->GetCoreTransform();
-
 	_angle = 0.f;
 	_speedX = 0.f;
 	_speedY = 0.f;

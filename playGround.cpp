@@ -51,6 +51,7 @@ HRESULT playGround::init()
 
 	TitleScene* titleScene = new TitleScene();
 	SCENEMANAGER->AddScene("title", titleScene);
+
 	SCENEMANAGER->LoadScene("title");
 	//SCENEMANAGER->LoadScene("ShootingScene");
 

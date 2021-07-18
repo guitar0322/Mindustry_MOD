@@ -20,7 +20,6 @@ HRESULT ShootingScene::Init()
 	TestCore();
 	SetProjectile();
 	SetEnemyManager();
-
 	return S_OK;
 }
 
