@@ -39,6 +39,7 @@ HRESULT GameScene::Init()
     uiControler->preIconV = &turretIconV;
 
     uiControler->propFactory = propFactory;
+
 	gameMap = new GameMap;
 	gameMap->Init();
 
@@ -75,21 +76,19 @@ HRESULT GameScene::Init()
 	SetCore();
 	SetEnemyManager();
 
-	SetCore();
-	/////////////////////		Enemy Manager »ı¼º			//////////////////////
-	SetEnemyManager();
-
 	SOUNDMANAGER->addSound("start", "music/land.mp3", true, false);
 	SOUNDMANAGER->addSound("bgm1", "music/game1.mp3", true, false);
 	SOUNDMANAGER->addSound("bgm2", "music/game2.mp3", true, false);
 	SOUNDMANAGER->addSound("bgm3", "music/game9.mp3", true, false);
 	SOUNDMANAGER->play("start", 10.0f);
 	_musicTime = 0;
+    StaticBuffer->EndDraw();
     return S_OK;
 }
 
 void GameScene::Update()
 {
+    MainCam->Update();
     buildingCategoryFrame.Update();
     propFactory->Update();
     propContainer->Update();
@@ -102,7 +101,6 @@ void GameScene::Update()
 	_playerWeaponL->Update();
 	_playerWeaponR->Update();
 	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
-	MainCam->Update();
 	_projectileManager->Update();
 	//========================================
 
@@ -128,7 +126,7 @@ void GameScene::Update()
     _choiceImg.Update();
 	_core->Update();
 	_enemyManager->Update();
-	_musicTi	me += TIMEMANAGER->getElapsedTime();
+	_musicTime += TIMEMANAGER->getElapsedTime();
 
 	if (_musicTime>= 15)
 	{
@@ -152,6 +150,7 @@ void GameScene::Update()
 
 void GameScene::Render()
 {
+    MainCam->StaticToBackBuffer();
 	gameMap->Render();
 
     propFactory->Render();
