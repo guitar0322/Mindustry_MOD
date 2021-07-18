@@ -176,8 +176,36 @@ void UIControler::SetPreview(float deltaX, float deltaY)
 	}
 }
 
-void UIControler::ActiveChoiceImg(Transform* menuTr, bool isActive)
+void UIControler::inResearch_ActiveChoiceImg(Transform* menuTr, bool isActive)
 {
+	choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
+	choiceImg->SetActive(isActive);
+}
+
+void UIControler::inResearch_ActiveGoBackImg(bool isActive)
+{
+	goBackChoiceImg->SetActive(isActive);
+}
+
+void UIControler::inResearch_ReturnToGameScene(bool* name, bool isActive)
+{
+	*name = isActive;
+}
+
+void UIControler::inResearch_ActiveCoreDBImg(bool isActive)
+{
+	coreDBChoiceImg->SetActive(isActive);
+}
+
+void UIControler::inResearch_ReturnToCoreDBScene(bool* name, bool isActive)
+{
+	// 코어 DB 화면 구성할 때 불 값으로 연결시켜주기
+	*name = isActive;
+}
+
+void UIControler::inResearch_ActiveChoiceImgWithBasicDes(Transform* menuTr, UIBase* name, bool isActive)
+{
+	name->SetActive(isActive);
 	choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
 	choiceImg->SetActive(isActive);
 }

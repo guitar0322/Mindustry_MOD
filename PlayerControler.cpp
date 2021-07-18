@@ -24,18 +24,16 @@ void PlayerControler::Init()
 	_isDiagonal = false;
 	_isGathering = false;
 	_dir = IDLE;
-	SOUNDMANAGER->addSound("shoot", "sounds/shoot.ogg", false, false);
-
 }
 
 void PlayerControler::Update()
 {
-	
+
 	if (_isSlow == true)
 	{
 		_breakTime = 180.f;
 		_speed -= _breakTime * TIMEMANAGER->getElapsedTime();
-		
+
 		//감속할 시간 변수 하나 생성 float
 		//해당 변수에 elapseTie 더함
 		//시간이 0.1f보다 커지면
@@ -91,13 +89,13 @@ void PlayerControler::Update()
 		_targetAngle = 225.f;
 		_dir = LEFT_DOWN;
 	}
-	if (KEYMANAGER->isStayKeyDown('A')&& KEYMANAGER->isStayKeyDown('W')) // A와 W키를 누르면 왼쪽 위 대각선으로 간다.
+	if (KEYMANAGER->isStayKeyDown('A') && KEYMANAGER->isStayKeyDown('W')) // A와 W키를 누르면 왼쪽 위 대각선으로 간다.
 	{
 		_isDiagonal = true;
 		_targetAngle = 315.f;
 		_dir = LEFT_UP;
 	}
-	if (KEYMANAGER->isStayKeyDown('D')&& KEYMANAGER->isStayKeyDown('S')) // D와 S키를 누르면 오른쪽 아래 대각선으로 간다.
+	if (KEYMANAGER->isStayKeyDown('D') && KEYMANAGER->isStayKeyDown('S')) // D와 S키를 누르면 오른쪽 아래 대각선으로 간다.
 	{
 		_isDiagonal = true;
 		_targetAngle = 135.f;
@@ -113,7 +111,7 @@ void PlayerControler::Update()
 	if (KEYMANAGER->isOnceKeyUp('W') || KEYMANAGER->isOnceKeyUp('S')) // 만약에 W또는 S키를 떼면?
 	{
 		_isSlow = true;
-		if(KEYMANAGER->isStayKeyDown('A'))
+		if (KEYMANAGER->isStayKeyDown('A'))
 		{
 			_isDiagonal = false;
 			_dir = LEFT;
@@ -126,7 +124,7 @@ void PlayerControler::Update()
 			_targetAngle = 90.0f;
 		}
 	}
-	if (KEYMANAGER->isOnceKeyUp('A')||KEYMANAGER->isOnceKeyUp('D')) // 만약에 A또는 D 키를 떼면?
+	if (KEYMANAGER->isOnceKeyUp('A') || KEYMANAGER->isOnceKeyUp('D')) // 만약에 A또는 D 키를 떼면?
 	{
 		_isSlow = true;
 		if (KEYMANAGER->isStayKeyDown('W'))
@@ -255,33 +253,6 @@ void PlayerControler::Update()
 		float worldX = ScreenToWorld(_ptMouse).x;
 		float worldY = ScreenToWorld(_ptMouse).y;
 		_targetAngle = ConvertAngleD2D(GetAngle(transform->position.x, transform->position.y, worldX, worldY));
-		PlayerDirection();
-
-		//플레이어 위치, 마우스 위치 GetAngle로 각도 구하기
-		//targetAngle이 위에서 구한 Angle로 바뀌고
-		//그 targetAngle로 플레이어가 회전해야된다
-		//그리고 targetAngle과 플레이어 현재 angle값이 같아지면
-		//그 때 총알을 발사한다.
-		/*GetAngle(x1, y1, x2, y2)*/
-	}
-
-
-	if (KEYMANAGER->isOnceKeyDown(VK_LBUTTON))
-	{
-		SOUNDMANAGER->play("shoot", 1.0f);
-		if (_isLeft == false) // 만약에 왼쪽이 발동 안할 경우
-		{
-				_projectileManager->FireProjectile(transform->GetX()+10, transform->GetY(),
-					Math::ToRadian(transform->GetAngle()+45), PROJECTILE_TYPE::PLAYER);
-		}
-		else // 나머지 값
-		{
-			_projectileManager->FireProjectile(transform->GetX()-10, transform->GetY(),
-				Math::ToRadian(transform->GetAngle()+45), PROJECTILE_TYPE::PLAYER);
-		}
-		_isLeft = !_isLeft; // 반복되게 하기
-
-	}
 
 		_attackSpeed += TIMEMANAGER->getElapsedTime();
 
@@ -303,15 +274,16 @@ void PlayerControler::Update()
 			_attackSpeed = 0;
 		}
 	}
+
 }
 
 void PlayerControler::PlayerDirection()
 {
 	float deltaAngle = _targetAngle - transform->GetAngle();
 
-	if (deltaAngle < 0) deltaAngle += 360; // 델타 엥글이 0보다 작으면 360을 더해준다.
+	if (deltaAngle < 0) deltaAngle += 360;
 
-	if (deltaAngle > 180) // 만약에 델타엥글이 180보다 크다면?
+	if (deltaAngle > 180)
 	{
 		if (transform->GetAngle() != _targetAngle)
 		{
@@ -320,11 +292,11 @@ void PlayerControler::PlayerDirection()
 		if (Math::FloatEqual(_targetAngle, transform->GetAngle()))
 		{
 			transform->SetAngle(_targetAngle);
-		//포신 보정 해주고
+			//포신 보정 해주고
 			transform->GetChild(0)->SetAngle(_targetAngle);
 			transform->GetChild(1)->SetAngle(_targetAngle);
 		}
-		
+
 	}
 	else
 	{
@@ -336,7 +308,7 @@ void PlayerControler::PlayerDirection()
 			transform->GetChild(0)->SetAngle(_targetAngle);
 			transform->GetChild(1)->SetAngle(_targetAngle);
 		}
-			
+
 	}
 	/*******************************************************
 	1. 포신의 SetPotsition(플레이어 X + cosf(ConvertAngleAPI(transform->GetAngle())) * 포신궤도의 반지름,
