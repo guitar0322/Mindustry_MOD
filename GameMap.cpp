@@ -20,8 +20,12 @@ HRESULT GameMap::Init()
 		{
 			_tile[i * TILENUMX + j].transform->SetPosition(16 + TILESIZE * j, 16 + TILESIZE * i);
 			_tile[i * TILENUMX + j].renderer->Init("water");
+			_tile[i * TILENUMX + j].renderer->RenderStatic();
+			_tile[i * TILENUMX + j].renderer->SetStatic(true);
 
 			_resourcesTile[i * TILENUMX + j].transform->SetPosition(16 + TILESIZE * j, 16 + TILESIZE * i);
+			_resourcesTile[i * TILENUMX + j].renderer->RenderStatic();
+			_resourcesTile[i * TILENUMX + j].renderer->SetStatic(true);
 
 			_tileInfo[i * TILENUMX + j].environment = ENV_WATER;
 			_tileInfo[i * TILENUMX + j].resources = RES_NONE;
@@ -59,31 +63,34 @@ void GameMap::Render()
 	if (tileEndY > TILENUMX - 1)
 		tileEndY = TILENUMX - 1;
 
-	for (int i = tileStartY; i < tileEndY; ++i)
-	{
-		for (int j = tileStartX; j < tileEndX; ++j)
-		{
-			_tile[i * TILENUMX + j].Render();
-			if (_tileInfo[i * TILENUMX + j].resources != RES_NONE)
-			_resourcesTile[i * TILENUMX + j].Render();
-		}
-	}
+	//for (int i = tileStartY; i < tileEndY; ++i)
+	//{
+	//	for (int j = tileStartX; j < tileEndX; ++j)
+	//	{
+	//		_tile[i * TILENUMX + j].Render();
+	//		if (_tileInfo[i * TILENUMX + j].resources != RES_NONE)
+	//		_resourcesTile[i * TILENUMX + j].Render();
+	//	}
+	//}
 }
 
 void GameMap::Load()
 {
 	vector<string> loadData = TXTDATAMANAGER->txtLoad("tile_info.txt");
-
+	StaticBuffer->BeginDraw();
 	for (int i = 0; i < loadData.size(); i += 2) {
 		int env = atoi(loadData[i].c_str());
 		int res = atoi(loadData[i + 1].c_str());
 		_tileInfo[i / 2].environment = (ENVIRONMENT)env;
 		_tileInfo[i / 2].resources = (RESOURCES)res;
 		_tile[i / 2].renderer->Init(_tileName[env]);
+		_tile[i / 2].renderer->RenderStatic();
+
 		_resourcesTile[i / 2].renderer->Init(_tileName[res + 18]);
-
+		if(_tileInfo[i / 2].resources != RES_NONE)
+			_resourcesTile[i / 2].renderer->RenderStatic();
 	}
-
+	StaticBuffer->EndDraw();
 }
 
 void GameMap::SetTileImage()

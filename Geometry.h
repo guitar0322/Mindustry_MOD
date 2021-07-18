@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Rect.h"
 #include "Circle.h"
 /**********************************

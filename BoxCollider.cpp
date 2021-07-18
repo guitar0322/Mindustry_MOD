@@ -17,14 +17,16 @@ BoxCollider::~BoxCollider()
 void BoxCollider::Init()
 {
 	//COLLIDERMANAGER->InsertCollider(this);
+	_rc = RectMakeCenter(transform->GetX(), transform->GetY(), _width, _height);
+	_partitionIdx = COLLIDERMANAGER->GetIntersectPartition(_rc);
 	COLLIDERMANAGER->AddCollider(this);
 }
 
 void BoxCollider::Update()
 {
-	_rc = RectMakeCenter(transform->GetX(), transform->GetY(), _width, _height);
 	TriggerEventHandler();
 }
+
 /********************************************************************
 * @bool CheckCollision : 씬의 모든 충돌체와 충돌여부 검사
 * 충돌이 발생하면 true, 아니면 false를 반환
@@ -34,57 +36,61 @@ void BoxCollider::Update()
 *********************************************************************/
 bool BoxCollider::CheckCollision()
 {
-	vector<BoxCollider*> colV = COLLIDERMANAGER->GetColliderVector();
 	_rc = RectMakeCenter(transform->GetX(), transform->GetY(), _width, _height);
+	_partitionIdx = COLLIDERMANAGER->ChangeColliderIdx(this);
+	vector<vector<BoxCollider*>> partitionColV = COLLIDERMANAGER->GetPartitionColliderV(_partitionIdx);
 	bool result = false;
-	for (int i = 0; i < colV.size(); i++)
+	for (int i = 0; i < partitionColV.size(); i++)
 	{
-		if (colV[i] == this) continue;
-		if (colV[i]->gameObject->isActive == false) continue;
-		if (colV[i]->enable == false) continue;
-
-		if (IntersectRect(&_intersectRc, &this->_rc, &colV[i]->_rc))
+		for (int j = 0; j < partitionColV[i].size(); j++)
 		{
-			if (this->_isTrigger == false && colV[i]->_isTrigger == false)
+			if (partitionColV[i][j] == this) continue;
+			if (partitionColV[i][j]->gameObject->isActive == false) continue;
+			if (partitionColV[i][j]->enable == false) continue;
+
+			if (IntersectRect(&_intersectRc, &this->_rc, &partitionColV[i][j]->_rc))
 			{
-				float w = _intersectRc.right - _intersectRc.left;
-				float h = _intersectRc.bottom - _intersectRc.top;
-				if (w > h)
+				if (this->_isTrigger == false && partitionColV[i][j]->_isTrigger == false)
 				{
-					if (_intersectRc.bottom == colV[i]->_rc.bottom)
+					float w = _intersectRc.right - _intersectRc.left;
+					float h = _intersectRc.bottom - _intersectRc.top;
+					if (w > h)
 					{
-						this->transform->MoveY(h);
+						if (_intersectRc.bottom == partitionColV[i][j]->_rc.bottom)
+						{
+							this->transform->MoveY(h);
+						}
+						else if (_intersectRc.top == partitionColV[i][j]->_rc.top)
+						{
+							this->transform->MoveY(-h);
+						}
 					}
-					else if (_intersectRc.top == colV[i]->_rc.top)
+					else
 					{
-						this->transform->MoveY(-h);
+						if (_intersectRc.left == partitionColV[i][j]->_rc.left)
+						{
+							this->transform->MoveX(-w);
+						}
+						else if (_intersectRc.right == partitionColV[i][j]->_rc.right)
+						{
+							this->transform->MoveX(w);
+						}
 					}
+					result = true;
+					this->gameObject->OnCollision(partitionColV[i][j]->gameObject);
 				}
 				else
 				{
-					if (_intersectRc.left == colV[i]->_rc.left)
-					{
-						this->transform->MoveX(-w);
-					}
-					else if (_intersectRc.right == colV[i]->_rc.right)
-					{
-						this->transform->MoveX(w);
-					}
-				}
-				result = true;
-				this->gameObject->OnCollision(colV[i]->gameObject);
-			}
-			else
-			{
 
-				AddOverlapCol(colV[i]);
-				colV[i]->AddOverlapCol(this);
+					AddOverlapCol(partitionColV[i][j]);
+					partitionColV[i][j]->AddOverlapCol(this);
+				}
 			}
 		}
 	}
-
 	return result;
 }
+
 /***********************************************************
 * @void TriggerEventHandler : _overlapColV를 통해 TriggerEvent함수 호출
 * _overlapColV에 있는 충돌체와 Intersect연산 수행
@@ -103,6 +109,7 @@ void BoxCollider::TriggerEventHandler()
 		}
 		else
 		{
+			wstring name = gameObject->name;
 			this->gameObject->OnTriggerStay(_overlapColV[i]->gameObject);
 			_overlapColV[i]->gameObject->OnTriggerStay(this->gameObject);
 		}
@@ -114,11 +121,13 @@ void BoxCollider::SetWidth(float width)
 	this->_width = width;
 	_rc = RectMakeCenter(transform->GetX(), transform->GetY(), width, _height);
 }
+
 void BoxCollider::SetHeight(float height)
 {
 	this->_height = height;
 	_rc = RectMakeCenter(transform->GetX(), transform->GetY(), _width, height);
 }
+
 void BoxCollider::SetSize(float width, float height)
 {
 	this->_width = width;
@@ -139,6 +148,7 @@ void BoxCollider::RemoveOverlapCol(BoxCollider* exitCollider)
 		}
 	}
 }
+
 /**************************************************************
 * @void AddOverlapCol : _overlapColV에 충돌체를 추가
 * _overlapColV에 이미 같은 충돌체가 있을 경우 추가하지 않음
@@ -155,6 +165,13 @@ void BoxCollider::AddOverlapCol(BoxCollider* overlapCollider)
 	_overlapColV.push_back(overlapCollider);
 	gameObject->OnTriggerEnter(overlapCollider->gameObject);
 }
+
+void BoxCollider::RefreshPartition()
+{
+	_rc = RectMakeCenter(transform->GetX(), transform->GetY(), _width, _height);
+	_partitionIdx = COLLIDERMANAGER->GetIntersectPartition(_rc);
+}
+
 void BoxCollider::Render()
 {
 	if (KEYMANAGER->isToggleKey(VK_TAB))

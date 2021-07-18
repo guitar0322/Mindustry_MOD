@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+
 /*************************************************************
 * Framework Camera Component
 * by 홍대영
@@ -12,6 +13,7 @@
 * # float _zoomScale : 카메라 확대 축소 비율
 * 
 *************************************************************/
+
 class Camera : public Component
 {
 private :
@@ -26,6 +28,7 @@ private :
 	float _shakeAngle;
 	int _shakeDir;
 	pair<float, float> _shakeStart;
+	Rect _renderRc;
 public:
 	Camera();
 	~Camera();
@@ -57,6 +60,10 @@ public:
 	void ShakeOff();
 	float GetRenderWidth() { return _renderWidth / _zoomScale; }
 	float GetRenderHeight() { return _renderHeight / _zoomScale; }
+
+	Rect GetRenderRc() const { return _renderRc; }
 	pair<int, int> GetRenderSize() { return { _renderWidth / _zoomScale, _renderHeight / _zoomScale }; }
+
+	void StaticToBackBuffer();
 };
 

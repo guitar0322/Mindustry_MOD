@@ -1,6 +1,6 @@
 #pragma once
 #include "GameObject.h"
-#include "Camera.h"
+class Camera;
 class Cam :
     public GameObject
 {

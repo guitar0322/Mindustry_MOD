@@ -25,6 +25,7 @@ private:
 	ID2D1Factory* mD2DFactory;
 	ID2D1HwndRenderTarget* mD2DRenderTarget;
 	ID2D1BitmapRenderTarget* mD2DBitmapRenderTarget;
+	ID2D1BitmapRenderTarget* mD2DStaticRenderTarget;
 	ID2D1Bitmap* mD2DBitmap;
 	IDXGISurface* mD2DSurface;
 
@@ -42,10 +43,13 @@ private:
 public:
 	void CreateNewBackBuffer(int width, int height);
 	void AddTextFormat(const wstring& font, const float& defaultSize = 1.f);
-	void DrawBackBuffer(float startX, float startY, float endX, float endY,
+	void DrawBackBuffer(float bitmapStartX, float bitmapStartY, float bitmapEndX, float bitmapEndY,
 		float screenStartX, float screenStartY, float screenEndX, float screenEndY);
+	void DrawStaticBuffer(float bitmapStartX, float bitmapStartY, float bitmapEndX, float bitmapEndY);
+
 	inline ID2D1RenderTarget* const GetRenderTarget()const { return this->mD2DRenderTarget; }
 	inline ID2D1BitmapRenderTarget* const GetBackBuffer() { return this->mD2DBitmapRenderTarget; }
+	inline ID2D1BitmapRenderTarget* const GetStaticBuffer() { return this->mD2DStaticRenderTarget; }
 public:
 	//텍스트 출력(기본 브러쉬 사용) 
 	void RenderText(const int x, const int y, const wstring& text, const int size,

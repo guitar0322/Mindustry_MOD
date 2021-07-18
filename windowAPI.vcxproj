@@ -164,6 +164,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="Conveyor.h" />
     <ClInclude Include="CopperWall.h" />
+    <ClInclude Include="Core.h" />
     <ClInclude Include="D2DRenderer.h" />
     <ClInclude Include="Duo.h" />
     <ClInclude Include="EditableText.h" />
@@ -179,6 +180,7 @@
     <ClInclude Include="EnemyObject.h" />
     <ClInclude Include="EnemyPlane.h" />
     <ClInclude Include="EnemyPlaneControler.h" />
+    <ClInclude Include="GameInfo.h" />
     <ClInclude Include="GameMap.h" />
     <ClInclude Include="gameNode.h" />
     <ClInclude Include="GameObject.h" />
@@ -262,6 +264,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Conveyor.cpp" />
     <ClCompile Include="CopperWall.cpp" />
+    <ClCompile Include="Core.cpp" />
     <ClCompile Include="D2DRenderer+Draw.cpp" />
     <ClCompile Include="D2DRenderer.cpp" />
     <ClCompile Include="Duo.cpp" />
@@ -278,6 +281,7 @@
     <ClCompile Include="EnemyObject.cpp" />
     <ClCompile Include="EnemyPlane.cpp" />
     <ClCompile Include="EnemyPlaneControler.cpp" />
+    <ClCompile Include="GameInfo.cpp" />
     <ClCompile Include="GameMap.cpp" />
     <ClCompile Include="gameNode.cpp" />
     <ClCompile Include="GameObject.cpp" />

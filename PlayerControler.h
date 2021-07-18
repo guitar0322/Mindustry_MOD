@@ -3,6 +3,7 @@
 
 class ProjectileManager;
 class PlayerLaser;
+class EnemyInfo;
 
 #define DEFAULT_WEAPON_DISTANCE 11.41f
 #define ATTACK_WEAPON_DISTANCE 9.41f
@@ -40,6 +41,8 @@ private:
 	float _weaponRdistanceAngle;
 	float _attackSpeed;
 	float worldX, worldY;
+	
+	int _hp;
 
 	DIRECTION _dir;
 	bool _isLeft;
@@ -49,12 +52,14 @@ private:
 	bool _isSlow;
 	bool _isGathering;
 	bool _isFire;
+	bool _isDead;
 	ProjectileManager* _projectileManager;
 
 	//자원 추출 레이저
 	PlayerLaser* _playerLaser;
 
 
+	EnemyInfo* _enemyInfo;
 public:
 	virtual void Init();
 	virtual void Update();
@@ -62,9 +67,12 @@ public:
 
 	void PlayerDirection();
 
+	float GetHp() const { return _hp; }
 	float GetSpeed() const { return _speed; }
 	float GetTargetAngle() const { return _targetAngle; }
 	void SetProjectileManager(ProjectileManager* projectileManager) { _projectileManager = projectileManager; }
 
+	void Hit(float damage);
+	void Dead();
 };
 

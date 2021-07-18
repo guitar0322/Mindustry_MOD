@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
-#include "AnimationClip.h"
 #include <map>
+class AnimationClip;
 //트랜잭션을 추가할 수 있고
 //트랜잭션이 동작할 조건을 추가한다
 typedef struct tagTransaction {

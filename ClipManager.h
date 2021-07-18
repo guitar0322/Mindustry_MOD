@@ -1,5 +1,6 @@
 #pragma once
-#include "AnimationClip.h"
+class AnimationClip;
+class ID2D1Bitmap;
 /*********************************************
 * Framework ClipManager
 * By ȫ�뿵

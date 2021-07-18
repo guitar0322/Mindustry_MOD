@@ -238,7 +238,6 @@
     </ClCompile>
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerControler.cpp" />
-    <ClCompile Include="PlayerScene.cpp" />
     <ClCompile Include="CopperWall.cpp">
       <Filter>Prop\Object</Filter>
     </ClCompile>
@@ -251,9 +250,24 @@
     <ClCompile Include="Conveyor.cpp">
       <Filter>Prop\Object</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="TitleUIControler.cpp" />
     <ClCompile Include="PlayerLaser.cpp" />
+    <ClCompile Include="TitleUIControler.cpp" />
+    <ClCompile Include="PlayerScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameInfo.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="TitleUIControler.cpp" />
+    <ClCompile Include="Turret.cpp" />
+    <ClCompile Include="UIManager.cpp" />
+    <ClCompile Include="EnemyManager.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Core.cpp" />
+    <ClCompile Include="EnemyManager.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h" />
@@ -505,7 +519,6 @@
     </ClInclude>
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerControler.h" />
-    <ClInclude Include="PlayerScene.h" />
     <ClInclude Include="CopperWall.h">
       <Filter>Prop\Object</Filter>
     </ClInclude>
@@ -518,9 +531,24 @@
     <ClInclude Include="Conveyor.h">
       <Filter>Prop\Object</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="TitleUIControler.h" />
     <ClInclude Include="PlayerLaser.h" />
+    <ClInclude Include="TitleUIControler.h" />
+    <ClInclude Include="PlayerScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameInfo.h" />
+    <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="TitleUIControler.h" />
+    <ClInclude Include="Turret.h" />
+    <ClInclude Include="UIManager.h" />
+    <ClInclude Include="EnemyManager.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Core.h" />
+    <ClInclude Include="EnemyManager.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="windowAPI.rc" />

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "CameraManager.h"
-
+#include "Camera.h"
 CameraManager::CameraManager()
 {
 }
