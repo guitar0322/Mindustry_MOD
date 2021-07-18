@@ -13,6 +13,7 @@ HRESULT GameScene::Init()
 
 	InitClip();
 	SetBackBufferSize(1600, 1600);
+    COLLIDERMANAGER->PartitionArea(10, 10);
     StaticBuffer->BeginDraw();
 	MainCam->SetRenderSize(1600, 1010);
     MainCam->transform->SetPosition(800, 505);

@@ -2,6 +2,7 @@
 #include "ProjectileManager.h"
 #include "ProjectileObject.h"
 #include "EnemyManager.h"
+#include "Projectile.h"
 
 ProjectileManager::ProjectileManager()
 {

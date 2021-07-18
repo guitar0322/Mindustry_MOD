@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "EnemyInfo.h"
-
+#include "EnemyManager.h"
 
 EnemyInfo::EnemyInfo()
 {

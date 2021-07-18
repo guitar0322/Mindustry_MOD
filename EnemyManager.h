@@ -9,6 +9,7 @@ class EnemyPlane;
 class EnemyGround;
 class ProjectileManager;
 class EnemyInfo;
+class EnemyObject;
 
 class EnemyManager :
 	public Component

@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "EnemyPlaneControler.h"
 #include "ProjectileManager.h"
+#include "EnemyInfo.h"
+
 EnemyPlaneControler::EnemyPlaneControler()
 {
 }
