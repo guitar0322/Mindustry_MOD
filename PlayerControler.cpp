@@ -2,6 +2,7 @@
 #include "PlayerControler.h"
 #include "PlayerScene.h"
 #include "ProjectileManager.h"
+#include "EnemyInfo.h"
 
 void PlayerControler::Init()
 {
@@ -10,6 +11,7 @@ void PlayerControler::Init()
 	_targetAngle = 0.f;
 	_breakTime = 0.f;
 	_angleSpeed = 60.f;
+	_hp = 100;
 
 	_weaponLTrackRadius = DEFAULT_WEAPON_DISTANCE;
 	_weaponRTrackRadius = DEFAULT_WEAPON_DISTANCE;
@@ -23,6 +25,7 @@ void PlayerControler::Init()
 	_isSlow = false;
 	_isDiagonal = false;
 	_isGathering = false;
+	_isDead = false;
 	_dir = IDLE;
 
 }
@@ -297,7 +300,6 @@ void PlayerControler::PlayerDirection()
 			transform->GetChild(0)->SetAngle(_targetAngle);
 			transform->GetChild(1)->SetAngle(_targetAngle);
 		}
-		
 	}
 	else
 	{
@@ -328,7 +330,17 @@ void PlayerControler::PlayerDirection()
 	if (_weaponRdistanceAngle > 360) _weaponLdistanceAngle -= 360;
 	transform->GetChild(1)->SetPosition((transform->GetX() + cosf(_weaponRdistanceAngle) * _weaponRTrackRadius),
 		transform->GetY() - sinf(_weaponRdistanceAngle) * _weaponRTrackRadius);
-
 }
 
+void PlayerControler::Hit(float damage)
+{
+	_hp -= damage;
+	if (_hp < 0 && _isDead == false)
+	{
+		_isDead = true;
+	}
+}
 
+void PlayerControler::Dead()
+{
+}

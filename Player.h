@@ -12,5 +12,7 @@ public:
 	~Player();
 	Renderer* renderer;
 	PlayerControler* controler;
+	BoxCollider* collider;
+
 };
 

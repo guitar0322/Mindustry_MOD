@@ -19,9 +19,8 @@
 #include "ZOrder.h"
 #include "DebugText.h"
 #include <typeinfo>
-#include "EnemyObject.h"
 #include "Projectile.h"
-#include "EnemyManager.h"
+#include "AnimObject.h"
 
 namespace HDY_UTIL
 {

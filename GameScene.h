@@ -69,6 +69,7 @@ public:
     void InitClip();
     void InitCategoryUI();
     void InitPropUI();
+	void SetProjectileManager();
 	void SetCore();
 	void SetEnemyManager();
 };

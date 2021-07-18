@@ -51,6 +51,7 @@ HRESULT GameScene::Init()
 	/* 플레이어 부분*/
 	_player = new Player();
 	_player->Init();
+	_player->tag = TAGMANAGER->GetTag("player");
 	_player->renderer->Init("player");
 	_player->transform->SetPosition(1500, 900);
 	_player->transform->SetAngle(0.0f);
@@ -67,12 +68,11 @@ HRESULT GameScene::Init()
 	_player->transform->AddChild(_playerWeaponL->transform);
 	_player->transform->AddChild(_playerWeaponR->transform);
 
-	_projectileManager = new GameObject();
-	_projectileManager->AddComponent(new ProjectileManager());
-	_projectileManager->GetComponent<ProjectileManager>()->Init();
-
-	_player->controler->SetProjectileManager(_projectileManager->GetComponent<ProjectileManager>());
+	
 	//========================================
+	SetProjectileManager();
+	SetCore();
+	SetEnemyManager();
 
 	SetCore();
 	/////////////////////		Enemy Manager 생성			//////////////////////
@@ -127,7 +127,7 @@ void GameScene::Update()
     _choiceImg.Update();
 	_core->Update();
 	_enemyManager->Update();
-	_musicTime += TIMEMANAGER->getElapsedTime();
+	_musicTi	me += TIMEMANAGER->getElapsedTime();
 
 	if (_musicTime>= 15)
 	{
@@ -196,21 +196,27 @@ void GameScene::Render()
 	D2DRENDERER->RenderText(100, 150, wstrangle, 20, L"맑은고딕", D2DRenderer::DefaultBrush::White);*/
 	
 
-	wstring minute = L"MINUTE : ";
-	minute.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeMinute()));
-	D2DRENDERER->RenderText(10, 10, minute, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
-
-	wstring second = L"SECOND: ";
-	second.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeSecond()));
-	D2DRENDERER->RenderText(10, 60, second, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
-
-	wstring wave = L"CurWave: ";
-	wave.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetCurWave()));
-	D2DRENDERER->RenderText(10, 110, wave, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
-
 	wstring time = L"MusicTime: ";
 	time.append(to_wstring(_musicTime));
 	D2DRENDERER->RenderText(10, 140, time, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
+	
+
+	//wstring minute = L"MINUTE : ";
+	//minute.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeMinute()));
+	//D2DRENDERER->RenderText(10, 10, minute, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
+
+	//wstring second = L"SECOND: ";
+	//second.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeSecond()));
+	//D2DRENDERER->RenderText(10, 60, second, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
+
+	//wstring wave = L"CurWave: ";
+	//wave.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetCurWave()));
+	//D2DRENDERER->RenderText(10, 110, wave, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
+	
+	//wstring PlayerHp = L"PlayerHP: ";
+	//PlayerHp.append(to_wstring(_player->controler->GetHp()));
+	//D2DRENDERER->RenderText(10, 10, PlayerHp, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
+
 	/*wstring mineCount = L"";
 	mineCount.append(to_wstring(_mineCount));
 	D2DRENDERER->RenderText(WINSIZEX / 2 - 50, 10, mineCount, 20, L"fontello", D2DRenderer::DefaultBrush::White);*/
@@ -389,11 +395,20 @@ void GameScene::InitPropUI()
     /* SHUNG 210715 */
 }
 
+void GameScene::SetProjectileManager()
+{
+	_projectileManager = new GameObject();
+	_projectileManager->AddComponent(new ProjectileManager());
+	_projectileManager->GetComponent<ProjectileManager>()->Init();
+	_projectileManager->GetComponent<ProjectileManager>()->SetPlayer(_player);
+	_player->controler->SetProjectileManager(_projectileManager->GetComponent<ProjectileManager>());
+}
+
 void GameScene::SetCore()
 {
 	_core = new Prop();
 	_core->Init();
-	_core->tag = TAGMANAGER->GetTag("player");
+	_core->tag = TAGMANAGER->GetTag("prop");
 	_core->renderer->Init("core");
 	_core->transform->SetPosition(25 * TILESIZE + 16, 36 * TILESIZE + 16);
 }

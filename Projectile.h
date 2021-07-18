@@ -1,17 +1,22 @@
 #pragma once
 #include "Component.h"
 
-//class ProjectileManager;
+class Player;
+class EnemyInfo;
+
 class Projectile :
 	public Component
 {
 private:
-	//ProjectileManager* _projectileManager;
 	float _speed;
 	float _angle;
 	float _speedX, _speedY;
 	float _radius;
 
+	int _damage;
+
+	Player* _player;
+	EnemyInfo* _enemyInfo;
 
 public:
 	Projectile();
@@ -26,6 +31,9 @@ public:
 
 	float GetAngle() const { return _angle; }
 	void SetAngle(float angle) { _angle = angle; }
+
+	int GetDamage()  const { return _damage; }
+	void SetDamage(int damage) { _damage = damage; }
 
 	void Move();
 };
