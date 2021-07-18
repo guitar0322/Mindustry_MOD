@@ -34,9 +34,12 @@ void Projectile::Move()
 
 void Projectile::OnTriggerEnter(GameObject* gameObject)
 {
-	if (gameObject->tag == TAGMANAGER->GetTag("player"))
+	if (gameObject->tag == TAGMANAGER->GetTag(_targetTag))
 	{
-		transform->gameObject->SetActive(false);
-		gameObject->GetComponent<PlayerControler>()->Hit(_damage);
+		if (_targetTag == "player")
+		{
+			transform->gameObject->SetActive(false);
+			gameObject->GetComponent<PlayerControler>()->Hit(_damage);
+		}
 	}
 }

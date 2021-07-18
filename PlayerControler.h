@@ -41,7 +41,7 @@ private:
 	float _attackSpeed;
 	
 	int _hp;
-	char _player;
+
 	DIRECTION _dir;
 	bool _isLeft;
 	bool _isDiagonal;
@@ -53,6 +53,7 @@ private:
 	bool _isDead;
 	ProjectileManager* _projectileManager;
 	EnemyInfo* _enemyInfo;
+
 public:
 	virtual void Init();
 	virtual void Update();

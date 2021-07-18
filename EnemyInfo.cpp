@@ -45,7 +45,6 @@ void EnemyInfo::Update()
 	//	_isDeath = true;
 	//	HitEnemy();
 	//}
-
 }
 
 void EnemyInfo::HitEnemy()

@@ -23,6 +23,7 @@ void ProjectileManager::Init()
 		_enemyPlaneProjectile->GetRendererComponent()->Init("projectile");
 		_enemyPlaneProjectile->GetProjectileComponent()->SetSpeed(1000.f);
 		_enemyPlaneProjectile->GetProjectileComponent()->SetDamage(50);
+		_enemyPlaneProjectile->GetProjectileComponent()->SetTargetTag("player");
 		_enemyPlaneProjectile->SetActive(false);
 		_enemyPlaneProjectileV.push_back(_enemyPlaneProjectile);
 	}
@@ -33,6 +34,7 @@ void ProjectileManager::Init()
 		_enemyGroundProjectile->GetRendererComponent()->Init("projectile");
 		_enemyGroundProjectile->GetProjectileComponent()->SetSpeed(1000.f);
 		_enemyGroundProjectile->GetProjectileComponent()->SetDamage(50);
+		_enemyGroundProjectile->GetProjectileComponent()->SetTargetTag("player");
 		_enemyGroundProjectile->SetActive(false);
 		_enemyGroundProjectileV.push_back(_enemyGroundProjectile);
 	}
@@ -43,6 +45,7 @@ void ProjectileManager::Init()
 		_playerProjectile->GetRendererComponent()->Init("projectile");
 		_playerProjectile->transform->SetScale(0.5f, 0.5f);
 		_playerProjectile->GetProjectileComponent()->SetSpeed(150.f);
+		_playerProjectile->GetProjectileComponent()->SetTargetTag("enemy");
 		_playerProjectile->SetActive(false);
 		_playerProjectileV.push_back(_playerProjectile);
 	}

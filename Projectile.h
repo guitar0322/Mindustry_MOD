@@ -14,6 +14,7 @@ private:
 	float _radius;
 
 	int _damage;
+	string _targetTag;
 
 	Player* _player;
 	EnemyInfo* _enemyInfo;
@@ -35,6 +36,7 @@ public:
 	int GetDamage()  const { return _damage; }
 	void SetDamage(int damage) { _damage = damage; }
 
+	void SetTargetTag(string targetTag) { _targetTag = targetTag; }
 	void Move();
 };
 
