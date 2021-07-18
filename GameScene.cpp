@@ -51,6 +51,7 @@ HRESULT GameScene::Init()
     InitPropUI();
 
     /* SHUNG 210715 */
+    _lockDes = false;
     _research = false;
 
     uiControler->choiceImg = &_choiceImg;
@@ -571,9 +572,13 @@ void GameScene::researchInitUI()
     _core_basic_description.SetActive(false);
 
     _coreSlice.uiMouseEvent->RegistCallback(
-        std::bind(&UIControler::inResearch_ActiveChoiceImgWithBasicDes, uiControler, _coreSlice.transform, &_core_basic_description, true), EVENT::ENTER);
+        std::bind(&UIControler::inResearch_ActiveChoiceImgWithBasicDes, uiControler, _coreSlice.transform, &_core_basic_description, &_lockDes, true), EVENT::ENTER);
+    _core_basic_description.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::sibal, uiControler, & _lockDes), EVENT::ENTER);
+    _core_basic_description.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::sibal, uiControler, &_lockDes), EVENT::EXIT);
     _coreSlice.uiMouseEvent->RegistCallback(
-        std::bind(&UIControler::inResearch_ActiveChoiceImgWithBasicDes, uiControler, _coreSlice.transform, &_core_basic_description, false), EVENT::EXIT);
+        std::bind(&UIControler::inResearch_inActiveChoiceImgWithBasicDes, uiControler, _coreSlice.transform, &_core_basic_description, &_lockDes, false), EVENT::EXIT);
 
 
 #pragma endregion

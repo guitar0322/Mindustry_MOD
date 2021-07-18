@@ -49,5 +49,8 @@ public:
     // 코어 DB 화면 구성할 때 불 값으로 연결시켜주기
     void inResearch_ReturnToCoreDBScene(bool* name, bool isActive);
     // 테스트용
-    void inResearch_ActiveChoiceImgWithBasicDes(Transform* menuTr, UIBase* name, bool isActive);
+    void inResearch_ActiveChoiceImgWithBasicDes(Transform* menuTr, UIBase* name, bool* name2, bool isActive);
+    void inResearch_inActiveChoiceImgWithBasicDes(Transform* menuTr, UIBase* name, bool* name2, bool isActive);
+    void sibal(bool* name);
+    void sibal2(bool* name);
 };

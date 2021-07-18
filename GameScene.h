@@ -60,6 +60,7 @@ private:
 
     /* SHUNG 210715-16 */
     bool   _research;
+    bool   _lockDes;
     UIBase _choiceImg;
     UIBase _lockImg;
 
