@@ -3,6 +3,7 @@
 #include "TileInfo.h"
 #include "CopperWall.h"
 #include "Duo.h"
+#include "Conveyor.h"
 #include "PropContainer.h"
 #include "GameInfo.h"
 
@@ -65,7 +66,7 @@ void PropFactory::Update()
 			switch (buildProp.propIdx)
 			{
 			case 0:
-				CreateProp<Prop>(buildProp.x, buildProp.y);
+				CreateProp<Conveyor>(buildProp.x, buildProp.y);
 				break;
 			}
 			break;
@@ -107,7 +108,7 @@ ImageObject* PropFactory::CreateProp(int tileX, int tileY)
 	{
 		newPropCast->transform->SetPosition(tileX * TILESIZE + TILESIZE / 2, tileY * TILESIZE + TILESIZE / 2);
 		newPropCast->GetComponent<BoxCollider>()->RefreshPartition();
-		propContainer->AddProp(newPropCast->name, newPropCast);
+		propContainer->AddProp(tileY * TILENUMX + tileX, newPropCast);
 	}
 	_previewV.erase(_previewV.begin());
 	_propQueue.pop();

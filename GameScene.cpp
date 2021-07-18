@@ -6,6 +6,8 @@
 #include "PropFactory.h"
 #include "UIMouseEvent.h"
 #include "EnemyManager.h"
+#include "GameInfo.h"
+
 #include "Prop.h"
 
 HRESULT GameScene::Init()
@@ -18,13 +20,27 @@ HRESULT GameScene::Init()
     StaticBuffer->BeginDraw();
 	MainCam->SetScreenSize(WINSIZEX, WINSIZEY);
 	MainCam->SetRenderSize(1600, 1010);
-    MainCam->transform->SetPosition(1600 / 2, 1600 / 2);
+    MainCam->transform->SetPosition(1600 / 2, 1010 / 2);
+
+    _miniMapCam = new Cam();
+    _miniMapCam->Init();
+    _miniMapCam->camera->SetRenderSize(1600, 1010);
+    _miniMapCam->transform->SetPosition(800, 800);
+    _miniMapCam->camera->SetScreenSize(200, 200);
+    _miniMapCam->camera->SetScreenStart(WINSIZEX - 210, 10);
+
+    gameInfo = new GameInfo();
+    gameInfo->Init();
+    gameInfo->AddResource(COPPER, 500);
 
     selectCategoryIdx = 0;
     propContainer = new PropContainer();
+    propContainer->gameInfo = gameInfo;
+
     propFactory = new PropFactory();
     propFactory->Init();
     propFactory->propContainer = propContainer;
+    propFactory->LinkGameInfo(gameInfo);
 
     uiControler = new UIControler();
     uiControler->Init();
@@ -151,6 +167,7 @@ void GameScene::Update()
 void GameScene::Render()
 {
     MainCam->StaticToBackBuffer();
+
 	gameMap->Render();
 
     propFactory->Render();
@@ -164,6 +181,7 @@ void GameScene::Render()
 	_core->Render();
 	_enemyManager->Render();
 	MainCam->Render();
+    _miniMapCam->Render();
 
     //카테고리 아이콘 렌더
     {
@@ -249,6 +267,10 @@ void GameScene::InitClip()
 		CLIPMANAGER->AddClip("copper_wall", "sprites/blocks/walls/copper-wall.png", 32, 32);
 	}
 
+    //컨베이어 벨트 클립
+    {
+        CLIPMANAGER->AddClip("conveyor_I", "sprites/blocks/distribution/conveyors/conveyor-I.png", 128, 32, 4, 1, 0.06f);
+    }
 	//플레이어 클립
 	{
 		CLIPMANAGER->AddClip("player", "player/alpha.png", 48, 48);

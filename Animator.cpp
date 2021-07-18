@@ -109,6 +109,11 @@ void Animator::AddClip(string clipName, AnimationClip* newClip)
 	clipMap.insert(make_pair(clipName, newClip));
 }
 
+void Animator::AddClip(string clipName)
+{
+	clipMap.insert(make_pair(clipName, CLIPMANAGER->FindClip(clipName)));
+}
+
 void Animator::AddClip(AnimationClip* newClip)
 {
 	if (newClip->GetLoadName().length() == 0)
