@@ -43,7 +43,6 @@ HRESULT GameScene::Init()
 	gameMap = new GameMap;
 	gameMap->Init();
 
-    InitClip();
     InitCategoryUI();
     InitPropUI();
 
@@ -59,6 +58,7 @@ HRESULT GameScene::Init()
 	_player->transform->SetAngle(0.0f);
 	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
 
+	//ÇÃ·¹ÀÌ¾î Æ÷½Å 
 	_playerWeaponL = new ImageObject;
 	_playerWeaponL->Init();
 	_playerWeaponL->renderer->Init("player_weapon_L");
@@ -67,6 +67,7 @@ HRESULT GameScene::Init()
 	_playerWeaponR->Init();
 	_playerWeaponR->renderer->Init("player_weapon_R");
 
+	//ÇÃ·¹ÀÌ¾î¿¡ Æ÷½Å ³ÖÀ½
 	_player->transform->AddChild(_playerWeaponL->transform);
 	_player->transform->AddChild(_playerWeaponR->transform);
 	
@@ -149,6 +150,7 @@ void GameScene::Update()
 
 void GameScene::Render()
 {
+	//¸Ê ·»´õ
     MainCam->StaticToBackBuffer();
 	gameMap->Render();
 
@@ -156,6 +158,8 @@ void GameScene::Render()
     propContainer->Render();
     propPreview.Render();
     uiControler->Render();
+
+	//ÇÃ·¹ÀÌ¾î °ü·Ã ·»´õ
 	_player->Render();
 	_playerWeaponL->Render();
 	_playerWeaponR->Render();
@@ -186,13 +190,14 @@ void GameScene::Render()
     _CoreSlice.Render();
     _choiceImg.Render();
 
-	/*wstring wstr = L"player speed : ";
+	/* ================================¿©±â ¸¸ÁöÁö ¸¶¼¼¿ä ========================================*/
+	wstring wstr = L"player speed : ";
 	wstr.append(to_wstring(_player->controler->GetSpeed()));
 	D2DRENDERER->RenderText(100, 100, wstr, 20, L"¸¼Àº°íµñ", D2DRenderer::DefaultBrush::White);
 
 	wstring wstrangle = L"Angle : ";
 	wstrangle.append(to_wstring(_player->controler->GetTargetAngle()));
-	D2DRENDERER->RenderText(100, 150, wstrangle, 20, L"¸¼Àº°íµñ", D2DRenderer::DefaultBrush::White);*/
+	D2DRENDERER->RenderText(100, 150, wstrangle, 20, L"¸¼Àº°íµñ", D2DRenderer::DefaultBrush::White);
 	
 
 	//wstring time = L"MusicTime: ";

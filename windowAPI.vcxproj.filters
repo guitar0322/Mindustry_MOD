@@ -251,6 +251,8 @@
       <Filter>Prop\Object</Filter>
     </ClCompile>
     <ClCompile Include="TitleUIControler.cpp" />
+    <ClCompile Include="PlayerLaser.cpp" />
+    <ClCompile Include="TitleUIControler.cpp" />
     <ClCompile Include="PlayerScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
@@ -263,6 +265,9 @@
       <Filter>Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Core.cpp" />
+    <ClCompile Include="EnemyManager.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h" />
@@ -527,6 +532,8 @@
       <Filter>Prop\Object</Filter>
     </ClInclude>
     <ClInclude Include="TitleUIControler.h" />
+    <ClInclude Include="PlayerLaser.h" />
+    <ClInclude Include="TitleUIControler.h" />
     <ClInclude Include="PlayerScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
@@ -539,6 +546,9 @@
       <Filter>Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Core.h" />
+    <ClInclude Include="EnemyManager.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="windowAPI.rc" />

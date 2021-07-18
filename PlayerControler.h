@@ -2,10 +2,11 @@
 #include "Component.h"
 
 class ProjectileManager;
+class PlayerLaser;
 class EnemyInfo;
 
-#define DEFAULT_WEAPON_DISTANCE 13.69f
-#define ATTACK_WEAPON_DISTANCE 11.41f
+#define DEFAULT_WEAPON_DISTANCE 11.41f
+#define ATTACK_WEAPON_DISTANCE 9.41f
 #define DEFAULT_WEAPON_ANGLE 60.f
 #define BULLET_DISTANCE 17.11f
 #define BULLET_ANGLE 60.f
@@ -39,6 +40,7 @@ private:
 	float _weaponLdistanceAngle;
 	float _weaponRdistanceAngle;
 	float _attackSpeed;
+	float worldX, worldY;
 	
 	int _hp;
 
@@ -52,11 +54,17 @@ private:
 	bool _isFire;
 	bool _isDead;
 	ProjectileManager* _projectileManager;
+
+	//자원 추출 레이저
+	PlayerLaser* _playerLaser;
+
+
 	EnemyInfo* _enemyInfo;
 
 public:
 	virtual void Init();
 	virtual void Update();
+	virtual void Render();
 
 	void PlayerDirection();
 

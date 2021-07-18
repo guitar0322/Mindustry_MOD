@@ -99,3 +99,4 @@ void ShootingScene::SetEnemyManager()
 	_enemyManager->GetComponent<EnemyManager>()->Init();
 	_projectileManager->GetComponent<ProjectileManager>()->SetEnemyManager(_enemyManager->GetComponent<EnemyManager>());
 }
+
