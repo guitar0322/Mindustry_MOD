@@ -28,7 +28,6 @@ void EnemyControler::Init()
 	//_angle = _enemyInfo->GetCoreAngle();
 	_speedX = 0.f;
 	_speedY = 0.f;
-
 }
 
 void EnemyControler::Update()

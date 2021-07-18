@@ -16,7 +16,6 @@ void EnemyGroundControler::Init()
 	_enemyInfo = gameObject->GetComponent<EnemyInfo>();
 	_speed = _enemyInfo->GetSpeed();
 	_testCoreTransform = _enemyInfo->GetCoreTransform();
-
 	_angle = 0.f;
 	_speedX = 0.f;
 	_speedY = 0.f;
@@ -60,20 +59,18 @@ void EnemyGroundControler::Update()
 	if (_isAttack)
 	{
 		_attackSpeed += TIMEMANAGER->getElapsedTime();
-		
 		_deltaX = cosf(_deltaAngle) * _enemyRadius;
 		_deltaY = -sinf(_deltaAngle) * _enemyRadius;
-
 		if (_attackSpeed >= 1.f && _leftFire == false)
 		{
-			_projectileManager->FireProjectile(transform->GetX() + _deltaX + 50, transform->GetY() + _deltaY, ConvertAngleD2D(_deltaAngle), PROJECTILE_TYPE::ENEMY);
+			_projectileManager->FireProjectile(transform->GetX() + _deltaX + 50, transform->GetY() + _deltaY, ConvertAngleD2D(_deltaAngle), PROJECTILE_TYPE::ENEMYGROUND);
 			_leftFire = true;	
 			_attackSpeed = 0.f;
 		}
 
 		if (_attackSpeed >= 1.f && _leftFire == true)
 		{
-			_projectileManager->FireProjectile(transform->GetX() + _deltaX - 50, transform->GetY() + _deltaY, ConvertAngleD2D(_deltaAngle), PROJECTILE_TYPE::ENEMY);
+			_projectileManager->FireProjectile(transform->GetX() + _deltaX - 50, transform->GetY() + _deltaY, ConvertAngleD2D(_deltaAngle), PROJECTILE_TYPE::ENEMYGROUND);
 			_leftFire = false;
 			_attackSpeed = 0.f;
 		}

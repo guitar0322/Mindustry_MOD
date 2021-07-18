@@ -6,8 +6,8 @@ class SampleScene :
     public Scene
 {
 private:
+    float _time;
 	GameObject* testParticleSystem;
-	GameObject* testCircleParticle;
     Button* testEditText;
     AnimObject testAnimObj;
     AnimObject testAnimObj2;

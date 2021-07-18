@@ -23,7 +23,7 @@ private:
     bool _isTrigger;
     //int _colliderCheckOffset;//근처 충돌체 탐색 범위
     vector<BoxCollider*> _overlapColV;
-
+    vector<pair<int, int>> _partitionIdx;
 public:
     BoxCollider();
     ~BoxCollider();
@@ -48,5 +48,7 @@ public:
 
     void RemoveOverlapCol(BoxCollider* exitCollider);
     void AddOverlapCol(BoxCollider* overlapCollider);
+    void RefreshPartition();
+    vector<pair<int, int>> GetPartitionIdx() const { return _partitionIdx; }
 };
 
