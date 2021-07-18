@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "EnemyPlaneControler.h"
 #include "ProjectileManager.h"
+#include "EnemyInfo.h"
+
 EnemyPlaneControler::EnemyPlaneControler()
 {
 }
@@ -52,7 +54,7 @@ void EnemyPlaneControler::Update()
 		_deltaX = _enemyRadius * cosf(_deltaAngle);
 		_deltaY = _enemyRadius * -sinf(_deltaAngle);
 
-		_projectileManager->FireProjectile(transform->GetX() + _deltaX, transform->GetY() + _deltaY, ConvertAngleD2D(_deltaAngle), PROJECTILE_TYPE::ENEMY);
+		_projectileManager->FireProjectile(transform->GetX() + _deltaX, transform->GetY() + _deltaY, ConvertAngleD2D(_deltaAngle), PROJECTILE_TYPE::ENEMYPLANE);
 	}
 
 	if (_isAttack == true)

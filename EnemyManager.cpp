@@ -7,6 +7,7 @@
 #include "EnemyPlaneControler.h"
 #include "EnemyGroundControler.h"
 #include "EnemyInfo.h"
+#include "EnemyObject.h"
 
 EnemyManager::EnemyManager()
 {
@@ -18,10 +19,6 @@ EnemyManager::~EnemyManager()
 
 void EnemyManager::Init()
 {
-	//_enemyInfo = gameObject->GetComponent<EnemyInfo>();//->SetEnemyManager;
-	//this->SetEnemyInfo(_enemyInfo);
-	
-	//_enemyInfo->SetEnemyManager(this);
 	SetEnemyTime();
 	SetEnemy();
 	_curWave = 1;
@@ -69,8 +66,8 @@ void EnemyManager::SetEnemy()
 	{
 		_enemyGround = new EnemyGround();
 		_enemyGround->GetComponent<Renderer>()->Init("enemy_dagger_walk");
-		_enemyGround->GetComponent<Animator>()->Init();
-		_enemyGround->GetComponent<Animator>()->SetClip("enemy_dagger_walk", 1);
+		//_enemyGround->GetComponent<Renderer>()->ChangeTargetBitmap("enemy_dagger_walk", 0);
+		_enemyGround->GetComponent<Animator>()->SetClip("enemy_dagger_walk", 0);
 		_enemyGround->GetComponent<EnemyInfo>()->SetEnemyManager(this);
 		_enemyGround->GetComponent<EnemyInfo>()->SetTestCore(_testCore);
 		_enemyGround->GetComponent<EnemyInfo>()->GetCoreAngle();
@@ -117,10 +114,7 @@ void EnemyManager::EnemyTimer()
 	//		_enemyTime = false;
 	//	}
 	//}
-	//if (_spawnEnemy == true && _enemyTime == false)
-	//{
-	//	SpawnEnemy();
-	//}
+
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 	{
 		SpawnEnemy();
@@ -142,7 +136,6 @@ void EnemyManager::EnemyRender()
 	{
 		if (_enemyV[_waveV[_curWave][i]]->isActive == false) continue;
 		_enemyV[_waveV[_curWave][i]]->Render();
-
 	}
 }
 
@@ -163,14 +156,12 @@ void EnemyManager::SpawnEnemy()
 void EnemyManager::DeadEvent()
 {
 	SOUNDMANAGER->play("explosion", 40.0f);
-	//if (_enemyInfo->isDeath)
-	//{
-		for (int i = 0; i < _waveV[_curWave].size(); i++)
-		{ 
-			if (_enemyV[_waveV[_curWave][i]]->isActive == false) continue;
-			_enemyV[_waveV[_curWave][i]]->SetActive(false);
-		}
-	//}
+
+	for (int i = 0; i < _waveV[_curWave].size(); i++)
+	{ 
+		if (_enemyV[_waveV[_curWave][i]]->isActive == false) continue;
+		_enemyV[_waveV[_curWave][i]]->SetActive(false);
+	}
 	_curWave++;
 	return;
 }

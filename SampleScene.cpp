@@ -14,7 +14,7 @@ HRESULT SampleScene::Init()
 	CLIPMANAGER->AddClip("spark_circle", "sprites/effects/spark-circle.png", 180, 36, 5, 1, 0.08f);
 	_stayTime = 0;
 	SetBackBufferSize(1024, 560);
-	
+	_time = 0;
 	//애너미 매니저
 	//vectr<enemy*> 이거는 웨이브에 생성될 애너미 목록
 	//DeadEvent(enemy* deadEnemy)
@@ -35,14 +35,6 @@ HRESULT SampleScene::Init()
 	testParticleSystem->GetComponent<ParticleSystem>()->SetEmissionTerm(0.5f);
 	testParticleSystem->GetComponent<ParticleSystem>()->SetScaleY(0.1f, 1.f);
 	testParticleSystem->GetComponent<ParticleSystem>()->SetSpeed(1.f, 2.f);
-
-	testCircleParticle = new GameObject();
-	testCircleParticle->AddComponent(new ParticleSystem());
-	testCircleParticle->GetComponent<ParticleSystem>()->Init("spark_circle", 1);
-	testCircleParticle->GetComponent<ParticleSystem>()->SetDuration(0.3f);
-	testCircleParticle->GetComponent<ParticleSystem>()->SetEmissionTerm(0.5f);
-	testCircleParticle->GetComponent<ParticleSystem>()->SetSpeed(0);
-
 
 	//테스트 editableText 초기화
 	testEditText = new Button();
@@ -152,12 +144,19 @@ HRESULT SampleScene::Init()
 
 void SampleScene::Update()
 {
+	MainCam->Update();
+	EFFECTMANAGER->Update();
+	_time += TIMEMANAGER->getElapsedTime();
+	if (_time >= 0.5f)
+	{
+		EFFECTMANAGER->EmissionEffect("spark_circle", WINSIZEX / 2, WINSIZEY / 2);
+		_time = 0;
+	}
 	background.Update();
 	testAnimObj.Update();
 	testAnimObj2.Update();
 	testUIObj.Update();
 	testParticleSystem->Update();
-	testCircleParticle->Update();
 	if (KEYMANAGER->isStayKeyDown(VK_RIGHT))
 	{
 		//MainCam->transform->MoveX(5.f);
@@ -185,7 +184,6 @@ void SampleScene::Update()
 	}
 	testInt++;
 	testEditText->Update();
-	background.Update();
 	testAnimObj.Update();
 	testAnimObj2.Update();
 	testUIObj.Update();
@@ -237,7 +235,7 @@ void SampleScene::Render()
 		testNoClipObj.Render();
 		background.Render();
 		testParticleSystem->Render();
-		testCircleParticle->Render();
+		EFFECTMANAGER->Render();
 		MainCam->Render();
 		testEditText->Render();
 		//D2DRENDERER->RenderText(250, 400, L"다람쥐 헌 쳇바퀴에 타고파", 50);

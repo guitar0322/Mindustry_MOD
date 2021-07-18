@@ -63,15 +63,15 @@ void GameMap::Render()
 	if (tileEndY > TILENUMX - 1)
 		tileEndY = TILENUMX - 1;
 
-	for (int i = tileStartY; i < tileEndY; ++i)
-	{
-		for (int j = tileStartX; j < tileEndX; ++j)
-		{
-			_tile[i * TILENUMX + j].Render();
-			if (_tileInfo[i * TILENUMX + j].resources != RES_NONE)
-			_resourcesTile[i * TILENUMX + j].Render();
-		}
-	}
+	//for (int i = tileStartY; i < tileEndY; ++i)
+	//{
+	//	for (int j = tileStartX; j < tileEndX; ++j)
+	//	{
+	//		_tile[i * TILENUMX + j].Render();
+	//		if (_tileInfo[i * TILENUMX + j].resources != RES_NONE)
+	//		_resourcesTile[i * TILENUMX + j].Render();
+	//	}
+	//}
 }
 
 void GameMap::Load()
@@ -87,8 +87,8 @@ void GameMap::Load()
 		_tile[i / 2].renderer->RenderStatic();
 
 		_resourcesTile[i / 2].renderer->Init(_tileName[res + 18]);
-		_resourcesTile[i / 2].renderer->RenderStatic();
-		_resourcesTile[i / 2].renderer->SetStatic(true);
+		if(_tileInfo[i / 2].resources != RES_NONE)
+			_resourcesTile[i / 2].renderer->RenderStatic();
 	}
 	StaticBuffer->EndDraw();
 }

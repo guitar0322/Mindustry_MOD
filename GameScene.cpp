@@ -14,7 +14,8 @@ HRESULT GameScene::Init()
 
 	InitClip();
 	SetBackBufferSize(1600, 1600);
-
+    COLLIDERMANAGER->PartitionArea(10, 10);
+    StaticBuffer->BeginDraw();
 	MainCam->SetScreenSize(WINSIZEX, WINSIZEY);
 	MainCam->SetRenderSize(1600, 1010);
     MainCam->transform->SetPosition(1600 / 2, 1600 / 2);
@@ -38,10 +39,10 @@ HRESULT GameScene::Init()
     uiControler->preIconV = &turretIconV;
 
     uiControler->propFactory = propFactory;
+
 	gameMap = new GameMap;
 	gameMap->Init();
 
-    InitClip();
     InitCategoryUI();
     InitPropUI();
 
@@ -51,11 +52,13 @@ HRESULT GameScene::Init()
 	/* 플레이어 부분*/
 	_player = new Player();
 	_player->Init();
+	_player->tag = TAGMANAGER->GetTag("player");
 	_player->renderer->Init("player");
 	_player->transform->SetPosition(1500, 900);
 	_player->transform->SetAngle(0.0f);
 	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
 
+	//플레이어 포신 
 	_playerWeaponL = new ImageObject;
 	_playerWeaponL->Init();
 	_playerWeaponL->renderer->Init("player_weapon_L");
@@ -64,18 +67,14 @@ HRESULT GameScene::Init()
 	_playerWeaponR->Init();
 	_playerWeaponR->renderer->Init("player_weapon_R");
 
+	//플레이어에 포신 넣음
 	_player->transform->AddChild(_playerWeaponL->transform);
 	_player->transform->AddChild(_playerWeaponR->transform);
 
-	_projectileManager = new GameObject();
-	_projectileManager->AddComponent(new ProjectileManager());
-	_projectileManager->GetComponent<ProjectileManager>()->Init();
-
-	_player->controler->SetProjectileManager(_projectileManager->GetComponent<ProjectileManager>());
+	
 	//========================================
-
+	SetProjectileManager();
 	SetCore();
-	/////////////////////		Enemy Manager 생성			//////////////////////
 	SetEnemyManager();
 
 	SOUNDMANAGER->addSound("start", "music/land.mp3", true, false);
@@ -84,11 +83,13 @@ HRESULT GameScene::Init()
 	SOUNDMANAGER->addSound("bgm3", "music/game9.mp3", true, false);
 	SOUNDMANAGER->play("start", 10.0f);
 	_musicTime = 0;
+    StaticBuffer->EndDraw();
     return S_OK;
 }
 
 void GameScene::Update()
 {
+    MainCam->Update();
     buildingCategoryFrame.Update();
     propFactory->Update();
     propContainer->Update();
@@ -101,7 +102,6 @@ void GameScene::Update()
 	_playerWeaponL->Update();
 	_playerWeaponR->Update();
 	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
-	MainCam->Update();
 	_projectileManager->Update();
 	//========================================
 
@@ -151,15 +151,17 @@ void GameScene::Update()
 
 void GameScene::Render()
 {
+	//맵 렌더
+    MainCam->StaticToBackBuffer();
 	gameMap->Render();
 
     propFactory->Render();
     propContainer->Render();
     propPreview.Render();
     uiControler->Render();
+
+	//플레이어 관련 렌더
 	_player->Render();
-	_playerWeaponL->Render();
-	_playerWeaponR->Render();
 	_projectileManager->Render();
 	_core->Render();
 	_enemyManager->Render();
@@ -187,30 +189,37 @@ void GameScene::Render()
     _CoreSlice.Render();
     _choiceImg.Render();
 
-	/*wstring wstr = L"player speed : ";
+	/* ================================여기 만지지 마세요 ========================================*/
+	wstring wstr = L"player speed : ";
 	wstr.append(to_wstring(_player->controler->GetSpeed()));
 	D2DRENDERER->RenderText(100, 100, wstr, 20, L"맑은고딕", D2DRenderer::DefaultBrush::White);
 
 	wstring wstrangle = L"Angle : ";
 	wstrangle.append(to_wstring(_player->controler->GetTargetAngle()));
-	D2DRENDERER->RenderText(100, 150, wstrangle, 20, L"맑은고딕", D2DRenderer::DefaultBrush::White);*/
+	D2DRENDERER->RenderText(100, 150, wstrangle, 20, L"맑은고딕", D2DRenderer::DefaultBrush::White);
 	
-
-	wstring minute = L"MINUTE : ";
-	minute.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeMinute()));
-	D2DRENDERER->RenderText(10, 10, minute, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
-
-	wstring second = L"SECOND: ";
-	second.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeSecond()));
-	D2DRENDERER->RenderText(10, 60, second, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
-
-	wstring wave = L"CurWave: ";
-	wave.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetCurWave()));
-	D2DRENDERER->RenderText(10, 110, wave, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
 
 	wstring time = L"MusicTime: ";
 	time.append(to_wstring(_musicTime));
 	D2DRENDERER->RenderText(10, 140, time, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
+	
+
+	//wstring minute = L"MINUTE : ";
+	//minute.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeMinute()));
+	//D2DRENDERER->RenderText(10, 10, minute, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
+
+	//wstring second = L"SECOND: ";
+	//second.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeSecond()));
+	//D2DRENDERER->RenderText(10, 60, second, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
+
+	//wstring wave = L"CurWave: ";
+	//wave.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetCurWave()));
+	//D2DRENDERER->RenderText(10, 110, wave, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
+	
+	//wstring PlayerHp = L"PlayerHP: ";
+	//PlayerHp.append(to_wstring(_player->controler->GetHp()));
+	//D2DRENDERER->RenderText(10, 10, PlayerHp, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
+
 	/*wstring mineCount = L"";
 	mineCount.append(to_wstring(_mineCount));
 	D2DRENDERER->RenderText(WINSIZEX / 2 - 50, 10, mineCount, 20, L"fontello", D2DRenderer::DefaultBrush::White);*/
@@ -389,11 +398,20 @@ void GameScene::InitPropUI()
     /* SHUNG 210715 */
 }
 
+void GameScene::SetProjectileManager()
+{
+	_projectileManager = new GameObject();
+	_projectileManager->AddComponent(new ProjectileManager());
+	_projectileManager->GetComponent<ProjectileManager>()->Init();
+	_projectileManager->GetComponent<ProjectileManager>()->SetPlayer(_player);
+	_player->controler->SetProjectileManager(_projectileManager->GetComponent<ProjectileManager>());
+}
+
 void GameScene::SetCore()
 {
 	_core = new Prop();
 	_core->Init();
-	_core->tag = TAGMANAGER->GetTag("player");
+	_core->tag = TAGMANAGER->GetTag("prop");
 	_core->renderer->Init("core");
 	_core->transform->SetPosition(25 * TILESIZE + 16, 36 * TILESIZE + 16);
 }

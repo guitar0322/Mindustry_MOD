@@ -28,7 +28,6 @@ namespace Direction
 }
 
 //매니저 헤더 파일
-#include "ManagerHeader.h"
 
 //라이브러리 헤더 파일
 #include "LibraryHeader.h"
@@ -37,6 +36,8 @@ namespace Direction
 #include "Geometry.h"
 
 using namespace MyGeometry;
+
+#include "ManagerHeader.h"
 // C 런타임 헤더 파일입니다.
 #include <stdlib.h>
 #include <malloc.h>
