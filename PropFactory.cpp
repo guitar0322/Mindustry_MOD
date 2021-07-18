@@ -106,6 +106,7 @@ ImageObject* PropFactory::CreateProp(int tileX, int tileY)
 	if (newPropCast != nullptr)
 	{
 		newPropCast->transform->SetPosition(tileX * TILESIZE + TILESIZE / 2, tileY * TILESIZE + TILESIZE / 2);
+		newPropCast->GetComponent<BoxCollider>()->RefreshPartition();
 		propContainer->AddProp(newPropCast->name, newPropCast);
 	}
 	_previewV.erase(_previewV.begin());

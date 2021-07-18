@@ -4,6 +4,7 @@
 #include "GameMap.h"
 #include "Player.h"
 #include "ProjectileManager.h"
+#include "Prop.h"
 
 #define PROP_UI_STARTX WINSIZEX - 230
 #define PROP_UI_STARTY WINSIZEY - 187
@@ -12,26 +13,20 @@
 class PropContainer;
 class PropFactory;
 class UIControler;
-class GameInfo;
 
 class GameScene :
     public Scene
 {
 private:
+	float _musicTime;
 	Player* _player;
 	ImageObject* _playerWeaponL;
 	ImageObject* _playerWeaponR;
-
 	GameObject* _projectileManager;
-	float _musicTime;
-	bool test;
-
-	/* 인게임 게임 시스템 객체*/
+	//======
     PropContainer* propContainer;
     PropFactory* propFactory;
     UIControler* uiControler;
-    GameInfo* gameInfo;
-
     UIBase categorySelect;
     UIBase propSelect;
 
@@ -111,6 +106,11 @@ private:
     UIBase _coreDBIdleImg;
     UIBase _coreDBChoiceImg;
     Button _coreDBButton;
+    Button _CoreSlice;
+
+	// EnemyManager // 
+	GameObject* _enemyManager;
+	Prop* _core;
 
 public:
     virtual HRESULT Init();
@@ -125,5 +125,10 @@ public:
     void researchUpdate();
     void researchRender();
     void researchInitUI();
+
+    // 민재 작업
+	void SetProjectileManager();
+	void SetCore();
+	void SetEnemyManager();
 };
 

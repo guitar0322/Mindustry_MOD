@@ -164,6 +164,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="Conveyor.h" />
     <ClInclude Include="CopperWall.h" />
+    <ClInclude Include="Core.h" />
     <ClInclude Include="D2DRenderer.h" />
     <ClInclude Include="Duo.h" />
     <ClInclude Include="EditableText.h" />
@@ -200,6 +201,7 @@
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerControler.h" />
+    <ClInclude Include="PlayerLaser.h" />
     <ClInclude Include="PlayerScene.h" />
     <ClInclude Include="playGround.h" />
     <ClInclude Include="Prop.h" />
@@ -262,6 +264,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Conveyor.cpp" />
     <ClCompile Include="CopperWall.cpp" />
+    <ClCompile Include="Core.cpp" />
     <ClCompile Include="D2DRenderer+Draw.cpp" />
     <ClCompile Include="D2DRenderer.cpp" />
     <ClCompile Include="Duo.cpp" />
@@ -297,6 +300,7 @@
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerControler.cpp" />
+    <ClCompile Include="PlayerLaser.cpp" />
     <ClCompile Include="PlayerScene.cpp" />
     <ClCompile Include="playGround.cpp" />
     <ClCompile Include="Projectile.cpp" />

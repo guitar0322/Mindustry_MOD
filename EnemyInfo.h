@@ -13,23 +13,20 @@ private:
 	float _speedX;
 	float _speedY;
 
-	int _hp;
-
 	float _enemyAngle;
-
 	float _deadTime;
 
+	int _hp;
+
+	bool _isDeath;
 
 	GameObject* _testCore;
 	Transform* _testCoreTransform;
-	
 	EnemyManager* _enemyManager;
 	
 public:
 	EnemyInfo();
 	~EnemyInfo();
-
-	bool isDeath;
 
 	virtual void Init();
 	virtual void Update();
@@ -50,7 +47,6 @@ public:
 	float GetCoreAngle() const { return _angle; }
 	float GetSpeedX() const { return _speedX; }
 	float GetSpeedY() const { return _speedY; }
-
 	float GetEnemyAngle() const { return _enemyAngle; }
 };
 

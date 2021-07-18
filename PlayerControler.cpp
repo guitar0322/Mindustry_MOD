@@ -2,6 +2,8 @@
 #include "PlayerControler.h"
 #include "PlayerScene.h"
 #include "ProjectileManager.h"
+#include "PlayerLaser.h"
+#include "EnemyInfo.h"
 
 void PlayerControler::Init()
 {
@@ -10,11 +12,15 @@ void PlayerControler::Init()
 	_targetAngle = 0.f;
 	_breakTime = 0.f;
 	_angleSpeed = 60.f;
+	_hp = 100;
 
 	_weaponLTrackRadius = DEFAULT_WEAPON_DISTANCE;
 	_weaponRTrackRadius = DEFAULT_WEAPON_DISTANCE;
 	_weaponLTrackAngle = DEFAULT_WEAPON_ANGLE;
 	_weaponRTrackAngle = DEFAULT_WEAPON_ANGLE;
+
+	_playerLaser = new PlayerLaser;
+	_playerLaser->Init();
 
 	_attackSpeed = 0;
 	_isLeft = false;
@@ -23,6 +29,7 @@ void PlayerControler::Init()
 	_isSlow = false;
 	_isDiagonal = false;
 	_isGathering = false;
+	_isDead = false;
 	_dir = IDLE;
 }
 
@@ -250,8 +257,8 @@ void PlayerControler::Update()
 
 	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 	{
-		float worldX = ScreenToWorld(_ptMouse).x;
-		float worldY = ScreenToWorld(_ptMouse).y;
+		worldX = ScreenToWorld(_ptMouse).x;
+		worldY = ScreenToWorld(_ptMouse).y;
 		_targetAngle = ConvertAngleD2D(GetAngle(transform->position.x, transform->position.y, worldX, worldY));
 
 		_attackSpeed += TIMEMANAGER->getElapsedTime();
@@ -260,13 +267,13 @@ void PlayerControler::Update()
 		{
 			if (_isLeft == false) // 만약에 왼쪽이 발동 안할 경우
 			{
-				_weaponRTrackRadius = 11.41f;
+				_weaponRTrackRadius = 9.41f;
 				_projectileManager->FireProjectile(transform->GetChild(0)->GetX(), transform->GetChild(0)->GetY(),
 					transform->GetChild(0)->GetAngle() + 2, PROJECTILE_TYPE::PLAYER);
 			}
 			else // 나머지 값
 			{
-				_weaponLTrackRadius = 11.41f;
+				_weaponLTrackRadius = 9.41f;
 				_projectileManager->FireProjectile(transform->GetChild(1)->GetX(), transform->GetChild(1)->GetY(),
 					transform->GetChild(0)->GetAngle() - 2, PROJECTILE_TYPE::PLAYER);
 			}
@@ -275,6 +282,44 @@ void PlayerControler::Update()
 		}
 	}
 
+	float laserStartX = (transform->GetX() + cosf(ConvertAngleAPI(transform->GetAngle())) * 18);
+	float laserStartY = (transform->GetY() - sinf(ConvertAngleAPI(transform->GetAngle())) * 18);
+
+	if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
+	{
+		worldX = ScreenToWorld(_ptMouse).x;
+		worldY = ScreenToWorld(_ptMouse).y;
+		
+		_playerLaser->SetLaserEndPoint(worldX / 32, worldY / 32);
+		_playerLaser->SetLaserStartPoint(worldX, worldY);
+
+
+		_playerLaser->_collectLaserFirst->SetActive(true);
+		_playerLaser->_collectLaserEnd->SetActive(true);
+		_playerLaser->_collectLaser->SetActive(true);
+		_playerLaser->_detectRc->SetActive(true);
+
+	}
+	_playerLaser->ShootLaser();
+	_playerLaser->SetLaserStartPoint(laserStartX, laserStartY);
+	if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
+	{
+		_playerLaser->_collectLaserFirst->SetActive(false);
+		_playerLaser->_collectLaserEnd->SetActive(false);
+		_playerLaser->_collectLaser->SetActive(false);
+		_playerLaser->_detectRc->SetActive(false);
+
+	
+	}
+
+}
+
+void PlayerControler::Render()
+{
+	transform->GetChild(0)->gameObject->Render();
+	transform->GetChild(1)->gameObject->Render();
+
+	_playerLaser->Render();
 }
 
 void PlayerControler::PlayerDirection()
@@ -296,7 +341,6 @@ void PlayerControler::PlayerDirection()
 			transform->GetChild(0)->SetAngle(_targetAngle);
 			transform->GetChild(1)->SetAngle(_targetAngle);
 		}
-
 	}
 	else
 	{
@@ -327,7 +371,17 @@ void PlayerControler::PlayerDirection()
 	if (_weaponRdistanceAngle > 360) _weaponLdistanceAngle -= 360;
 	transform->GetChild(1)->SetPosition((transform->GetX() + cosf(_weaponRdistanceAngle) * _weaponRTrackRadius),
 		transform->GetY() - sinf(_weaponRdistanceAngle) * _weaponRTrackRadius);
-
 }
 
+void PlayerControler::Hit(float damage)
+{
+	_hp -= damage;
+	if (_hp < 0 && _isDead == false)
+	{
+		_isDead = true;
+	}
+}
 
+void PlayerControler::Dead()
+{
+}
