@@ -41,8 +41,8 @@ void Renderer::Init(float width, float height)
 
 void Renderer::Render()
 {
-	if (_isStatic == true)
-		return;
+	//if (_isStatic == true)
+	//	return;
 	int renderStartX = transform->GetX() - _frameWidth / 2;
 	int renderStartY = transform->GetY() - _frameHeight / 2;
 

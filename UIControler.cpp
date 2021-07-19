@@ -44,8 +44,8 @@ void UIControler::Update()
 			* 4.y가 더 크면 수직방향으로 생성
 			* 5.x가 더 크면 수평방향으로 생성
 			* 5-1. 가변적인 미리보기를 어떻게 자료구조에 저장하고 렌더할 것인가?
-			* 5-2. 미리보기개수, 방향을 프레임마다 구하고 둘중하나라도 달라진다면 
-			*	함수를 호출하여 벡터의 길이를 변경 혹은 위치를 변경한다.
+			* 5-2. 미리보기개수, 방향을 프레임마다 구하고 둘중하나라도 달라진다면
+			*   함수를 호출하여 벡터의 길이를 변경 혹은 위치를 변경한다.
 			* 6.마우스를 떼면 큐에 추가
 			********************************************************************/
 			float deltaX = ScreenToWorld(_ptMouse).x - _worldStartPtMouse.x;
@@ -80,7 +80,7 @@ void UIControler::Render()
 {
 	//for (_previewMapIter = _previewMap.begin(); _previewMapIter != _previewMap.end(); _previewMapIter++)
 	//{
-	//	_previewMapIter->second.Render();
+	//   _previewMapIter->second.Render();
 	//}
 	for (int i = 0; i < _previewV.size(); i++)
 	{
@@ -150,7 +150,7 @@ void UIControler::SetPreview(float deltaX, float deltaY)
 	int tileNumX = deltaX / TILESIZE;
 	int tileNumY = deltaY / TILESIZE;
 	bool curDir = Math::Abs(tileNumX) > Math::Abs(tileNumY);
-	int bigNum = Math::Max(Math::Abs(tileNumX), Math::Abs(tileNumY)) + 1;
+	int bigNum = Math::Max(Math::Abs(tileNumX), Math::Abs(tileNumY));
 	if (_previewNum == bigNum && _previewDir == curDir)
 	{
 		return;
@@ -165,7 +165,7 @@ void UIControler::SetPreview(float deltaX, float deltaY)
 		newPreview.renderer->SetAlpha(0.5f);
 		_previewV.push_back(newPreview);
 	}
-	_previewNum = bigNum + 1;
+	_previewNum = bigNum;
 	_previewDir = curDir;
 	for (int i = 0; i < _previewV.size(); i++)
 	{
@@ -176,8 +176,111 @@ void UIControler::SetPreview(float deltaX, float deltaY)
 	}
 }
 
-void UIControler::ActiveChoiceImg(Transform* menuTr, bool isActive)
+void UIControler::inResearch_ActiveChoiceImg(Transform* menuTr, bool isActive)
 {
 	choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
 	choiceImg->SetActive(isActive);
 }
+
+void UIControler::inResearch_ActiveGoBackImg(bool isActive)
+{
+	goBackChoiceImg->SetActive(isActive);
+}
+
+void UIControler::inResearch_ActiveInResearchChoiceImg(Transform* menuTr, bool isActive)
+{
+	inResearchChoiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
+	inResearchChoiceImg->SetActive(isActive);
+}
+
+void UIControler::inResearch_ReturnToGameScene(bool* name, bool isActive)
+{
+	*name = isActive;
+}
+
+void UIControler::inResearch_ActiveCoreDBImg(bool isActive)
+{
+	coreDBChoiceImg->SetActive(isActive);
+}
+
+void UIControler::inResearch_ReturnToCoreDBScene(bool* name, bool isActive)
+{
+	// 코어 DB 화면 구성할 때 불 값으로 연결시켜주기
+	*name = isActive;
+}
+
+void UIControler::inResearch_ActiveChoiceImgWithBasicDes(Transform* menuTr, UIBase* name, bool isActive)
+{
+	choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
+	choiceImg->SetActive(isActive);
+	name->SetActive(isActive);
+}
+
+void UIControler::inResearch_inBasicDes(Transform* menuTr, UIBase* name, bool* name2, bool isActive)
+{
+	*name2 = isActive;
+	choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
+	choiceImg->SetActive(isActive);
+	name->SetActive(isActive);
+}
+
+void UIControler::inResearch_inActiveChoiceImgWithBasicDes(Transform* menuTr, UIBase* name, bool* name2, bool isActive)
+{
+	if (*name2) return;
+	else
+	{
+		name->SetActive(isActive);
+		choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
+		choiceImg->SetActive(isActive);
+	}
+}
+
+void UIControler::inResearch_disableInBasicDes(Transform* menuTr, UIBase* name, bool* name2, bool isActive)
+{
+	*name2 = isActive;
+	choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
+	choiceImg->SetActive(isActive);
+	name->SetActive(isActive);
+}
+
+//void UIControler::inResearch_ActiveChoiceImgWithBasicDes(Transform* menuTr, UIBase* name, bool* name2, bool isActive)
+//{
+//   *name2 = isActive;
+//   name->SetActive(isActive);
+//   choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
+//   choiceImg->SetActive(isActive);
+//}
+//
+//void UIControler::inResearch_KeepBasicDes(bool* name1, Transform* menuTr, UIBase* name2, bool isActive)
+//{
+//   if (!name1) return;
+//   else
+//   {
+//      name2->SetActive(isActive);
+//      choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
+//      choiceImg->SetActive(isActive);
+//   }
+//}
+//
+//void UIControler::inResearch_inActiveChoiceImgWithBasicDes(Transform* menuTr, UIBase* name, bool* name2, bool* name3, bool isActive)
+//{
+//   if (name3) return;
+//   else 
+//   {
+//      *name2 = isActive;
+//      name->SetActive(isActive);
+//      choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
+//      choiceImg->SetActive(isActive);
+//   }
+//
+//}
+//
+//void UIControler::sibal(bool* name)
+//{
+//   if (name) return;
+//}
+//
+//void UIControler::sibal2(bool* name)
+//{
+//   *name = false;
+//}

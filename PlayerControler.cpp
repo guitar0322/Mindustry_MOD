@@ -275,7 +275,7 @@ void PlayerControler::Update()
 			{
 				_weaponLTrackRadius = 9.41f;
 				_projectileManager->FireProjectile(transform->GetChild(1)->GetX(), transform->GetChild(1)->GetY(),
-					transform->GetChild(0)->GetAngle() - 2, PROJECTILE_TYPE::PLAYER);
+					transform->GetChild(1)->GetAngle() - 2, PROJECTILE_TYPE::PLAYER);
 			}
 			_isLeft = !_isLeft; // 반복되게 하기
 			_attackSpeed = 0;
@@ -284,14 +284,15 @@ void PlayerControler::Update()
 	
 	float laserStartX = (transform->GetX() + cosf(ConvertAngleAPI(transform->GetAngle())) * 18);
 	float laserStartY = (transform->GetY() - sinf(ConvertAngleAPI(transform->GetAngle())) * 18);
+	_playerLaser->SetLaserStartPoint(laserStartX, laserStartY);
 
 	if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
 	{
-		worldX = ScreenToWorld(_ptMouse).x;
-		worldY = ScreenToWorld(_ptMouse).y;
+		float pointworldX = ScreenToWorld(_ptMouse).x;
+		float pointworldY = ScreenToWorld(_ptMouse).y;
 		
 		_playerLaser->SetLaserEndPoint(worldX / 32, worldY / 32);
-		_playerLaser->SetLaserStartPoint(worldX, worldY);
+		_playerLaser->SetLaserPoint(pointworldX, pointworldY);
 
 
 		_playerLaser->_collectLaserFirst->SetActive(true);
@@ -301,7 +302,6 @@ void PlayerControler::Update()
 
 	}
 	_playerLaser->ShootLaser();
-	_playerLaser->SetLaserStartPoint(laserStartX, laserStartY);
 	if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
 	{
 		_playerLaser->_collectLaserFirst->SetActive(false);
