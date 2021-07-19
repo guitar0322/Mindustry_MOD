@@ -73,25 +73,16 @@ void Renderer::Render()
 			renderStartY + _frameHeight
 		);
 
-	D2D1_MATRIX_3X2_F scale = D2D1::Matrix3x2F::Identity();
-
-	if (Math::FloatEqual(transform->GetScaleX(), 1.f) == false || Math::FloatEqual(transform->GetScaleY(), 1.f) == false)
-	{
-		scale = D2D1::Matrix3x2F::Scale(
+	D2D1_MATRIX_3X2_F scale = D2D1::Matrix3x2F::Scale(
 			transform->GetScaleX(),
 			transform->GetScaleY(),
 			D2D1::Point2F(transform->GetX(), transform->GetY())
 		);
-	}
 
-	D2D1_MATRIX_3X2_F rotation = D2D1::Matrix3x2F::Identity();
-	if (transform->angle != 0)
-	{
-		rotation = D2D1::Matrix3x2F::Rotation(
+	D2D1_MATRIX_3X2_F rotation = D2D1::Matrix3x2F::Rotation(
 			transform->angle,
 			D2D1::Point2F(transform->GetX(), transform->GetY())
 		);
-	}
 
 	BackBuffer->SetTransform(scale * rotation);
 

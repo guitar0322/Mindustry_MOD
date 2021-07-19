@@ -13,6 +13,8 @@ HRESULT GameScene::Init()
     Scene::Init();
 
 	InitClip();
+	PlayerClip();
+
 	SetBackBufferSize(1600, 1600);
     COLLIDERMANAGER->PartitionArea(10, 10);
     StaticBuffer->BeginDraw();
@@ -40,8 +42,14 @@ HRESULT GameScene::Init()
 
     uiControler->propFactory = propFactory;
 
-	gameMap = new GameMap;
-	gameMap->Init();
+	/*===================================*/
+	/*인게임 맵 초기화 -> 유림*/
+	_gameMap = new GameMap;
+	_gameMap->Init();
+
+	//자원 UI 초기화
+	ResourcesInit();
+	/*===================================*/
 
     InitCategoryUI();
     InitPropUI();
@@ -105,28 +113,12 @@ HRESULT GameScene::Init()
 
     #pragma endregion
 
-	/* 플레이어 부분 유림 */
-	_player = new Player();
-	_player->Init();
-	_player->tag = TAGMANAGER->GetTag("player");
-	_player->renderer->Init("player");
-	_player->transform->SetPosition(1500, 900);
-	_player->transform->SetAngle(0.0f);
-	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
+	/*===================================================================== */
+	/* 플레이어 부분 초기화 -> 유림 */
+	PlayerInit();
+	/*===================================================================== */
 
-	//플레이어 포신 유림.
-	_playerWeaponL = new ImageObject;
-	_playerWeaponL->Init();
-	_playerWeaponL->renderer->Init("player_weapon_L");
 
-	_playerWeaponR = new ImageObject;
-	_playerWeaponR->Init();
-	_playerWeaponR->renderer->Init("player_weapon_R");
-
-	//플레이어에 포신 유림.
-	_player->transform->AddChild(_playerWeaponL->transform);
-	_player->transform->AddChild(_playerWeaponR->transform);
-	
     /* 게임신 에너미 관련 작업 함수, by 민재. 삭제 금지 */
 	SetProjectileManager();
 	SetCore();
@@ -152,14 +144,19 @@ void GameScene::Update()
     propContainer->Update();
     uiControler->Update();
     propPreview.Update();
-	gameMap->Update();
+	_gameMap->Update();
 
-	/* 플레이어 부분*/
+	/* =======================================*/
+	/* 플레이어 부분 -> 유림*/
 	_player->Update();
 	_playerWeaponL->Update();
 	_playerWeaponR->Update();
 	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
 	_projectileManager->Update();
+
+	// 광물 부분 -> 유림 210719
+
+
 	//========================================
 
     //카테고리 아이콘 업데이트
@@ -214,16 +211,16 @@ void GameScene::Update()
 
 void GameScene::Render()
 {
-	//맵 렌더
+	//맵 렌더 -> 유림 "랜더 순서 손대지마세요^^"
     MainCam->StaticToBackBuffer();
-	gameMap->Render();
+	_gameMap->Render();
 
     propFactory->Render();
     propContainer->Render();
     propPreview.Render();
     uiControler->Render();
 
-	//플레이어 관련 렌더
+	//플레이어 관련 렌더 -> 유림
 	_player->Render();
 	_projectileManager->Render();
 	_core->Render();
@@ -253,37 +250,14 @@ void GameScene::Render()
     _CoreSlice.Render();
     _choiceImg.Render();
 
+	//자원UI 렌더 -> 유림 (210719)
+	D2DRenderer::GetInstance()->FillRectangle(_resoucesUIBackGround, D2D1::ColorF::Black, 0.7f);
+	_resourcesUI[0].Render();
+	_resourcesUI[1].Render();
+
 	/* ================================여기 만지지 마세요 ========================================*/
-	wstring wstr = L"player speed : ";
-	wstr.append(to_wstring(_player->controler->GetSpeed()));
-	D2DRENDERER->RenderText(100, 100, wstr, 20, L"맑은고딕", D2DRenderer::DefaultBrush::White);
-
-	wstring wstrangle = L"Angle : ";
-	wstrangle.append(to_wstring(_player->controler->GetTargetAngle()));
-	D2DRENDERER->RenderText(100, 150, wstrangle, 20, L"맑은고딕", D2DRenderer::DefaultBrush::White);
-	
-
-	wstring time = L"MusicTime: ";
-	time.append(to_wstring(_musicTime));
-	D2DRENDERER->RenderText(10, 140, time, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
-	
-    /* 에너미 관련 작업 민재, 삭제 금지*/
-	//wstring minute = L"MINUTE : ";
-	//minute.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeMinute()));
-	//D2DRENDERER->RenderText(10, 10, minute, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
-
-	//wstring second = L"SECOND: ";
-	//second.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeSecond()));
-	//D2DRENDERER->RenderText(10, 60, second, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
-
-	//wstring wave = L"CurWave: ";
-	//wave.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetCurWave()));
-	//D2DRENDERER->RenderText(10, 110, wave, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
-
-    /* 광철, 광물 카운트용 삭제 금지 */
-	/*wstring mineCount = L"";
-	mineCount.append(to_wstring(_mineCount));
-	D2DRENDERER->RenderText(WINSIZEX / 2 - 50, 10, mineCount, 20, L"fontello", D2DRenderer::DefaultBrush::White);*/
+	//210719 유림 수정
+	StringRender();
 }
 
 void GameScene::Release()
@@ -313,15 +287,7 @@ void GameScene::InitClip()
 		CLIPMANAGER->AddClip("copper_wall", "sprites/blocks/walls/copper-wall.png", 32, 32);
 	}
 
-	//플레이어 클립
-	{
-		CLIPMANAGER->AddClip("player", "player/alpha.png", 48, 48);
-		CLIPMANAGER->AddClip("enemy_projectile", "sprites/units/weapons/missiles-mount.png", 48, 48);
-		CLIPMANAGER->AddClip("bullet", "sprites/effects/bullet.png", 52, 52);
-		CLIPMANAGER->AddClip("player_weapon_L", "player/small-basic-weapon-L.png", 48, 48);
-		CLIPMANAGER->AddClip("player_weapon_R", "player/small-basic-weapon-R.png", 48, 48);
-	}
-		CLIPMANAGER->AddClip("button_select", "sprites/ui/button-select.10.png", 52, 52);
+	CLIPMANAGER->AddClip("button_select", "sprites/ui/button-select.10.png", 52, 52);
 
     /* SHUNG 210715-16, 연구 목록 이미지 */
     CLIPMANAGER->AddClip("research_choice", "sprites/game/choice.png", 75, 56);
@@ -484,6 +450,71 @@ void GameScene::InitPropUI()
     propPreview.renderer->Init(32, 32);
     propPreview.renderer->SetAlpha(0.5f);
     propPreview.SetActive(false);
+}
+
+void GameScene::PlayerClip()
+{
+	//플레이어 클립
+	CLIPMANAGER->AddClip("player", "player/alpha.png", 48, 48);
+	//CLIPMANAGER->AddClip("enemy_projectile", "sprites/units/weapons/missiles-mount.png", 48, 48);
+	CLIPMANAGER->AddClip("bullet", "sprites/effects/bullet.png", 52, 52);
+	CLIPMANAGER->AddClip("player_weapon_L", "player/small-basic-weapon-L.png", 48, 48);
+	CLIPMANAGER->AddClip("player_weapon_R", "player/small-basic-weapon-R.png", 48, 48);
+
+	//자원 클립
+	CLIPMANAGER->AddClip("copperUI", "sprites/items/item-copper.png", 32, 32);
+	CLIPMANAGER->AddClip("leadUI", "sprites/items/item-lead.png", 32, 32);
+
+
+}
+
+void GameScene::PlayerInit()
+{
+	/* 플레이어 부분 초기화 -> 유림 */
+	_player = new Player();
+	_player->Init();
+	_player->tag = TAGMANAGER->GetTag("player");
+	_player->renderer->Init("player");
+	_player->transform->SetPosition(1500, 900);
+	_player->transform->SetAngle(0.0f);
+	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
+
+	//플레이어 포신 유림.
+	_playerWeaponL = new ImageObject;
+	_playerWeaponL->Init();
+	_playerWeaponL->renderer->Init("player_weapon_L");
+
+	_playerWeaponR = new ImageObject;
+	_playerWeaponR->Init();
+	_playerWeaponR->renderer->Init("player_weapon_R");
+
+	_player->transform->AddChild(_playerWeaponL->transform);
+	_player->transform->AddChild(_playerWeaponR->transform);
+
+}
+
+void GameScene::ResourcesInit()
+{
+	_resoucesUIBackGround = RectMakeCenter(Vector2((WINSIZEX / 2), 20), Vector2(240, 40));
+	
+	_resourcesUI[0].Init();
+	_resourcesUI[0].uiRenderer->Init("copperUI");
+	_resourcesUI[0].transform->SetPosition(WINSIZEX / 2 - 90, 20);
+
+	_resourcesUI[1].Init();
+	_resourcesUI[1].uiRenderer->Init("leadUI");
+	_resourcesUI[1].transform->SetPosition(WINSIZEX / 2 + 18, 20);
+	
+
+}
+
+void GameScene::ResourcesUpdate()
+{
+	_resourcesUI[0].Update();
+	_resourcesUI[1].Update();
+
+
+
 }
 
 void GameScene::researchUpdate()
@@ -1142,4 +1173,33 @@ void GameScene::SetEnemyManager()
 	_enemyManager->GetComponent<EnemyManager>()->SetProjectileManager(_projectileManager->GetComponent<ProjectileManager>());
 	_enemyManager->GetComponent<EnemyManager>()->Init();
 	_projectileManager->GetComponent<ProjectileManager>()->SetEnemyManager(_enemyManager->GetComponent<EnemyManager>());
+}
+
+void GameScene::StringRender()
+{
+	wstring wstr = L"player speed : ";
+	wstr.append(to_wstring(_player->controler->GetSpeed()));
+	D2DRENDERER->RenderText(100, 100, wstr, 20, L"맑은고딕", D2DRenderer::DefaultBrush::White);
+
+	wstring wstrangle = L"Angle : ";
+	wstrangle.append(to_wstring(_player->controler->GetTargetAngle()));
+	D2DRENDERER->RenderText(100, 150, wstrangle, 20, L"맑은고딕", D2DRenderer::DefaultBrush::White);
+
+
+	wstring time = L"MusicTime: ";
+	time.append(to_wstring(_musicTime));
+	D2DRENDERER->RenderText(10, 140, time, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
+
+	/* 에너미 관련 작업 민재, 삭제 금지*/
+	//wstring minute = L"MINUTE : ";
+	//minute.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeMinute()));
+	//D2DRENDERER->RenderText(10, 10, minute, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
+
+	//wstring second = L"SECOND: ";
+	//second.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeSecond()));
+	//D2DRENDERER->RenderText(10, 60, second, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
+
+	//wstring wave = L"CurWave: ";
+	//wave.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetCurWave()));
+	//D2DRENDERER->RenderText(10, 110, wave, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
 }

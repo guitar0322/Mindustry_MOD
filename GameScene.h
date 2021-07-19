@@ -19,10 +19,15 @@ class GameScene :
 {
 private:
 	float _musicTime;
+
+	/* ============================================*/
+	/* =========== 플레이어 부분 -> 유림 ============*/
+
 	Player* _player;
 	ImageObject* _playerWeaponL;
 	ImageObject* _playerWeaponR;
 	GameObject* _projectileManager;
+
 	//======
     PropContainer* propContainer;
     PropFactory* propFactory;
@@ -48,8 +53,13 @@ private:
     vector<GameObject*> turretIconV;
     vector<GameObject*> railIconV;
 
-	//인게임 맵
-	GameMap* gameMap;
+	//인게임 맵 -> 유림
+	GameMap* _gameMap;
+
+	//인게임 자원UI 관련 -> 유림
+	Rect _resoucesUIBackGround;
+	UIBase _resourcesUI[2];
+
 
     int selectCategoryIdx;
 
@@ -123,6 +133,14 @@ public:
     void InitCategoryUI();
     void InitPropUI();
 
+	/*유림 210719*/
+	//플레이어
+	void PlayerClip();
+	void PlayerInit();
+	//자원
+	void ResourcesInit();
+	void ResourcesUpdate();
+
     /* SHUNG 210718 */
     void researchUpdate();
     void researchRender();
@@ -132,5 +150,8 @@ public:
     void SetProjectileManager();
 	void SetCore();
 	void SetEnemyManager();
+
+	/* 화면에 문자 띄울 때 여기 쓰세요 - 유림 (210719)*/
+	void StringRender();
 };
 
