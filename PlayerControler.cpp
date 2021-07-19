@@ -35,12 +35,12 @@ void PlayerControler::Init()
 
 void PlayerControler::Update()
 {
-	
+
 	if (_isSlow == true)
 	{
 		_breakTime = 180.f;
 		_speed -= _breakTime * TIMEMANAGER->getElapsedTime();
-		
+
 		//감속할 시간 변수 하나 생성 float
 		//해당 변수에 elapseTie 더함
 		//시간이 0.1f보다 커지면
@@ -96,13 +96,13 @@ void PlayerControler::Update()
 		_targetAngle = 225.f;
 		_dir = LEFT_DOWN;
 	}
-	if (KEYMANAGER->isStayKeyDown('A')&& KEYMANAGER->isStayKeyDown('W')) // A와 W키를 누르면 왼쪽 위 대각선으로 간다.
+	if (KEYMANAGER->isStayKeyDown('A') && KEYMANAGER->isStayKeyDown('W')) // A와 W키를 누르면 왼쪽 위 대각선으로 간다.
 	{
 		_isDiagonal = true;
 		_targetAngle = 315.f;
 		_dir = LEFT_UP;
 	}
-	if (KEYMANAGER->isStayKeyDown('D')&& KEYMANAGER->isStayKeyDown('S')) // D와 S키를 누르면 오른쪽 아래 대각선으로 간다.
+	if (KEYMANAGER->isStayKeyDown('D') && KEYMANAGER->isStayKeyDown('S')) // D와 S키를 누르면 오른쪽 아래 대각선으로 간다.
 	{
 		_isDiagonal = true;
 		_targetAngle = 135.f;
@@ -118,7 +118,7 @@ void PlayerControler::Update()
 	if (KEYMANAGER->isOnceKeyUp('W') || KEYMANAGER->isOnceKeyUp('S')) // 만약에 W또는 S키를 떼면?
 	{
 		_isSlow = true;
-		if(KEYMANAGER->isStayKeyDown('A'))
+		if (KEYMANAGER->isStayKeyDown('A'))
 		{
 			_isDiagonal = false;
 			_dir = LEFT;
@@ -131,7 +131,7 @@ void PlayerControler::Update()
 			_targetAngle = 90.0f;
 		}
 	}
-	if (KEYMANAGER->isOnceKeyUp('A')||KEYMANAGER->isOnceKeyUp('D')) // 만약에 A또는 D 키를 떼면?
+	if (KEYMANAGER->isOnceKeyUp('A') || KEYMANAGER->isOnceKeyUp('D')) // 만약에 A또는 D 키를 떼면?
 	{
 		_isSlow = true;
 		if (KEYMANAGER->isStayKeyDown('W'))
@@ -281,7 +281,7 @@ void PlayerControler::Update()
 			_attackSpeed = 0;
 		}
 	}
-	
+
 	float laserStartX = (transform->GetX() + cosf(ConvertAngleAPI(transform->GetAngle())) * 18);
 	float laserStartY = (transform->GetY() - sinf(ConvertAngleAPI(transform->GetAngle())) * 18);
 	_playerLaser->SetLaserStartPoint(laserStartX, laserStartY);
@@ -320,7 +320,6 @@ void PlayerControler::Render()
 	transform->GetChild(1)->gameObject->Render();
 
 	_playerLaser->Render();
-
 }
 
 void PlayerControler::PlayerDirection()
@@ -338,7 +337,7 @@ void PlayerControler::PlayerDirection()
 		if (Math::FloatEqual(_targetAngle, transform->GetAngle()))
 		{
 			transform->SetAngle(_targetAngle);
-		//포신 보정 해주고
+			//포신 보정 해주고
 			transform->GetChild(0)->SetAngle(_targetAngle);
 			transform->GetChild(1)->SetAngle(_targetAngle);
 		}
@@ -353,7 +352,7 @@ void PlayerControler::PlayerDirection()
 			transform->GetChild(0)->SetAngle(_targetAngle);
 			transform->GetChild(1)->SetAngle(_targetAngle);
 		}
-			
+
 	}
 	/*******************************************************
 	1. 포신의 SetPotsition(플레이어 X + cosf(ConvertAngleAPI(transform->GetAngle())) * 포신궤도의 반지름,

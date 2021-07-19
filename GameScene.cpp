@@ -105,12 +105,7 @@ HRESULT GameScene::Init()
 
     #pragma endregion
 
-	/*게임 사운드 추가 광철 210716*/
-	//SOUNDMANAGER->addSound("startbgm", "music/land.mp3", true, false);
-	//SOUNDMANAGER->addSound("gamebgm", "music/game2.mp3", true, false);
-	//SOUNDMANAGER->play("startbgm", 10.f);
-
-	/* 플레이어 부분*/
+	/* 플레이어 부분 유림 */
 	_player = new Player();
 	_player->Init();
 	_player->tag = TAGMANAGER->GetTag("player");
@@ -119,7 +114,7 @@ HRESULT GameScene::Init()
 	_player->transform->SetAngle(0.0f);
 	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
 
-	//플레이어 포신 
+	//플레이어 포신 유림.
 	_playerWeaponL = new ImageObject;
 	_playerWeaponL->Init();
 	_playerWeaponL->renderer->Init("player_weapon_L");
@@ -128,23 +123,24 @@ HRESULT GameScene::Init()
 	_playerWeaponR->Init();
 	_playerWeaponR->renderer->Init("player_weapon_R");
 
-	//플레이어에 포신 넣음
+	//플레이어에 포신 유림.
 	_player->transform->AddChild(_playerWeaponL->transform);
 	_player->transform->AddChild(_playerWeaponR->transform);
-
 	
-	//========================================
+    /* 게임신 에너미 관련 작업 함수, by 민재. 삭제 금지 */
 	SetProjectileManager();
 	SetCore();
 	SetEnemyManager();
 
-	//SOUNDMANAGER->addSound("start", "music/land.mp3", true, false);
-	//SOUNDMANAGER->addSound("bgm1", "music/game1.mp3", true, false);
-	//SOUNDMANAGER->addSound("bgm2", "music/game2.mp3", true, false);
-	//SOUNDMANAGER->addSound("bgm3", "music/game9.mp3", true, false);
-	//SOUNDMANAGER->play("start", 10.0f);
+    /* 사운드 작업 광철 210718 */
+	SOUNDMANAGER->addSound("start", "music/land.mp3", true, false);
+	SOUNDMANAGER->addSound("bgm1", "music/game1.mp3", true, false);
+	SOUNDMANAGER->addSound("bgm2", "music/game2.mp3", true, false);
+	SOUNDMANAGER->addSound("bgm3", "music/game9.mp3", true, false);
+	SOUNDMANAGER->play("start", 10.0f);
 	_musicTime = 0;
     StaticBuffer->EndDraw();
+
     return S_OK;
 }
 
@@ -188,33 +184,32 @@ void GameScene::Update()
     _choiceImg.Update();
 	_core->Update();
 	_enemyManager->Update();
-
-	_musicTime += TIMEMANAGER->getElapsedTime();
-	if (_musicTime>= 15)
-	{
-		switch (RND->getInt(3))
-		{
-		case 0:
-			_musicTime = -90.0f;
-			SOUNDMANAGER->play("bgm1", 10.0f);
-			break;
-		case 1:
-			_musicTime = -90.0f;
-			SOUNDMANAGER->play("bgm2", 10.0f);
-			break;
-		case 2:
-			_musicTime = -180.0f;
-			SOUNDMANAGER->play("bgm3", 10.0f);
-			break;
-		}
-	}
-
-    /* SHUNG 210718 */
     if (KEYMANAGER->isOnceKeyDown(VK_F1)) _research = true;
     if (KEYMANAGER->isOnceKeyDown(VK_F2)) _research = false;
     if (_research) researchUpdate();
     _goBackButton.Update();
     _coreDBButton.Update();
+
+    /* 사운드 작업 광철 210718 */
+    _musicTime += TIMEMANAGER->getElapsedTime();
+    if (_musicTime >= 15)
+    {
+        switch (RND->getInt(3))
+        {
+        case 0:
+            _musicTime = -90.0f;
+            SOUNDMANAGER->play("bgm1", 10.0f);
+            break;
+        case 1:
+            _musicTime = -90.0f;
+            SOUNDMANAGER->play("bgm2", 10.0f);
+            break;
+        case 2:
+            _musicTime = -180.0f;
+            SOUNDMANAGER->play("bgm3", 10.0f);
+            break;
+        }
+    }
 }
 
 void GameScene::Render()
@@ -272,7 +267,7 @@ void GameScene::Render()
 	time.append(to_wstring(_musicTime));
 	D2DRENDERER->RenderText(10, 140, time, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
 	
-
+    /* 에너미 관련 작업 민재, 삭제 금지*/
 	//wstring minute = L"MINUTE : ";
 	//minute.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeMinute()));
 	//D2DRENDERER->RenderText(10, 10, minute, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
@@ -284,11 +279,8 @@ void GameScene::Render()
 	//wstring wave = L"CurWave: ";
 	//wave.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetCurWave()));
 	//D2DRENDERER->RenderText(10, 110, wave, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
-	
-	//wstring PlayerHp = L"PlayerHP: ";
-	//PlayerHp.append(to_wstring(_player->controler->GetHp()));
-	//D2DRENDERER->RenderText(10, 10, PlayerHp, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
 
+    /* 광철, 광물 카운트용 삭제 금지 */
 	/*wstring mineCount = L"";
 	mineCount.append(to_wstring(_mineCount));
 	D2DRENDERER->RenderText(WINSIZEX / 2 - 50, 10, mineCount, 20, L"fontello", D2DRenderer::DefaultBrush::White);*/
@@ -377,7 +369,7 @@ void GameScene::InitClip()
     CLIPMANAGER->AddClip("research_coredbidle", "sprites/game/core_db_idle.png", 210, 64);
     CLIPMANAGER->AddClip("research_coredbchoice", "sprites/game/core_db_choice.png", 210, 64);
 
-	//// ENEMY & CORE 클립 /////
+	//// ENEMY & CORE 클립 작업 민재 /////
 	{
 		CLIPMANAGER->AddClip("core", "sprites/blocks/storage/core.png", 96, 96);
 		CLIPMANAGER->AddClip("enemy_atrax", "sprites/units/enemy/enemy_atrax.png", 188, 329);
@@ -544,7 +536,6 @@ void GameScene::researchUpdate()
 
 void GameScene::researchRender()
 {
-    _inResearchChoiceImg.Render();
     _coreDetailDescription.Render();
     _coreBasicDescription.Render();
 
@@ -589,6 +580,8 @@ void GameScene::researchRender()
     _lockImg.Render();
     _choiceImg.Render();
 
+    _inResearchChoiceImg.Render();
+
     /* 연구 누를 경우 나오는 UI (뒤로가기, 코어 데이터 베이스) */
     _goBackIdleImg.Render();
     _goBackChoiceImg.Render();
@@ -618,7 +611,7 @@ void GameScene::researchInitUI()
 
 #pragma endregion
 
-#pragma region 연구상태 내에서 기본설명 볼 때 i에 마우스 충돌이 일어났을 경우에 나오는 선택창
+#pragma region 연구상태 내에서 기본설명 볼 때 i에 마우스 충돌이 일어났을 경우에 나오는 회색선택창
 
     _inResearchChoiceImg.uiRenderer->Init("in_research_choice");
     _inResearchChoiceImg.transform->SetPosition(WINSIZEX / 2, WINSIZEY / 2);
@@ -650,11 +643,6 @@ void GameScene::researchInitUI()
     _coreBasicDescription.uiMouseEvent->RegistCallback(
         std::bind(&UIControler::inResearch_disableInBasicDes, uiControler, _coreSlice.transform, &_coreBasicDescription, &_lockDes, false), EVENT::EXIT);
     
-    /* _coreDetailDescription 클릭 */
-    _coreDetailDescription.uiMouseEvent->RegistCallback(
-        std::bind(&UIControler::inResearch_ActiveInResearchChoiceImg, uiControler, _coreDetailDescription.transform, true), EVENT::ENTER);
-
-
 #pragma endregion
 
 #pragma region 기계식 드릴

@@ -243,44 +243,4 @@ void UIControler::inResearch_disableInBasicDes(Transform* menuTr, UIBase* name, 
 	name->SetActive(isActive);
 }
 
-//void UIControler::inResearch_ActiveChoiceImgWithBasicDes(Transform* menuTr, UIBase* name, bool* name2, bool isActive)
-//{
-//   *name2 = isActive;
-//   name->SetActive(isActive);
-//   choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
-//   choiceImg->SetActive(isActive);
-//}
-//
-//void UIControler::inResearch_KeepBasicDes(bool* name1, Transform* menuTr, UIBase* name2, bool isActive)
-//{
-//   if (!name1) return;
-//   else
-//   {
-//      name2->SetActive(isActive);
-//      choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
-//      choiceImg->SetActive(isActive);
-//   }
-//}
-//
-//void UIControler::inResearch_inActiveChoiceImgWithBasicDes(Transform* menuTr, UIBase* name, bool* name2, bool* name3, bool isActive)
-//{
-//   if (name3) return;
-//   else 
-//   {
-//      *name2 = isActive;
-//      name->SetActive(isActive);
-//      choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
-//      choiceImg->SetActive(isActive);
-//   }
-//
-//}
-//
-//void UIControler::sibal(bool* name)
-//{
-//   if (name) return;
-//}
-//
-//void UIControler::sibal2(bool* name)
-//{
-//   *name = false;
-//}
+

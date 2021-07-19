@@ -58,7 +58,7 @@ private:
     bool   _lockDes;
     UIBase _choiceImg;
     UIBase _lockImg;
-    UIBase _inResearchChoiceImg;
+    UIBase _inResearchChoiceImg;            // 연구상태 내에서 기본설명 볼 때 i에 마우스 충돌이 일어났을 경우에 나오는 회색선택창
 
     Button _coreSlice;                      // 코어 : 조각
     Button _coreBasicDescription;           // 코어 : 조각 기본 설명
@@ -110,7 +110,7 @@ private:
     Button _coreDBButton;
     Button _CoreSlice;
 
-	// EnemyManager // 
+	// EnemyManager 210717 작업 - 민재 // 
 	GameObject* _enemyManager;
 	Prop* _core;
 
@@ -128,8 +128,8 @@ public:
     void researchRender();
     void researchInitUI();
 
-    // 민재 작업
-	void SetProjectileManager();
+    // EnemyManager 210717 작업 - 민재 // 
+    void SetProjectileManager();
 	void SetCore();
 	void SetEnemyManager();
 };
