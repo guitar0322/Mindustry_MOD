@@ -41,17 +41,16 @@ private:
 	float _weaponRdistanceAngle;
 	float _attackSpeed;
 	float worldX, worldY;
+	float pointworldX, pointworldY;
 	
 	int _hp;
 
 	DIRECTION _dir;
 	bool _isLeft;
 	bool _isDiagonal;
-	bool _shootLeft;
-	bool _shootRight;
 	bool _isSlow;
-	bool _isGathering;
-	bool _isFire;
+	bool _isCollecting;
+	Vector2 _collectTile;
 	bool _isDead;
 	ProjectileManager* _projectileManager;
 
@@ -70,6 +69,7 @@ public:
 	float GetHp() const { return _hp; }
 	float GetSpeed() const { return _speed; }
 	float GetTargetAngle() const { return _targetAngle; }
+	void KeyHandle();
 	void SetProjectileManager(ProjectileManager* projectileManager) { _projectileManager = projectileManager; }
 
 	void Hit(float damage);

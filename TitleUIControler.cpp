@@ -8,17 +8,20 @@ void TitleUIControler::ActiveChoiceImg(Transform* menuTr, bool isActive)
 	choiceImg->SetActive(isActive);
 }
 
-void TitleUIControler::ActiveChoiceImg2(Transform* menuTr, bool isActive)
+void TitleUIControler::ActiveChoiceImg2(Transform* menuTr, bool* name, bool isActive)
 {
+	if (!*name) return;
+
 	choiceImg2->transform->SetPosition(menuTr->GetX() - 113, menuTr->GetY());
 	choiceImg2->SetActive(isActive);
 }
 
-void TitleUIControler::ActiveGoBackImg(bool isActive)
+void TitleUIControler::ActiveGoBackImg(bool* name, bool* name2, bool isActive)
 {
+	if (!*name && !*name2) return;
+
 	goBackChoiceImg->SetActive(isActive);
 }
-
 
 void TitleUIControler::SetActiveCallback(vector<GameObject*> gameObject, bool* name, bool isActive)
 {
@@ -49,8 +52,40 @@ void TitleUIControler::SetActiveCallback3(vector<GameObject*> gameObject, bool i
 	}
 }
 
-void TitleUIControler::SetActiveCallback4(vector<GameObject*> gameObject, bool* name, bool* name2, bool* name3, bool isActive)
+void TitleUIControler::SetActiveCallback4(vector<GameObject*> gameObject, bool* name, bool* name2, bool* name3, bool* name4, bool isActive)
 {
+	*name = isActive;
+	*name2 = isActive;
+	*name3 = isActive;
+	*name4 = isActive;
+
+	for (int i = 0; i < gameObject.size(); i++)
+	{
+		gameObject[i]->SetActive(isActive);
+	}
+}
+
+void TitleUIControler::SetActiveSettingButton(vector<GameObject*> gameObject, bool* name, bool* name2, bool* name3, bool isActive)
+{
+	if (*name3) return;
+
+	*name = isActive;
+	*name2 = isActive;
+	*name3 = isActive;
+
+	for (int i = 0; i < gameObject.size(); i++)
+	{
+		gameObject[i]->SetActive(isActive);
+	}
+}
+
+void TitleUIControler::SetActiveAboutButton(vector<GameObject*> gameObject, bool* name, bool* name2, bool* name3, bool isActive)
+{
+	if (*name3)
+	{
+		return;
+	}
+
 	*name = isActive;
 	*name2 = isActive;
 	*name3 = isActive;

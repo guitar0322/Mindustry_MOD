@@ -253,9 +253,6 @@
     <ClCompile Include="TitleUIControler.cpp" />
     <ClCompile Include="PlayerLaser.cpp" />
     <ClCompile Include="TitleUIControler.cpp" />
-    <ClCompile Include="PlayerScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
     <ClCompile Include="GameInfo.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="TitleUIControler.cpp" />
@@ -536,9 +533,6 @@
     <ClInclude Include="TitleUIControler.h" />
     <ClInclude Include="PlayerLaser.h" />
     <ClInclude Include="TitleUIControler.h" />
-    <ClInclude Include="PlayerScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
     <ClInclude Include="GameInfo.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="TitleUIControler.h" />

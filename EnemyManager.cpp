@@ -4,7 +4,7 @@
 #include "EnemyPlane.h"
 #include "EnemyGround.h"
 #include "ProjectileManager.h"
-#include "EnemyPlaneControler.h"
+#include "EnemyPlaneControler.h" 
 #include "EnemyGroundControler.h"
 #include "EnemyInfo.h"
 #include "EnemyObject.h"

@@ -194,13 +194,14 @@ void TitleScene::Render_SetPosition_MouseEvent()
 
 	#pragma region Setting Icon & Button, Sound Button
 
+	/* Setting Button */
 	_settingIconImg.renderer->Init("settings");
 	_settingIconImg.transform->SetPosition(BACKGROUND_WIDTH / 2 - 400, BACKGROUND_HEIGHT / 2);
 
 	_settingButton.Init();
 	_settingButton.uiRenderer->Init(300, 75);
 	_settingButton.transform->SetPosition(WINSIZEX / 2 - 390, BACKGROUND_HEIGHT / 2 - 200 + 100 * 2);
-
+	
 	_settingButton.uiMouseEvent->RegistCallback(
 		std::bind(&TitleUIControler::ActiveChoiceImg, titleUIControler, _settingButton.transform, true), EVENT::ENTER);
 	vector<GameObject*> activeTarget;
@@ -209,16 +210,18 @@ void TitleScene::Render_SetPosition_MouseEvent()
 	activeTarget.push_back(&_soundButton);
 	activeTarget.push_back(&_goBackIdleImg);
 	_settingButton.uiMouseEvent->RegistCallback(
-		std::bind(&TitleUIControler::SetActiveCallback2, titleUIControler, activeTarget, &_inSetting, &_alphaTrigger, true), EVENT::CLICK);
+		std::bind(&TitleUIControler::SetActiveSettingButton, titleUIControler, activeTarget, &_inSetting, &_alphaTrigger, &_grab, true), EVENT::CLICK);
 	_settingButton.uiMouseEvent->RegistCallback(
 		std::bind(&TitleUIControler::ActiveChoiceImg, titleUIControler, _settingButton.transform, false), EVENT::EXIT);
 
+	/* Sound Button */
 	_soundButton.Init();
 	_soundButton.uiRenderer->Init(350, 60);
 	_soundButton.transform->SetPosition(WINSIZEX / 2, BACKGROUND_HEIGHT / 2);
 
 	_soundButton.uiMouseEvent->RegistCallback(
-		std::bind(&TitleUIControler::ActiveChoiceImg2, titleUIControler, _soundButton.transform, true), EVENT::ENTER);
+		std::bind(&TitleUIControler::ActiveChoiceImg2, titleUIControler, _soundButton.transform, &_inSetting, true), EVENT::ENTER);
+
 	vector<GameObject*> activeTarget4;
 	activeTarget4.push_back(&_settingMenuBoardImg);
 	activeTarget4.push_back(&_choiceImg2);
@@ -226,7 +229,7 @@ void TitleScene::Render_SetPosition_MouseEvent()
 	_soundButton.uiMouseEvent->RegistCallback(
 		std::bind(&TitleUIControler::SetActiveCallback, titleUIControler, activeTarget4, &_inSetting, false), EVENT::CLICK);
 	_soundButton.uiMouseEvent->RegistCallback(
-		std::bind(&TitleUIControler::ActiveChoiceImg2, titleUIControler, _soundButton.transform, false), EVENT::EXIT);
+		std::bind(&TitleUIControler::ActiveChoiceImg2, titleUIControler, _soundButton.transform, &_inSetting, false), EVENT::EXIT);
 	
 	#pragma endregion
 
@@ -244,7 +247,7 @@ void TitleScene::Render_SetPosition_MouseEvent()
 	vector<GameObject*> activeTarget2;
 	activeTarget2.push_back(&_goBackIdleImg);
 	_aboutButton.uiMouseEvent->RegistCallback(
-		std::bind(&TitleUIControler::SetActiveCallback2, titleUIControler, activeTarget2, &_inInfo, &_alphaTrigger, true), EVENT::CLICK);
+		std::bind(&TitleUIControler::SetActiveAboutButton, titleUIControler, activeTarget2, &_inInfo, &_alphaTrigger, &_grab, true), EVENT::CLICK);
 	_aboutButton.uiMouseEvent->RegistCallback(
 		std::bind(&TitleUIControler::ActiveChoiceImg, titleUIControler, _aboutButton.transform, false), EVENT::EXIT);
 
@@ -282,16 +285,18 @@ void TitleScene::Render_SetPosition_MouseEvent()
 	_goBackButton.transform->SetPosition(BACKGROUND_WIDTH / 2, BACKGROUND_HEIGHT - 70);
 
 	_goBackButton.uiMouseEvent->RegistCallback(
-		std::bind(&TitleUIControler::ActiveGoBackImg, titleUIControler, true), EVENT::ENTER);
+		std::bind(&TitleUIControler::ActiveGoBackImg, titleUIControler, &_inInfo, &_inSetting, true), EVENT::ENTER);
+
 	vector<GameObject*> activeTarget3;
 	activeTarget3.push_back(&_settingTitleImg);
 	activeTarget3.push_back(&_settingMenuBoardImg);
 	activeTarget3.push_back(&_goBackIdleImg);
 	activeTarget3.push_back(&_goBackChoiceImg);
 	_goBackButton.uiMouseEvent->RegistCallback(
-		std::bind(&TitleUIControler::SetActiveCallback4, titleUIControler, activeTarget3, &_inInfo, &_inSetting, &_alphaTrigger, false), EVENT::CLICK);
+		std::bind(&TitleUIControler::SetActiveCallback4, titleUIControler, activeTarget3, &_inInfo, &_inSetting, &_alphaTrigger, &_grab, false), EVENT::CLICK);
+
 	_goBackButton.uiMouseEvent->RegistCallback(
-		std::bind(&TitleUIControler::ActiveGoBackImg, titleUIControler, false), EVENT::EXIT);
+		std::bind(&TitleUIControler::ActiveGoBackImg, titleUIControler, &_inInfo, &_inSetting, false), EVENT::EXIT);
 
 	#pragma endregion
 	
