@@ -4,9 +4,10 @@
 #include "CopperWall.h"
 #include "Duo.h"
 #include "Conveyor.h"
+#include "Transport.h"
 #include "PropContainer.h"
 #include "GameInfo.h"
-
+#include "Prop.h"
 PropFactory::PropFactory()
 {
 }
@@ -35,6 +36,13 @@ void PropFactory::Update()
 	* 3.setalpha(초기알파값 + (1.f - 초기알파값) * percent)
 	*********************************************************/
 	_buildTime += TIMEMANAGER->getElapsedTime();
+
+	while (Math::FloatEqual(_previewV[0].renderer->GetAlpha(), 0.4f) == true)
+	{
+		_previewV.erase(_previewV.begin());
+		_propQueue.pop();
+	}
+
 	float percent = _buildTime / _propInfoV[_propQueue.front().catagory][_propQueue.front().propIdx].buildTime;
 	_previewV[0].renderer->SetAlpha(0.5f + (0.5f) * percent);
 
@@ -66,7 +74,7 @@ void PropFactory::Update()
 			switch (buildProp.propIdx)
 			{
 			case 0:
-				CreateProp<Conveyor>(buildProp.x, buildProp.y);
+				CreateConveyor(buildProp.x, buildProp.y, buildProp.dir);
 				break;
 			}
 			break;
@@ -108,11 +116,37 @@ ImageObject* PropFactory::CreateProp(int tileX, int tileY)
 	{
 		newPropCast->transform->SetPosition(tileX * TILESIZE + TILESIZE / 2, tileY * TILESIZE + TILESIZE / 2);
 		newPropCast->GetComponent<BoxCollider>()->RefreshPartition();
-		propContainer->AddProp(tileY * TILENUMX + tileX, newPropCast);
 	}
+	ContainProp(tileY * TILENUMX + tileX, newPropCast, PROPDIR(0));
+	return nullptr;
+}
+
+void PropFactory::CreateConveyor(int tileX, int tileY, PROPDIR dir)
+{
+	Conveyor* newConveyor = new Conveyor();
+	if (_isFirstConveyor == false)
+	{
+		_isFirstConveyor = true;
+		_firstConveyorAnimator = newConveyor->animator;
+	}
+	newConveyor->transform->SetPosition(tileX * TILESIZE + TILESIZE / 2, tileY * TILESIZE + TILESIZE / 2);
+	newConveyor->transform->SetAngle(dir * 90);
+	newConveyor->collider->RefreshPartition();
+	newConveyor->transport->SetX(tileX);
+	newConveyor->transport->SetY(tileY);
+	newConveyor->transport->SetOutDir(dir);
+	newConveyor->transport->SetShape(0);
+	newConveyor->transport->SetFirstAnimator(_firstConveyorAnimator);
+	newConveyor->animator->SetClip("conveyor_I", _firstConveyorAnimator->GetCurFrameX());
+	newConveyor->animator->SetFrameTime(_firstConveyorAnimator->GetFrameTime());
+	ContainProp(tileY * TILENUMX + tileX, newConveyor, dir);
+}
+
+void PropFactory::ContainProp(int hashKey, Prop* newProp, PROPDIR dir)
+{
+	propContainer->AddProp(hashKey, newProp, dir);
 	_previewV.erase(_previewV.begin());
 	_propQueue.pop();
-	return nullptr;
 }
 
 ImageObject* PropFactory::CreatePreview(int tileX, int tileY)
@@ -120,7 +154,7 @@ ImageObject* PropFactory::CreatePreview(int tileX, int tileY)
 	return nullptr;
 }
 
-void PropFactory::AddPropElem(vector<ImageObject>& previewV,int categoryIdx, int propIdx)
+void PropFactory::AddPropElem(vector<ImageObject>& previewV,int categoryIdx, int propIdx, PROPDIR dir)
 {
 	int tileX, tileY;
 	int size = previewV.size();
@@ -131,6 +165,7 @@ void PropFactory::AddPropElem(vector<ImageObject>& previewV,int categoryIdx, int
 		newProp.y = (previewV[i].transform->GetY() / TILESIZE);
 		newProp.catagory = categoryIdx;
 		newProp.propIdx = propIdx;
+		newProp.dir = dir;
 		_propQueue.push(newProp);
 		_previewV.push_back(previewV[i]);
 	}

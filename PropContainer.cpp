@@ -4,6 +4,9 @@
 #include "Conveyor.h"
 #include "Transport.h"
 #include "TileInfo.h"
+
+int conveyorDir[4][2] = { {1,0}, {0,1}, {-1,0}, {0,-1} };
+
 PropContainer::PropContainer()
 {
 }
@@ -40,7 +43,7 @@ void PropContainer::LoadTileMap()
 {
 }
 
-void PropContainer::AddProp(int hashKey, Prop* newProp)
+void PropContainer::AddProp(int hashKey, Prop* newProp, PROPDIR dir)
 {
 	int tileX = hashKey % TILENUMX;
 	int tileY = hashKey / TILENUMX;
@@ -52,14 +55,34 @@ void PropContainer::AddProp(int hashKey, Prop* newProp)
 	Conveyor* conveyorCast = dynamic_cast<Conveyor*>(newProp);
 	if (conveyorCast != nullptr)
 	{
-		if (_isFirstConveyor == false)
+		for (int i = 0; i < 4; i++)
 		{
-			_isFirstConveyor = true;
-			_firstConveyorAnimator = conveyorCast->animator;
+			int nextX = tileX + conveyorDir[i][0];
+			int nextY = tileY + conveyorDir[i][1];
+			int nextHashKey = nextY * TILENUMX + nextX;
+			Prop* prop = GetPropMap(nextHashKey);
+			Conveyor* nearConveyor = dynamic_cast<Conveyor*>(prop);
+			if (nearConveyor != nullptr)
+			{
+				if (i == conveyorCast->transport->GetOutDir())
+				{
+					//(i + 2) % 4 = 반대방향
+					nearConveyor->transport->LinkConveyor(PROPDIR((i + 2) % 4));
+				}
+				else if (nearConveyor->transport->GetOutDir() == (i + 2) % 4)
+				{
+					conveyorCast->transport->LinkConveyor(PROPDIR(i));
+				}
+			}
 		}
-		conveyorCast->transport->SetX(tileX);
-		conveyorCast->transport->SetY(tileY);
-		conveyorCast->animator->SetClip("conveyor_I", _firstConveyorAnimator->GetCurFrameX());
-		conveyorCast->animator->SetFrameTime(_firstConveyorAnimator->GetFrameTime());
 	}
+}
+
+Prop* PropContainer::GetPropMap(int hashKey)
+{
+	_propMapIter = _propMap.find(hashKey);
+	if (_propMapIter != _propMap.end())
+		return _propMapIter->second;
+
+	return nullptr;
 }

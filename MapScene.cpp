@@ -5,7 +5,7 @@ HRESULT MapScene::Init()
 {
 	Scene::Init();
 
-	//CLIPMANAGER->AddClip("background", "scene1_background.png", 1024, 560);
+	CLIPMANAGER->AddClip("background", "scene1_background.png", 1024, 560);
 	SetBackBufferSize(1600, 1600);
 	MainCam->SetScreenStart(240, 0);
 	MainCam->SetScreenSize(WINSIZEY, WINSIZEY);
@@ -28,7 +28,6 @@ HRESULT MapScene::Init()
 
 	_mapTool.AddComponent(new MapTool());
 	_mapTool.GetComponent<MapTool>()->Init();
-
 	return S_OK;
 }
 
