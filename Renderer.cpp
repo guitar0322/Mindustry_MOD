@@ -46,10 +46,10 @@ void Renderer::Render()
 	int renderStartX = transform->GetX() - _frameWidth / 2;
 	int renderStartY = transform->GetY() - _frameHeight / 2;
 
-	if (IntersectRect(&MainCam->GetRenderRc(), &_rc) == false)
-	{
-		return;
-	}
+	//if (IntersectRect(&MainCam->GetRenderRc(), &_rc) == false)
+	//{
+	//	return;
+	//}
 
 	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
@@ -177,6 +177,11 @@ void Renderer::RenderStatic()
 	}
 	StaticBuffer->DrawBitmap(_targetBitmap, backbufferArea, _alpha, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, clipArea);
 	StaticBuffer->SetTransform(D2D1::Matrix3x2F::Identity());
+}
+
+void Renderer::DrawFillRect(D2D1::ColorF::Enum color)
+{
+	D2DRENDERER->FillRectangleBack(_rc, color, _alpha);
 }
 
 /***********************************************

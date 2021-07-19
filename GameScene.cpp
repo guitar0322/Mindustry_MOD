@@ -55,6 +55,7 @@ HRESULT GameScene::Init()
     uiControler->preIconV = &turretIconV;
 
     uiControler->propFactory = propFactory;
+    uiControler->propContainer = propContainer;
 
 	gameMap = new GameMap;
 	gameMap->Init();
@@ -110,23 +111,15 @@ void GameScene::Update()
     propFactory->Update();
     propContainer->Update();
     uiControler->Update();
-    propPreview.Update();
 	gameMap->Update();
 
-	/* 플레이어 부분*/
-	_player->Update();
-	_playerWeaponL->Update();
-	_playerWeaponR->Update();
-	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
-	_projectileManager->Update();
-	//========================================
-
-    //카테고리 아이콘 업데이트
+    //07-19 플레이어와 UI간의 마우스 클릭 우선순위때문에 UI업데이트 위로 올림
+    //카테고리 아이콘 업데이트 
     {
-		defenseIcon.Update();
+        defenseIcon.Update();
         railIcon.Update();
-		turretIcon.Update();
-		productionIcon.Update();
+        turretIcon.Update();
+        productionIcon.Update();
     }
     //설치물 아이콘 업데이트
     {
@@ -135,6 +128,14 @@ void GameScene::Update()
         duoIcon.Update();
         conveyorIcon.Update();
     }
+
+	/* 플레이어 부분*/
+	_player->Update();
+	_playerWeaponL->Update();
+	_playerWeaponR->Update();
+	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
+	_projectileManager->Update();
+	//========================================
     categorySelect.Update();
     propSelect.Update();
 
@@ -174,7 +175,6 @@ void GameScene::Render()
 
     propFactory->Render();
     propContainer->Render();
-    propPreview.Render();
     uiControler->Render();
 
 	//플레이어 관련 렌더
@@ -273,6 +273,17 @@ void GameScene::InitClip()
     //컨베이어 벨트 클립
     {
         CLIPMANAGER->AddClip("conveyor_I", "sprites/blocks/distribution/conveyors/conveyor-I.png", 128, 32, 4, 1, 0.06f);
+        CLIPMANAGER->AddClip("conveyor_L", "sprites/blocks/distribution/conveyors/conveyor-L.png", 128, 32, 4, 1, 0.06f);
+        CLIPMANAGER->AddClip("conveyor_L2", "sprites/blocks/distribution/conveyors/conveyor-L2.png", 128, 32, 4, 1, 0.06f);
+        CLIPMANAGER->AddClip("conveyor_T", "sprites/blocks/distribution/conveyors/conveyor-T.png", 128, 32, 4, 1, 0.06f);
+        CLIPMANAGER->AddClip("conveyor_T2", "sprites/blocks/distribution/conveyors/conveyor-T2.png", 128, 32, 4, 1, 0.06f);
+        CLIPMANAGER->AddClip("conveyor_T3", "sprites/blocks/distribution/conveyors/conveyor-T3.png", 128, 32, 4, 1, 0.06f);
+        CLIPMANAGER->AddClip("conveyor_cross", "sprites/blocks/distribution/conveyors/conveyor-cross.png", 128, 32, 4, 1, 0.06f);
+    }
+
+    //그 이외 클립
+    {
+        CLIPMANAGER->AddClip("conveyor_arrow", "sprites/blocks/extra/conveyor-arrow.png", 96, 96);
     }
 	//플레이어 클립
 	{
