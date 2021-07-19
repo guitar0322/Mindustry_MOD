@@ -52,6 +52,7 @@ HRESULT GameScene::Init()
 
     uiControler->choiceImg = &_choiceImg;
     uiControler->lockImg = &_lockImg;
+    uiControler->inResearchChoiceImg = &_inResearchChoiceImg;
     uiControler->goBackIdleImg = &_goBackIdleImg;
     uiControler->goBackChoiceImg = &_goBackChoiceImg;
     uiControler->coreDBIdleImg = &_coreDBIdleImg;
@@ -104,12 +105,7 @@ HRESULT GameScene::Init()
 
     #pragma endregion
 
-	/*게임 사운드 추가 광철 210716*/
-	SOUNDMANAGER->addSound("startbgm", "music/land.mp3", true, false);
-	SOUNDMANAGER->addSound("gamebgm", "music/game2.mp3", true, false);
-	SOUNDMANAGER->play("startbgm", 10.f);
-
-	/* 플레이어 부분*/
+	/* 플레이어 부분 유림 */
 	_player = new Player();
 	_player->Init();
 	_player->tag = TAGMANAGER->GetTag("player");
@@ -118,7 +114,7 @@ HRESULT GameScene::Init()
 	_player->transform->SetAngle(0.0f);
 	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
 
-	//플레이어 포신 
+	//플레이어 포신 유림.
 	_playerWeaponL = new ImageObject;
 	_playerWeaponL->Init();
 	_playerWeaponL->renderer->Init("player_weapon_L");
@@ -127,16 +123,16 @@ HRESULT GameScene::Init()
 	_playerWeaponR->Init();
 	_playerWeaponR->renderer->Init("player_weapon_R");
 
-	//플레이어에 포신 넣음
+	//플레이어에 포신 유림.
 	_player->transform->AddChild(_playerWeaponL->transform);
 	_player->transform->AddChild(_playerWeaponR->transform);
-
 	
-	//========================================
+    /* 게임신 에너미 관련 작업 함수, by 민재. 삭제 금지 */
 	SetProjectileManager();
 	SetCore();
 	SetEnemyManager();
 
+    /* 사운드 작업 광철 210718 */
 	SOUNDMANAGER->addSound("start", "music/land.mp3", true, false);
 	SOUNDMANAGER->addSound("bgm1", "music/game1.mp3", true, false);
 	SOUNDMANAGER->addSound("bgm2", "music/game2.mp3", true, false);
@@ -144,6 +140,7 @@ HRESULT GameScene::Init()
 	SOUNDMANAGER->play("start", 10.0f);
 	_musicTime = 0;
     StaticBuffer->EndDraw();
+
     return S_OK;
 }
 
@@ -187,33 +184,33 @@ void GameScene::Update()
     _choiceImg.Update();
 	_core->Update();
 	_enemyManager->Update();
-	_musicTime += TIMEMANAGER->getElapsedTime();
-
-	if (_musicTime>= 15)
-	{
-		switch (RND->getInt(3))
-		{
-		case 0:
-			_musicTime = -90.0f;
-			SOUNDMANAGER->play("bgm1", 10.0f);
-			break;
-		case 1:
-			_musicTime = -90.0f;
-			SOUNDMANAGER->play("bgm2", 10.0f);
-			break;
-		case 2:
-			_musicTime = -180.0f;
-			SOUNDMANAGER->play("bgm3", 10.0f);
-			break;
-		}
-	}
-
-    /* SHUNG 210715 */
+    
     if (KEYMANAGER->isOnceKeyDown(VK_F1)) _research = true;
     if (KEYMANAGER->isOnceKeyDown(VK_F2)) _research = false;
     if (_research) researchUpdate();
     _goBackButton.Update();
     _coreDBButton.Update();
+
+    /* 사운드 작업 광철 210718 */
+    _musicTime += TIMEMANAGER->getElapsedTime();
+    if (_musicTime >= 15)
+    {
+        switch (RND->getInt(3))
+        {
+        case 0:
+            _musicTime = -90.0f;
+            SOUNDMANAGER->play("bgm1", 10.0f);
+            break;
+        case 1:
+            _musicTime = -90.0f;
+            SOUNDMANAGER->play("bgm2", 10.0f);
+            break;
+        case 2:
+            _musicTime = -180.0f;
+            SOUNDMANAGER->play("bgm3", 10.0f);
+            break;
+        }
+    }
 }
 
 void GameScene::Render()
@@ -271,7 +268,7 @@ void GameScene::Render()
 	time.append(to_wstring(_musicTime));
 	D2DRENDERER->RenderText(10, 140, time, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
 	
-
+    /* 에너미 관련 작업 민재, 삭제 금지*/
 	//wstring minute = L"MINUTE : ";
 	//minute.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeMinute()));
 	//D2DRENDERER->RenderText(10, 10, minute, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
@@ -283,11 +280,8 @@ void GameScene::Render()
 	//wstring wave = L"CurWave: ";
 	//wave.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetCurWave()));
 	//D2DRENDERER->RenderText(10, 110, wave, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
-	
-	//wstring PlayerHp = L"PlayerHP: ";
-	//PlayerHp.append(to_wstring(_player->controler->GetHp()));
-	//D2DRENDERER->RenderText(10, 10, PlayerHp, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
 
+    /* 광철, 광물 카운트용 삭제 금지 */
 	/*wstring mineCount = L"";
 	mineCount.append(to_wstring(_mineCount));
 	D2DRENDERER->RenderText(WINSIZEX / 2 - 50, 10, mineCount, 20, L"fontello", D2DRenderer::DefaultBrush::White);*/
@@ -333,6 +327,8 @@ void GameScene::InitClip()
     /* SHUNG 210715-16, 연구 목록 이미지 */
     CLIPMANAGER->AddClip("research_choice", "sprites/game/choice.png", 75, 56);
     CLIPMANAGER->AddClip("research_lock", "sprites/game/lock.png", 74, 56);
+    CLIPMANAGER->AddClip("in_research_choice", "sprites/game/in_research_choice.png", 50, 60);
+    CLIPMANAGER->AddClip("in_research_about", "sprites/game/i.png", 24, 44);
 
     CLIPMANAGER->AddClip("research_core", "sprites/game/core.png", 74, 56);
     CLIPMANAGER->AddClip("research_core_basic_description", "sprites/game/core_basic_description.png", 159, 193);
@@ -373,12 +369,8 @@ void GameScene::InitClip()
     CLIPMANAGER->AddClip("research_gobackchoice", "sprites/game/gobackchoice.png", 210, 64);
     CLIPMANAGER->AddClip("research_coredbidle", "sprites/game/core_db_idle.png", 210, 64);
     CLIPMANAGER->AddClip("research_coredbchoice", "sprites/game/core_db_choice.png", 210, 64);
-	/* SHUNG 210715 */
-	{
-		CLIPMANAGER->AddClip("research_core", "sprites/game/core.png", 74, 56);
-		CLIPMANAGER->AddClip("research_choice", "sprites/game/choice.png", 75, 56);
-	}
-	//// ENEMY & CORE 클립 /////
+
+	//// ENEMY & CORE 클립 작업 민재 /////
 	{
 		CLIPMANAGER->AddClip("core", "sprites/blocks/storage/core.png", 96, 96);
 		CLIPMANAGER->AddClip("enemy_atrax", "sprites/units/enemy/enemy_atrax.png", 188, 329);
@@ -499,9 +491,11 @@ void GameScene::researchUpdate()
 {
     _choiceImg.Update();
     _lockImg.Update();
+    _inResearchChoiceImg.Update();
 
     _coreSlice.Update();
-    _core_basic_description.Update();
+    _coreBasicDescription.Update();
+    _coreDetailDescription.Update();
 
     _mechanicalDrill.Update();
     _conveyor.Update();
@@ -543,6 +537,9 @@ void GameScene::researchUpdate()
 
 void GameScene::researchRender()
 {
+    _coreDetailDescription.Render();
+    _coreBasicDescription.Render();
+
     _coreSlice.Render();
     _mechanicalDrill.Render();
     _conveyor.Render();
@@ -581,11 +578,9 @@ void GameScene::researchRender()
     _titaniumConveyor.Render();
     _underflowGate.Render();
 
-    _core_basic_description.Render();
-
-
     _lockImg.Render();
     _choiceImg.Render();
+    _inResearchChoiceImg.Render();
 
     /* 연구 누를 경우 나오는 UI (뒤로가기, 코어 데이터 베이스) */
     _goBackIdleImg.Render();
@@ -616,24 +611,41 @@ void GameScene::researchInitUI()
 
 #pragma endregion
 
+#pragma region 연구상태 내에서 기본설명 볼 때 i에 마우스 충돌이 일어났을 경우에 나오는 회색선택창
+
+    _inResearchChoiceImg.uiRenderer->Init("in_research_choice");
+    _inResearchChoiceImg.transform->SetPosition(WINSIZEX / 2, WINSIZEY / 2);
+    _inResearchChoiceImg.transform->SetScale(1.f, 1.f);
+    _inResearchChoiceImg.SetActive(false);
+
+#pragma endregion
+
 #pragma region 코어 : 조각
 
     _coreSlice.uiRenderer->Init("research_core");
     _coreSlice.transform->SetPosition(WINSIZEX / 2, WINSIZEY / 2);
     _coreSlice.transform->SetScale(0.75f, 0.75f);
 
-    _core_basic_description.uiRenderer->Init("research_core_basic_description");
-    _core_basic_description.transform->SetPosition(WINSIZEX / 2 + 105, WINSIZEY / 2 + 78);
-    _core_basic_description.SetActive(false);
+    _coreBasicDescription.uiRenderer->Init("research_core_basic_description");
+    _coreBasicDescription.transform->SetPosition(WINSIZEX / 2 + 105, WINSIZEY / 2 + 78);
+    _coreBasicDescription.SetActive(false);
+
+    _coreDetailDescription.uiRenderer->Init("in_research_about");
+    _coreDetailDescription.transform->SetPosition(WINSIZEX / 2 + 59, WINSIZEY / 2 + 22);
+    _coreDetailDescription.SetActive(false);
 
     _coreSlice.uiMouseEvent->RegistCallback(
-        std::bind(&UIControler::inResearch_ActiveChoiceImgWithBasicDes, uiControler, _coreSlice.transform, &_core_basic_description, &_lockDes, true), EVENT::ENTER);
-    _core_basic_description.uiMouseEvent->RegistCallback(
-        std::bind(&UIControler::sibal, uiControler, & _lockDes), EVENT::ENTER);
-    _core_basic_description.uiMouseEvent->RegistCallback(
-        std::bind(&UIControler::sibal, uiControler, &_lockDes), EVENT::EXIT);
+        std::bind(&UIControler::inResearch_ActiveChoiceImgWithBasicDes, uiControler, _coreSlice.transform, &_coreBasicDescription, true), EVENT::ENTER);
     _coreSlice.uiMouseEvent->RegistCallback(
-        std::bind(&UIControler::inResearch_inActiveChoiceImgWithBasicDes, uiControler, _coreSlice.transform, &_core_basic_description, &_lockDes, false), EVENT::EXIT);
+        std::bind(&UIControler::inResearch_inActiveChoiceImgWithBasicDes, uiControler, _coreSlice.transform, &_coreBasicDescription, &_lockDes, false), EVENT::EXIT);
+    _coreBasicDescription.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inResearch_inBasicDes, uiControler, _coreSlice.transform, &_coreBasicDescription, &_lockDes, true), EVENT::ENTER);
+    _coreBasicDescription.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inResearch_disableInBasicDes, uiControler, _coreSlice.transform, &_coreBasicDescription, &_lockDes, false), EVENT::EXIT);
+    
+    /* _coreDetailDescription 클릭 */
+    _coreDetailDescription.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inResearch_ActiveInResearchChoiceImg, uiControler, _inResearchChoiceImg.transform, true), EVENT::ENTER);
 
 
 #pragma endregion
@@ -1106,81 +1118,7 @@ void GameScene::researchInitUI()
 
 #pragma endregion
 
-    _CoreSlice.uiRenderer->Init("research_core");
-    _CoreSlice.transform->SetPosition(WINSIZEX / 2, WINSIZEY / 2);
-    _CoreSlice.transform->SetScale(0.75f, 0.75f);
 
-    _CoreSlice.uiMouseEvent->RegistCallback(
-        std::bind(&UIControler::ActiveChoiceImg, uiControler, _CoreSlice.transform, true), EVENT::ENTER);
-    _CoreSlice.uiMouseEvent->RegistCallback(
-        std::bind(&UIControler::ActiveChoiceImg, uiControler, _CoreSlice.transform, false), EVENT::EXIT);
-}
-
-void GameScene::InitPropUI()
-{
-    //터렛 아이콘 초기화
-    {
-        duoIcon.uiRenderer->Init("duo");
-        duoIcon.transform->SetPosition(PROP_UI_STARTX, PROP_UI_STARTY);
-        duoIcon.uiMouseEvent->RegistCallback(
-            std::bind(&UIControler::ClickPropIcon, uiControler, &duoIcon, 0), EVENT::CLICK);
-        turretIconV.push_back(&duoIcon);
-
-    }
-
-    //드릴 아이콘 초기화
-    {
-		mechanicDrillIcon.uiRenderer->Init("mechanical_drill");
-		mechanicDrillIcon.transform->SetPosition(PROP_UI_STARTX, PROP_UI_STARTY);
-		mechanicDrillIcon.transform->SetScale(0.5f, 0.5f);
-        mechanicDrillIcon.uiMouseEvent->RegistCallback(
-            std::bind(&UIControler::ClickPropIcon, uiControler, &mechanicDrillIcon, 0), EVENT::CLICK);
-		drillIconV.push_back(&mechanicDrillIcon);
-
-        for (int i = 0; i < drillIconV.size(); i++)
-        {
-            drillIconV[i]->SetActive(false);
-        }
-    }
-
-    //레일 아이콘 초기화
-    {
-        conveyorIcon.uiRenderer->Init("conveyor");
-        conveyorIcon.transform->SetPosition(PROP_UI_STARTX, PROP_UI_STARTY);
-        conveyorIcon.uiMouseEvent->RegistCallback(
-            std::bind(&UIControler::ClickPropIcon, uiControler, &conveyorIcon, 0), EVENT::CLICK);
-        railIconV.push_back(&conveyorIcon);
-
-        for (int i = 0; i < railIconV.size(); i++)
-        {
-            railIconV[i]->SetActive(false);
-        }
-    }
-
-    //벽 아이콘 초기화
-    {
-        copperWallIcon.uiRenderer->Init("copper_wall");
-        copperWallIcon.transform->SetPosition(PROP_UI_STARTX, PROP_UI_STARTY);
-        copperWallIcon.uiMouseEvent->RegistCallback(
-            std::bind(&UIControler::ClickPropIcon, uiControler, &copperWallIcon, 0), EVENT::CLICK);
-        wallIconV.push_back(&copperWallIcon);
-
-        for (int i = 0; i < wallIconV.size(); i++)
-        {
-            wallIconV[i]->SetActive(false);
-        }
-    }
-
-    propSelect.uiRenderer->Init("button_select");
-    propSelect.transform->SetPosition(PROP_UI_STARTX, PROP_UI_STARTY);
-    propSelect.SetActive(false);
-
-    propPreview.Init();
-    propPreview.renderer->Init(32, 32);
-    propPreview.renderer->SetAlpha(0.5f);
-    propPreview.SetActive(false);
-
-    /* SHUNG 210715 */
 }
 
 void GameScene::SetProjectileManager()

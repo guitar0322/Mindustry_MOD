@@ -275,7 +275,7 @@ void PlayerControler::Update()
 			{
 				_weaponLTrackRadius = 9.41f;
 				_projectileManager->FireProjectile(transform->GetChild(1)->GetX(), transform->GetChild(1)->GetY(),
-					transform->GetChild(0)->GetAngle() - 2, PROJECTILE_TYPE::PLAYER);
+					transform->GetChild(1)->GetAngle() - 2, PROJECTILE_TYPE::PLAYER);
 			}
 			_isLeft = !_isLeft; // 반복되게 하기
 			_attackSpeed = 0;

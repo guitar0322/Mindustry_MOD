@@ -49,7 +49,7 @@ void PlayerLaser::Render()
 {
 	_collectLaserFirst->Render();
 	_collectLaserEnd->Render();
-	//_collectLaser->Render();
+	_collectLaser->Render();
 	_detectRc->Render();
 
 }
@@ -57,10 +57,10 @@ void PlayerLaser::Render()
 void PlayerLaser::ShootLaser()
 {
 	float laserDistance = GetDistance(_laserStartX, _laserStartY, _laserX, _laserY);
-	float deltaX = _laserX + _laserStartX;
-	float deltaY = _laserY + _laserStartY;
-	float laserX = deltaX / 2;
-	float laserY = deltaY / 2;
+	//float deltaX = _laserX + _laserStartX;
+	//float deltaY = _laserY + _laserStartY;
+	float laserX = (_laserX + _laserStartX) / 2;
+	float laserY = (_laserY + _laserStartY) / 2;
 
 	_collectLaserEnd->transform->SetPosition(Vector2(_laserEndX * 32 + 16, _laserEndY * 32 + 16));
 	_detectRc->transform->SetPosition(Vector2(_laserEndX * 32 + 16, _laserEndY * 32 + 16));

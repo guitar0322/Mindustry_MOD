@@ -187,6 +187,12 @@ void UIControler::inResearch_ActiveGoBackImg(bool isActive)
 	goBackChoiceImg->SetActive(isActive);
 }
 
+void UIControler::inResearch_ActiveInResearchChoiceImg(Transform* menuTr, bool isActive)
+{
+	inResearchChoiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
+	inResearchChoiceImg->SetActive(isActive);
+}
+
 void UIControler::inResearch_ReturnToGameScene(bool* name, bool isActive)
 {
 	*name = isActive;
@@ -203,33 +209,36 @@ void UIControler::inResearch_ReturnToCoreDBScene(bool* name, bool isActive)
 	*name = isActive;
 }
 
-void UIControler::inResearch_ActiveChoiceImgWithBasicDes(Transform* menuTr, UIBase* name, bool* name2, bool isActive)
+void UIControler::inResearch_ActiveChoiceImgWithBasicDes(Transform* menuTr, UIBase* name, bool isActive)
 {
-	*name2 = isActive;
-	name->SetActive(isActive);
 	choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
 	choiceImg->SetActive(isActive);
+	name->SetActive(isActive);
+}
+
+void UIControler::inResearch_inBasicDes(Transform* menuTr, UIBase* name, bool* name2, bool isActive)
+{
+	*name2 = isActive;
+	choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
+	choiceImg->SetActive(isActive);
+	name->SetActive(isActive);
 }
 
 void UIControler::inResearch_inActiveChoiceImgWithBasicDes(Transform* menuTr, UIBase* name, bool* name2, bool isActive)
 {
-	if (name2) return;
-	else 
+	if (*name2) return;
+	else
 	{
-		*name2 = isActive;
 		name->SetActive(isActive);
 		choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
 		choiceImg->SetActive(isActive);
 	}
-
 }
 
-void UIControler::sibal(bool* name)
+void UIControler::inResearch_disableInBasicDes(Transform* menuTr, UIBase* name, bool* name2, bool isActive)
 {
-	if (name) return;
-}
-
-void UIControler::sibal2(bool* name)
-{
-	*name = false;
+	*name2 = isActive;
+	choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
+	choiceImg->SetActive(isActive);
+	name->SetActive(isActive);
 }
