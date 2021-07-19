@@ -13,6 +13,7 @@
 class PropContainer;
 class PropFactory;
 class UIControler;
+class GameInfo;
 
 class GameScene :
     public Scene
@@ -29,29 +30,30 @@ private:
 	GameObject* _projectileManager;
 
 	//======
-    PropContainer* propContainer;
-    PropFactory* propFactory;
-    UIControler* uiControler;
-    UIBase categorySelect;
-    UIBase propSelect;
+    PropContainer* _propContainer;
+    PropFactory* _propFactory;
+    GameInfo* _gameInfo;
+    UIControler* _uiControler;
+    UIBase _categorySelect;
+    UIBase _propSelect;
 
-    ImageObject propPreview;
+    ImageObject _propPreview;
 
-    UIBase buildingCategoryFrame;
-    UIBase defenseIcon;
-    UIBase railIcon;
-    UIBase turretIcon;
-    UIBase productionIcon;
+    UIBase _buildingCategoryFrame;
+    UIBase _defenseIcon;
+    UIBase _railIcon;
+    UIBase _turretIcon;
+    UIBase _productionIcon;
 
-    UIBase copperWallIcon;
-    UIBase mechanicDrillIcon;
-    UIBase duoIcon;
-    UIBase conveyorIcon;
+    UIBase _copperWallIcon;
+    UIBase _mechanicDrillIcon;
+    UIBase _duoIcon;
+    UIBase _conveyorIcon;
 
-    vector<GameObject*> wallIconV;
-    vector<GameObject*> drillIconV;
-    vector<GameObject*> turretIconV;
-    vector<GameObject*> railIconV;
+    vector<GameObject*> _wallIconV;
+    vector<GameObject*> _drillIconV;
+    vector<GameObject*> _turretIconV;
+    vector<GameObject*> _railIconV;
 
 	//인게임 맵 -> 유림
 	GameMap* _gameMap;

@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "PlayerControler.h"
-#include "PlayerScene.h"
 #include "ProjectileManager.h"
 #include "PlayerLaser.h"
 #include "EnemyInfo.h"
