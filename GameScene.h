@@ -13,12 +13,14 @@
 class PropContainer;
 class PropFactory;
 class UIControler;
+class GameInfo;
 
 class GameScene :
     public Scene
 {
 private:
 	float _musicTime;
+    Cam* _miniMapCam;
 	Player* _player;
 	ImageObject* _playerWeaponL;
 	ImageObject* _playerWeaponR;
@@ -27,6 +29,8 @@ private:
     PropContainer* propContainer;
     PropFactory* propFactory;
     UIControler* uiControler;
+    GameInfo* gameInfo;
+
     UIBase categorySelect;
     UIBase propSelect;
 

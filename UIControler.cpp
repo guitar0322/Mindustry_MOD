@@ -150,7 +150,7 @@ void UIControler::SetPreview(float deltaX, float deltaY)
 	int tileNumX = deltaX / TILESIZE;
 	int tileNumY = deltaY / TILESIZE;
 	bool curDir = Math::Abs(tileNumX) > Math::Abs(tileNumY);
-	int bigNum = Math::Max(Math::Abs(tileNumX), Math::Abs(tileNumY));
+	int bigNum = Math::Max(Math::Abs(tileNumX), Math::Abs(tileNumY)) + 1;
 	if (_previewNum == bigNum && _previewDir == curDir)
 	{
 		return;
@@ -165,7 +165,7 @@ void UIControler::SetPreview(float deltaX, float deltaY)
 		newPreview.renderer->SetAlpha(0.5f);
 		_previewV.push_back(newPreview);
 	}
-	_previewNum = bigNum;
+	_previewNum = bigNum + 1;
 	_previewDir = curDir;
 	for (int i = 0; i < _previewV.size(); i++)
 	{
