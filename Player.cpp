@@ -13,7 +13,6 @@ Player::Player()
 	collider = new BoxCollider();
 	AddComponent(collider);
 	collider->Init();
-
 }
 Player::~Player()
 {

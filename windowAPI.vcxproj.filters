@@ -264,12 +264,17 @@
     <ClCompile Include="EnemyManager.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Core.cpp" />
     <ClCompile Include="Transport.cpp">
       <Filter>Prop\Component</Filter>
     </ClCompile>
     <ClCompile Include="EnemyManager.cpp">
       <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Core.cpp">
+      <Filter>Prop\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraControler.cpp">
+      <Filter>CameraControler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -548,12 +553,17 @@
     <ClInclude Include="EnemyManager.h">
       <Filter>Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Core.h" />
     <ClInclude Include="Transport.h">
       <Filter>Prop\Component</Filter>
     </ClInclude>
     <ClInclude Include="EnemyManager.h">
       <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Core.h">
+      <Filter>Prop\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraControler.h">
+      <Filter>CameraControler</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -617,6 +627,9 @@
     </Filter>
     <Filter Include="Scene">
       <UniqueIdentifier>{8c1e3ca4-f72a-411b-b346-bd0aa24e763a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CameraControler">
+      <UniqueIdentifier>{9ab272c3-a25f-40f1-bdf2-dcdce7838803}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -28,11 +28,13 @@ private:
 		IDLE
 	};
 private:
+
 	float _speed;
 	float _armRecoverySpeed;
 	float _targetAngle;
 	float _angleSpeed;
 	float _breakTime;
+	float _respawnTime;
 	float _weaponLTrackRadius; //r2
 	float _weaponRTrackRadius; //r2
 	float _weaponLTrackAngle;
@@ -53,6 +55,7 @@ private:
 	bool _isGathering;
 	bool _isFire;
 	bool _isDead;
+	bool _isRespawn;
 	ProjectileManager* _projectileManager;
 
 	//자원 추출 레이저
@@ -71,9 +74,13 @@ public:
 	float GetHp() const { return _hp; }
 	float GetSpeed() const { return _speed; }
 	float GetTargetAngle() const { return _targetAngle; }
+	bool GetPlayerDead() const { return _isDead; }
+	bool GetPlayerRespawn() const { return _isRespawn; }
 	void SetProjectileManager(ProjectileManager* projectileManager) { _projectileManager = projectileManager; }
 
 	void Hit(float damage);
 	void Dead();
+	void Respawn();
+	void RespawnTime();
 };
 

@@ -51,6 +51,7 @@ void EnemyManager::SetEnemy()
 	for (int i = 0; i < 5; i++)
 	{
 		_enemyPlane = new EnemyPlane();
+		_enemyPlane->tag = TAGMANAGER->GetTag("enemy");
 		_enemyPlane->GetComponent<Renderer>()->Init("enemy_atrax");
 		_enemyPlane->GetComponent<EnemyInfo>()->SetEnemyManager(this);
 		_enemyPlane->GetComponent<EnemyInfo>()->SetTestCore(_testCore);
@@ -65,6 +66,7 @@ void EnemyManager::SetEnemy()
 	for (int i = 5; i < 10; i++)
 	{
 		_enemyGround = new EnemyGround();
+		_enemyGround->tag = TAGMANAGER->GetTag("enemy");
 		_enemyGround->GetComponent<Renderer>()->Init("enemy_dagger_walk");
 		_enemyGround->GetComponent<Animator>()->AddClip("enemy_dagger_walk", CLIPMANAGER->FindClip("enemy_dagger_walk"));
 		_enemyGround->GetComponent<Animator>()->SetClip("enemy_dagger_walk", 0);
@@ -78,28 +80,39 @@ void EnemyManager::SetEnemy()
 		_enemyV.push_back(_enemyGround);
 	}
 
-	for (int i = 0; i < 2; i++)
-	{
-		_waveV[0].push_back(i);
-	}
-
-	for (int i = 6; i < 8; i++)
-	{
-		_waveV[0].push_back(i);
-	}
-	
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		_waveV[1].push_back(i);
 	}
+
 	for (int i = 5; i < 8; i++)
 	{
 		_waveV[1].push_back(i);
+	}
+	
+	for (int i = 0; i < 4; i++)
+	{
+		_waveV[2].push_back(i);
+	}
+	for (int i = 4; i < 9; i++)
+	{
+		_waveV[2].push_back(i);
+	}
+
+	for (int i = 0; i < 5; i++)
+	{
+		_waveV[3].push_back(i);
+	}
+	for (int i = 5; i < 10; i++)
+	{
+		_waveV[3].push_back(i);
 	}
 }
 
 void EnemyManager::EnemyTimer()
 {
+
+	/////////적 출현 지우면 안대요!!//////////////
 	//if (_enemyTime)
 	//{
 	//	_enemySpawnTime -= TIMEMANAGER->getElapsedTime();
@@ -113,7 +126,17 @@ void EnemyManager::EnemyTimer()
 	//		_spawnEnemy = true;
 	//		_enemyTime = false;
 	//	}
+	//	if (_spawnEnemy == true && _enemyTime == false)
+	//	{
+	//		_enemySpawnTime = 3.f;
+	//		SpawnEnemy();
+	//		_spawnEnemy = false;
+	//		_enemyTime = true;
+	//		//_intEnemySpawnTime = 3;
+	//	}
 	//}
+
+
 
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 	{
@@ -144,11 +167,11 @@ void EnemyManager::SpawnEnemy()
 	SOUNDMANAGER->play("wave", 10.0f);
 	for (int i = 0; i < _waveV[_curWave].size(); i++)
 	{
-		if (_enemyV[i]->isActive == true) continue;
+		if (_enemyV[_waveV[_curWave][i]]->isActive == true) continue;
 		{
 			_enemyV[_waveV[_curWave][i]]->SetActive(true);
-			_enemyV[_waveV[_curWave][i]]->transform->SetPosition(100 + 500 * i, 100 + 50 * i);
-			break;
+			_enemyV[_waveV[_curWave][i]]->transform->SetPosition(100 + 200 * i, 100 + 50 * i);
+			//break;
 		}
 	}
 }
@@ -157,12 +180,18 @@ void EnemyManager::DeadEvent()
 {
 	SOUNDMANAGER->play("explosion", 40.0f);
 
+	//for (int i = 0; i < _waveV[_curWave].size(); i++)
+	//{ 
+	//	if (_enemyV[_waveV[_curWave][i]]->isActive == false) continue;
+	//	_enemyV[_waveV[_curWave][i]]->SetActive(false);
+	//}
+
 	for (int i = 0; i < _waveV[_curWave].size(); i++)
 	{ 
-		if (_enemyV[_waveV[_curWave][i]]->isActive == false) continue;
-		_enemyV[_waveV[_curWave][i]]->SetActive(false);
+		if (_enemyV[_waveV[_curWave][i]]->isActive == true) return;
+		//if(_enemyV[_waveV[_curWave][i]])
 	}
-	_curWave++;
+		_curWave++;
 	return;
 }
 																																																			

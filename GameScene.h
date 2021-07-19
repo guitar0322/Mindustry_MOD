@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "ProjectileManager.h"
 #include "Prop.h"
+#include "CameraControler.h"
 
 #define PROP_UI_STARTX WINSIZEX - 230
 #define PROP_UI_STARTY WINSIZEY - 187
@@ -64,6 +65,7 @@ private:
 	// EnemyManager // 
 	GameObject* _enemyManager;
 	Prop* _core;
+	CameraControler* _cameraControler;
 
 public:
     virtual HRESULT Init();
@@ -76,5 +78,6 @@ public:
 	void SetProjectileManager();
 	void SetCore();
 	void SetEnemyManager();
+	void SetCameraControler();
 };
 

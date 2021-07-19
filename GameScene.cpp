@@ -91,6 +91,7 @@ HRESULT GameScene::Init()
 	SetProjectileManager();
 	SetCore();
 	SetEnemyManager();
+	SetCameraControler();
 
 	SOUNDMANAGER->addSound("start", "music/land.mp3", true, false);
 	SOUNDMANAGER->addSound("bgm1", "music/game1.mp3", true, false);
@@ -104,19 +105,21 @@ HRESULT GameScene::Init()
 
 void GameScene::Update()
 {
-    MainCam->Update();
-    buildingCategoryFrame.Update();
-    propFactory->Update();
-    propContainer->Update();
-    uiControler->Update();
-    propPreview.Update();
+	MainCam->Update();
+	_cameraControler->Update();
+
+	buildingCategoryFrame.Update();
+	propFactory->Update();
+	propContainer->Update();
+	uiControler->Update();
+	propPreview.Update();
 	gameMap->Update();
 
 	/* ÇÃ·¹ÀÌ¾î ºÎºÐ*/
 	_player->Update();
 	_playerWeaponL->Update();
 	_playerWeaponR->Update();
-	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
+	//MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
 	_projectileManager->Update();
 	//========================================
 
@@ -183,6 +186,7 @@ void GameScene::Render()
 	_enemyManager->Render();
 	_projectileManager->Render();
 	_core->Render();
+	_cameraControler->Render();
 	MainCam->Render();
     _miniMapCam->Render();
 
@@ -209,20 +213,19 @@ void GameScene::Render()
     _choiceImg.Render();
 
 	/* ================================¿©±â ¸¸ÁöÁö ¸¶¼¼¿ä ========================================*/
-	wstring wstr = L"player speed : ";
-	wstr.append(to_wstring(_player->controler->GetSpeed()));
-	D2DRENDERER->RenderText(100, 100, wstr, 20, L"¸¼Àº°íµñ", D2DRenderer::DefaultBrush::White);
+	//wstring wstr = L"player speed : ";
+	//wstr.append(to_wstring(_player->controler->GetSpeed()));
+	//D2DRENDERER->RenderText(100, 100, wstr, 20, L"¸¼Àº°íµñ", D2DRenderer::DefaultBrush::White);
 
-	wstring wstrangle = L"Angle : ";
-	wstrangle.append(to_wstring(_player->controler->GetTargetAngle()));
-	D2DRENDERER->RenderText(100, 150, wstrangle, 20, L"¸¼Àº°íµñ", D2DRenderer::DefaultBrush::White);
-	
+	//wstring wstrangle = L"Angle : ";
+	//wstrangle.append(to_wstring(_player->controler->GetTargetAngle()));
+	//D2DRENDERER->RenderText(100, 150, wstrangle, 20, L"¸¼Àº°íµñ", D2DRenderer::DefaultBrush::White);
+	//
 
 	//wstring time = L"MusicTime: ";
 	//time.append(to_wstring(_musicTime));
 	//D2DRENDERER->RenderText(10, 140, time, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
 	
-
 	//wstring minute = L"MINUTE : ";
 	//minute.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeMinute()));
 	//D2DRENDERER->RenderText(10, 10, minute, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
@@ -235,10 +238,6 @@ void GameScene::Render()
 	wave.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetCurWave()));
 	D2DRENDERER->RenderText(10, 110, wave, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
 	
-	wstring PlayerHp = L"PlayerHP: ";
-	PlayerHp.append(to_wstring(_player->controler->GetHp()));
-	D2DRENDERER->RenderText(10, 10, PlayerHp, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
-
 	/*wstring mineCount = L"mineCount";
 	mineCount.append(to_wstring(_mineCount));
 	D2DRENDERER->RenderText(WINSIZEX / 2 - 50, 10, mineCount, 20, L"fontello", D2DRenderer::DefaultBrush::White);*/
@@ -447,4 +446,11 @@ void GameScene::SetEnemyManager()
 	_enemyManager->GetComponent<EnemyManager>()->SetProjectileManager(_projectileManager->GetComponent<ProjectileManager>());
 	_enemyManager->GetComponent<EnemyManager>()->Init();
 	_projectileManager->GetComponent<ProjectileManager>()->SetEnemyManager(_enemyManager->GetComponent<EnemyManager>());
+}
+
+void GameScene::SetCameraControler()
+{
+	_cameraControler = new CameraControler();
+	_cameraControler->SetPlayer(_player);
+	_cameraControler->Init();
 }

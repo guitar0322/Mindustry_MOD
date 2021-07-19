@@ -42,6 +42,7 @@ void Camera::Update()
 {
 	_cameraStartX = transform->GetX() - GetRenderWidth() / 2;
 	_cameraStartY = transform->GetY() - GetRenderHeight() / 2;
+
 	if (_cameraStartX < 0) {
 		_cameraStartX = 0;
 		transform->SetX(GetRenderWidth() / 2);

@@ -46,10 +46,10 @@ void Renderer::Render()
 	int renderStartX = transform->GetX() - _frameWidth / 2;
 	int renderStartY = transform->GetY() - _frameHeight / 2;
 
-	if (IntersectRect(&MainCam->GetRenderRc(), &_rc) == false)
-	{
-		return;
-	}
+	//if (IntersectRect(&MainCam->GetRenderRc(), &_rc) == false)
+	//{
+	//	return;
+	//}
 
 	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
