@@ -15,14 +15,21 @@ Conveyor::Conveyor()
 
 	collider->SetSize(stat->GetSize() * TILESIZE, stat->GetSize() * TILESIZE);
 
-	transport = new Transport();
-	AddComponent(transport);
-	transport->Init();
 
 	animator = new Animator();
 	AddComponent(animator);
 	animator->Init();
 	animator->AddClip("conveyor_I");
+	animator->AddClip("conveyor_L");
+	animator->AddClip("conveyor_L2");
+	animator->AddClip("conveyor_T");
+	animator->AddClip("conveyor_T2");
+	animator->AddClip("conveyor_T3");
+	animator->AddClip("conveyor_cross");
+
+	transport = new Transport();
+	AddComponent(transport);
+	transport->Init();
 }
 
 Conveyor::~Conveyor()

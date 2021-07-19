@@ -1,4 +1,4 @@
-#pragma once
+ajgksl#pragma once
 #include "Component.h"
 
 class ProjectileManager;
@@ -43,17 +43,16 @@ private:
 	float _weaponRdistanceAngle;
 	float _attackSpeed;
 	float worldX, worldY;
+	float pointworldX, pointworldY;
 	
 	int _hp;
 
 	DIRECTION _dir;
 	bool _isLeft;
 	bool _isDiagonal;
-	bool _shootLeft;
-	bool _shootRight;
 	bool _isSlow;
-	bool _isGathering;
-	bool _isFire;
+	bool _isCollecting;
+	Vector2 _collectTile;
 	bool _isDead;
 	bool _isRespawn;
 	ProjectileManager* _projectileManager;
@@ -76,6 +75,7 @@ public:
 	float GetTargetAngle() const { return _targetAngle; }
 	bool GetPlayerDead() const { return _isDead; }
 	bool GetPlayerRespawn() const { return _isRespawn; }
+	void KeyHandle();
 	void SetProjectileManager(ProjectileManager* projectileManager) { _projectileManager = projectileManager; }
 
 	void Hit(float damage);

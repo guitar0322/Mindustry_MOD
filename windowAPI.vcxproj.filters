@@ -253,9 +253,6 @@
     <ClCompile Include="TitleUIControler.cpp" />
     <ClCompile Include="PlayerLaser.cpp" />
     <ClCompile Include="TitleUIControler.cpp" />
-    <ClCompile Include="PlayerScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
     <ClCompile Include="GameInfo.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="TitleUIControler.cpp" />
@@ -492,7 +489,6 @@
     <ClInclude Include="ShootingScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="PropInfo.h" />
     <ClInclude Include="PropContainer.h" />
     <ClInclude Include="PropFactory.h" />
     <ClInclude Include="EditText.h">
@@ -542,9 +538,6 @@
     <ClInclude Include="TitleUIControler.h" />
     <ClInclude Include="PlayerLaser.h" />
     <ClInclude Include="TitleUIControler.h" />
-    <ClInclude Include="PlayerScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
     <ClInclude Include="GameInfo.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="TitleUIControler.h" />
@@ -562,8 +555,10 @@
     <ClInclude Include="Core.h">
       <Filter>Prop\Component</Filter>
     </ClInclude>
-    <ClInclude Include="CameraControler.h">
+    <ClInclude Include="CameraControler.h" />
       <Filter>CameraControler</Filter>
+    <ClInclude Include="PropInfo.h">
+      <Filter>헤더파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

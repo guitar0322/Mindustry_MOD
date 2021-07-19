@@ -86,8 +86,11 @@ public:
 		 const float strokeWidth = 1.f);
 	void DrawEllipse(const Vector2& origin, const float radius, const D2D1::ColorF::Enum& color, const float alpha,
 		 const float strokeWidth = 1.f);
+
 	void FillRectangle(const Rect& rc, const  D2D1::ColorF::Enum& color, const float alpha);
 	void FillRectangle(const Rect& rc, const DefaultBrush& defaultBrush = DefaultBrush::Black);
+	void FillRectangleBack(const Rect& rc, const  D2D1::ColorF::Enum& color, const float alpha);
+	void FillRectangleBack(const Rect& rc, const DefaultBrush& defaultBrush = DefaultBrush::Black);
 	void FiilEllipse(const Vector2& origin, const float radius, const D2D1::ColorF::Enum& color, const float alpha);
 	void FiilEllipse(const Vector2& origin, const float radius, const DefaultBrush& brush = DefaultBrush::Black);
 

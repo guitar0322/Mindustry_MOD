@@ -7,7 +7,12 @@
 #define RAIL 2
 #define DEFENSE 3
 
-
+enum PROPDIR {
+    RIGHT,
+    DOWN,
+    LEFT,
+    UP
+};
 
 
 
