@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "ProjectileManager.h"
 #include "Prop.h"
+#include "CameraControler.h"
 
 #define PROP_UI_STARTX WINSIZEX - 230
 #define PROP_UI_STARTY WINSIZEY - 187
@@ -27,6 +28,9 @@ private:
 	Player* _player;
 	ImageObject* _playerWeaponL;
 	ImageObject* _playerWeaponR;
+	ImageObject* _playerCell;
+	ImageObject* _playerFireCircle;
+	ImageObject* _playerFire;
 	GameObject* _projectileManager;
 
 	//======
@@ -126,6 +130,7 @@ private:
 	// EnemyManager 210717 작업 - 민재 // 
 	GameObject* _enemyManager;
 	Prop* _core;
+	CameraControler* _cameraControler;
 
 public:
     virtual HRESULT Init();
@@ -154,6 +159,7 @@ public:
     void SetProjectileManager();
 	void SetCore();
 	void SetEnemyManager();
+	void SetCameraControler();
 
 	/* 화면에 문자 띄울 때 여기 쓰세요 - 유림 (210719)*/
 	void StringRender();

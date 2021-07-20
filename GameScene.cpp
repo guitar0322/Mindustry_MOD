@@ -27,7 +27,6 @@ HRESULT GameScene::Init()
     selectCategoryIdx = 0;
     _gameInfo = new GameInfo();
     _gameInfo->Init();
-    _gameInfo->AddResource(COPPER, 500);
 
     _propContainer = new PropContainer();
     _propFactory = new PropFactory();
@@ -79,7 +78,8 @@ HRESULT GameScene::Init()
     _goBackIdleImg.uiRenderer->Init("research_gobackidle");
     _goBackIdleImg.transform->SetPosition(WINSIZEX / 2 - 200, WINSIZEY - 70);
     _goBackIdleImg.SetActive(true);
-
+	
+	//========================================
     _goBackChoiceImg.uiRenderer->Init("research_gobackchoice");
     _goBackChoiceImg.transform->SetPosition(WINSIZEX / 2 - 200, WINSIZEY - 70);
     _goBackChoiceImg.SetActive(false);
@@ -126,11 +126,11 @@ HRESULT GameScene::Init()
 	PlayerInit();
 	/*===================================================================== */
 
-
     /* 게임신 에너미 관련 작업 함수, by 민재. 삭제 금지 */
 	SetProjectileManager();
 	SetCore();
 	SetEnemyManager();
+	SetCameraControler();
 
     /* 사운드 작업 광철 210718 */
 	SOUNDMANAGER->addSound("start", "music/land.mp3", true, false);
@@ -146,14 +146,11 @@ HRESULT GameScene::Init()
 
 void GameScene::Update()
 {
-    MainCam->Update();
-    _buildingCategoryFrame.Update();
-    _propFactory->Update();
-    _propContainer->Update();
-    _uiControler->Update();
+	MainCam->Update();
+	_cameraControler->Update();
 
     //07-19 플레이어와 UI간의 마우스 클릭 우선순위때문에 UI업데이트 위로 올림
-    //     //카테고리 아이콘 업데이트
+    //카테고리 아이콘 업데이트
     {
         _defenseIcon.Update();
         _railIcon.Update();
@@ -168,22 +165,26 @@ void GameScene::Update()
         _conveyorIcon.Update();
     }
 
+    _propFactory->Update();
+    _propContainer->Update();
+    _uiControler->Update();
+
+	/* 플레이어 부분*/
+	_player->Update();
+	_playerWeaponL->Update();
+	_playerWeaponR->Update();
+	_playerCell->Update();
+	_projectileManager->Update();
+
+	// 광물 부분 -> 유림 210719
+	ResourcesUpdate();
+	//========================================
+    _buildingCategoryFrame.Update();
+
+
     //카테고리 아이콘 업데이트 
     _propPreview.Update();
 	_gameMap->Update();
-
-	/* =======================================*/
-	/* 플레이어 부분 -> 유림*/
-	{
-		_player->Update();
-		_playerWeaponL->Update();
-		_playerWeaponR->Update();
-		MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
-		_projectileManager->Update();
-	}
-	// 광물 부분 -> 유림 210719
-	ResourcesUpdate();
-
 	//========================================
     _categorySelect.Update();
     _propSelect.Update();
@@ -223,20 +224,21 @@ void GameScene::Update()
 
 void GameScene::Render()
 {
-	//맵 렌더 -> 유림 "랜더 순서 손대지마세요^^"
+    MainCam->StaticToBackBuffer();
+	_gameMap->Render();
+
+    _propFactory->Render();
+    _propContainer->Render();
+    _uiControler->Render();
+
+	//플레이어 관련 렌더 -> 유림
 	{
-		MainCam->StaticToBackBuffer();
-		_gameMap->Render();
-
-		_propFactory->Render();
-		_propContainer->Render();
-		_uiControler->Render();
-
-		//플레이어 관련 렌더 -> 유림
+		_player->transform->GetChild(3)->gameObject->Render();
 		_player->Render();
+		_enemyManager->Render();
 		_projectileManager->Render();
 		_core->Render();
-		_enemyManager->Render();
+		_cameraControler->Render();
 		MainCam->Render();
 	}
 
@@ -262,6 +264,8 @@ void GameScene::Render()
     if (_research) researchRender();
     _CoreSlice.Render();
     _choiceImg.Render();
+
+	/* ================================여기 만지지 마세요 ========================================*/
 
 	//자원UI 렌더 -> 유림 (210719)
 	ResourcesRender();
@@ -494,6 +498,10 @@ void GameScene::PlayerClip()
 	CLIPMANAGER->AddClip("bullet", "sprites/effects/bullet.png", 52, 52);
 	CLIPMANAGER->AddClip("player_weapon_L", "player/small-basic-weapon-L.png", 48, 48);
 	CLIPMANAGER->AddClip("player_weapon_R", "player/small-basic-weapon-R.png", 48, 48);
+	CLIPMANAGER->AddClip("player_cell", "player/alpha-cell.png", 48, 48);
+	CLIPMANAGER->AddClip("player_fire_circle", "player/alpha_fire_circle.png", 17, 17);
+	CLIPMANAGER->AddClip("player_fire", "player/alpha_fire.png", 30, 30);
+
 
 	//자원 클립
 	CLIPMANAGER->AddClip("copperUI", "sprites/items/item-copper.png", 32, 32);
@@ -520,8 +528,27 @@ void GameScene::PlayerInit()
 	_playerWeaponR->Init();
 	_playerWeaponR->renderer->Init("player_weapon_R");
 
+	_playerCell = new ImageObject;
+	_playerCell->Init();
+	_playerCell->renderer->Init("player_cell");
+
+	_playerFireCircle = new ImageObject;
+	_playerFireCircle->Init();
+	_playerFireCircle->renderer->Init("player_fire_circle");
+
+	_playerFire = new ImageObject;
+	_playerFire->Init();
+	_playerFire->renderer->Init("player_fire");
+
 	_player->transform->AddChild(_playerWeaponL->transform);
 	_player->transform->AddChild(_playerWeaponR->transform);
+	_player->transform->AddChild(_playerCell->transform);
+	_player->transform->AddChild(_playerFireCircle->transform);
+	_player->transform->AddChild(_playerFire->transform);
+	_player->transform->GetChild(2)->SetPosition(_player->transform->GetX() , _player->transform->GetY());
+
+	_player->controler->SetGameInfo(_gameInfo);
+	_player->controler->SetGameMap(_gameMap);
 
 }
 
@@ -531,11 +558,11 @@ void GameScene::ResourcesInit()
 	
 	_resourcesUI[0].Init();
 	_resourcesUI[0].uiRenderer->Init("copperUI");
-	_resourcesUI[0].transform->SetPosition(WINSIZEX / 2 - 90, 20);
+	_resourcesUI[0].transform->SetPosition(WINSIZEX / 2 - 95, 20);
 
 	_resourcesUI[1].Init();
 	_resourcesUI[1].uiRenderer->Init("leadUI");
-	_resourcesUI[1].transform->SetPosition(WINSIZEX / 2 + 18, 20);
+	_resourcesUI[1].transform->SetPosition(WINSIZEX / 2 + 20, 20);
 	
 
 }
@@ -545,7 +572,6 @@ void GameScene::ResourcesUpdate()
 	_resourcesUI[0].Update();
 	_resourcesUI[1].Update();
 
-	test = 10;
 }
 
 void GameScene::ResourcesRender()
@@ -554,10 +580,29 @@ void GameScene::ResourcesRender()
 	_resourcesUI[0].Render();
 	_resourcesUI[1].Render();
 
+	wstring copperAmount;
+	wstring leadAmount;
 
-	wstring test_f = to_wstring(test);
-	D2DRENDERER->RenderText(WINSIZEX / 2 - 30, 0, test_f, 25, L"fontello", D2DRenderer::DefaultBrush::White);
+	if (_gameInfo->GetResourceAmount(COPPER) < 1000)
+	{
+		copperAmount = to_wstring(_gameInfo->GetResourceAmount(COPPER));
+	}
+	else
+	{
+		copperAmount = L"1.0k";
+	}
 
+	if (_gameInfo->GetResourceAmount(LEAD) < 1000)
+	{
+		leadAmount = to_wstring(_gameInfo->GetResourceAmount(LEAD));
+	}
+	else
+	{
+		leadAmount = L"1.0k";
+	}
+	
+	D2DRENDERER->RenderText(WINSIZEX / 2 - 70, 5, copperAmount, 28, L"mindustry", D2DRenderer::DefaultBrush::White);
+	D2DRENDERER->RenderText(WINSIZEX / 2 + 42, 5, leadAmount, 28, L"mindustry", D2DRenderer::DefaultBrush::White);
 }
 
 void GameScene::researchUpdate()
@@ -1218,6 +1263,13 @@ void GameScene::SetEnemyManager()
 	_projectileManager->GetComponent<ProjectileManager>()->SetEnemyManager(_enemyManager->GetComponent<EnemyManager>());
 }
 
+void GameScene::SetCameraControler()
+{
+    _cameraControler = new CameraControler();
+    _cameraControler->SetPlayerTr(_player->transform);
+    _cameraControler->Init();
+}
+
 void GameScene::StringRender()
 {
 	wstring wstr = L"player speed : ";
@@ -1245,4 +1297,8 @@ void GameScene::StringRender()
 	//wstring wave = L"CurWave: ";
 	//wave.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetCurWave()));
 	//D2DRENDERER->RenderText(10, 110, wave, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
+
+    /*wstring mineCount = L"mineCount";
+    mineCount.append(to_wstring(_mineCount));
+    D2DRENDERER->RenderText(WINSIZEX / 2 - 50, 10, mineCount, 20, L"fontello", D2DRenderer::DefaultBrush::White);*/
 }

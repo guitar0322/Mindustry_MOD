@@ -156,6 +156,7 @@
     <ClInclude Include="CallbackTest.h" />
     <ClInclude Include="Cam.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraControler.h" />
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="ClipManager.h" />
@@ -257,6 +258,7 @@
     <ClCompile Include="CallbackTest.cpp" />
     <ClCompile Include="Cam.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraControler.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="ClipManager.cpp" />
