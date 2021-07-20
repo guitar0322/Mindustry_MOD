@@ -7,6 +7,7 @@
 #include "UIMouseEvent.h"
 #include "EnemyManager.h"
 #include "GameInfo.h"
+#include <string>
 #include "Prop.h"
 
 HRESULT GameScene::Init()
@@ -173,14 +174,15 @@ void GameScene::Update()
 
 	/* =======================================*/
 	/* 플레이어 부분 -> 유림*/
-	_player->Update();
-	_playerWeaponL->Update();
-	_playerWeaponR->Update();
-	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
-	_projectileManager->Update();
-
+	{
+		_player->Update();
+		_playerWeaponL->Update();
+		_playerWeaponR->Update();
+		MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
+		_projectileManager->Update();
+	}
 	// 광물 부분 -> 유림 210719
-
+	ResourcesUpdate();
 
 	//========================================
     _categorySelect.Update();
@@ -222,19 +224,21 @@ void GameScene::Update()
 void GameScene::Render()
 {
 	//맵 렌더 -> 유림 "랜더 순서 손대지마세요^^"
-    MainCam->StaticToBackBuffer();
-	_gameMap->Render();
+	{
+		MainCam->StaticToBackBuffer();
+		_gameMap->Render();
 
-    _propFactory->Render();
-    _propContainer->Render();
-    _uiControler->Render();
+		_propFactory->Render();
+		_propContainer->Render();
+		_uiControler->Render();
 
-	//플레이어 관련 렌더 -> 유림
-	_player->Render();
-	_projectileManager->Render();
-	_core->Render();
-	_enemyManager->Render();
-	MainCam->Render();
+		//플레이어 관련 렌더 -> 유림
+		_player->Render();
+		_projectileManager->Render();
+		_core->Render();
+		_enemyManager->Render();
+		MainCam->Render();
+	}
 
     //카테고리 아이콘 렌더
     {
@@ -260,9 +264,7 @@ void GameScene::Render()
     _choiceImg.Render();
 
 	//자원UI 렌더 -> 유림 (210719)
-	D2DRenderer::GetInstance()->FillRectangle(_resoucesUIBackGround, D2D1::ColorF::Black, 0.7f);
-	_resourcesUI[0].Render();
-	_resourcesUI[1].Render();
+	ResourcesRender();
 
 	/* ================================여기 만지지 마세요 ========================================*/
 	//210719 유림 수정
@@ -496,8 +498,6 @@ void GameScene::PlayerClip()
 	//자원 클립
 	CLIPMANAGER->AddClip("copperUI", "sprites/items/item-copper.png", 32, 32);
 	CLIPMANAGER->AddClip("leadUI", "sprites/items/item-lead.png", 32, 32);
-
-
 }
 
 void GameScene::PlayerInit()
@@ -545,7 +545,18 @@ void GameScene::ResourcesUpdate()
 	_resourcesUI[0].Update();
 	_resourcesUI[1].Update();
 
+	test = 10;
+}
 
+void GameScene::ResourcesRender()
+{
+	D2DRenderer::GetInstance()->FillRectangle(_resoucesUIBackGround, D2D1::ColorF::Black, 0.7f);
+	_resourcesUI[0].Render();
+	_resourcesUI[1].Render();
+
+
+	wstring test_f = to_wstring(test);
+	D2DRENDERER->RenderText(WINSIZEX / 2 - 30, 0, test_f, 25, L"fontello", D2DRenderer::DefaultBrush::White);
 
 }
 

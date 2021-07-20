@@ -61,6 +61,7 @@ private:
 	//인게임 자원UI 관련 -> 유림
 	Rect _resoucesUIBackGround;
 	UIBase _resourcesUI[2];
+	int test;
 
 
     int selectCategoryIdx;
@@ -142,6 +143,7 @@ public:
 	//자원
 	void ResourcesInit();
 	void ResourcesUpdate();
+	void ResourcesRender();
 
     /* SHUNG 210718 */
     void researchUpdate();
