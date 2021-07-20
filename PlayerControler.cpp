@@ -322,6 +322,7 @@ void PlayerControler::KeyHandle()
 	if (KEYMANAGER->isStayKeyDown('A') || KEYMANAGER->isStayKeyDown('D') ||
 		KEYMANAGER->isStayKeyDown('S') || KEYMANAGER->isStayKeyDown('W'))
 	{
+		_isSlow = false;
 		_speed += _accel * TIMEMANAGER->getElapsedTime();
 		if (_speed >= 250.f)
 		{

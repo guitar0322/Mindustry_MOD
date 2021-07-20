@@ -177,7 +177,6 @@ void GameScene::Update()
 	//========================================
     _buildingCategoryFrame.Update();
 
-
     //카테고리 아이콘 업데이트 
     _propPreview.Update();
 	_gameMap->Update();
