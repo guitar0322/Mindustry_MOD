@@ -78,10 +78,6 @@ HRESULT GameScene::Init()
     _goBackIdleImg.uiRenderer->Init("research_gobackidle");
     _goBackIdleImg.transform->SetPosition(WINSIZEX / 2 - 200, WINSIZEY - 70);
     _goBackIdleImg.SetActive(true);
-
-	//플레이어에 포신 넣음
-	_player->transform->AddChild(_playerWeaponL->transform);
-	_player->transform->AddChild(_playerWeaponR->transform);
 	
 	//========================================
     _goBackChoiceImg.uiRenderer->Init("research_gobackchoice");
@@ -153,28 +149,8 @@ void GameScene::Update()
 	MainCam->Update();
 	_cameraControler->Update();
 
-	buildingCategoryFrame.Update();
-	propFactory->Update();
-	propContainer->Update();
-	uiControler->Update();
-	propPreview.Update();
-	gameMap->Update();
-
-	/* 플레이어 부분*/
-	_player->Update();
-	_playerWeaponL->Update();
-	_playerWeaponR->Update();
-	//MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
-	_projectileManager->Update();
-	//========================================
-    MainCam->Update();
-    _buildingCategoryFrame.Update();
-    _propFactory->Update();
-    _propContainer->Update();
-    _uiControler->Update();
-
     //07-19 플레이어와 UI간의 마우스 클릭 우선순위때문에 UI업데이트 위로 올림
-    //     //카테고리 아이콘 업데이트
+    //카테고리 아이콘 업데이트
     {
         _defenseIcon.Update();
         _railIcon.Update();
@@ -189,20 +165,22 @@ void GameScene::Update()
         _conveyorIcon.Update();
     }
 
-    //카테고리 아이콘 업데이트 
-    _propPreview.Update();
-	_gameMap->Update();
+    _propFactory->Update();
+    _propContainer->Update();
+    _uiControler->Update();
 
-	/* =======================================*/
-	/* 플레이어 부분 -> 유림*/
+	/* 플레이어 부분*/
 	_player->Update();
 	_playerWeaponL->Update();
 	_playerWeaponR->Update();
-	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
 	_projectileManager->Update();
+	//========================================
+    _buildingCategoryFrame.Update();
 
-	// 광물 부분 -> 유림 210719
 
+    //카테고리 아이콘 업데이트 
+    _propPreview.Update();
+	_gameMap->Update();
 
 	//========================================
     _categorySelect.Update();

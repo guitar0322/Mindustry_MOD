@@ -1,4 +1,4 @@
-ajgksl#pragma once
+#pragma once
 #include "Component.h"
 
 class ProjectileManager;
@@ -30,6 +30,7 @@ private:
 private:
 
 	float _speed;
+	float _accel;
 	float _armRecoverySpeed;
 	float _targetAngle;
 	float _angleSpeed;
@@ -49,7 +50,6 @@ private:
 
 	DIRECTION _dir;
 	bool _isLeft;
-	bool _isDiagonal;
 	bool _isSlow;
 	bool _isCollecting;
 	Vector2 _collectTile;
@@ -82,5 +82,6 @@ public:
 	void Dead();
 	void Respawn();
 	void RespawnTime();
+	void MoveHandler();
 };
 

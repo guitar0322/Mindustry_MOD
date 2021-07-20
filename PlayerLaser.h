@@ -19,7 +19,6 @@ private:
 	float _laserAlphaTime;				//레이저 알파블랜더 시간
 	int _rcRotate;						//레이저 탐지용 렉트 회전값
 	float _rcRotateTime;				//레이저 탐지용 렉트 회전 시간
-	
 
 public:
 	PlayerLaser();
@@ -33,7 +32,7 @@ public:
 	void LaserAlpha();			//레이저 알파블랜드
 	void RcRotate();			//레이저 탐지 렉트 회전
 	void SetImage();
-
+	void OffLaser();
 	void SetLaserStartPoint(float laserStartX, float laserStartY) { _laserStartX = laserStartX; _laserStartY = laserStartY; }
 	pair <float, float> GetLaserFirstPoint() { return { _laserStartX, _laserStartY }; }
 	void SetLaserEndPoint(int laserEndX, int laserEndY) { _laserEndX = laserEndX; _laserEndY = laserEndY; }

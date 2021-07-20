@@ -14,7 +14,6 @@ void PlayerLaser::Init()
 	SetImage();
 
 	_laserAlphaTime = 0;
-
 	//플레이어 광물 채취용 레이저
 	_collectLaserFirst = new ImageObject;
 	_collectLaserFirst->Init();
@@ -68,7 +67,7 @@ void PlayerLaser::ShootLaser()
 	_laserX = _laserEndX * TILESIZE + 16;
 	_laserY = _laserEndY * TILESIZE + 16;
 	_laserAngle = ConvertAngleD2D(GetAngle(_laserStartX, _laserStartY, _laserX, _laserY));
-	float laserDistance = GetDistance(_laserStartX, _laserStartY, _laserX, _laserY);
+	_laserDistance = GetDistance(_laserStartX, _laserStartY, _laserX, _laserY);
 	float laserCenterX = (_laserX + _laserStartX) / 2.f;
 	float laserCenterY = (_laserY + _laserStartY) / 2.f;
 
@@ -76,18 +75,8 @@ void PlayerLaser::ShootLaser()
 	_detectRc->transform->SetPosition(Vector2(_laserX, _laserY));
 	_collectLaserFirst->transform->SetPosition(Vector2(_laserStartX, _laserStartY));
 	_collectLaser->transform->SetPosition(Vector2(laserCenterX, laserCenterY));
-	_collectLaser->transform->SetScale((laserDistance / 280.f), 0.8f);
-	//_collectLaser->transform->SetScale(5.f, 1.f);
-	//_collectLaser->transform->SetScale(5.f, 1.f);
+	_collectLaser->transform->SetScale((_laserDistance / 280.f), 0.8f);
 	_collectLaser->transform->SetAngle(_laserAngle + 90);
-
-	if (laserDistance >= 400)
-	{
-		_collectLaserFirst->SetActive(false);
-		_collectLaserEnd->SetActive(false);
-		_collectLaser->SetActive(false);
-		_detectRc->SetActive(false);
-	}
 }
 
 void PlayerLaser::LaserAlpha()
@@ -130,4 +119,12 @@ void PlayerLaser::SetImage()
 	CLIPMANAGER->AddClip("laser_rc", "player/laser_rc.png", 35, 35);
 	CLIPMANAGER->AddClip("laser_center", "player/laser_center.png", 280, 48);
 
+}
+
+void PlayerLaser::OffLaser()
+{
+	_collectLaserFirst->SetActive(false);
+	_collectLaserEnd->SetActive(false);
+	_collectLaser->SetActive(false);
+	_detectRc->SetActive(false);
 }
