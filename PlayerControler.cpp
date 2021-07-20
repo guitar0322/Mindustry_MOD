@@ -133,8 +133,8 @@ void PlayerControler::Update()
 		{
 		   if (_isCollecting == false)
 		   {
-			  _collectTile.x = worldX / TILESIZE;
-			  _collectTile.y = worldY / TILESIZE;
+			  _collectTile.x = _worldX / TILESIZE;
+			  _collectTile.y = _worldY / TILESIZE;
 			  _playerLaser->SetLaserEndPoint(_collectTile.x, _collectTile.y);
 			  _isCollecting = true;
 			  _playerLaser->_collectLaserFirst->SetActive(true);
