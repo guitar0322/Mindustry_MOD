@@ -39,7 +39,7 @@ void ProjectileManager::Init()
 	for (int i = 0; i < PLAYER_PROJECTILE_MAX; i++)
 	{
 		_playerProjectile = new ProjectileObject();
-		_playerProjectile->GetRendererComponent()->Init("projectile");
+		_playerProjectile->GetRendererComponent()->Init("bullet");
 		_playerProjectile->transform->SetScale(0.5f, 0.5f);
 		_playerProjectile->GetProjectileComponent()->SetSpeed(500.f);
 		_playerProjectile->GetProjectileComponent()->SetDamage(50);

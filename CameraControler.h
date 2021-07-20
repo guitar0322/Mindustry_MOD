@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+
 class CameraControler :
     public Component
 {
@@ -17,4 +18,3 @@ public:
 
     void SetPlayerTr(Transform* playerTr) { _playerTr = playerTr; }
 };
-
