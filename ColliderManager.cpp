@@ -19,6 +19,18 @@ void ColliderManager::Release()
 	_colliderV.clear();
 }
 
+void ColliderManager::Render()
+{
+	for (int i = 0; i < _partitionNumX; i++)
+	{
+		D2DRENDERER->DrawLineBack(Vector2(_partitionWidth * i, 0.f), Vector2(_partitionWidth * i, _partitionHeight * _partitionNumY), D2D1::ColorF::Green, 1.f);
+	}
+	for (int i = 0; i < _partitionNumY; i++)
+	{
+		D2DRENDERER->DrawLineBack(Vector2(0.f, _partitionHeight * i), Vector2(_partitionWidth * _partitionNumX, _partitionHeight * i), D2D1::ColorF::Green, 1.f);
+	}
+}
+
 void ColliderManager::EraseCollider(BoxCollider* targetCollider)
 {
 	vector<pair<int, int>> partitionIdx = targetCollider->GetPartitionIdx();

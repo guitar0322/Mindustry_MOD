@@ -4,6 +4,7 @@
 #include "Conveyor.h"
 #include "Transport.h"
 #include "TileInfo.h"
+#include "Drill.h"
 
 int conveyorDir[4][2] = { {1,0}, {0,1}, {-1,0}, {0,-1} };
 
@@ -62,6 +63,7 @@ void PropContainer::AddProp(int hashKey, Prop* newProp, PROPDIR dir)
 			int nextHashKey = nextY * TILENUMX + nextX;
 			Prop* prop = GetPropMap(nextHashKey);
 			Conveyor* nearConveyor = dynamic_cast<Conveyor*>(prop);
+			Drill* nearDrill = dynamic_cast<Drill*>(prop);
 			if (nearConveyor != nullptr)
 			{
 				if (i == conveyorCast->transport->GetOutDir())
@@ -73,6 +75,35 @@ void PropContainer::AddProp(int hashKey, Prop* newProp, PROPDIR dir)
 				{
 					conveyorCast->transport->LinkConveyor(PROPDIR(i));
 				}
+			}
+			if (nearDrill != nullptr)
+			{
+				conveyorCast->transport->LinkConveyor(PROPDIR(i));
+			}
+		}
+	}
+
+	Drill* drillCast = dynamic_cast<Drill*>(newProp);
+	if (drillCast != nullptr)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			int nextX = tileX + conveyorDir[i][0];
+			int nextY = tileY + conveyorDir[i][1];
+			int nextHashKey = nextY * TILENUMX + nextX;
+			Prop* prop = GetPropMap(nextHashKey);
+			Conveyor* nearConveyor = dynamic_cast<Conveyor*>(prop);
+			if (nearConveyor != nullptr)
+			{
+				nearConveyor->transport->LinkConveyor(PROPDIR((i + 2) % 4));
+				//if (i == conveyorCast->transport->GetOutDir())
+				//{
+				//	//(i + 2) % 4 = 반대방향
+				//}
+				//else if (nearConveyor->transport->GetOutDir() == (i + 2) % 4)
+				//{
+				// 
+				//}
 			}
 		}
 	}

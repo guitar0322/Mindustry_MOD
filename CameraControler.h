@@ -2,7 +2,7 @@
 #include "Component.h"
 
 class CameraControler :
-	public Component
+    public Component
 {
 private:
 	Transform* _playerTr;
@@ -18,3 +18,4 @@ public:
 
 	void SetPlayerTr(Transform* playerTr) { _playerTr = playerTr; }
 };
+

@@ -5,16 +5,18 @@
 #include "Player.h"
 #include "ProjectileManager.h"
 #include "Prop.h"
-#include "CameraControler.h"
 
 #define PROP_UI_STARTX WINSIZEX - 230
 #define PROP_UI_STARTY WINSIZEY - 187
 #define CATEGORY_UI_STARTX WINSIZEX - 65
 #define CATEGORY_UI_STARTY WINSIZEY - 190
+
 class PropContainer;
 class PropFactory;
 class UIControler;
 class GameInfo;
+class Item;
+class ResourceManager;
 
 class GameScene :
     public Scene
@@ -22,17 +24,22 @@ class GameScene :
 private:
 	float _musicTime;
 
+    Item* testCopper;
 	/* ============================================*/
 	/* =========== 플레이어 부분 -> 유림 ============*/
 
 	Player* _player;
 	ImageObject* _playerWeaponL;
 	ImageObject* _playerWeaponR;
+	ImageObject* _playerCell;
+	ImageObject* _playerFireCircle;
+	ImageObject* _playerFire;
 	GameObject* _projectileManager;
 
 	//======
     PropContainer* _propContainer;
     PropFactory* _propFactory;
+    ResourceManager* _resourceManager;
     GameInfo* _gameInfo;
     UIControler* _uiControler;
     UIBase _categorySelect;
@@ -62,6 +69,7 @@ private:
 	//인게임 자원UI 관련 -> 유림
 	Rect _resoucesUIBackGround;
 	UIBase _resourcesUI[2];
+	int test;
 
 
     int selectCategoryIdx;
@@ -126,13 +134,13 @@ private:
 	// EnemyManager 210717 작업 - 민재 // 
 	GameObject* _enemyManager;
 	Prop* _core;
-	CameraControler* _cameraControler;
 	//// 07/20 민재 Enemy WAve 및 Player UI 작업/////
 	UIBase _wavePane;
 	UIBase _playerUi;
 	UIBase _playerHpUi;
 	UIBase _waveSkipUi;
 
+    GameObject* _cameraControler;
 public:
     virtual HRESULT Init();
     virtual void Update();
@@ -149,6 +157,7 @@ public:
 	//자원
 	void ResourcesInit();
 	void ResourcesUpdate();
+	void ResourcesRender();
 
     /* SHUNG 210718 */
     void researchUpdate();

@@ -1,12 +1,14 @@
 #pragma once
 #include "Component.h"
+#include "GameInfo.h"
 
 class ProjectileManager;
 class PlayerLaser;
 class EnemyInfo;
+class GameMap;
 
-#define DEFAULT_WEAPON_DISTANCE 11.41f
-#define ATTACK_WEAPON_DISTANCE 9.41f
+#define DEFAULT_WEAPON_DISTANCE 10.269f
+#define ATTACK_WEAPON_DISTANCE 9.13f
 #define DEFAULT_WEAPON_ANGLE 60.f
 #define BULLET_DISTANCE 17.11f
 #define BULLET_ANGLE 60.f
@@ -43,8 +45,8 @@ private:
 	float _weaponLdistanceAngle;
 	float _weaponRdistanceAngle;
 	float _attackSpeed;
-	float worldX, worldY;
-	float pointworldX, pointworldY;
+	float _worldX, _worldY;
+	float _boosterTime;
 	
 	int _hp;
 
@@ -55,13 +57,21 @@ private:
 	Vector2 _collectTile;
 	bool _isDead;
 	bool _isRespawn;
+	int _scaleFlag;
 	ProjectileManager* _projectileManager;
 
 	//자원 추출 레이저
 	PlayerLaser* _playerLaser;
 
-
 	EnemyInfo* _enemyInfo;
+
+	//0720 유림 -> 자원 추출용
+	GameMap* _gameMap;
+	GameInfo* _gameInfo;
+	int _copperAmount, _leadAmount;
+	float _correctingTIme;
+	RESOURCE _colletingResources;
+
 
 public:
 	virtual void Init();
@@ -69,6 +79,9 @@ public:
 	virtual void Render();
 
 	void PlayerDirection();
+	void ResoucesCollect();
+	void ShootResoucesLaser();
+	void BoosterFireScale();
 
 	float GetHp() const { return _hp; }
 	float GetSpeed() const { return _speed; }
@@ -77,6 +90,9 @@ public:
 	bool GetPlayerRespawn() const { return _isRespawn; }
 	void KeyHandle();
 	void SetProjectileManager(ProjectileManager* projectileManager) { _projectileManager = projectileManager; }
+	void SetGameInfo(GameInfo* gameInfo) { _gameInfo = gameInfo; }
+	void SetGameMap(GameMap* gameMap) { _gameMap = gameMap; }
+
 
 	void Hit(float damage);
 	void Dead();

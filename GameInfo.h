@@ -6,6 +6,8 @@ static enum RESOURCE {
 	LEAD
 };
 
+static string resClipName[RESOURCE_NUM] = { "copper", "lead" };
+
 class GameInfo
 {
 private:

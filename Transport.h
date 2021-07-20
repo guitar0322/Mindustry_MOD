@@ -1,14 +1,12 @@
 #pragma once
 #include "Component.h"
 #include "PropInfo.h"
+class Item;
+
 class Transport :
     public Component
 {
 private:
-    typedef struct tagLink {
-        bool isConnect; //true면 연결 false면 미연결
-        bool inOut; //true면 out false면 in
-    }LINK;
     enum SHAPE {
         O,
         I,
@@ -25,11 +23,14 @@ private:
     LINK linkInfo[4];
     PROPDIR _outDir;
     SHAPE _shape;
+    vector<pair<int, Item*>> _resInfo;
     int _tileX;
     int _tileY;
 public:
     virtual void Init();
     virtual void Update();
+    virtual void OnTriggerEnter(GameObject* gameObject);
+    virtual void OnTriggerExit(GameObject* gameObject);
 
     void SetX(int x) { _tileX = x; }
     void SetY(int y) { _tileY = y; }
@@ -38,7 +39,6 @@ public:
     void SetOutDir(PROPDIR dir) { _outDir = dir; }
     PROPDIR GetOutDir() const { return _outDir; }
     void SetShape(int shape) { _shape = SHAPE(shape); }
-
     void SetFirstAnimator(Animator* firstAnimator) { _firstConveyorAnimator = firstAnimator; }
     /*************************************************
     * 컨베이어 설계

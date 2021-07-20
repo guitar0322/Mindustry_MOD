@@ -226,6 +226,29 @@ void D2DRenderer::DrawLine(const Vector2& start, const Vector2& end, const Defau
 		D2D1::Point2F(endPos.x, endPos.y), mDefaultBrushList[(UINT)defaultBrush], strokeWidth);
 
 }
+void D2DRenderer::DrawLineBack(const Vector2& start, const Vector2& end, const D2D1::ColorF::Enum& color, const float alpha, const float strokeWidth)
+{
+	ID2D1SolidColorBrush* brush;
+	mD2DBitmapRenderTarget->CreateSolidColorBrush(D2D1::ColorF(color, alpha), &brush);
+
+	mD2DBitmapRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
+
+	Vector2 startPos = start;
+	Vector2 endPos = end;
+
+	mD2DBitmapRenderTarget->DrawLine(D2D1::Point2F(startPos.x, startPos.y), D2D1::Point2F(endPos.x, endPos.y), brush, strokeWidth);
+	NEW_SAFE_RELEASE(brush);
+}
+void D2DRenderer::DrawLineBack(const Vector2& start, const Vector2& end, const DefaultBrush& defaultBrush, const float strokeWidth)
+{
+	mD2DBitmapRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
+
+	Vector2 startPos = start;
+	Vector2 endPos = end;
+
+	mD2DBitmapRenderTarget->DrawLine(D2D1::Point2F(startPos.x, startPos.y),
+		D2D1::Point2F(endPos.x, endPos.y), mDefaultBrushList[(UINT)defaultBrush], strokeWidth);
+}
 /**********************************************************************************************
 ## DrawRectangle ##
 @@ FloatRect rc : ·ºÆ®

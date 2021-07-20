@@ -87,57 +87,57 @@ void EnemyManager::SetEnemy()
 		_waveV[0].push_back(i);
 	}
 
-	for (int i = 7; i < 9; i++)
+	for (int i = 6; i < 9; i++)
 	{
 		_waveV[0].push_back(i);
 	}	
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 2; i++)
+	{
+
+		_waveV[1].push_back(i);
+	}	
+
+	for (int i = 6; i < 12; i++)
 	{
 		_waveV[1].push_back(i);
 	}
 
-	for (int i = 7; i < 11; i++)
-	{
-		_waveV[1].push_back(i);
-	}	
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		_waveV[2].push_back(i);
 	}
-
-	for (int i = 7; i < 14; i++)
+	for (int i = 6; i < 14; i++)
 	{
 		_waveV[2].push_back(i);
-	}	
-
+	}
 }
 
 void EnemyManager::EnemyTimer()
 {
-	if (_enemyTime)
-	{
-		_enemySpawnTime -= TIMEMANAGER->getElapsedTime();
-		int _intEnemySpawnTime = int(_enemySpawnTime);
+	//if (_enemyTime)
+	//{
+	//	_enemySpawnTime -= TIMEMANAGER->getElapsedTime();
+	//	int _intEnemySpawnTime = int(_enemySpawnTime);
 
-		_timeSecond = _intEnemySpawnTime % 3;		//60
-		_timeMinute = _intEnemySpawnTime / 3;		//60
+	//	_timeSecond = _intEnemySpawnTime % 3;		//60
+	//	_timeMinute = _intEnemySpawnTime / 3;		//60
 
-		if (_intEnemySpawnTime == 0)
-		{
-			_spawnEnemy = true;
-			_enemyTime = false;
-		}
+	//	if (_intEnemySpawnTime == 0)
+	//	{
+	//		_spawnEnemy = true;
+	//		_enemyTime = false;
+	//	}
 
-		if (_spawnEnemy == true && _enemyTime == false)
-		{
-			SpawnEnemy();
-			_spawnEnemy = false;
-			_enemyTime = false;
-			_enemySpawnTime = 3.f;
-		}
-	}
+	//	if (_spawnEnemy == true && _enemyTime == false)
+	//	{
+	//		SpawnEnemy();
+	//		_spawnEnemy = false;
+	//		_enemyTime = false;
+	//		_enemySpawnTime = 3.f;
+	//	}
+	//}
 
 	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 	{

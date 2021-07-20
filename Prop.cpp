@@ -12,6 +12,7 @@ Prop::Prop()
 	AddComponent(collider);
 	collider->Init();
 	collider->SetSize(TILESIZE, TILESIZE);
+	collider->RefreshPartition();
 
 	stat = new PropStat();
 	AddComponent(stat);
@@ -20,4 +21,14 @@ Prop::Prop()
 
 Prop::~Prop()
 {
+}
+
+void Prop::Update()
+{
+	GameObject::Update();
+}
+
+void Prop::Render()
+{
+	GameObject::Render();
 }

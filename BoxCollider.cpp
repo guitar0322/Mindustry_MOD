@@ -94,7 +94,6 @@ bool BoxCollider::CheckCollision()
 				}
 				else
 				{
-
 					AddOverlapCol(partitionColV[i][j]);
 					partitionColV[i][j]->AddOverlapCol(this);
 				}
@@ -182,7 +181,7 @@ void BoxCollider::AddOverlapCol(BoxCollider* overlapCollider)
 void BoxCollider::RefreshPartition()
 {
 	_rc = RectMakeCenter(transform->GetX(), transform->GetY(), _width, _height);
-	_partitionIdx = COLLIDERMANAGER->GetIntersectPartition(_rc);
+	_partitionIdx = COLLIDERMANAGER->ChangeColliderIdx(this);
 }
 
 void BoxCollider::Render()

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Player.h"
 #include "PlayerControler.h"
+
 Player::Player()
 {
 	renderer = new Renderer();

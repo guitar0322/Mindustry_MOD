@@ -45,6 +45,7 @@ public:
 	template<typename T>
 	ImageObject* CreateProp(int tileX, int tileY);
 	void CreateConveyor(int tileX, int tileY, PROPDIR dir);
+	void CreateDrill(int tileX, int tileY);
 	void ContainProp(int hashKey, Prop* newProp, PROPDIR dir);
 	ImageObject* CreatePreview(int tileX, int tileY);
 	void AddPropElem(vector<ImageObject>& previewV, int categoryIdx, int propIdx, PROPDIR dir);
