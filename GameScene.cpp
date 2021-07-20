@@ -1283,16 +1283,10 @@ void GameScene::SetEnemyManager()
 
 void GameScene::SetCameraControler()
 {
-<<<<<<< HEAD
     _cameraControler = new GameObject();
     _cameraControler->AddComponent(new CameraControler());
     _cameraControler->GetComponent<CameraControler>()->Init();
     _cameraControler->GetComponent<CameraControler>()->SetPlayerTr(_player->transform);
-=======
-    _cameraControler = new CameraControler();
-    _cameraControler->SetPlayerTr(_player->transform);
-    _cameraControler->Init();
->>>>>>> ccbeee25440d7ee99ece3da6a7159ebf3c5169d5
 }
 
 void GameScene::StringRender()
