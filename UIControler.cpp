@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "UIControler.h"
 #include "TileInfo.h"
+#include "Button.h"
 
 UIControler::UIControler()
 	:_previewDir(false), _previewNum(0)
@@ -184,13 +185,32 @@ void UIControler::inResearch_ActiveChoiceImg(Transform* menuTr, bool isActive)
 
 void UIControler::inResearch_ActiveGoBackImg(bool isActive)
 {
-	goBackChoiceImg->SetActive(isActive);
+	research_goBackChoiceImg->SetActive(isActive);
 }
 
 void UIControler::inResearch_ActiveInResearchChoiceImg(Transform* menuTr, bool isActive)
 {
 	inResearchChoiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
 	inResearchChoiceImg->SetActive(isActive);
+
+}
+
+void UIControler::inResearch_ActiveDetailImg(UIBase* name, bool* name2, bool isActive)
+{
+	name->SetActive(isActive);
+	*name2 = isActive;
+	detailDes_GoBackIdleImg->transform->SetPosition(WINSIZEX / 2, WINSIZEY - 70);
+	detailDes_GoBackChoiceImg->SetActive(true);
+}
+
+void UIControler::inDetailDes_ActiveGoBackImg(bool isActive)
+{
+	detailDes_GoBackChoiceImg->SetActive(isActive);
+}
+
+void UIControler::inDetailDes_ReturnToResearch(bool* name, bool isActive)
+{
+	*name = isActive;
 }
 
 void UIControler::inResearch_ReturnToGameScene(bool* name, bool isActive)
@@ -209,11 +229,14 @@ void UIControler::inResearch_ReturnToCoreDBScene(bool* name, bool isActive)
 	*name = isActive;
 }
 
-void UIControler::inResearch_ActiveChoiceImgWithBasicDes(Transform* menuTr, UIBase* name, bool isActive)
+void UIControler::inResearch_ActiveChoiceImgWithBasicDes(Transform* menuTr, UIBase* name, Button* name2, bool* name3, bool isActive)
 {
+	if (name3) return;
+
 	choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
-	choiceImg->SetActive(isActive);
 	name->SetActive(isActive);
+	name2->SetActive(isActive);
+	choiceImg->SetActive(isActive);
 }
 
 void UIControler::inResearch_inBasicDes(Transform* menuTr, UIBase* name, bool* name2, bool isActive)
@@ -224,20 +247,22 @@ void UIControler::inResearch_inBasicDes(Transform* menuTr, UIBase* name, bool* n
 	name->SetActive(isActive);
 }
 
-void UIControler::inResearch_inActiveChoiceImgWithBasicDes(Transform* menuTr, UIBase* name, bool* name2, bool isActive)
+void UIControler::inResearch_inActiveChoiceImgWithBasicDes(Transform* menuTr, UIBase* name, bool* name2, Button* name3, bool isActive)
 {
 	if (*name2) return;
 	else
 	{
 		name->SetActive(isActive);
+		name3->SetActive(isActive);
 		choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
 		choiceImg->SetActive(isActive);
 	}
 }
 
-void UIControler::inResearch_disableInBasicDes(Transform* menuTr, UIBase* name, bool* name2, bool isActive)
+void UIControler::inResearch_disableInBasicDes(Transform* menuTr, UIBase* name, bool* name2, Button* name3, bool isActive)
 {
 	*name2 = isActive;
+	name3->SetActive(isActive);
 	choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
 	choiceImg->SetActive(isActive);
 	name->SetActive(isActive);

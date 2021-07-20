@@ -58,15 +58,17 @@ private:
     int selectCategoryIdx;
 
     /* SHUNG 210715-16 */
-    bool   _research;
     bool   _lockDes;
+    bool   _research;                       // 연구 상태 진입
+    bool   _inDetail;                       // 상세 설명 상태 진입
     UIBase _choiceImg;
     UIBase _lockImg;
     UIBase _inResearchChoiceImg;            // 연구상태 내에서 기본설명 볼 때 i에 마우스 충돌이 일어났을 경우에 나오는 회색선택창
 
     Button _coreSlice;                      // 코어 : 조각
     Button _coreBasicDescription;           // 코어 : 조각 기본 설명
-    Button _coreDetailDescription;          // 코어 : 조각 상세 설명 버튼 [i]
+    Button _coreDetailDescriptionButton;    // 코어 : 조각 기본 설명의 [i] 주변 버튼
+    UIBase _coreDetailDescriptionImg;       // 코어 : 조각 상세 설명 이미지
 
     Button _mechanicalDrill;                // 기계식 드릴
     Button _conveyor;                       // 컨베이어
@@ -106,13 +108,17 @@ private:
     Button _underflowGate;                  // 불포화 필터
 
     /* 연구 누를 경우 나오는 UI (뒤로가기, 코어 데이터 베이스) */
-    UIBase _goBackIdleImg;
-    UIBase _goBackChoiceImg;
-    Button _goBackButton;
+    UIBase _research_goBackIdleImg;
+    UIBase _research_goBackChoiceImg;
+    Button _research_goBackButton;
     UIBase _coreDBIdleImg;
     UIBase _coreDBChoiceImg;
     Button _coreDBButton;
-    Button _CoreSlice;
+
+    /* UI 상세보기 누를 경우 나오는 UI (뒤로가기) */
+    UIBase _detailDes_goBackIdleImg;
+    UIBase _detailDes_goBackChoiceImg;
+    Button _detailDes_goBackButton;
 
 	// EnemyManager 210717 작업 - 민재 // 
 	GameObject* _enemyManager;

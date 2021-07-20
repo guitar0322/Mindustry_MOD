@@ -260,9 +260,9 @@ void PlayerControler::Update()
 		worldX = ScreenToWorld(_ptMouse).x;
 		worldY = ScreenToWorld(_ptMouse).y;
 		_targetAngle = ConvertAngleD2D(GetAngle(transform->position.x, transform->position.y, worldX, worldY));
-
+	
 		_attackSpeed += TIMEMANAGER->getElapsedTime();
-
+	
 		if (_attackSpeed >= 0.3f)
 		{
 			if (_isLeft == false) // 만약에 왼쪽이 발동 안할 경우
@@ -292,13 +292,13 @@ void PlayerControler::Update()
 		
 		_playerLaser->SetLaserEndPoint(worldX / 32, worldY / 32);
 		_playerLaser->SetLaserStartPoint(worldX, worldY);
-
-
+	
+	
 		_playerLaser->_collectLaserFirst->SetActive(true);
 		_playerLaser->_collectLaserEnd->SetActive(true);
 		_playerLaser->_collectLaser->SetActive(true);
 		_playerLaser->_detectRc->SetActive(true);
-
+	
 	}
 	_playerLaser->ShootLaser();
 	_playerLaser->SetLaserStartPoint(laserStartX, laserStartY);
@@ -308,10 +308,7 @@ void PlayerControler::Update()
 		_playerLaser->_collectLaserEnd->SetActive(false);
 		_playerLaser->_collectLaser->SetActive(false);
 		_playerLaser->_detectRc->SetActive(false);
-
-	
 	}
-
 }
 
 void PlayerControler::Render()
