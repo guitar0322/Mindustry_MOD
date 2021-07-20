@@ -2,7 +2,7 @@
 #include "Component.h"
 #include "EnemyInfo.h"
 
-#define ENEMY_MAX 100
+#define ENEMY_MAX 30
 #define WAVE_NUM 10
 
 class EnemyPlane;

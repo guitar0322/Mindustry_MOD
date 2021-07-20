@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "BoxCollider.h"
+#include <iostream>
+
+using namespace std;
 
 BoxCollider::BoxCollider()
 {
@@ -45,11 +48,21 @@ bool BoxCollider::CheckCollision()
 		for (int j = 0; j < partitionColV[i].size(); j++)
 		{
 			if (partitionColV[i][j] == this) continue;
+
 			if (partitionColV[i][j]->gameObject->isActive == false) continue;
+
 			if (partitionColV[i][j]->enable == false) continue;
 
 			if (IntersectRect(&_intersectRc, &this->_rc, &partitionColV[i][j]->_rc))
 			{
+				if (gameObject->tag == TAGMANAGER->GetTag("player"))
+				{
+					string name;
+					wstring wname = partitionColV[i][j]->gameObject->name;
+					name.assign(wname.begin(), wname.end());
+					cout << name << endl;
+					cout << partitionColV[i][j]->gameObject->isActive << endl;
+				}
 				if (this->_isTrigger == false && partitionColV[i][j]->_isTrigger == false)
 				{
 					float w = _intersectRc.right - _intersectRc.left;

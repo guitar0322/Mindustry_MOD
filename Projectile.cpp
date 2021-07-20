@@ -23,6 +23,7 @@ void Projectile::Init()
 void Projectile::Update()
 {
 	Move();
+	EreaseProjectile();
 }
 
 void Projectile::Move()
@@ -59,25 +60,21 @@ void Projectile::OnTriggerEnter(GameObject* gameObject)
 
 void Projectile::EreaseProjectile()
 {
-	/*if (_camX * 2 > transform->GetX() || MainCam->transform->GetScaleX() - _camX * 2 < transform->GetX())
+	if (MainCam->GetRenderWidth() + 150 <= transform->GetX())
 	{
-		transform->gameObject->SetActive(false);
+		gameObject->SetActive(false);
 	}
-	if (_camY * 2 > transform->GetY() || MainCam->transform->GetScaleY() - _camY * 2 < transform->GetY())
+	if (MainCam->GetCameraStartX() - 150 >= transform->GetX())
 	{
-		transform->gameObject->SetActive(false);
-	}*/
-	//if (MainCam->GetRenderWidth() - 700 < transform->GetX())
-	//{
-	//	transform->gameObject->SetActive(false);
-	//}
-	//MainCam->Get
-	/*if (MainCam->GetCameraStartY()  + 500> transform->GetY())
+		gameObject->SetActive(false);
+	}
+
+	if (MainCam->GetRenderHeight() + 150 <= transform->GetY())
 	{
-		transform->gameObject->SetActive(false);
-	}*/
-	/*if (MainCam-> + 200 < transform->GetX())
+		gameObject->SetActive(false);
+	}
+	if (MainCam->GetCameraStartY() - 150 >= transform->GetY())
 	{
-		transform->gameObject->SetActive(false);
-	}*/
+		gameObject->SetActive(false);
+	}
 }

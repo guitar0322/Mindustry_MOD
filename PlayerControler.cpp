@@ -87,31 +87,32 @@ void PlayerControler::Update()
 
 		if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 		{
-			worldX = ScreenToWorld(_ptMouse).x;
-			worldY = ScreenToWorld(_ptMouse).y;
-			if (_isCollecting == false)
-				_targetAngle = ConvertAngleD2D(GetAngle(transform->position.x, transform->position.y, worldX, worldY));
+		   worldX = ScreenToWorld(_ptMouse).x;
+		   worldY = ScreenToWorld(_ptMouse).y;
+		   if (_isCollecting == false)
+			  _targetAngle = ConvertAngleD2D(GetAngle(transform->position.x, transform->position.y, worldX, worldY));
 
-			_attackSpeed += TIMEMANAGER->getElapsedTime();
+		   _attackSpeed += TIMEMANAGER->getElapsedTime();
 
-			if (_attackSpeed >= 0.3f)
-			{
-				if (_isLeft == false) // 만약에 왼쪽이 발동 안할 경우
-				{
-					_weaponRTrackRadius = 9.41f;
-					_projectileManager->FireProjectile(transform->GetChild(0)->GetX(), transform->GetChild(0)->GetY(),
-						transform->GetChild(0)->GetAngle() + 2, PROJECTILE_TYPE::PLAYER);
-				}
-				else // 나머지 값
-				{
-					_weaponLTrackRadius = 9.41f;
-					_projectileManager->FireProjectile(transform->GetChild(1)->GetX(), transform->GetChild(1)->GetY(),
-						transform->GetChild(1)->GetAngle() - 2, PROJECTILE_TYPE::PLAYER);
-				}
-				_isLeft = !_isLeft; // 반복되게 하기
-				_attackSpeed = 0;
-			}
+		   if (_attackSpeed >= 0.3f)
+		   {
+			  if (_isLeft == false) // 만약에 왼쪽이 발동 안할 경우
+			  {
+				 _weaponRTrackRadius = 9.41f;
+				 _projectileManager->FireProjectile(transform->GetChild(0)->GetX(), transform->GetChild(0)->GetY(),
+					transform->GetChild(0)->GetAngle() + 2, PROJECTILE_TYPE::PLAYER);
+			  }
+			  else // 나머지 값
+			  {
+				 _weaponLTrackRadius = 9.41f;
+				 _projectileManager->FireProjectile(transform->GetChild(1)->GetX(), transform->GetChild(1)->GetY(),
+					transform->GetChild(1)->GetAngle() - 2, PROJECTILE_TYPE::PLAYER);
+			  }
+			  _isLeft = !_isLeft; // 반복되게 하기
+			  _attackSpeed = 0;
+		   }
 		}
+		
 
 		float laserStartX = transform->GetX() + cosf(ConvertAngleAPI(transform->GetAngle())) * 18;
 		float laserStartY = transform->GetY() - sinf(ConvertAngleAPI(transform->GetAngle())) * 18;
@@ -119,18 +120,20 @@ void PlayerControler::Update()
 
 		if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
 		{
-			if (_isCollecting == false)
-			{
-				_collectTile.x = worldX / TILESIZE;
-				_collectTile.y = worldY / TILESIZE;
-				_playerLaser->SetLaserEndPoint(_collectTile.x, _collectTile.y);
-				_isCollecting = true;
-				_playerLaser->_collectLaserFirst->SetActive(true);
-				_playerLaser->_collectLaserEnd->SetActive(true);
-				_playerLaser->_collectLaser->SetActive(true);
-				_playerLaser->_detectRc->SetActive(true);
-			}
+		   if (_isCollecting == false)
+		   {
+			  _collectTile.x = worldX / TILESIZE;
+			  _collectTile.y = worldY / TILESIZE;
+			  _playerLaser->SetLaserEndPoint(_collectTile.x, _collectTile.y);
+			  _isCollecting = true;
+			  _playerLaser->_collectLaserFirst->SetActive(true);
+			  _playerLaser->_collectLaserEnd->SetActive(true);
+			  _playerLaser->_collectLaser->SetActive(true);
+			  _playerLaser->_detectRc->SetActive(true);
+		   }
 		}
+		
+
 		if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
 		{
 			_playerLaser->_collectLaserFirst->SetActive(false);
@@ -190,7 +193,7 @@ void PlayerControler::PlayerDirection()
 	}
 	/*******************************************************
 	1. 포신의 SetPotsition(플레이어 X + cosf(ConvertAngleAPI(transform->GetAngle())) * 포신궤도의 반지름,
-		Y - sinf(각도) * 포신궤도의 반지름)
+	   Y - sinf(각도) * 포신궤도의 반지름)
 	********************************************************/
 	_weaponLTrackAngle = ConvertAngleD2D(acosf(cosf(ConvertAngleAPI(DEFAULT_WEAPON_ANGLE)) * DEFAULT_WEAPON_DISTANCE / _weaponLTrackRadius));
 	_weaponRTrackAngle = ConvertAngleD2D(acosf(cosf(ConvertAngleAPI(DEFAULT_WEAPON_ANGLE)) * DEFAULT_WEAPON_DISTANCE / _weaponRTrackRadius));
@@ -322,8 +325,9 @@ void PlayerControler::KeyHandle()
 	if (KEYMANAGER->isStayKeyDown('A') || KEYMANAGER->isStayKeyDown('D') ||
 		KEYMANAGER->isStayKeyDown('S') || KEYMANAGER->isStayKeyDown('W'))
 	{
-		_isSlow = false;
 		_speed += _accel * TIMEMANAGER->getElapsedTime();
+		_isSlow = false;
+
 		if (_speed >= 250.f)
 		{
 			_speed = 250.f;

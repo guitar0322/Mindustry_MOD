@@ -46,6 +46,7 @@ HRESULT playGround::init()
 
 	TitleScene* titleScene = new TitleScene();
 	SCENEMANAGER->AddScene("title", titleScene);
+
 	SCENEMANAGER->LoadScene("game");
 
 	//_mainCam.transform->SetX(_mainCam.transform->GetX() + 100);
@@ -113,9 +114,9 @@ void playGround::render()
 	//demoParticleSys->Render();
 
 	SCENEMANAGER->Render();
-	wstring fps = L"FPS : ";
-	fps.append(to_wstring(TIMEMANAGER->getFPS()));
-	D2DRENDERER->RenderText(10, 10, fps, 30);
+	//wstring fps = L"FPS : ";
+	//fps.append(to_wstring(TIMEMANAGER->getFPS()));
+	//D2DRENDERER->RenderText(10, 10, fps, 30);
 
 	//wstring elapse = L"ElapseTime : ";
 	//elapse.append(to_wstring(TIMEMANAGER->getElapsedTime()));

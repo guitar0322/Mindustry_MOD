@@ -127,6 +127,11 @@ private:
 	GameObject* _enemyManager;
 	Prop* _core;
 	CameraControler* _cameraControler;
+	//// 07/20 민재 Enemy WAve 및 Player UI 작업/////
+	UIBase _wavePane;
+	UIBase _playerUi;
+	UIBase _playerHpUi;
+	UIBase _waveSkipUi;
 
 public:
     virtual HRESULT Init();
@@ -155,6 +160,9 @@ public:
 	void SetCore();
 	void SetEnemyManager();
 	void SetCameraControler();
+	void SetGameUI();
+	void InGameUIUpdate();
+	void InGameUIRender();
 
 	/* 화면에 문자 띄울 때 여기 쓰세요 - 유림 (210719)*/
 	void StringRender();

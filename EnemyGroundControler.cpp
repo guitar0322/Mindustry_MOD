@@ -51,16 +51,18 @@ void EnemyGroundControler::Update()
 		_isAttack = true;
 	}
 
-	if (GetDistance(transform->position, _testCoreTransform->position) >= 700 && !_chaseCore)
+	if (GetDistance(transform->position, _testCoreTransform->position) > 1000 && !_chaseCore)			//700
 	{
 		_chaseCore = true;
 	}
 
-	if (_isAttack)
+	if (_isAttack)	
 	{
 		_attackSpeed += TIMEMANAGER->getElapsedTime();
+
 		_deltaX = cosf(_deltaAngle) * _enemyRadius;
 		_deltaY = -sinf(_deltaAngle) * _enemyRadius;
+
 		if (_attackSpeed >= 1.f && _leftFire == false)
 		{
 			_projectileManager->FireProjectile(transform->GetX() + _deltaX + 50, transform->GetY() + _deltaY, ConvertAngleD2D(_deltaAngle), PROJECTILE_TYPE::ENEMYGROUND);

@@ -267,11 +267,11 @@
     <ClCompile Include="EnemyManager.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Core.cpp">
-      <Filter>Prop\Component</Filter>
-    </ClCompile>
     <ClCompile Include="CameraControler.cpp">
       <Filter>CameraControler</Filter>
+    </ClCompile>
+    <ClCompile Include="Core.cpp">
+      <Filter>Prop\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -552,13 +552,14 @@
     <ClInclude Include="EnemyManager.h">
       <Filter>Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Core.h">
-      <Filter>Prop\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraControler.h" />
-      <Filter>CameraControler</Filter>
     <ClInclude Include="PropInfo.h">
       <Filter>헤더파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraControler.h">
+      <Filter>CameraControler</Filter>
+    </ClInclude>
+    <ClInclude Include="Core.h">
+      <Filter>Prop\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -624,7 +625,7 @@
       <UniqueIdentifier>{8c1e3ca4-f72a-411b-b346-bd0aa24e763a}</UniqueIdentifier>
     </Filter>
     <Filter Include="CameraControler">
-      <UniqueIdentifier>{9ab272c3-a25f-40f1-bdf2-dcdce7838803}</UniqueIdentifier>
+      <UniqueIdentifier>{2345797b-07ab-4332-8f49-c01bd3a7429a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

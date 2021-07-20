@@ -131,6 +131,7 @@ HRESULT GameScene::Init()
 	SetCore();
 	SetEnemyManager();
 	SetCameraControler();
+	SetGameUI();
 
     /* 사운드 작업 광철 210718 */
 	SOUNDMANAGER->addSound("start", "music/land.mp3", true, false);
@@ -147,7 +148,6 @@ HRESULT GameScene::Init()
 void GameScene::Update()
 {
 	MainCam->Update();
-	_cameraControler->Update();
 
     //07-19 플레이어와 UI간의 마우스 클릭 우선순위때문에 UI업데이트 위로 올림
     //카테고리 아이콘 업데이트
@@ -175,6 +175,7 @@ void GameScene::Update()
 	_playerWeaponR->Update();
 	_projectileManager->Update();
 	//========================================
+	_cameraControler->Update();
     _buildingCategoryFrame.Update();
 
     //카테고리 아이콘 업데이트 
@@ -189,7 +190,11 @@ void GameScene::Update()
     _CoreSlice.Update();
     _choiceImg.Update();
 	_core->Update();
-	_enemyManager->Update();
+	//_enemyManager->Update();
+
+	//07.20 민재 인 게임 Wave UI && Player UI 작업//
+	InGameUIUpdate();
+
     if (KEYMANAGER->isOnceKeyDown(VK_F1)) _research = true;
     if (KEYMANAGER->isOnceKeyDown(VK_F2)) _research = false;
     if (_research) researchUpdate();
@@ -235,7 +240,6 @@ void GameScene::Render()
 	_enemyManager->Render();
 	_projectileManager->Render();
 	_core->Render();
-	_cameraControler->Render();
 	MainCam->Render();
 
     //카테고리 아이콘 렌더
@@ -261,6 +265,8 @@ void GameScene::Render()
     _CoreSlice.Render();
     _choiceImg.Render();
 
+	//07.20 민재 인 게임 Wave UI && Player UI 작업//
+	InGameUIRender();
 	/* ================================여기 만지지 마세요 ========================================*/
 
 	//자원UI 렌더 -> 유림 (210719)
@@ -375,8 +381,16 @@ void GameScene::InitClip()
 	{
 		CLIPMANAGER->AddClip("core", "sprites/blocks/storage/core.png", 96, 96);
 		CLIPMANAGER->AddClip("enemy_atrax", "sprites/units/enemy/enemy_atrax.png", 188, 329);
-		CLIPMANAGER->AddClip("enemy_dagger_walk", "sprites/units/enemy/enemy_dagger_walk.png", 369, 114, 3, 1, 0.6f);
+		CLIPMANAGER->AddClip("enemy_dagger_walk", "sprites/units/enemy/enemy_dagger_walk.png", 369, 114, 3, 1, 0.8f);
 		CLIPMANAGER->AddClip("projectile", "sprites/units/enemy/projectile.png", 52, 52);
+	}
+
+	/////////////////// 07. 20 게임속 Wave UI && Player UI 민재 ////////////////////////////
+	{
+		CLIPMANAGER->AddClip("uiwavepane","sprites/ingameui/uiwavepane.png", 367, 100);
+		CLIPMANAGER->AddClip("playerui", "sprites/ingameui/playerui.png", 70, 70);
+		CLIPMANAGER->AddClip("playerhpui", "sprites/ingameui/playerhpui.png", 133, 92);
+		CLIPMANAGER->AddClip("waveskipui", "sprites/ingameui/waveskipui.png", 57, 100);
 	}
 }
 
@@ -548,9 +562,6 @@ void GameScene::ResourcesUpdate()
 {
 	_resourcesUI[0].Update();
 	_resourcesUI[1].Update();
-
-
-
 }
 
 void GameScene::researchUpdate()
@@ -1199,6 +1210,8 @@ void GameScene::SetCore()
 	_core->tag = TAGMANAGER->GetTag("prop");
 	_core->renderer->Init("core");
 	_core->transform->SetPosition(25 * TILESIZE + 16, 36 * TILESIZE + 16);
+	_core->collider->transform->SetPosition(_core->transform->GetX(), _core->transform->GetY());
+	_core->collider->RefreshPartition();
 }
 
 void GameScene::SetEnemyManager()
@@ -1214,37 +1227,78 @@ void GameScene::SetEnemyManager()
 void GameScene::SetCameraControler()
 {
     _cameraControler = new CameraControler();
-    _cameraControler->SetPlayer(_player);
+    _cameraControler->SetPlayerTr(_player->transform);
     _cameraControler->Init();
+}
+
+void GameScene::SetGameUI()
+{
+	_wavePane.Init();
+	_wavePane.uiRenderer->Init("uiwavepane");
+	_wavePane.transform->SetPosition(183, 45);
+
+	_playerUi.Init();
+	_playerUi.uiRenderer->Init("playerui");
+	_playerUi.transform->SetPosition(65, 45);
+
+	_playerHpUi.Init();
+	_playerHpUi.uiRenderer->Init("playerhpui");
+	_playerHpUi.transform->SetPosition(65, 50);
+
+	_waveSkipUi.Init();
+	_waveSkipUi.uiRenderer->Init("waveskipui");
+	_waveSkipUi.transform->SetPosition(380, 45);
+}
+
+void GameScene::InGameUIUpdate()
+{
+	_wavePane.Update();
+	_playerUi.Update();
+	_playerHpUi.Update();
+	_waveSkipUi.Update();
+}
+
+void GameScene::InGameUIRender()
+{
+	_wavePane.Render();
+	_playerUi.Render();
+	_playerHpUi.Render();
+	_waveSkipUi.Render();
+	D2DRENDERER->RenderText(150, 5, L"wave", 25, L"fontello", D2DRenderer::DefaultBrush::Yellow);
+	D2DRENDERER->RenderText(150, 35, L"다음 단계까지", 20, L"fontello", D2DRenderer::DefaultBrush::Yellow);
 }
 
 void GameScene::StringRender()
 {
-	wstring wstr = L"player speed : ";
-	wstr.append(to_wstring(_player->controler->GetSpeed()));
-	D2DRENDERER->RenderText(100, 100, wstr, 20, L"맑은고딕", D2DRenderer::DefaultBrush::White);
+	//wstring wstr = L"player speed : ";
+	//wstr.append(to_wstring(_player->controler->GetSpeed()));
+	//D2DRENDERER->RenderText(100, 100, wstr, 20, L"맑은고딕", D2DRenderer::DefaultBrush::White);
 
-	wstring wstrangle = L"Angle : ";
-	wstrangle.append(to_wstring(_player->controler->GetTargetAngle()));
-	D2DRENDERER->RenderText(100, 150, wstrangle, 20, L"맑은고딕", D2DRenderer::DefaultBrush::White);
+	//wstring wstrangle = L"Angle : ";
+	//wstrangle.append(to_wstring(_player->controler->GetTargetAngle()));
+	//D2DRENDERER->RenderText(100, 150, wstrangle, 20, L"맑은고딕", D2DRenderer::DefaultBrush::White);
 
 
-	wstring time = L"MusicTime: ";
-	time.append(to_wstring(_musicTime));
-	D2DRENDERER->RenderText(10, 140, time, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
+	//wstring time = L"MusicTime: ";
+	//time.append(to_wstring(_musicTime));
+	//D2DRENDERER->RenderText(10, 140, time, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
 
 	/* 에너미 관련 작업 민재, 삭제 금지*/
-	//wstring minute = L"MINUTE : ";
-	//minute.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeMinute()));
-	//D2DRENDERER->RenderText(10, 10, minute, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
+	/*wstring hp = L"HP : ";
+	hp.append(to_wstring(_player->GetComponent<PlayerControler>()->GetHp()));
+	D2DRENDERER->RenderText(10, 150, hp, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
 
-	//wstring second = L"SECOND: ";
-	//second.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeSecond()));
-	//D2DRENDERER->RenderText(10, 60, second, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
+	wstring minute = L"MINUTE : ";
+	minute.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeMinute()));
+	D2DRENDERER->RenderText(10, 10, minute, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
 
-	//wstring wave = L"CurWave: ";
-	//wave.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetCurWave()));
-	//D2DRENDERER->RenderText(10, 110, wave, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
+	wstring second = L"SECOND: ";
+	second.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeSecond()));
+	D2DRENDERER->RenderText(10, 60, second, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
+
+	wstring wave = L"CurWave: ";
+	wave.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetCurWave()));
+	D2DRENDERER->RenderText(10, 110, wave, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
 
     /*wstring mineCount = L"mineCount";
     mineCount.append(to_wstring(_mineCount));
