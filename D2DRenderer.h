@@ -76,6 +76,10 @@ public:
 	 const float strokeWidth = 1.f);
 	void DrawLine(const Vector2& start, const Vector2& end, const DefaultBrush& defaultBrush = DefaultBrush::Black,
 	 const float strokeWidth = 1.f);
+	void DrawLineBack(const Vector2& start, const Vector2& end, const D2D1::ColorF::Enum& color, const float alpha,
+		const float strokeWidth = 1.f);
+	void DrawLineBack(const Vector2& start, const Vector2& end, const DefaultBrush& defaultBrush = DefaultBrush::Black,
+		const float strokeWidth = 1.f);
 	void DrawRectangle(const Rect& rc, const D2D1::ColorF::Enum& color, const float alpha,
 		const float strokeWidth = 1.f);
 	void DrawRectangle(const Rect& rc, const DefaultBrush& defaultBrush = DefaultBrush::Black,

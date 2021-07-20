@@ -261,23 +261,28 @@
     <ClCompile Include="EnemyManager.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Core.cpp" />
     <ClCompile Include="Transport.cpp">
       <Filter>Prop\Component</Filter>
     </ClCompile>
     <ClCompile Include="EnemyManager.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Core.cpp">
+    <ClCompile Include="Drill.cpp">
+      <Filter>Prop\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Production.cpp">
       <Filter>Prop\Component</Filter>
     </ClCompile>
-    <ClCompile Include="CameraControler.cpp">
-      <Filter>CameraControler</Filter>
+    <ClCompile Include="CameraControler.cpp" />
+    <ClCompile Include="Item.cpp">
+      <Filter>Resourse</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h" />
     <ClInclude Include="randomFunction.h" />
-    <ClInclude Include="Resource.h" />
     <ClInclude Include="singletonBase.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Timer.h" />
@@ -512,7 +517,6 @@
     <ClInclude Include="EditableText.h" />
     <ClInclude Include="EditText.h" />
     <ClInclude Include="IntroScene.h" />
-    <ClInclude Include="PropInfo.h" />
     <ClInclude Include="PropContainer.h" />
     <ClInclude Include="PropFactory.h" />
     <ClInclude Include="TitleScene.h" />
@@ -546,20 +550,30 @@
     <ClInclude Include="EnemyManager.h">
       <Filter>Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Core.h" />
     <ClInclude Include="Transport.h">
       <Filter>Prop\Component</Filter>
     </ClInclude>
     <ClInclude Include="EnemyManager.h">
       <Filter>Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Core.h">
-      <Filter>Prop\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraControler.h" />
-      <Filter>CameraControler</Filter>
     <ClInclude Include="PropInfo.h">
       <Filter>헤더파일</Filter>
     </ClInclude>
+    <ClInclude Include="Drill.h">
+      <Filter>Prop\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Production.h">
+      <Filter>Prop\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="PropInfo.h">
+      <Filter>헤더파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraControler.h" />
+    <ClInclude Include="Item.h">
+      <Filter>Resourse</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="windowAPI.rc" />
@@ -623,8 +637,8 @@
     <Filter Include="Scene">
       <UniqueIdentifier>{8c1e3ca4-f72a-411b-b346-bd0aa24e763a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="CameraControler">
-      <UniqueIdentifier>{9ab272c3-a25f-40f1-bdf2-dcdce7838803}</UniqueIdentifier>
+    <Filter Include="Resourse">
+      <UniqueIdentifier>{6345b6cb-9dce-4d36-8055-5cc9c615c7b1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

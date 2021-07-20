@@ -21,7 +21,7 @@ void EnemyManager::Init()
 {
 	SetEnemyTime();
 	SetEnemy();
-	_curWave = 1;
+	_curWave = 0;
 	SOUNDMANAGER->addSound("wave", "sounds/wave.ogg", true, false);
 	SOUNDMANAGER->addSound("explosion", "sounds/explosion.ogg", true, false);
 }
@@ -82,30 +82,30 @@ void EnemyManager::SetEnemy()
 
 	for (int i = 0; i < 4; i++)
 	{
-		_waveV[1].push_back(i);
+		_waveV[0].push_back(i);
 	}
 
 	for (int i = 5; i < 8; i++)
 	{
-		_waveV[1].push_back(i);
+		_waveV[0].push_back(i);
 	}
 	
 	for (int i = 0; i < 4; i++)
 	{
-		_waveV[2].push_back(i);
+		_waveV[1].push_back(i);
 	}
 	for (int i = 4; i < 9; i++)
 	{
-		_waveV[2].push_back(i);
+		_waveV[1].push_back(i);
 	}
 
 	for (int i = 0; i < 5; i++)
 	{
-		_waveV[3].push_back(i);
+		_waveV[2].push_back(i);
 	}
 	for (int i = 5; i < 10; i++)
 	{
-		_waveV[3].push_back(i);
+		_waveV[2].push_back(i);
 	}
 }
 

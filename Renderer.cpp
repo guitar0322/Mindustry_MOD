@@ -172,6 +172,7 @@ void Renderer::RenderStatic()
 
 void Renderer::DrawFillRect(D2D1::ColorF::Enum color)
 {
+	if (gameObject->isActive == false || enable == false) return;
 	D2DRENDERER->FillRectangleBack(_rc, color, _alpha);
 }
 

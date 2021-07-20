@@ -7,7 +7,7 @@
 
 void PlayerControler::Init()
 {
-	_accel = 100.f;
+	_accel = 150.f;
 	_armRecoverySpeed = 10;
 	_targetAngle = 0.f;
 	_breakTime = 0.f;
@@ -323,6 +323,7 @@ void PlayerControler::KeyHandle()
 		KEYMANAGER->isStayKeyDown('S') || KEYMANAGER->isStayKeyDown('W'))
 	{
 		_speed += _accel * TIMEMANAGER->getElapsedTime();
+		_isSlow = false;
 		if (_speed >= 250.f)
 		{
 			_speed = 250.f;

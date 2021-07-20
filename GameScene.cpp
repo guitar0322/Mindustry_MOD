@@ -8,7 +8,9 @@
 #include "EnemyManager.h"
 #include "GameInfo.h"
 #include "Prop.h"
-
+#include "CameraControler.h"
+#include "Item.h"
+#include "ResourceManager.h"
 HRESULT GameScene::Init()
 {
     Scene::Init();
@@ -34,6 +36,10 @@ HRESULT GameScene::Init()
     _propFactory->propContainer = _propContainer;
     _propFactory->LinkGameInfo(_gameInfo);
 
+    _resourceManager = new ResourceManager();
+    _resourceManager->propContainer = _propContainer;
+    _resourceManager->Init();
+
     _uiControler = new UIControler();
     _uiControler->Init();
     _uiControler->categorySelect = &_categorySelect;
@@ -53,6 +59,7 @@ HRESULT GameScene::Init()
 	/*인게임 맵 초기화 -> 유림*/
 	_gameMap = new GameMap;
 	_gameMap->Init();
+    _uiControler->gameMap = _gameMap;
 
 	//자원 UI 초기화
 	ResourcesInit();
@@ -147,7 +154,6 @@ HRESULT GameScene::Init()
 void GameScene::Update()
 {
 	MainCam->Update();
-	_cameraControler->Update();
 
     //07-19 플레이어와 UI간의 마우스 클릭 우선순위때문에 UI업데이트 위로 올림
     //카테고리 아이콘 업데이트
@@ -167,6 +173,7 @@ void GameScene::Update()
 
     _propFactory->Update();
     _propContainer->Update();
+    _resourceManager->Update();
     _uiControler->Update();
 
 	/* 플레이어 부분*/
@@ -174,6 +181,7 @@ void GameScene::Update()
 	_playerWeaponL->Update();
 	_playerWeaponR->Update();
 	_projectileManager->Update();
+    _cameraControler->Update();
 	//========================================
     _buildingCategoryFrame.Update();
 
@@ -227,6 +235,7 @@ void GameScene::Render()
 
     _propFactory->Render();
     _propContainer->Render();
+    _resourceManager->Render();
     _uiControler->Render();
 
 	//플레이어 관련 렌더 -> 유림
@@ -236,7 +245,7 @@ void GameScene::Render()
 	_enemyManager->Render();
 	_projectileManager->Render();
 	_core->Render();
-	_cameraControler->Render();
+    COLLIDERMANAGER->Render();
 	MainCam->Render();
 
     //카테고리 아이콘 렌더
@@ -312,9 +321,17 @@ void GameScene::InitClip()
         CLIPMANAGER->AddClip("conveyor_cross", "sprites/blocks/distribution/conveyors/conveyor-cross.png", 128, 32, 4, 1, 0.06f);
     }
 
+    //드릴 클립
+    {
+        CLIPMANAGER->AddClip("drill_body", "sprites/blocks/drills/mechanical-drill.png", 64, 64);
+        CLIPMANAGER->AddClip("drill_top", "sprites/blocks/drills/mechanical-drill-top.png", 64, 64);
+        CLIPMANAGER->AddClip("drill_rotator", "sprites/blocks/drills/mechanical-drill-rotator.png", 64, 64);
+    }
     //그 이외 클립
     {
         CLIPMANAGER->AddClip("conveyor_arrow", "sprites/blocks/extra/conveyor-arrow.png", 96, 96);
+        CLIPMANAGER->AddClip("copper", "sprites/items/item-copper.png", 32, 32);
+        CLIPMANAGER->AddClip("lead", "sprites/items/item-lead.png", 32, 32);
     }
 	//플레이어 클립
 	{
@@ -1214,9 +1231,10 @@ void GameScene::SetEnemyManager()
 
 void GameScene::SetCameraControler()
 {
-    _cameraControler = new CameraControler();
-    _cameraControler->SetPlayer(_player);
-    _cameraControler->Init();
+    _cameraControler = new GameObject();
+    _cameraControler->AddComponent(new CameraControler());
+    _cameraControler->GetComponent<CameraControler>()->Init();
+    _cameraControler->GetComponent<CameraControler>()->SetPlayerTr(_player->transform);
 }
 
 void GameScene::StringRender()

@@ -3,8 +3,11 @@
 #include <map>
 #include <queue>
 #include "PropInfo.h"
+
+class GameMap;
+
 using namespace std;
-#define CATEGORY_NUM 4
+
 class UIControler
 {
 private:
@@ -17,6 +20,7 @@ private:
     vector<ImageObject> _previewV;
     PROPDIR _dir;
 public:
+    GameMap* gameMap;
     PropFactory* propFactory;
     PropContainer* propContainer;
     UIControler();
@@ -39,6 +43,7 @@ public:
     void RefreshPreview();
     void SetPreview(float deltaX, float deltaY);
     void SetPreviewTwo(float deltaX, float deltaY);
+    void CheckValidTile();
     /* SHUNG 210715 */
     UIBase* choiceImg;
     UIBase* lockImg;

@@ -1,5 +1,9 @@
 #include "stdafx.h"
 #include "Transport.h"
+#include "Item.h"
+#include "Conveyor.h"
+
+//int moveDir[4][2] = { {1, 0},{0,1},{-1,0},{0,-1} };
 
 void Transport::Init()
 {
@@ -8,6 +12,61 @@ void Transport::Init()
 
 void Transport::Update()
 {
+	//for (int i = 0; i < _resInfo.size(); i++)
+	//{
+	//	_resInfo[i].second->SetSpeed(60.f);
+	//	_resInfo[i].second->Move(_resInfo[i].second->GetSpeed() * TIMEMANAGER->getElapsedTime() * moveDir[_resInfo[i].first][0],
+	//		_resInfo[i].second->GetSpeed() * TIMEMANAGER->getElapsedTime() * moveDir[_resInfo[i].first][1]);
+
+	//	switch (_resInfo[i].first) {
+	//	case 0:
+	//		if (_resInfo[i].second->transform->GetX() > transform->GetX())
+	//		{
+	//			_resInfo[i].second->transform->SetPosition(transform->position);
+	//			_resInfo[i].first = _outDir;
+	//		}
+	//		break;
+	//	case 1:
+	//		if (_resInfo[i].second->transform->GetY() > transform->GetY())
+	//		{
+	//			_resInfo[i].second->transform->SetPosition(transform->position);
+	//			_resInfo[i].first = _outDir;
+	//		}
+	//		break;
+	//	case 2:
+	//		if (_resInfo[i].second->transform->GetX() < transform->GetX())
+	//		{
+	//			_resInfo[i].second->transform->SetPosition(transform->position);
+	//			_resInfo[i].first = _outDir;
+	//		}
+	//		break;
+	//	case 3:
+	//		if (_resInfo[i].second->transform->GetY() < transform->GetY())
+	//		{
+	//			_resInfo[i].second->transform->SetPosition(transform->position);
+	//			_resInfo[i].first = _outDir;
+	//		}
+	//		break;
+	//	}
+	//}
+}
+void Transport::OnTriggerEnter(GameObject* gameObject)
+{
+	if (gameObject->tag != TAGMANAGER->GetTag("resource"))
+		return;
+	((Item*)gameObject)->SetConveyor((Conveyor*)this->gameObject);
+}
+void Transport::OnTriggerExit(GameObject* gameObject)
+{
+	//for (int i = 0; i < _resInfo.size(); i++)
+	//{
+	//	if (gameObject == _resInfo[i].second)
+	//	{
+	//		_resInfo[i].second->SetSpeed(0.f);
+	//		_resInfo.erase(_resInfo.begin() + i);
+	//		break;
+	//	}
+	//}
 }
 /***************************************************************
 * 컨베이어 벨트가 연결 될때마다 애니메이션 클립을 변환 해주는 함수

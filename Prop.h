@@ -10,5 +10,7 @@ public:
     Renderer* renderer;
     BoxCollider* collider;
     PropStat* stat;
+    virtual void Update();
+    virtual void Render();
 };
 

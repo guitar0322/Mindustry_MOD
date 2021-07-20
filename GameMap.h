@@ -24,6 +24,6 @@ public:
 	void SetTileImage();
 	void SetTileName(int selectNum);
 
-
+	tagTile GetTileInfo(int idx) const { return _tileInfo[idx]; }
 };
 

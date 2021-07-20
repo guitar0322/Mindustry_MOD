@@ -2,6 +2,7 @@
 #include "UIControler.h"
 #include "TileInfo.h"
 #include "PropContainer.h"
+#include "GameMap.h"
 UIControler::UIControler()
 	:_previewDir(false), _previewNum(0)
 {
@@ -43,14 +44,9 @@ void UIControler::Update()
 					tileHalfY += 1;
 
 				propPreview->transform->SetPosition((tileHalfX / 2) * TILESIZE, (tileHalfY / 2) * TILESIZE);
-				//2칸짜리 미리보기설계
-				//마우스가 타일의 교차점을 기준으로 한타일 사이즈만큼 벗어 났을때 위치가 갱신되어야 한다
-				//마우스가 교차점을 기준으로 타일사이즈 안에 있다는 것을 알아내는 방법
-				//마우스 교차점 좌표 = tileX * TILESIZE, tileY * TILESIZE
-				//마우스 좌표를 TILESIZE/2 로나눈다
-				//좌표가 짝수배면 해당 교점에 생성
-				//좌표가 홀수배면 +1 지점에 생성
 			}
+			CheckValidTile();
+
 		}
 		else
 		{
@@ -114,6 +110,10 @@ void UIControler::Render()
 {
 	conveyorArrow.Render();
 	propPreview->Render();
+	if (Math::FloatEqual(propPreview->renderer->GetAlpha(), 0.4f) == true)
+	{
+		propPreview->renderer->DrawFillRect(D2D1::ColorF::Red);
+	}
 	for (int i = 0; i < _previewV.size(); i++)
 	{
 		_previewV[i].Render();
@@ -191,7 +191,7 @@ void UIControler::SetPreview(float deltaX, float deltaY)
 	int tileNumX = deltaX / TILESIZE;
 	int tileNumY = deltaY / TILESIZE;
 	bool curDir = Math::Abs(tileNumX) > Math::Abs(tileNumY);
-	int bigNum = Math::Max(Math::Abs(tileNumX), Math::Abs(tileNumY));
+	int bigNum = Math::Max(Math::Abs(tileNumX), Math::Abs(tileNumY)) + 1;
 	if (_previewNum == bigNum && _previewDir == curDir)
 	{
 		return;
@@ -272,34 +272,106 @@ void UIControler::SetPreviewTwo(float deltaX, float deltaY)
 			startY * TILESIZE + previewSize * i * Math::NegativeChecking(tileNumY) * (Math::Abs(tileNumX) <= Math::Abs(tileNumY))
 		);
 		newPreview.transform->SetAngle(propPreview->transform->GetAngle());
-		vector<pair<int, int>> previewTileV;
+		vector<int> previewTileV;
 		int previewTileX = newPreview.transform->GetX() / TILESIZE;
 		int previewTileY = newPreview.transform->GetY() / TILESIZE;
-		previewTileV.push_back({ previewTileX, previewTileY });
-		previewTileV.push_back({ previewTileX-1, previewTileY });
-		previewTileV.push_back({ previewTileX, previewTileY-1 });
-		previewTileV.push_back({ previewTileX-1, previewTileY-1 });
+		previewTileV.push_back(previewTileY * TILENUMX + previewTileX);
+		previewTileV.push_back((previewTileY - 1) * TILENUMX + previewTileX);
+		previewTileV.push_back(previewTileY * TILENUMX + previewTileX - 1);
+		previewTileV.push_back((previewTileY - 1) * TILENUMX + previewTileX - 1);
 
 		bool isValid = true;
+		bool isResource = false;
 		for (int i = 0; i < 4; i++)
 		{
-			if (propContainer->GetPropMap(previewTileV[i].second * TILENUMX + previewTileV[i].first) != nullptr)
+			if (propContainer->GetPropMap(previewTileV[i]) != nullptr)
 			{
 				isValid = false;
-				newPreview.renderer->Init(propPreview->renderer->GetClipName());
-				newPreview.renderer->SetAlpha(0.4f);
 				break;
 			}
 		}
-		if (isValid == true)
+
+		for (int i = 0; i < 4; i++)
+		{
+			tagTile tileInfo = gameMap->GetTileInfo(previewTileV[i]);
+			if (tileInfo.resources != RES_NONE) 
+			{
+				isResource = true;
+				break;
+			}
+		}
+		if (isValid == true && isResource == true)
 		{
 			newPreview.renderer->Init(propPreview->renderer->GetClipName());
 			newPreview.renderer->SetAlpha(0.5f);
+		}
+		else
+		{
+			newPreview.renderer->Init(propPreview->renderer->GetClipName());
+			newPreview.renderer->SetAlpha(0.4f);
 		}
 		_previewV.push_back(newPreview);
 	}
 	_previewNum = bigNum;
 	_previewDir = curDir;
+}
+
+void UIControler::CheckValidTile()
+{
+	int tileX = propPreview->transform->GetX() / TILESIZE;
+	int tileY = propPreview->transform->GetY() / TILESIZE;
+
+	if (_selectCategoryIdx == PRODUCTION)
+	{
+		vector<int> previewTile;
+		previewTile.push_back(tileY * TILENUMX + tileX);
+		previewTile.push_back((tileY - 1) * TILENUMX + tileX);
+		previewTile.push_back(tileY * TILENUMX + tileX - 1);
+		previewTile.push_back((tileY - 1) * TILENUMX + tileX - 1);
+
+		bool isValid = true;
+		bool isResource = false;
+		for (int i = 0; i < 4; i++)
+		{
+			if (propContainer->GetPropMap(previewTile[i]) != nullptr)
+			{
+				isValid = false;
+				break;
+			}
+		}
+
+		for (int i = 0; i < 4; i++)
+		{
+			tagTile tileInfo = gameMap->GetTileInfo(previewTile[i]);
+			if (tileInfo.resources != RES_NONE)
+			{
+				isResource = true;
+				break;
+			}
+		}
+		if (isValid == true && isResource == true)
+		{
+			propPreview->renderer->SetAlpha(0.5f);
+		}
+		else
+		{
+			propPreview->renderer->SetAlpha(0.4f);
+		}
+	}
+	else 
+	{
+		Prop* prop = propContainer->GetPropMap(tileY * TILENUMX + tileX);
+		if (prop != nullptr)
+		{
+			propPreview->renderer->SetAlpha(0.4f);
+		}
+		else
+		{
+			propPreview->renderer->SetAlpha(0.5f);
+		}
+	}
+
+	return;
 }
 
 void UIControler::inResearch_ActiveChoiceImg(Transform* menuTr, bool isActive)

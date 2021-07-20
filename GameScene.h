@@ -5,16 +5,18 @@
 #include "Player.h"
 #include "ProjectileManager.h"
 #include "Prop.h"
-#include "CameraControler.h"
 
 #define PROP_UI_STARTX WINSIZEX - 230
 #define PROP_UI_STARTY WINSIZEY - 187
 #define CATEGORY_UI_STARTX WINSIZEX - 65
 #define CATEGORY_UI_STARTY WINSIZEY - 190
+
 class PropContainer;
 class PropFactory;
 class UIControler;
 class GameInfo;
+class Item;
+class ResourceManager;
 
 class GameScene :
     public Scene
@@ -22,6 +24,7 @@ class GameScene :
 private:
 	float _musicTime;
 
+    Item* testCopper;
 	/* ============================================*/
 	/* =========== 플레이어 부분 -> 유림 ============*/
 
@@ -33,6 +36,7 @@ private:
 	//======
     PropContainer* _propContainer;
     PropFactory* _propFactory;
+    ResourceManager* _resourceManager;
     GameInfo* _gameInfo;
     UIControler* _uiControler;
     UIBase _categorySelect;
@@ -126,8 +130,7 @@ private:
 	// EnemyManager 210717 작업 - 민재 // 
 	GameObject* _enemyManager;
 	Prop* _core;
-	CameraControler* _cameraControler;
-
+    GameObject* _cameraControler;
 public:
     virtual HRESULT Init();
     virtual void Update();

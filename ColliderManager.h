@@ -21,6 +21,7 @@ public:
 	~ColliderManager();
 	HRESULT Init();
 	void Release();
+	void Render();
 	void EraseCollider(BoxCollider* targetCollider);
 	void AddCollider(BoxCollider* newCollider);
 	void AddCollider(vector<pair<int, int>> partitionIdx, BoxCollider* newCollider);

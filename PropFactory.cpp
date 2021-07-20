@@ -8,6 +8,8 @@
 #include "PropContainer.h"
 #include "GameInfo.h"
 #include "Prop.h"
+#include "Drill.h"
+
 PropFactory::PropFactory()
 {
 }
@@ -23,6 +25,11 @@ void PropFactory::Init()
 
 void PropFactory::Update()
 {
+	while (_previewV.empty() == false && Math::FloatEqual(_previewV[0].renderer->GetAlpha(), 0.4f) == true)
+	{
+		_previewV.erase(_previewV.begin());
+		_propQueue.pop();
+	}
 	if (_propQueue.empty() == true)
 		return;
 	if(_gameInfo->IsValidResource((RESOURCE)_propInfoV[_propQueue.front().catagory][_propQueue.front().propIdx].resource, 
@@ -37,11 +44,6 @@ void PropFactory::Update()
 	*********************************************************/
 	_buildTime += TIMEMANAGER->getElapsedTime();
 
-	while (Math::FloatEqual(_previewV[0].renderer->GetAlpha(), 0.4f) == true)
-	{
-		_previewV.erase(_previewV.begin());
-		_propQueue.pop();
-	}
 
 	float percent = _buildTime / _propInfoV[_propQueue.front().catagory][_propQueue.front().propIdx].buildTime;
 	_previewV[0].renderer->SetAlpha(0.5f + (0.5f) * percent);
@@ -66,7 +68,7 @@ void PropFactory::Update()
 			switch (buildProp.propIdx)
 			{
 			case 0:
-				CreateProp<Prop>(buildProp.x, buildProp.y);
+				CreateDrill(buildProp.x, buildProp.y);
 				break;
 			}
 			break;
@@ -132,6 +134,12 @@ void PropFactory::CreateConveyor(int tileX, int tileY, PROPDIR dir)
 	newConveyor->transform->SetPosition(tileX * TILESIZE + TILESIZE / 2, tileY * TILESIZE + TILESIZE / 2);
 	newConveyor->transform->SetAngle(dir * 90);
 	newConveyor->collider->RefreshPartition();
+	vector<pair<int, int>> idx = newConveyor->collider->GetPartitionIdx();
+	for (int i = 0; i < idx.size(); i++)
+	{
+		cout << idx[i].first << " , " << idx[i].second << endl;
+	}
+	newConveyor->collider->CheckCollision();
 	newConveyor->transport->SetX(tileX);
 	newConveyor->transport->SetY(tileY);
 	newConveyor->transport->SetOutDir(dir);
@@ -140,6 +148,26 @@ void PropFactory::CreateConveyor(int tileX, int tileY, PROPDIR dir)
 	newConveyor->animator->SetClip("conveyor_I", _firstConveyorAnimator->GetCurFrameX());
 	newConveyor->animator->SetFrameTime(_firstConveyorAnimator->GetFrameTime());
 	ContainProp(tileY * TILENUMX + tileX, newConveyor, dir);
+}
+
+void PropFactory::CreateDrill(int tileX, int tileY)
+{
+	Drill* newDrill = new Drill();
+	newDrill->transform->SetPosition(tileX * TILESIZE, tileY * TILESIZE);
+	newDrill->collider->RefreshPartition();
+	newDrill->rotator->transform->SetPosition(tileX * TILESIZE, tileY * TILESIZE);
+	newDrill->top->transform->SetPosition(tileX * TILESIZE, tileY * TILESIZE);
+	vector<int> drillTileV;
+	drillTileV.push_back(tileY * TILENUMX + tileX);
+	drillTileV.push_back((tileY-1) * TILENUMX + tileX);
+	drillTileV.push_back(tileY * TILENUMX + tileX - 1);
+	drillTileV.push_back((tileY - 1) * TILENUMX + tileX - 1);
+	for (int i = 0; i < 4; i++)
+	{
+		propContainer->AddProp(drillTileV[i], newDrill, RIGHT);
+	}
+	_previewV.erase(_previewV.begin());
+	_propQueue.pop();
 }
 
 void PropFactory::ContainProp(int hashKey, Prop* newProp, PROPDIR dir)
