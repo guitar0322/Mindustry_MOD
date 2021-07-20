@@ -186,57 +186,57 @@ void PlayerControler::Render()
 	_playerLaser->Render();
 }
 
-void PlayerControler::PlayerDirection()
-{
-	float deltaAngle = _targetAngle - transform->GetAngle();
-
-	if (deltaAngle < 0) deltaAngle += 360;
-
-	if (deltaAngle > 180)
-	{
-		if (Math::FloatEqual(_targetAngle, transform->GetAngle()) == false)
-		{
-			transform->Rotate(-4.f);
-			if (_targetAngle > transform->GetAngle())
-			{
-				transform->SetAngle(_targetAngle);
-				//포신 보정 해주고
-				transform->GetChild(0)->SetAngle(_targetAngle);
-				transform->GetChild(1)->SetAngle(_targetAngle);
-			}
-		}
-	}
-	else
-	{
-		if (Math::FloatEqual(_targetAngle, transform->GetAngle()) == false)
-		{
-			transform->Rotate(4.f);
-			if (_targetAngle < transform->GetAngle())
-			{
-				transform->SetAngle(_targetAngle);
-				transform->GetChild(0)->SetAngle(_targetAngle);
-				transform->GetChild(1)->SetAngle(_targetAngle);
-			}
-		}
-	}
-	/*******************************************************
-	1. 포신의 SetPotsition(플레이어 X + cosf(ConvertAngleAPI(transform->GetAngle())) * 포신궤도의 반지름,
-		Y - sinf(각도) * 포신궤도의 반지름)
-	********************************************************/
-	_weaponLTrackAngle = ConvertAngleD2D(acosf(cosf(ConvertAngleAPI(DEFAULT_WEAPON_ANGLE)) * DEFAULT_WEAPON_DISTANCE / _weaponLTrackRadius));
-	_weaponRTrackAngle = ConvertAngleD2D(acosf(cosf(ConvertAngleAPI(DEFAULT_WEAPON_ANGLE)) * DEFAULT_WEAPON_DISTANCE / _weaponRTrackRadius));
-
-	_weaponLdistanceAngle = ConvertAngleAPI(transform->GetAngle() - _weaponLTrackAngle);
-	_weaponRdistanceAngle = ConvertAngleAPI(transform->GetAngle() + _weaponRTrackAngle);
-
-	if (_weaponLdistanceAngle < 0) _weaponLdistanceAngle += 360;
-	transform->GetChild(0)->SetPosition((transform->GetX() + cosf(_weaponLdistanceAngle) * _weaponLTrackRadius),
-		transform->GetY() - sinf(_weaponLdistanceAngle) * _weaponLTrackRadius);
-
-	if (_weaponRdistanceAngle > 360) _weaponLdistanceAngle -= 360;
-	transform->GetChild(1)->SetPosition((transform->GetX() + cosf(_weaponRdistanceAngle) * _weaponRTrackRadius),
-		transform->GetY() - sinf(_weaponRdistanceAngle) * _weaponRTrackRadius);
-}
+//void PlayerControler::PlayerDirection()
+//{
+//	//float deltaAngle = _targetAngle - transform->GetAngle();
+//
+//	//if (deltaAngle < 0) deltaAngle += 360;
+//
+//	//if (deltaAngle > 180)
+//	//{
+//	//	if (Math::FloatEqual(_targetAngle, transform->GetAngle()) == false)
+//	//	{
+//	//		transform->Rotate(-4.f);
+//	//		if (_targetAngle > transform->GetAngle())
+//	//		{
+//	//			transform->SetAngle(_targetAngle);
+//	//			//포신 보정 해주고
+//	//			transform->GetChild(0)->SetAngle(_targetAngle);
+//	//			transform->GetChild(1)->SetAngle(_targetAngle);
+//	//		}
+//	//	}
+//	//}
+//	//else
+//	//{
+//	//	if (Math::FloatEqual(_targetAngle, transform->GetAngle()) == false)
+//	//	{
+//	//		transform->Rotate(4.f);
+//	//		if (_targetAngle < transform->GetAngle())
+//	//		{
+//	//			transform->SetAngle(_targetAngle);
+//	//			transform->GetChild(0)->SetAngle(_targetAngle);
+//	//			transform->GetChild(1)->SetAngle(_targetAngle);
+//	//		}
+//	//	}
+//	//}
+//	///*******************************************************
+//	//1. 포신의 SetPotsition(플레이어 X + cosf(ConvertAngleAPI(transform->GetAngle())) * 포신궤도의 반지름,
+//	//	Y - sinf(각도) * 포신궤도의 반지름)
+//	//********************************************************/
+//	//_weaponLTrackAngle = ConvertAngleD2D(acosf(cosf(ConvertAngleAPI(DEFAULT_WEAPON_ANGLE)) * DEFAULT_WEAPON_DISTANCE / _weaponLTrackRadius));
+//	//_weaponRTrackAngle = ConvertAngleD2D(acosf(cosf(ConvertAngleAPI(DEFAULT_WEAPON_ANGLE)) * DEFAULT_WEAPON_DISTANCE / _weaponRTrackRadius));
+//
+//	//_weaponLdistanceAngle = ConvertAngleAPI(transform->GetAngle() - _weaponLTrackAngle);
+//	//_weaponRdistanceAngle = ConvertAngleAPI(transform->GetAngle() + _weaponRTrackAngle);
+//
+//	//if (_weaponLdistanceAngle < 0) _weaponLdistanceAngle += 360;
+//	//transform->GetChild(0)->SetPosition((transform->GetX() + cosf(_weaponLdistanceAngle) * _weaponLTrackRadius),
+//	//	transform->GetY() - sinf(_weaponLdistanceAngle) * _weaponLTrackRadius);
+//
+//	//if (_weaponRdistanceAngle > 360) _weaponLdistanceAngle -= 360;
+//	//transform->GetChild(1)->SetPosition((transform->GetX() + cosf(_weaponRdistanceAngle) * _weaponRTrackRadius),
+//	//	transform->GetY() - sinf(_weaponRdistanceAngle) * _weaponRTrackRadius);
+//}
 
 void PlayerControler::KeyHandle()
 {
@@ -281,7 +281,8 @@ void PlayerControler::KeyHandle()
 			_dir = LEFT_UP;
 		}
 		if (KEYMANAGER->isStayKeyDown('D') && KEYMANAGER->isStayKeyDown('S')) // D와 S키를 누르면 오른쪽 아래 대각선으로 간다.
-	}
+		{
+}
 	if (KEYMANAGER->isOnceKeyUp('A') || KEYMANAGER->isOnceKeyUp('D')) // 만약에 A또는 D 키를 떼면?
 	{
 		_isSlow = true;
@@ -495,14 +496,6 @@ void PlayerControler::KeyHandle()
 	}
 	
 	RespawnTime();
-}
-
-void PlayerControler::Render()
-{
-	transform->GetChild(0)->gameObject->Render();
-	transform->GetChild(1)->gameObject->Render();
-
-	_playerLaser->Render();
 }
 
 void PlayerControler::PlayerDirection()

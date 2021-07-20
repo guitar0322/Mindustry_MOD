@@ -153,12 +153,12 @@ void GameScene::Update()
 	MainCam->Update();
 	_cameraControler->Update();
 
-	buildingCategoryFrame.Update();
-	propFactory->Update();
-	propContainer->Update();
-	uiControler->Update();
-	propPreview.Update();
-	gameMap->Update();
+	//buildingCategoryFrame.Update();
+//	propFactory->Update();
+//	propContainer->Update();
+//	uiControler->Update();
+//	propPreview.Update();
+	//gameMap->Update();
 
 	/* 플레이어 부분*/
 	_player->Update();

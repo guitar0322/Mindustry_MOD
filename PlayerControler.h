@@ -1,4 +1,4 @@
-ajgksl#pragma once
+#pragma once
 #include "Component.h"
 
 class ProjectileManager;
