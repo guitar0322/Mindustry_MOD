@@ -30,6 +30,7 @@ public:
     virtual void OnDisable();
     void RenderStatic();
 
+    void DrawFillRect(D2D1::ColorF::Enum color);
     void SetStatic(bool isStatic) { _isStatic = isStatic; }
     void SetAlpha(float alpha) { _alpha = alpha;}//알파값 설정
     float GetAlpha() const { return _alpha; }

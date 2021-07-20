@@ -2,7 +2,6 @@
 #include "EnemyControler.h"
 
 class ProjectileManager;
-class ProjectileManager;
 
 class EnemyPlaneControler :
 	public EnemyControler

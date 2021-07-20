@@ -253,9 +253,6 @@
     <ClCompile Include="TitleUIControler.cpp" />
     <ClCompile Include="PlayerLaser.cpp" />
     <ClCompile Include="TitleUIControler.cpp" />
-    <ClCompile Include="PlayerScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
     <ClCompile Include="GameInfo.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="TitleUIControler.cpp" />
@@ -264,12 +261,17 @@
     <ClCompile Include="EnemyManager.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Core.cpp" />
     <ClCompile Include="Transport.cpp">
       <Filter>Prop\Component</Filter>
     </ClCompile>
     <ClCompile Include="EnemyManager.cpp">
       <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Core.cpp">
+      <Filter>Prop\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraControler.cpp">
+      <Filter>CameraControler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -487,7 +489,6 @@
     <ClInclude Include="ShootingScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="PropInfo.h" />
     <ClInclude Include="PropContainer.h" />
     <ClInclude Include="PropFactory.h" />
     <ClInclude Include="EditText.h">
@@ -537,9 +538,6 @@
     <ClInclude Include="TitleUIControler.h" />
     <ClInclude Include="PlayerLaser.h" />
     <ClInclude Include="TitleUIControler.h" />
-    <ClInclude Include="PlayerScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
     <ClInclude Include="GameInfo.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="TitleUIControler.h" />
@@ -548,12 +546,19 @@
     <ClInclude Include="EnemyManager.h">
       <Filter>Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Core.h" />
     <ClInclude Include="Transport.h">
       <Filter>Prop\Component</Filter>
     </ClInclude>
     <ClInclude Include="EnemyManager.h">
       <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Core.h">
+      <Filter>Prop\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraControler.h" />
+      <Filter>CameraControler</Filter>
+    <ClInclude Include="PropInfo.h">
+      <Filter>헤더파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -617,6 +622,9 @@
     </Filter>
     <Filter Include="Scene">
       <UniqueIdentifier>{8c1e3ca4-f72a-411b-b346-bd0aa24e763a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CameraControler">
+      <UniqueIdentifier>{9ab272c3-a25f-40f1-bdf2-dcdce7838803}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

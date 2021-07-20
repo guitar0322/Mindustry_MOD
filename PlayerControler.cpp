@@ -1,16 +1,17 @@
 #include "stdafx.h"
 #include "PlayerControler.h"
-#include "PlayerScene.h"
 #include "ProjectileManager.h"
 #include "PlayerLaser.h"
 #include "EnemyInfo.h"
+#include "TileInfo.h"
 
 void PlayerControler::Init()
 {
-	_speed = 250.f;
+	_accel = 100.f;
 	_armRecoverySpeed = 10;
 	_targetAngle = 0.f;
 	_breakTime = 0.f;
+	_respawnTime = 0.f;
 	_angleSpeed = 60.f;
 	_hp = 100;
 
@@ -24,12 +25,10 @@ void PlayerControler::Init()
 
 	_attackSpeed = 0;
 	_isLeft = false;
-	_shootLeft = false;
-	_shootRight = false;
 	_isSlow = false;
-	_isDiagonal = false;
-	_isGathering = false;
+	_isCollecting = false;
 	_isDead = false;
+	_isRespawn = false;
 	_dir = IDLE;
 }
 
@@ -60,105 +59,167 @@ void PlayerControler::Update()
 	5. 아니라면 반시계방향으로 움직인다.
 	 ****************************************************************/
 
-	switch (_dir)
-	{
-	case LEFT: // 각 위치의 움직이는 방향 거리
-		transform->MoveX(-_speed * TIMEMANAGER->getElapsedTime()); // X 값을 설정한 스피드 * 시간 만큼 곱한것 각 위치 길이 값.
-		break;
-	case RIGHT:
-		transform->MoveX(_speed * TIMEMANAGER->getElapsedTime());
-		break;
-	case UP:
-		transform->MoveY(-_speed * TIMEMANAGER->getElapsedTime());
-		break;
-	case DOWN:
-		transform->MoveY(_speed * TIMEMANAGER->getElapsedTime());
-		break;
-	case LEFT_UP:
-		transform->Move(-_speed * TIMEMANAGER->getElapsedTime(), -_speed * TIMEMANAGER->getElapsedTime());
-		break;
-	case LEFT_DOWN:
-		transform->Move(-_speed * TIMEMANAGER->getElapsedTime(), _speed * TIMEMANAGER->getElapsedTime());
-		break;
-	case RIGHT_UP:
-		transform->Move(_speed * TIMEMANAGER->getElapsedTime(), -_speed * TIMEMANAGER->getElapsedTime());
-		break;
-	case RIGHT_DOWN:
-		transform->Move(_speed * TIMEMANAGER->getElapsedTime(), _speed * TIMEMANAGER->getElapsedTime());
-		break;
-	case IDLE:
-		break;
-	}
+	MoveHandler();
+	RespawnTime();
 
-	if (KEYMANAGER->isStayKeyDown('A') && KEYMANAGER->isStayKeyDown('S')) // A와 S키를 누르면 왼쪽 아래 대각선으로 간다.
+	if (!_isDead)
 	{
-		_isDiagonal = true;
-		_targetAngle = 225.f;
-		_dir = LEFT_DOWN;
-	}
-	if (KEYMANAGER->isStayKeyDown('A') && KEYMANAGER->isStayKeyDown('W')) // A와 W키를 누르면 왼쪽 위 대각선으로 간다.
-	{
-		_isDiagonal = true;
-		_targetAngle = 315.f;
-		_dir = LEFT_UP;
-	}
-	if (KEYMANAGER->isStayKeyDown('D') && KEYMANAGER->isStayKeyDown('S')) // D와 S키를 누르면 오른쪽 아래 대각선으로 간다.
-	{
-		_isDiagonal = true;
-		_targetAngle = 135.f;
-		_dir = RIGHT_DOWN;
-	}
-	if (KEYMANAGER->isStayKeyDown('D') && KEYMANAGER->isStayKeyDown('W')) // D와 S키를 누르면 오른쪽 위 대각선으로 간다.
-	{
-		_isDiagonal = true;
-		_targetAngle = 45.f;
-		_dir = RIGHT_UP;
-	}
+		KeyHandle();
+		if (_isCollecting == true)
+		{
+			_targetAngle = ConvertAngleD2D(GetAngle(transform->GetX(), transform->GetY(), _collectTile.x * TILESIZE + 16, _collectTile.y * TILESIZE + 16));
+		}
+		PlayerDirection();
 
-	if (KEYMANAGER->isOnceKeyUp('W') || KEYMANAGER->isOnceKeyUp('S')) // 만약에 W또는 S키를 떼면?
-	{
-		_isSlow = true;
-		if (KEYMANAGER->isStayKeyDown('A'))
+		if (_weaponLTrackRadius < DEFAULT_WEAPON_DISTANCE)
 		{
-			_isDiagonal = false;
-			_dir = LEFT;
-			_targetAngle = 270;
+			_weaponLTrackRadius += 3.f * TIMEMANAGER->getElapsedTime();
+			if (_weaponLTrackRadius > DEFAULT_WEAPON_DISTANCE)
+				_weaponLTrackRadius = DEFAULT_WEAPON_DISTANCE;
 		}
-		if (KEYMANAGER->isStayKeyDown('D'))
-		{
-			_isDiagonal = false;
-			_dir = RIGHT;
-			_targetAngle = 90.0f;
-		}
-	}
-	if (KEYMANAGER->isOnceKeyUp('A') || KEYMANAGER->isOnceKeyUp('D')) // 만약에 A또는 D 키를 떼면?
-	{
-		_isSlow = true;
-		if (KEYMANAGER->isStayKeyDown('W'))
-		{
-			_isDiagonal = false;
-			_targetAngle = 0.f;
-			_dir = UP;
-		}
-		if (KEYMANAGER->isStayKeyDown('S'))
-		{
-			_isDiagonal = false;
-			_targetAngle = 180.f;
-			_dir = DOWN;
-		}
-	}
 
+		if (_weaponRTrackRadius < DEFAULT_WEAPON_DISTANCE)
+		{
+			_weaponRTrackRadius += 3.f * TIMEMANAGER->getElapsedTime();
+			if (_weaponRTrackRadius > DEFAULT_WEAPON_DISTANCE)
+				_weaponRTrackRadius = DEFAULT_WEAPON_DISTANCE;
+		}
+
+		if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
+		{
+			worldX = ScreenToWorld(_ptMouse).x;
+			worldY = ScreenToWorld(_ptMouse).y;
+			if (_isCollecting == false)
+				_targetAngle = ConvertAngleD2D(GetAngle(transform->position.x, transform->position.y, worldX, worldY));
+
+			_attackSpeed += TIMEMANAGER->getElapsedTime();
+
+			if (_attackSpeed >= 0.3f)
+			{
+				if (_isLeft == false) // 만약에 왼쪽이 발동 안할 경우
+				{
+					_weaponRTrackRadius = 9.41f;
+					_projectileManager->FireProjectile(transform->GetChild(0)->GetX(), transform->GetChild(0)->GetY(),
+						transform->GetChild(0)->GetAngle() + 2, PROJECTILE_TYPE::PLAYER);
+				}
+				else // 나머지 값
+				{
+					_weaponLTrackRadius = 9.41f;
+					_projectileManager->FireProjectile(transform->GetChild(1)->GetX(), transform->GetChild(1)->GetY(),
+						transform->GetChild(1)->GetAngle() - 2, PROJECTILE_TYPE::PLAYER);
+				}
+				_isLeft = !_isLeft; // 반복되게 하기
+				_attackSpeed = 0;
+			}
+		}
+
+		float laserStartX = transform->GetX() + cosf(ConvertAngleAPI(transform->GetAngle())) * 18;
+		float laserStartY = transform->GetY() - sinf(ConvertAngleAPI(transform->GetAngle())) * 18;
+		_playerLaser->SetLaserStartPoint(laserStartX, laserStartY);
+
+		if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
+		{
+			if (_isCollecting == false)
+			{
+				_collectTile.x = worldX / TILESIZE;
+				_collectTile.y = worldY / TILESIZE;
+				_playerLaser->SetLaserEndPoint(_collectTile.x, _collectTile.y);
+				_isCollecting = true;
+				_playerLaser->_collectLaserFirst->SetActive(true);
+				_playerLaser->_collectLaserEnd->SetActive(true);
+				_playerLaser->_collectLaser->SetActive(true);
+				_playerLaser->_detectRc->SetActive(true);
+			}
+		}
+		if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
+		{
+			_playerLaser->_collectLaserFirst->SetActive(false);
+			_playerLaser->_collectLaserEnd->SetActive(false);
+			_playerLaser->_collectLaser->SetActive(false);
+			_playerLaser->_detectRc->SetActive(false);
+			_isCollecting = false;
+		}
+		_playerLaser->Update();
+		if (_playerLaser->GetLaserDistance() >= 400)
+		{
+			_playerLaser->OffLaser();
+			_isCollecting = false;
+		}
+	}
+}
+void PlayerControler::Render()
+{
+	transform->GetChild(0)->gameObject->Render();
+	transform->GetChild(1)->gameObject->Render();
+
+	_playerLaser->Render();
+}
+
+void PlayerControler::PlayerDirection()
+{
+	float deltaAngle = _targetAngle - transform->GetAngle();
+
+	if (deltaAngle < 0) deltaAngle += 360;
+
+	if (deltaAngle > 180)
+	{
+		if (Math::FloatEqual(_targetAngle, transform->GetAngle()) == false)
+		{
+			transform->Rotate(-4.f);
+			if (_targetAngle > transform->GetAngle())
+			{
+				transform->SetAngle(_targetAngle);
+				//포신 보정 해주고
+				transform->GetChild(0)->SetAngle(_targetAngle);
+				transform->GetChild(1)->SetAngle(_targetAngle);
+			}
+		}
+	}
+	else
+	{
+		if (Math::FloatEqual(_targetAngle, transform->GetAngle()) == false)
+		{
+			transform->Rotate(4.f);
+			if (_targetAngle < transform->GetAngle())
+			{
+				transform->SetAngle(_targetAngle);
+				transform->GetChild(0)->SetAngle(_targetAngle);
+				transform->GetChild(1)->SetAngle(_targetAngle);
+			}
+		}
+	}
+	/*******************************************************
+	1. 포신의 SetPotsition(플레이어 X + cosf(ConvertAngleAPI(transform->GetAngle())) * 포신궤도의 반지름,
+		Y - sinf(각도) * 포신궤도의 반지름)
+	********************************************************/
+	_weaponLTrackAngle = ConvertAngleD2D(acosf(cosf(ConvertAngleAPI(DEFAULT_WEAPON_ANGLE)) * DEFAULT_WEAPON_DISTANCE / _weaponLTrackRadius));
+	_weaponRTrackAngle = ConvertAngleD2D(acosf(cosf(ConvertAngleAPI(DEFAULT_WEAPON_ANGLE)) * DEFAULT_WEAPON_DISTANCE / _weaponRTrackRadius));
+
+	_weaponLdistanceAngle = ConvertAngleAPI(transform->GetAngle() - _weaponLTrackAngle);
+	_weaponRdistanceAngle = ConvertAngleAPI(transform->GetAngle() + _weaponRTrackAngle);
+
+	if (_weaponLdistanceAngle < 0) _weaponLdistanceAngle += 360;
+	transform->GetChild(0)->SetPosition((transform->GetX() + cosf(_weaponLdistanceAngle) * _weaponLTrackRadius),
+		transform->GetY() - sinf(_weaponLdistanceAngle) * _weaponLTrackRadius);
+
+	if (_weaponRdistanceAngle > 360) _weaponLdistanceAngle -= 360;
+	transform->GetChild(1)->SetPosition((transform->GetX() + cosf(_weaponRdistanceAngle) * _weaponRTrackRadius),
+		transform->GetY() - sinf(_weaponRdistanceAngle) * _weaponRTrackRadius);
+}
+
+void PlayerControler::KeyHandle()
+{
 	if (KEYMANAGER->isOnceKeyDown('A'))
 	{
 		if (KEYMANAGER->isStayKeyDown('W'))
 		{
-			_dir = UP;
-			_targetAngle = 0.f;
+			_dir = LEFT_UP;
+			_targetAngle = 315.f;
 		}
 		else if (KEYMANAGER->isStayKeyDown('S'))
 		{
 			_targetAngle = 225.f;
-			_dir = DOWN;
+			_dir = LEFT_DOWN;
 		}
 		else
 		{
@@ -220,165 +281,131 @@ void PlayerControler::Update()
 			_dir = DOWN;
 		}
 	}
-	PlayerDirection();
-	if (KEYMANAGER->isStayKeyDown('A')) // A키를 누르면
-	{
-		_speed = 250.f;
-	}
 
-	if (KEYMANAGER->isStayKeyDown('D'))
+	//키를 뗐을때
+	if (KEYMANAGER->isOnceKeyUp('A') || KEYMANAGER->isOnceKeyUp('D'))
 	{
-		_speed = 250.f;
-	}
-
-	if (KEYMANAGER->isStayKeyDown('W'))
-	{
-		_speed = 250.f;
-	}
-
-	if (KEYMANAGER->isStayKeyDown('S'))
-	{
-		_speed = 250.f;
-	}
-
-	if (_weaponLTrackRadius < DEFAULT_WEAPON_DISTANCE)
-	{
-		_weaponLTrackRadius += 3.f * TIMEMANAGER->getElapsedTime();
-		if (_weaponLTrackRadius > DEFAULT_WEAPON_DISTANCE)
-			_weaponLTrackRadius = DEFAULT_WEAPON_DISTANCE;
-	}
-
-	if (_weaponRTrackRadius < DEFAULT_WEAPON_DISTANCE)
-	{
-		_weaponRTrackRadius += 3.f * TIMEMANAGER->getElapsedTime();
-		if (_weaponRTrackRadius > DEFAULT_WEAPON_DISTANCE)
-			_weaponRTrackRadius = DEFAULT_WEAPON_DISTANCE;
-	}
-
-	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
-	{
-		worldX = ScreenToWorld(_ptMouse).x;
-		worldY = ScreenToWorld(_ptMouse).y;
-		_targetAngle = ConvertAngleD2D(GetAngle(transform->position.x, transform->position.y, worldX, worldY));
-	
-		_attackSpeed += TIMEMANAGER->getElapsedTime();
-	
-		if (_attackSpeed >= 0.3f)
+		if (KEYMANAGER->isStayKeyDown('W'))
 		{
-			if (_isLeft == false) // 만약에 왼쪽이 발동 안할 경우
-			{
-				_weaponRTrackRadius = 9.41f;
-				_projectileManager->FireProjectile(transform->GetChild(0)->GetX(), transform->GetChild(0)->GetY(),
-					transform->GetChild(0)->GetAngle() + 2, PROJECTILE_TYPE::PLAYER);
-			}
-			else // 나머지 값
-			{
-				_weaponLTrackRadius = 9.41f;
-				_projectileManager->FireProjectile(transform->GetChild(1)->GetX(), transform->GetChild(1)->GetY(),
-					transform->GetChild(1)->GetAngle() - 2, PROJECTILE_TYPE::PLAYER);
-			}
-			_isLeft = !_isLeft; // 반복되게 하기
-			_attackSpeed = 0;
+			_targetAngle = 0.f;
+			_dir = UP;
+		}
+		else if (KEYMANAGER->isStayKeyDown('S'))
+		{
+			_targetAngle = 180.f;
+			_dir = DOWN;
+		}
+		else
+		{
+			_isSlow = true;
 		}
 	}
 
-	float laserStartX = (transform->GetX() + cosf(ConvertAngleAPI(transform->GetAngle())) * 18);
-	float laserStartY = (transform->GetY() - sinf(ConvertAngleAPI(transform->GetAngle())) * 18);
-
-	if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
+	if (KEYMANAGER->isOnceKeyUp('W') || KEYMANAGER->isOnceKeyUp('S'))
 	{
-		worldX = ScreenToWorld(_ptMouse).x;
-		worldY = ScreenToWorld(_ptMouse).y;
-		
-		_playerLaser->SetLaserEndPoint(worldX / 32, worldY / 32);
-		_playerLaser->SetLaserStartPoint(worldX, worldY);
-	
-	
-		_playerLaser->_collectLaserFirst->SetActive(true);
-		_playerLaser->_collectLaserEnd->SetActive(true);
-		_playerLaser->_collectLaser->SetActive(true);
-		_playerLaser->_detectRc->SetActive(true);
-	
-	}
-	_playerLaser->ShootLaser();
-	_playerLaser->SetLaserStartPoint(laserStartX, laserStartY);
-	if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
-	{
-		_playerLaser->_collectLaserFirst->SetActive(false);
-		_playerLaser->_collectLaserEnd->SetActive(false);
-		_playerLaser->_collectLaser->SetActive(false);
-		_playerLaser->_detectRc->SetActive(false);
-	}
-}
-
-void PlayerControler::Render()
-{
-	transform->GetChild(0)->gameObject->Render();
-	transform->GetChild(1)->gameObject->Render();
-
-	_playerLaser->Render();
-}
-
-void PlayerControler::PlayerDirection()
-{
-	float deltaAngle = _targetAngle - transform->GetAngle();
-
-	if (deltaAngle < 0) deltaAngle += 360;
-
-	if (deltaAngle > 180)
-	{
-		if (transform->GetAngle() != _targetAngle)
+		if (KEYMANAGER->isStayKeyDown('A'))
 		{
-			transform->Rotate(-4.f);
+			_targetAngle = 270.f;
+			_dir = LEFT;
 		}
-		if (Math::FloatEqual(_targetAngle, transform->GetAngle()))
+		else if (KEYMANAGER->isStayKeyDown('D'))
 		{
-			transform->SetAngle(_targetAngle);
-			//포신 보정 해주고
-			transform->GetChild(0)->SetAngle(_targetAngle);
-			transform->GetChild(1)->SetAngle(_targetAngle);
+			_targetAngle = 90.f;
+			_dir = RIGHT;
+		}
+		else
+		{
+			_isSlow = true;
 		}
 	}
-	else
+
+	if (KEYMANAGER->isStayKeyDown('A') || KEYMANAGER->isStayKeyDown('D') ||
+		KEYMANAGER->isStayKeyDown('S') || KEYMANAGER->isStayKeyDown('W'))
 	{
-		if (transform->GetAngle() != _targetAngle)
-			transform->Rotate(4.f);
-		if (Math::FloatEqual(_targetAngle, transform->GetAngle()))
+		_speed += _accel * TIMEMANAGER->getElapsedTime();
+		_isSlow = false;
+
+		if (_speed >= 250.f)
 		{
-			transform->SetAngle(_targetAngle);
-			transform->GetChild(0)->SetAngle(_targetAngle);
-			transform->GetChild(1)->SetAngle(_targetAngle);
+			_speed = 250.f;
 		}
-
 	}
-	/*******************************************************
-	1. 포신의 SetPotsition(플레이어 X + cosf(ConvertAngleAPI(transform->GetAngle())) * 포신궤도의 반지름,
-		Y - sinf(각도) * 포신궤도의 반지름)
-	********************************************************/
-	_weaponLTrackAngle = ConvertAngleD2D(acosf(cosf(ConvertAngleAPI(DEFAULT_WEAPON_ANGLE)) * DEFAULT_WEAPON_DISTANCE / _weaponLTrackRadius));
-	_weaponRTrackAngle = ConvertAngleD2D(acosf(cosf(ConvertAngleAPI(DEFAULT_WEAPON_ANGLE)) * DEFAULT_WEAPON_DISTANCE / _weaponRTrackRadius));
-
-	_weaponLdistanceAngle = ConvertAngleAPI(transform->GetAngle() - _weaponLTrackAngle);
-	_weaponRdistanceAngle = ConvertAngleAPI(transform->GetAngle() + _weaponRTrackAngle);
-
-	if (_weaponLdistanceAngle < 0) _weaponLdistanceAngle += 360;
-	transform->GetChild(0)->SetPosition((transform->GetX() + cosf(_weaponLdistanceAngle) * _weaponLTrackRadius),
-		transform->GetY() - sinf(_weaponLdistanceAngle) * _weaponLTrackRadius);
-
-	if (_weaponRdistanceAngle > 360) _weaponLdistanceAngle -= 360;
-	transform->GetChild(1)->SetPosition((transform->GetX() + cosf(_weaponRdistanceAngle) * _weaponRTrackRadius),
-		transform->GetY() - sinf(_weaponRdistanceAngle) * _weaponRTrackRadius);
 }
 
 void PlayerControler::Hit(float damage)
 {
 	_hp -= damage;
-	if (_hp < 0 && _isDead == false)
+
+	if (_hp <= 0 && _isDead == false)
 	{
-		_isDead = true;
+		Dead();
+	}
+
+	if (_isDead == true)
+	{
+		_isRespawn = true;
 	}
 }
 
 void PlayerControler::Dead()
 {
+	_isDead = true;
+}
+
+void PlayerControler::Respawn()
+{
+	gameObject->transform->SetPosition(25 * TILESIZE + 16, 36 * TILESIZE + 16);
+	_hp = 100;
+	_isDead = false;
+	_isRespawn = false;
+}
+
+void PlayerControler::RespawnTime()
+{
+	if (_isRespawn == true)
+	{
+		_respawnTime += TIMEMANAGER->getElapsedTime();
+	}
+	else if (_isRespawn == false)
+	{
+		_respawnTime = 0.f;
+	}
+
+	if (_respawnTime >= 3.0f)
+	{
+		Respawn();
+	}
+}
+
+void PlayerControler::MoveHandler()
+{
+	switch (_dir)
+	{
+	case LEFT: // 각 위치의 움직이는 방향 거리
+		transform->MoveX(-_speed * TIMEMANAGER->getElapsedTime()); // X 값을 설정한 스피드 * 시간 만큼 곱한것 각 위치 길이 값.
+		break;
+	case RIGHT:
+		transform->MoveX(_speed * TIMEMANAGER->getElapsedTime());
+		break;
+	case UP:
+		transform->MoveY(-_speed * TIMEMANAGER->getElapsedTime());
+		break;
+	case DOWN:
+		transform->MoveY(_speed * TIMEMANAGER->getElapsedTime());
+		break;
+	case LEFT_UP:
+		transform->Move(-_speed * TIMEMANAGER->getElapsedTime(), -_speed * TIMEMANAGER->getElapsedTime());
+		break;
+	case LEFT_DOWN:
+		transform->Move(-_speed * TIMEMANAGER->getElapsedTime(), _speed * TIMEMANAGER->getElapsedTime());
+		break;
+	case RIGHT_UP:
+		transform->Move(_speed * TIMEMANAGER->getElapsedTime(), -_speed * TIMEMANAGER->getElapsedTime());
+		break;
+	case RIGHT_DOWN:
+		transform->Move(_speed * TIMEMANAGER->getElapsedTime(), _speed * TIMEMANAGER->getElapsedTime());
+		break;
+	case IDLE:
+		break;
+	}
 }

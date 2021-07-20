@@ -28,11 +28,14 @@ private:
 		IDLE
 	};
 private:
+
 	float _speed;
+	float _accel;
 	float _armRecoverySpeed;
 	float _targetAngle;
 	float _angleSpeed;
 	float _breakTime;
+	float _respawnTime;
 	float _weaponLTrackRadius; //r2
 	float _weaponRTrackRadius; //r2
 	float _weaponLTrackAngle;
@@ -41,18 +44,17 @@ private:
 	float _weaponRdistanceAngle;
 	float _attackSpeed;
 	float worldX, worldY;
+	float pointworldX, pointworldY;
 	
 	int _hp;
 
 	DIRECTION _dir;
 	bool _isLeft;
-	bool _isDiagonal;
-	bool _shootLeft;
-	bool _shootRight;
 	bool _isSlow;
-	bool _isGathering;
-	bool _isFire;
+	bool _isCollecting;
+	Vector2 _collectTile;
 	bool _isDead;
+	bool _isRespawn;
 	ProjectileManager* _projectileManager;
 
 	//자원 추출 레이저
@@ -60,6 +62,7 @@ private:
 
 
 	EnemyInfo* _enemyInfo;
+
 public:
 	virtual void Init();
 	virtual void Update();
@@ -70,9 +73,15 @@ public:
 	float GetHp() const { return _hp; }
 	float GetSpeed() const { return _speed; }
 	float GetTargetAngle() const { return _targetAngle; }
+	bool GetPlayerDead() const { return _isDead; }
+	bool GetPlayerRespawn() const { return _isRespawn; }
+	void KeyHandle();
 	void SetProjectileManager(ProjectileManager* projectileManager) { _projectileManager = projectileManager; }
 
 	void Hit(float damage);
 	void Dead();
+	void Respawn();
+	void RespawnTime();
+	void MoveHandler();
 };
 

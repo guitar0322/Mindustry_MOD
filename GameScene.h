@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "ProjectileManager.h"
 #include "Prop.h"
+#include "CameraControler.h"
 
 #define PROP_UI_STARTX WINSIZEX - 230
 #define PROP_UI_STARTY WINSIZEY - 187
@@ -20,40 +21,48 @@ class GameScene :
 {
 private:
 	float _musicTime;
-    Cam* _miniMapCam;
+
+	/* ============================================*/
+	/* =========== 플레이어 부분 -> 유림 ============*/
+
 	Player* _player;
 	ImageObject* _playerWeaponL;
 	ImageObject* _playerWeaponR;
 	GameObject* _projectileManager;
+
 	//======
-    PropContainer* propContainer;
-    PropFactory* propFactory;
-    UIControler* uiControler;
-    GameInfo* gameInfo;
+    PropContainer* _propContainer;
+    PropFactory* _propFactory;
+    GameInfo* _gameInfo;
+    UIControler* _uiControler;
+    UIBase _categorySelect;
+    UIBase _propSelect;
 
-    UIBase categorySelect;
-    UIBase propSelect;
+    ImageObject _propPreview;
 
-    ImageObject propPreview;
+    UIBase _buildingCategoryFrame;
+    UIBase _defenseIcon;
+    UIBase _railIcon;
+    UIBase _turretIcon;
+    UIBase _productionIcon;
 
-    UIBase buildingCategoryFrame;
-    UIBase defenseIcon;
-    UIBase railIcon;
-    UIBase turretIcon;
-    UIBase productionIcon;
+    UIBase _copperWallIcon;
+    UIBase _mechanicDrillIcon;
+    UIBase _duoIcon;
+    UIBase _conveyorIcon;
 
-    UIBase copperWallIcon;
-    UIBase mechanicDrillIcon;
-    UIBase duoIcon;
-    UIBase conveyorIcon;
+    vector<GameObject*> _wallIconV;
+    vector<GameObject*> _drillIconV;
+    vector<GameObject*> _turretIconV;
+    vector<GameObject*> _railIconV;
 
-    vector<GameObject*> wallIconV;
-    vector<GameObject*> drillIconV;
-    vector<GameObject*> turretIconV;
-    vector<GameObject*> railIconV;
+	//인게임 맵 -> 유림
+	GameMap* _gameMap;
 
-	//인게임 맵
-	GameMap* gameMap;
+	//인게임 자원UI 관련 -> 유림
+	Rect _resoucesUIBackGround;
+	UIBase _resourcesUI[2];
+
 
     int selectCategoryIdx;
 
@@ -123,6 +132,7 @@ private:
 	// EnemyManager 210717 작업 - 민재 // 
 	GameObject* _enemyManager;
 	Prop* _core;
+	CameraControler* _cameraControler;
 
 public:
     virtual HRESULT Init();
@@ -133,6 +143,14 @@ public:
     void InitCategoryUI();
     void InitPropUI();
 
+	/*유림 210719*/
+	//플레이어
+	void PlayerClip();
+	void PlayerInit();
+	//자원
+	void ResourcesInit();
+	void ResourcesUpdate();
+
     /* SHUNG 210718 */
     void researchUpdate();
     void researchRender();
@@ -142,5 +160,9 @@ public:
     void SetProjectileManager();
 	void SetCore();
 	void SetEnemyManager();
+	void SetCameraControler();
+
+	/* 화면에 문자 띄울 때 여기 쓰세요 - 유림 (210719)*/
+	void StringRender();
 };
 
