@@ -15,7 +15,5 @@ public:
 	~CameraControler();
 	virtual void Init();
 	virtual void Update();
-
 	void SetPlayerTr(Transform* playerTr) { _playerTr = playerTr; }
 };
-

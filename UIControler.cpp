@@ -1,8 +1,10 @@
 #include "stdafx.h"
 #include "UIControler.h"
 #include "TileInfo.h"
+#include "Button.h"
 #include "PropContainer.h"
 #include "GameMap.h"
+
 UIControler::UIControler()
 	:_previewDir(false), _previewNum(0)
 {
@@ -380,40 +382,56 @@ void UIControler::inResearch_ActiveChoiceImg(Transform* menuTr, bool isActive)
 	choiceImg->SetActive(isActive);
 }
 
+/* 연구 상태에서 [돌아가기] 버튼 ENTER, EXIT */
 void UIControler::inResearch_ActiveGoBackImg(bool isActive)
 {
-	goBackChoiceImg->SetActive(isActive);
+	research_goBackChoiceImg->SetActive(isActive);
 }
 
-void UIControler::inResearch_ActiveInResearchChoiceImg(Transform* menuTr, bool isActive)
-{
-	inResearchChoiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
-	inResearchChoiceImg->SetActive(isActive);
-}
-
+/* 연구 상태에서 [돌아가기] 버튼 CLICK */
 void UIControler::inResearch_ReturnToGameScene(bool* name, bool isActive)
 {
 	*name = isActive;
 }
 
+/* 연구 상태에서 [코어 DB] 버튼 ENTER, EXIT */
 void UIControler::inResearch_ActiveCoreDBImg(bool isActive)
 {
 	coreDBChoiceImg->SetActive(isActive);
 }
 
+/* 연구 상태에서 [코어 DB] 버튼 CLICK */
 void UIControler::inResearch_ReturnToCoreDBScene(bool* name, bool isActive)
 {
 	// 코어 DB 화면 구성할 때 불 값으로 연결시켜주기
 	*name = isActive;
 }
 
-void UIControler::inResearch_ActiveChoiceImgWithBasicDes(Transform* menuTr, UIBase* name, bool isActive)
+/* 연구 상태에서 [개개인의 객체] 버튼 ENTER */
+void UIControler::inResearch_ActiveChoiceImgWithBasicDes(Transform* menuTr, UIBase* name, Button* name2, bool* name3, bool isActive)
 {
+	if (*name3) return;
+
 	choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
-	choiceImg->SetActive(isActive);
 	name->SetActive(isActive);
+	name2->SetActive(isActive);
+	choiceImg->SetActive(isActive);
 }
 
+/* 연구 상태에서 [개개인의 객체] 버튼 EXIT */
+void UIControler::inResearch_inActiveChoiceImgWithBasicDes(Transform* menuTr, UIBase* name, bool* name2, Button* name3, bool isActive)
+{
+	if (*name2) return;
+	else
+	{
+		name->SetActive(isActive);
+		name3->SetActive(isActive);
+		choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
+		choiceImg->SetActive(isActive);
+	}
+}
+
+/* 연구 상태에서 [기본 설명] 버튼 ENTER */
 void UIControler::inResearch_inBasicDes(Transform* menuTr, UIBase* name, bool* name2, bool isActive)
 {
 	*name2 = isActive;
@@ -422,23 +440,67 @@ void UIControler::inResearch_inBasicDes(Transform* menuTr, UIBase* name, bool* n
 	name->SetActive(isActive);
 }
 
-void UIControler::inResearch_inActiveChoiceImgWithBasicDes(Transform* menuTr, UIBase* name, bool* name2, bool isActive)
-{
-	if (*name2) return;
-	else
-	{
-		name->SetActive(isActive);
-		choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
-		choiceImg->SetActive(isActive);
-	}
-}
-
-void UIControler::inResearch_disableInBasicDes(Transform* menuTr, UIBase* name, bool* name2, bool isActive)
+/* 연구 상태에서 [기본 설명] 버튼 EXIT */
+void UIControler::inResearch_disableInBasicDes(Transform* menuTr, UIBase* name, bool* name2, Button* name3, bool isActive)
 {
 	*name2 = isActive;
+	name3->SetActive(isActive);
 	choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
 	choiceImg->SetActive(isActive);
 	name->SetActive(isActive);
 }
 
+/* 연구 상태에서 [상세 설명] 버튼 ENTER, EXIT */
+void UIControler::inResearch_ActiveInResearchChoiceImg(Transform* menuTr, bool isActive)
+{
+	inResearchChoiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
+	inResearchChoiceImg->SetActive(isActive);
+}
 
+/* 기본 설명 [i] 주변 버튼 CLICK*/
+void UIControler::inResearch_ActiveDetailImg(UIBase* name, bool* name2, bool isActive)
+{
+	name->SetActive(isActive);
+	*name2 = isActive;
+	detailDes_GoBackIdleImg->transform->SetPosition(WINSIZEX / 2, WINSIZEY - 70);
+	detailDes_GoBackIdleImg->SetActive(true);
+}
+
+/* 상세 설명 상태에서 [돌아가기] 버튼 ENTER */
+void UIControler::inDetailDes_ActiveGoBackImg(bool* name, bool isActive)
+{
+	if (!*name) return;
+	detailDes_GoBackChoiceImg->SetActive(isActive);
+}
+
+/* 상세 설명 상태에서 [돌아가기] 버튼 CLICK */
+void UIControler::inResearch_ReturnToResearchScene(bool* name, UIBase* name2, bool isActive)
+{
+	*name = isActive;
+	name2->SetActive(isActive);
+	detailDes_GoBackChoiceImg->SetActive(isActive);
+	detailDes_GoBackIdleImg->SetActive(isActive);
+}
+
+/* 상세 설명 상태에서 [돌아가기] 버튼 EXIT */
+void UIControler::inDetailDes_ReturnToResearch(bool isActive)
+{
+	detailDes_GoBackChoiceImg->SetActive(isActive);
+}
+
+/* 메뉴 상태에서 [돌아가기] 버튼 ENTERT, EXIT */
+void UIControler::inMenu_ActiveChoiceImg_GoBack(bool isActive)
+{
+	menu_GoBackChoiceImg->SetActive(isActive);
+}
+
+/* 메뉴 상태에서 [돌아가기] 버튼 CLICK */
+void UIControler::inMenu_ReturnToGameScene(bool* name, bool isActive)
+{
+	*name = isActive;
+}
+
+void UIControler::inMenu_AcitveChoiceImg_SaveAndExit(bool isActive)
+{
+	menu_SaveAndExitChoiceImg->SetActive(isActive);
+}

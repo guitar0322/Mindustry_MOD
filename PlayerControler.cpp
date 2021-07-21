@@ -143,7 +143,6 @@ void PlayerControler::Update()
 			  _playerLaser->_detectRc->SetActive(true);
 		   }
 		}
-		
 
 		if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
 		{
@@ -462,6 +461,8 @@ void PlayerControler::KeyHandle()
 	{
 		_isSlow = false;
 		_speed += _accel * TIMEMANAGER->getElapsedTime();
+		_isSlow = false;
+
 		if (_speed >= 250.f)
 		{
 			_speed = 250.f;

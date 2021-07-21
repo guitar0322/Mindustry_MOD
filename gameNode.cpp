@@ -140,7 +140,8 @@ LRESULT gameNode::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 			switch (wParam)
 			{
 			case VK_ESCAPE:
-				PostQuitMessage(0);
+				/* 시영 주석 210720 */
+				//PostQuitMessage(0);
 				break;
 			}
 			break;

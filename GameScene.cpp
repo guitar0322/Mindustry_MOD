@@ -68,39 +68,74 @@ HRESULT GameScene::Init()
     InitCategoryUI();
     InitPropUI();
 
-    /* SHUNG 210715 */
-    _lockDes = false;
-    _research = false;
+    /* 시영 */
+    // 연구 Init
+    researchInitUI();
+    // 메뉴 Init
+    menuInitUI();
 
-    _uiControler->choiceImg = &_choiceImg;
-    _uiControler->lockImg = &_lockImg;
-    _uiControler->inResearchChoiceImg = &_inResearchChoiceImg;
-    _uiControler->goBackIdleImg = &_goBackIdleImg;
-    _uiControler->goBackChoiceImg = &_goBackChoiceImg;
-    _uiControler->coreDBIdleImg = &_coreDBIdleImg;
-    _uiControler->coreDBChoiceImg = &_coreDBChoiceImg;
+    // BOOL 변수 초기화 
+    {
+        /* 연구부분 */
+        _lockDes = false;
+        _research = false;
+        _inDetail = false;
+
+        /* 메뉴부분 */
+        _menu = false;
+        _menu_ReallyEnd = false;
+    }
+
+    // _uiControler 이미지 연동
+    {
+        /* 연구부분 */
+        _uiControler->choiceImg = &_choiceImg;
+        _uiControler->lockImg = &_lockImg;
+        _uiControler->inResearchChoiceImg = &_inResearchChoiceImg;
+        _uiControler->research_goBackIdleImg = &_research_goBackIdleImg;
+        _uiControler->research_goBackChoiceImg = &_research_goBackChoiceImg;
+        _uiControler->coreDBIdleImg = &_coreDBIdleImg;
+        _uiControler->coreDBChoiceImg = &_coreDBChoiceImg;
+        _uiControler->detailDes_GoBackIdleImg = &_detailDes_goBackIdleImg;
+        _uiControler->detailDes_GoBackChoiceImg = &_detailDes_goBackChoiceImg;
+
+        /* 메뉴부분 */
+        _uiControler->menu_GoBackIdleImg = &_menu_GoBackIdleImg;
+        _uiControler->menu_GoBackChoiceImg = &_menu_GoBackChoiceImg;
+        _uiControler->menu_SettingIdleImg = &_menu_SettingIdleImg;
+        _uiControler->menu_SettingChoiceImg = &_menu_SettingChoiceImg;
+        _uiControler->menu_SaveAndExitIdleImg = &_menu_SaveAndExitIdleImg;
+        _uiControler->menu_SaveAndExitChoiceImg = &_menu_SaveAndExitChoiceImg;
+    }
 
     #pragma region 연구 상태에서 [돌아가기] 이미지, 버튼
 
-    _goBackIdleImg.uiRenderer->Init("research_gobackidle");
-    _goBackIdleImg.transform->SetPosition(WINSIZEX / 2 - 200, WINSIZEY - 70);
-    _goBackIdleImg.SetActive(true);
-	
-	//========================================
-    _goBackChoiceImg.uiRenderer->Init("research_gobackchoice");
-    _goBackChoiceImg.transform->SetPosition(WINSIZEX / 2 - 200, WINSIZEY - 70);
-    _goBackChoiceImg.SetActive(false);
+    _research_goBackIdleImg.uiRenderer->Init("research_gobackidle");
+    _research_goBackIdleImg.transform->SetPosition(WINSIZEX / 2 - 200, WINSIZEY - 70);
+    _research_goBackIdleImg.SetActive(true);
 
-    _goBackButton.Init();
-    _goBackButton.uiRenderer->Init(220, 65);
-    _goBackButton.transform->SetPosition(WINSIZEX / 2 - 200, WINSIZEY - 70);
+    _research_goBackChoiceImg.uiRenderer->Init("research_gobackchoice");
+    _research_goBackChoiceImg.transform->SetPosition(WINSIZEX / 2 - 200, WINSIZEY - 70);
+    _research_goBackChoiceImg.SetActive(false);
 
-    _goBackButton.uiMouseEvent->RegistCallback(
-        std::bind(&UIControler::inResearch_ActiveGoBackImg, _uiControler, true), EVENT::ENTER);
-    _goBackButton.uiMouseEvent->RegistCallback(
-        std::bind(&UIControler::inResearch_ReturnToGameScene, _uiControler, &_research, false), EVENT::CLICK);
-    _goBackButton.uiMouseEvent->RegistCallback(
-        std::bind(&UIControler::inResearch_ActiveGoBackImg, _uiControler, false), EVENT::EXIT);
+    _research_goBackButton.Init();
+    _research_goBackButton.uiRenderer->Init(220, 65);
+    _research_goBackButton.transform->SetPosition(WINSIZEX / 2 - 200, WINSIZEY - 70);
+
+    _research_goBackButton.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inResearch_ActiveGoBackImg, _uiControler,
+            true),
+        EVENT::ENTER);
+
+    _research_goBackButton.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inResearch_ReturnToGameScene, _uiControler,
+            &_research, false),
+        EVENT::CLICK);
+
+    _research_goBackButton.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inResearch_ActiveGoBackImg, _uiControler,
+            false),
+        EVENT::EXIT);
 
     #pragma endregion
 
@@ -128,6 +163,51 @@ HRESULT GameScene::Init()
 
     #pragma endregion
 
+    #pragma region 상세 설명 상태에서 [돌아가기] 이미지, 버튼
+
+    _detailDes_goBackIdleImg.uiRenderer->Init("research_gobackidle");
+    _detailDes_goBackIdleImg.transform->SetPosition(WINSIZEX / 2, WINSIZEY - 70);
+    _detailDes_goBackIdleImg.SetActive(false);
+
+    _detailDes_goBackChoiceImg.uiRenderer->Init("research_gobackchoice");
+    _detailDes_goBackChoiceImg.transform->SetPosition(WINSIZEX / 2, WINSIZEY - 70);
+    _detailDes_goBackChoiceImg.SetActive(false);
+
+    _detailDes_goBackButton.Init();
+    _detailDes_goBackButton.uiRenderer->Init(220, 65);
+    _detailDes_goBackButton.transform->SetPosition(WINSIZEX / 2, WINSIZEY - 70);
+
+    _detailDes_goBackButton.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inDetailDes_ActiveGoBackImg, _uiControler,
+            &_inDetail, true),
+        EVENT::ENTER);
+    
+    _detailDes_goBackButton.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inResearch_ReturnToResearchScene,_uiControler,
+            &_inDetail, &_coreDetailDescriptionImg, false),
+        EVENT::CLICK);
+    
+    _detailDes_goBackButton.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inDetailDes_ReturnToResearch, _uiControler,
+            false),
+        EVENT::EXIT);
+
+    #pragma endregion
+
+	/* 플레이어 부분 유림 */
+	_player = new Player();
+	_player->Init();
+	_player->tag = TAGMANAGER->GetTag("player");
+	_player->renderer->Init("player");
+	_player->transform->SetPosition(1500, 900);
+	_player->transform->SetAngle(0.0f);
+	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
+
+	//플레이어 포신 유림.
+	_playerWeaponL = new ImageObject;
+	_playerWeaponL->Init();
+	_playerWeaponL->renderer->Init("player_weapon_L");
+
 	/*===================================================================== */
 	/* 플레이어 부분 초기화 -> 유림 */
 	PlayerInit();
@@ -147,7 +227,7 @@ HRESULT GameScene::Init()
 	SOUNDMANAGER->addSound("bgm3", "music/game9.mp3", true, false);
 	SOUNDMANAGER->play("start", 10.0f);
 	_musicTime = 0;
-    StaticBuffer->EndDraw();
+   StaticBuffer->EndDraw();
 
     return S_OK;
 }
@@ -164,6 +244,7 @@ void GameScene::Update()
         _turretIcon.Update();
         _productionIcon.Update();
     }
+
     //설치물 아이콘 업데이트
     {
         _copperWallIcon.Update();
@@ -187,6 +268,7 @@ void GameScene::Update()
 
 	// 광물 부분 -> 유림 210719
 	ResourcesUpdate();
+
 	//========================================
 	_cameraControler->Update();
     _buildingCategoryFrame.Update();
@@ -198,20 +280,42 @@ void GameScene::Update()
     _categorySelect.Update();
     _propSelect.Update();
 
-    /* SHUNG 210715 */
-    _CoreSlice.Update();
-    _choiceImg.Update();
 	_core->Update();
 	//_enemyManager->Update();
 
 	//07.20 민재 인 게임 Wave UI && Player UI 작업//
 	InGameUIUpdate();
+	_enemyManager->Update();
+    
+    /* 시영 */
+    // 연구 부분 Update
+    {
+        if (KEYMANAGER->isOnceKeyDown(VK_F1)) _research = true;
+        if (KEYMANAGER->isOnceKeyDown(VK_F2)) _research = false;
+        if (_research) researchUpdate();
+        _research_goBackButton.Update();
+        _coreDBButton.Update();
+        _detailDes_goBackButton.Update();
+    }
 
-    if (KEYMANAGER->isOnceKeyDown(VK_F1)) _research = true;
-    if (KEYMANAGER->isOnceKeyDown(VK_F2)) _research = false;
-    if (_research) researchUpdate();
-    _goBackButton.Update();
-    _coreDBButton.Update();
+    // 메뉴 부분 Update
+    {
+        if (KEYMANAGER->isOnceKeyDown(VK_ESCAPE))
+        {
+            if (_menu)
+            {
+                _menu = false;
+                _menuImg.SetActive(false);
+            }
+            else
+            {
+                _menu = true;
+                _menuImg.SetActive(true);
+            }
+        }
+ 
+        if (_menu) menuUpdate();
+    }
 
     /* 사운드 작업 광철 210718 */
     _musicTime += TIMEMANAGER->getElapsedTime();
@@ -275,20 +379,21 @@ void GameScene::Render()
     _categorySelect.Render();
     _propSelect.Render();
 
-    /* SHUNG 210715 */
+    /* 시영 */
+    // 연구
     if (_research) researchRender();
-    _CoreSlice.Render();
-    _choiceImg.Render();
+    // 메뉴
+    if (_menu) menuRender();
 
 	//07.20 민재 인 게임 Wave UI && Player UI 작업//
 	InGameUIRender();
-	/* ================================여기 만지지 마세요 ========================================*/
 
+	/* ================================여기 만지지 마세요 ========================================*/
 	//자원UI 렌더 -> 유림 (210719)
 	ResourcesRender();
-
 	/* ================================여기 만지지 마세요 ========================================*/
-	//210719 유림 수정
+	
+    //210719 유림 수정
 	StringRender();
 }
 
@@ -352,51 +457,79 @@ void GameScene::InitClip()
 	}
 	CLIPMANAGER->AddClip("button_select", "sprites/ui/button-select.10.png", 52, 52);
 
-    /* SHUNG 210715-16, 연구 목록 이미지 */
-    CLIPMANAGER->AddClip("research_choice", "sprites/game/choice.png", 75, 56);
-    CLIPMANAGER->AddClip("research_lock", "sprites/game/lock.png", 74, 56);
-    CLIPMANAGER->AddClip("in_research_choice", "sprites/game/in_research_choice.png", 50, 60);
-    CLIPMANAGER->AddClip("in_research_about", "sprites/game/i.png", 24, 44);
 
-    CLIPMANAGER->AddClip("research_core", "sprites/game/core.png", 74, 56);
-    CLIPMANAGER->AddClip("research_core_basic_description", "sprites/game/core_basic_description.png", 159, 193);
+    /* 시영 */
+    /* 연구 클립 */
+    {
+        CLIPMANAGER->AddClip("research_choice", "sprites/game/choice.png", 75, 56);
+        CLIPMANAGER->AddClip("research_lock", "sprites/game/lock.png", 74, 56);
+        CLIPMANAGER->AddClip("in_research_choice", "sprites/game/in_research_choice.png", 50, 60);
+        CLIPMANAGER->AddClip("in_research_about", "sprites/game/i.png", 24, 44);
 
-    CLIPMANAGER->AddClip("research_drill", "sprites/game/drill.png", 74, 56);
-    CLIPMANAGER->AddClip("research_conveyor", "sprites/game/conveyor.png", 74, 56);
-    CLIPMANAGER->AddClip("research_crossover", "sprites/game/crossover.png", 74, 56);
-    CLIPMANAGER->AddClip("research_undeveloped_distributor", "sprites/game/undeveloped_distributor.png", 74, 56);
-    CLIPMANAGER->AddClip("research_developed_distributor", "sprites/game/developed_distributor.png", 74, 56);
-    CLIPMANAGER->AddClip("research_outpost", "sprites/game/outpost.png", 74, 56);
-    CLIPMANAGER->AddClip("research_copper", "sprites/game/copper.png", 74, 56);
-    CLIPMANAGER->AddClip("research_water", "sprites/game/water.png", 74, 56);
-    CLIPMANAGER->AddClip("research_lead", "sprites/game/lead.png", 74, 56);
-    CLIPMANAGER->AddClip("research_sand", "sprites/game/sand.png", 74, 56);
-    CLIPMANAGER->AddClip("research_duo", "sprites/game/duo.png", 74, 56);
-    CLIPMANAGER->AddClip("research_undeveloped_copperWall", "sprites/game/undeveloped_copperWall.png", 74, 56);
-    CLIPMANAGER->AddClip("research_developed_copperWall", "sprites/game/developed_copperWall.png", 74, 56);
-    CLIPMANAGER->AddClip("research_undeveloped_scatter", "sprites/game/undeveloped_scatter.png", 74, 56);
-    CLIPMANAGER->AddClip("research_developed_scatter", "sprites/game/developed_scatter.png", 74, 56);
-    CLIPMANAGER->AddClip("research_undeveloped_largeCopperWall", "sprites/game/undeveloped_largeCopperWall.png", 74, 56);
-    CLIPMANAGER->AddClip("research_developed_largeCopperWall", "sprites/game/developed_largeCopperWall.png", 74, 56);
-    CLIPMANAGER->AddClip("research_undeveloped_router", "sprites/game/undeveloped_router.png", 74, 56);
-    CLIPMANAGER->AddClip("research_developed_router", "sprites/game/developed_router.png", 74, 56);
-    CLIPMANAGER->AddClip("research_undeveloped_sorter", "sprites/game/undeveloped_sorter.png", 74, 56);
-    CLIPMANAGER->AddClip("research_developed_sorter", "sprites/game/developed_sorter.png", 74, 56);
-    CLIPMANAGER->AddClip("research_undeveloped_bridgeConveyor", "sprites/game/undeveloped_bridgeConveyor.png", 74, 56);
-    CLIPMANAGER->AddClip("research_developed_bridgeConveyor", "sprites/game/developed_bridgeConveyor.png", 74, 56);
-    CLIPMANAGER->AddClip("research_undeveloped_invertedSorter", "sprites/game/undeveloped_invertedSorter.png", 74, 56);
-    CLIPMANAGER->AddClip("research_developed_invertedSorter", "sprites/game/developed_invertedSorter.png", 74, 56);
-    CLIPMANAGER->AddClip("research_undeveloped_overflowGate", "sprites/game/undeveloped_overflowGate.png", 74, 56);
-    CLIPMANAGER->AddClip("research_developed_overflowGate", "sprites/game/developed_overflowGate.png", 74, 56);
-    CLIPMANAGER->AddClip("research_undeveloped_underflowGate", "sprites/game/undeveloped_underflowGate.png", 74, 56);
-    CLIPMANAGER->AddClip("research_developed_underflowGate", "sprites/game/developed_underflowGate.png", 74, 56);
-    CLIPMANAGER->AddClip("research_developed_scrapMetal", "sprites/game/scrapMetal.png", 74, 56);
+        CLIPMANAGER->AddClip("research_core", "sprites/game/core.png", 74, 56);
+        CLIPMANAGER->AddClip("research_core_basic_description", "sprites/game/core_basic_description.png", 159, 193);
+        CLIPMANAGER->AddClip("research_core_detail_description", "sprites/game/core_detail_description.png", WINSIZEX, WINSIZEY);
 
-    /* SHUNG 210718 연구 누를 경우 나오는 UI (뒤로가기, 코어 데이터 베이스) */
-    CLIPMANAGER->AddClip("research_gobackidle", "sprites/game/gobackidle.png", 210, 64);
-    CLIPMANAGER->AddClip("research_gobackchoice", "sprites/game/gobackchoice.png", 210, 64);
-    CLIPMANAGER->AddClip("research_coredbidle", "sprites/game/core_db_idle.png", 210, 64);
-    CLIPMANAGER->AddClip("research_coredbchoice", "sprites/game/core_db_choice.png", 210, 64);
+        CLIPMANAGER->AddClip("research_drill", "sprites/game/drill.png", 74, 56);
+        CLIPMANAGER->AddClip("research_conveyor", "sprites/game/conveyor.png", 74, 56);
+        CLIPMANAGER->AddClip("research_crossover", "sprites/game/crossover.png", 74, 56);
+        CLIPMANAGER->AddClip("research_undeveloped_distributor", "sprites/game/undeveloped_distributor.png", 74, 56);
+        CLIPMANAGER->AddClip("research_developed_distributor", "sprites/game/developed_distributor.png", 74, 56);
+        CLIPMANAGER->AddClip("research_outpost", "sprites/game/outpost.png", 74, 56);
+        CLIPMANAGER->AddClip("research_copper", "sprites/game/copper.png", 74, 56);
+        CLIPMANAGER->AddClip("research_water", "sprites/game/water.png", 74, 56);
+        CLIPMANAGER->AddClip("research_lead", "sprites/game/lead.png", 74, 56);
+        CLIPMANAGER->AddClip("research_sand", "sprites/game/sand.png", 74, 56);
+        CLIPMANAGER->AddClip("research_duo", "sprites/game/duo.png", 74, 56);
+        CLIPMANAGER->AddClip("research_undeveloped_copperWall", "sprites/game/undeveloped_copperWall.png", 74, 56);
+        CLIPMANAGER->AddClip("research_developed_copperWall", "sprites/game/developed_copperWall.png", 74, 56);
+        CLIPMANAGER->AddClip("research_undeveloped_scatter", "sprites/game/undeveloped_scatter.png", 74, 56);
+        CLIPMANAGER->AddClip("research_developed_scatter", "sprites/game/developed_scatter.png", 74, 56);
+        CLIPMANAGER->AddClip("research_undeveloped_largeCopperWall", "sprites/game/undeveloped_largeCopperWall.png", 74, 56);
+        CLIPMANAGER->AddClip("research_developed_largeCopperWall", "sprites/game/developed_largeCopperWall.png", 74, 56);
+        CLIPMANAGER->AddClip("research_undeveloped_router", "sprites/game/undeveloped_router.png", 74, 56);
+        CLIPMANAGER->AddClip("research_developed_router", "sprites/game/developed_router.png", 74, 56);
+        CLIPMANAGER->AddClip("research_undeveloped_sorter", "sprites/game/undeveloped_sorter.png", 74, 56);
+        CLIPMANAGER->AddClip("research_developed_sorter", "sprites/game/developed_sorter.png", 74, 56);
+        CLIPMANAGER->AddClip("research_undeveloped_bridgeConveyor", "sprites/game/undeveloped_bridgeConveyor.png", 74, 56);
+        CLIPMANAGER->AddClip("research_developed_bridgeConveyor", "sprites/game/developed_bridgeConveyor.png", 74, 56);
+        CLIPMANAGER->AddClip("research_undeveloped_invertedSorter", "sprites/game/undeveloped_invertedSorter.png", 74, 56);
+        CLIPMANAGER->AddClip("research_developed_invertedSorter", "sprites/game/developed_invertedSorter.png", 74, 56);
+        CLIPMANAGER->AddClip("research_undeveloped_overflowGate", "sprites/game/undeveloped_overflowGate.png", 74, 56);
+        CLIPMANAGER->AddClip("research_developed_overflowGate", "sprites/game/developed_overflowGate.png", 74, 56);
+        CLIPMANAGER->AddClip("research_undeveloped_underflowGate", "sprites/game/undeveloped_underflowGate.png", 74, 56);
+        CLIPMANAGER->AddClip("research_developed_underflowGate", "sprites/game/developed_underflowGate.png", 74, 56);
+        CLIPMANAGER->AddClip("research_developed_scrapMetal", "sprites/game/scrapMetal.png", 74, 56);
+
+        /* SHUNG 210718 연구 누를 경우 나오는 UI (뒤로가기, 코어 데이터 베이스) */
+        CLIPMANAGER->AddClip("research_gobackidle", "sprites/game/gobackidle.png", 210, 64);
+        CLIPMANAGER->AddClip("research_gobackchoice", "sprites/game/gobackchoice.png", 210, 64);
+        CLIPMANAGER->AddClip("research_coredbidle", "sprites/game/core_db_idle.png", 210, 64);
+        CLIPMANAGER->AddClip("research_coredbchoice", "sprites/game/core_db_choice.png", 210, 64);
+    }
+
+    /* 메뉴 클립 */
+    {
+        CLIPMANAGER->AddClip("menu_menuimg", "sprites/game/menu.png", WINSIZEX, WINSIZEY);
+        
+        CLIPMANAGER->AddClip("menu_goback_idle", "sprites/game/menu_gobackidle.png", 220, 55);
+        CLIPMANAGER->AddClip("menu_goback_choice", "sprites/game/menu_gobackchoice.png", 220, 55);
+
+        CLIPMANAGER->AddClip("menu_setting_idle", "sprites/game/menu_setting_idle.png", 220, 55);
+        CLIPMANAGER->AddClip("menu_setting_choice", "sprites/game/menu_setting_choice.png", 220, 55);
+
+        CLIPMANAGER->AddClip("menu_save_and_exit_idle", "sprites/game/menu_save_and_exit_idle.png", 240, 55);
+        CLIPMANAGER->AddClip("menu_save_and_exit_choice", "sprites/game/menu_save_and_exit_choice.png", 240, 55);
+
+        // 정말로 종료하시겠습니까?
+        CLIPMANAGER->AddClip("menu_reallyendimg", "sprites/game/menu_reallyend.png", WINSIZEX, WINSIZEY);
+
+        CLIPMANAGER->AddClip("menu_reallyend_check_idle", "sprites/game/menu_reallyend_check_idle.png", 200, 54);
+        CLIPMANAGER->AddClip("menu_reallyend_check_choice", "sprites/game/menu_reallyend_check_choice.png", 200, 54);
+
+        CLIPMANAGER->AddClip("menu_reallyend_cancel_idle", "sprites/game/menu_reallyend_cancel_idle.png", 200, 54);
+        CLIPMANAGER->AddClip("menu_reallyend_cancel_choice", "sprites/game/menu_reallyend_cancel_choice.png", 200, 54);
+    }
 
 	//// ENEMY & CORE 클립 작업 민재 /////
 	{
@@ -453,9 +586,6 @@ void GameScene::InitCategoryUI()
 
     _categorySelect.uiRenderer->Init("button_select");
     _categorySelect.transform->SetPosition(_turretIcon.transform->GetX(), _turretIcon.transform->GetY());
-
-    /* SHUNG 210715 */
-    researchInitUI();
 }
 
 void GameScene::InitPropUI()
@@ -595,9 +725,7 @@ void GameScene::ResourcesInit()
 
 	_resourcesUI[1].Init();
 	_resourcesUI[1].uiRenderer->Init("leadUI");
-	_resourcesUI[1].transform->SetPosition(WINSIZEX / 2 + 20, 20);
-	
-
+    _resourcesUI[1].transform->SetPosition(WINSIZEX / 2 + 20, 20);
 }
 
 void GameScene::ResourcesUpdate()
@@ -644,8 +772,9 @@ void GameScene::researchUpdate()
     _inResearchChoiceImg.Update();
 
     _coreSlice.Update();
+    _coreDetailDescriptionButton.Update();
     _coreBasicDescription.Update();
-    _coreDetailDescription.Update();
+    _coreDetailDescriptionImg.Update();
 
     _mechanicalDrill.Update();
     _conveyor.Update();
@@ -687,9 +816,7 @@ void GameScene::researchUpdate()
 
 void GameScene::researchRender()
 {
-    _coreDetailDescription.Render();
-    _coreBasicDescription.Render();
-
+    /* 버튼 Render */
     _coreSlice.Render();
     _mechanicalDrill.Render();
     _conveyor.Render();
@@ -728,18 +855,34 @@ void GameScene::researchRender()
     _titaniumConveyor.Render();
     _underflowGate.Render();
 
+    /* Lock, Choice, 회색 Choice */
     _lockImg.Render();
     _choiceImg.Render();
 
+    /* 설명 Render - 설명이 버튼을 가리게끔 출력되기 위해 놓는다.*/
+    _coreBasicDescription.Render();
+
+    // i에 마우스 충돌이 일어났을 경우에 나오는 회색선택창의 render
     _inResearchChoiceImg.Render();
 
-    /* 연구 누를 경우 나오는 UI (뒤로가기, 코어 데이터 베이스) */
-    _goBackIdleImg.Render();
-    _goBackChoiceImg.Render();
-    _goBackButton.Render();
+    /* 기본 설명에서의 i가 연구상태 내에서 회색선택창 위에 올라와야 하므로 여기다 넣는다. */
+    _coreDetailDescriptionButton.Render();
+
+    //
+    _research_goBackIdleImg.Render();
+    _research_goBackChoiceImg.Render();
+    _research_goBackButton.Render();
     _coreDBIdleImg.Render();
     _coreDBChoiceImg.Render();
     _coreDBButton.Render();
+
+    /* 상세 설명 넣으세요 */
+    _coreDetailDescriptionImg.Render();
+
+    //
+    _detailDes_goBackIdleImg.Render();
+    _detailDes_goBackChoiceImg.Render();
+    _detailDes_goBackButton.Render();
 }
 
 void GameScene::researchInitUI()
@@ -747,6 +890,7 @@ void GameScene::researchInitUI()
 #pragma region ChoiceImg
 
     _choiceImg.uiRenderer->Init("research_choice");
+    _choiceImg.uiMouseEvent->enable = false;
     _choiceImg.transform->SetPosition(WINSIZEX / 2, WINSIZEY / 2);
     _choiceImg.transform->SetScale(0.75f, 0.75f);
     _choiceImg.SetActive(false);
@@ -756,6 +900,7 @@ void GameScene::researchInitUI()
 #pragma region LockImg
 
     _lockImg.uiRenderer->Init("research_lock");
+    _lockImg.uiMouseEvent->enable = false;
     _lockImg.transform->SetPosition(WINSIZEX / 2, WINSIZEY / 2);
     _lockImg.transform->SetScale(0.75f, 0.75f);
     _lockImg.SetActive(false);
@@ -765,37 +910,76 @@ void GameScene::researchInitUI()
 #pragma region 연구상태 내에서 기본설명 볼 때 i에 마우스 충돌이 일어났을 경우에 나오는 회색선택창
 
     _inResearchChoiceImg.uiRenderer->Init("in_research_choice");
+    _inResearchChoiceImg.uiMouseEvent->enable = false;
     _inResearchChoiceImg.transform->SetPosition(WINSIZEX / 2, WINSIZEY / 2);
-    _inResearchChoiceImg.transform->SetScale(1.f, 1.f);
     _inResearchChoiceImg.SetActive(false);
 
 #pragma endregion
 
 #pragma region 코어 : 조각
 
+    // 코어 : 조각 버튼
     _coreSlice.uiRenderer->Init("research_core");
     _coreSlice.transform->SetPosition(WINSIZEX / 2, WINSIZEY / 2);
     _coreSlice.transform->SetScale(0.75f, 0.75f);
 
+    // 코어 : 조각 기본 설명
     _coreBasicDescription.uiRenderer->Init("research_core_basic_description");
-    _coreBasicDescription.transform->SetPosition(WINSIZEX / 2 + 105, WINSIZEY / 2 + 78);
+    _coreBasicDescription.transform->SetPosition(WINSIZEX / 2 + 103, WINSIZEY / 2 + 78);
     _coreBasicDescription.SetActive(false);
 
-    _coreDetailDescription.uiRenderer->Init("in_research_about");
-    _coreDetailDescription.transform->SetPosition(WINSIZEX / 2 + 59, WINSIZEY / 2 + 22);
-    _coreDetailDescription.SetActive(false);
+    // 코어 : 조각 기본 설명의 [i] 주변 버튼
+    _coreDetailDescriptionButton.uiRenderer->Init("in_research_about");
+    _coreDetailDescriptionButton.transform->SetPosition(WINSIZEX / 2 + 57, WINSIZEY / 2 + 22);
+    _coreDetailDescriptionButton.SetActive(false);
+
+    // 코어 : 조각 상세 설명 이미지
+    _coreDetailDescriptionImg.uiRenderer->Init("research_core_detail_description");
+    _coreDetailDescriptionImg.transform->SetPosition(WINSIZEX / 2, WINSIZEY / 2);
+    _coreDetailDescriptionImg.uiRenderer->SetAlpha(1.f);
+    _coreDetailDescriptionImg.uiMouseEvent->enable = false;
+    _coreDetailDescriptionImg.SetActive(false);
+
+    /* 기본 아이콘 */
+    _coreSlice.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inResearch_ActiveChoiceImgWithBasicDes, _uiControler,
+            _coreSlice.transform, &_coreBasicDescription, &_coreDetailDescriptionButton, &_inDetail, true),
+        EVENT::ENTER);
 
     _coreSlice.uiMouseEvent->RegistCallback(
-        std::bind(&UIControler::inResearch_ActiveChoiceImgWithBasicDes, _uiControler, _coreSlice.transform, &_coreBasicDescription, true), EVENT::ENTER);
-    _coreSlice.uiMouseEvent->RegistCallback(
-        std::bind(&UIControler::inResearch_inActiveChoiceImgWithBasicDes, _uiControler, _coreSlice.transform, &_coreBasicDescription, &_lockDes, false), EVENT::EXIT);
+        std::bind(&UIControler::inResearch_inActiveChoiceImgWithBasicDes, _uiControler,
+            _coreSlice.transform, &_coreBasicDescription, &_lockDes, &_coreDetailDescriptionButton, false),
+        EVENT::EXIT);
+
+    /* 기본 설명 버튼 */
     _coreBasicDescription.uiMouseEvent->RegistCallback(
-        std::bind(&UIControler::inResearch_inBasicDes, _uiControler, _coreSlice.transform, &_coreBasicDescription, &_lockDes, true), EVENT::ENTER);
-    _coreBasicDescription.uiMouseEvent->RegistCallback(
-        std::bind(&UIControler::inResearch_disableInBasicDes, _uiControler, _coreSlice.transform, &_coreBasicDescription, &_lockDes, false), EVENT::EXIT);
+        std::bind(&UIControler::inResearch_inBasicDes, _uiControler,
+            _coreSlice.transform, &_coreBasicDescription, &_lockDes, true),
+        EVENT::ENTER);
     
-#pragma endregion
+    _coreBasicDescription.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inResearch_disableInBasicDes, _uiControler,
+            _coreSlice.transform, &_coreBasicDescription, &_lockDes, &_coreDetailDescriptionButton, false),
+        EVENT::EXIT);
 
+    /* 기본 설명 [i] 주변 버튼 */
+    _coreDetailDescriptionButton.uiMouseEvent->RegistCallback(
+       std::bind(&UIControler::inResearch_ActiveInResearchChoiceImg, _uiControler,
+           _coreDetailDescriptionButton.transform, true),
+        EVENT::ENTER);
+
+    _coreDetailDescriptionButton.uiMouseEvent->RegistCallback(
+       std::bind(&UIControler::inResearch_ActiveDetailImg, _uiControler,
+           &_coreDetailDescriptionImg, &_inDetail, true),
+        EVENT::CLICK);
+
+    _coreDetailDescriptionButton.uiMouseEvent->RegistCallback(
+       std::bind(&UIControler::inResearch_ActiveInResearchChoiceImg, _uiControler,
+           _coreDetailDescriptionButton.transform, false),
+        EVENT::EXIT);
+
+#pragma endregion
+  
 #pragma region 기계식 드릴
 
     _mechanicalDrill.uiRenderer->Init("research_drill");
@@ -1263,8 +1447,154 @@ void GameScene::researchInitUI()
         std::bind(&UIControler::inResearch_ActiveChoiceImg, _uiControler, _underflowGate.transform, false), EVENT::EXIT);
 
 #pragma endregion
+}
+
+void GameScene::menuInitUI()
+{
+#pragma region 메뉴 화면
+
+    _menuImg.uiRenderer->Init("menu_menuimg");
+    _menuImg.uiRenderer->SetAlpha(0.95f);
+    _menuImg.uiMouseEvent->enable = false;
+    _menuImg.transform->SetPosition(WINSIZEX / 2, WINSIZEY / 2);
+    _menuImg.SetActive(false);
+
+#pragma endregion
+
+#pragma region 메뉴 [돌아가기]
+    
+    _menu_GoBackIdleImg.uiRenderer->Init("menu_goback_idle");
+    _menu_GoBackIdleImg.uiMouseEvent->enable = false;
+    _menu_GoBackIdleImg.transform->SetPosition(WINSIZEX / 2, WINSIZEY / 2 - 100);
+    _menu_GoBackIdleImg.transform->SetScale(1.5f, 1.5f);
+    _menu_GoBackIdleImg.SetActive(true);
+
+    _menu_GoBackChoiceImg.uiRenderer->Init("menu_goback_choice");
+    _menu_GoBackChoiceImg.uiMouseEvent->enable = false;
+    _menu_GoBackChoiceImg.transform->SetPosition(WINSIZEX / 2, WINSIZEY / 2 - 100);
+    _menu_GoBackChoiceImg.transform->SetScale(1.5f, 1.5f);
+    _menu_GoBackChoiceImg.SetActive(false);
+
+    _menu_GoBackButton.Init();
+    _menu_GoBackButton.uiRenderer->Init(330, 80);
+    _menu_GoBackButton.transform->SetPosition(WINSIZEX / 2, WINSIZEY / 2 - 100);
+
+    _menu_GoBackButton.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inMenu_ActiveChoiceImg_GoBack, _uiControler,
+            true),
+        EVENT::ENTER);
+
+    _menu_GoBackButton.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inMenu_ReturnToGameScene, _uiControler,
+            &_menu, false),
+        EVENT::CLICK);
+
+    _menu_GoBackButton.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inMenu_ActiveChoiceImg_GoBack, _uiControler,
+            false),
+        EVENT::EXIT);
+
+#pragma endregion
+
+#pragma region 메뉴 [저장 후 나가기]
+
+    _menu_SaveAndExitIdleImg.uiRenderer->Init("menu_save_and_exit_idle");
+    _menu_SaveAndExitIdleImg.uiMouseEvent->enable = false;
+    _menu_SaveAndExitIdleImg.transform->SetPosition(WINSIZEX / 2, WINSIZEY / 2 + 100);
+    _menu_SaveAndExitIdleImg.transform->SetScale(1.5f, 1.5f);
+    _menu_SaveAndExitIdleImg.SetActive(true);
+
+    _menu_SaveAndExitChoiceImg.uiRenderer->Init("menu_save_and_exit_choice");
+    _menu_SaveAndExitChoiceImg.uiMouseEvent->enable = false;
+    _menu_SaveAndExitChoiceImg.transform->SetPosition(WINSIZEX / 2, WINSIZEY / 2 + 100);
+    _menu_SaveAndExitChoiceImg.transform->SetScale(1.5f, 1.5f);
+    _menu_SaveAndExitChoiceImg.SetActive(false);
+    
+    _menu_SaveAndExitButton.Init();
+    _menu_SaveAndExitButton.uiRenderer->Init(360, 80);
+    _menu_SaveAndExitButton.transform->SetPosition(WINSIZEX / 2, WINSIZEY / 2 + 100);
+
+    /* _menu_SaveAndExitButton ENTERT, CLICK, EXIT 하기 */
+
+    _menu_SaveAndExitButton.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inMenu_AcitveChoiceImg_SaveAndExit, _uiControler,
+            true),
+        EVENT::ENTER);
+
+    // CLICK
+
+    _menu_SaveAndExitButton.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inMenu_AcitveChoiceImg_SaveAndExit, _uiControler,
+            false),
+        EVENT::EXIT);
+
+    //_menu_GoBackButton.uiMouseEvent->RegistCallback(l
+    //    std::bind(&UIControler::inMenu_ReturnToGameScene, _uiControler,
+    //        &_menu, false),
+    //    EVENT::CLICK);
 
 
+#pragma endregion
+
+#pragma region 정말로 종료하시겠습니까? 화면
+
+    _menu_ReallyEnd_Img.uiRenderer->Init("menu_reallyendimg");
+    _menu_ReallyEnd_Img.uiRenderer->SetAlpha(0.95f);
+    _menu_ReallyEnd_Img.uiMouseEvent->enable = false;
+    _menu_ReallyEnd_Img.transform->SetPosition(WINSIZEX / 2, WINSIZEY / 2);
+    _menu_ReallyEnd_Img.SetActive(false);
+
+#pragma endregion
+}
+
+void GameScene::menuUpdate()
+{
+    // 메뉴
+    _menu_GoBackIdleImg.Update();
+    _menu_GoBackChoiceImg.Update();
+    _menu_GoBackButton.Update();
+
+    _menu_SettingIdleImg.Update();
+    _menu_SettingChoiceImg.Update();
+    _menu_SettingButton.Update();
+
+    _menu_SaveAndExitIdleImg.Update();
+    _menu_SaveAndExitChoiceImg.Update();
+    _menu_SaveAndExitButton.Update();
+
+    // 정말로 종료하시겠습니까?
+    _menu_ReallyEnd_Check_Idle.Update();
+    _menu_ReallyEnd_Check_Choice.Update();
+
+    _menu_ReallyEnd_Cancle_Idle.Update();
+    _menu_ReallyEnd_Cancle_Choice.Update();
+}
+
+void GameScene::menuRender()
+{
+    // 메뉴
+    _menuImg.Render();
+
+    _menu_GoBackIdleImg.Render();
+    _menu_GoBackChoiceImg.Render();
+    _menu_GoBackButton.Render();
+
+    _menu_SettingIdleImg.Render();
+    _menu_SettingChoiceImg.Render();
+    _menu_SettingButton.Render();
+
+    _menu_SaveAndExitIdleImg.Render();
+    _menu_SaveAndExitChoiceImg.Render();
+    _menu_SaveAndExitButton.Render();
+
+    // 정말로 종료하시겠습니까?
+    _menu_ReallyEnd_Img.Render();
+
+    _menu_ReallyEnd_Check_Idle.Render();
+    _menu_ReallyEnd_Check_Choice.Render();
+
+    _menu_ReallyEnd_Cancle_Idle.Render();
+    _menu_ReallyEnd_Cancle_Choice.Render();
 }
 
 void GameScene::SetProjectileManager()
