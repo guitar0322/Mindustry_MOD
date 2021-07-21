@@ -37,6 +37,7 @@ private:
 	
 	bool _spawnEnemy;				//에너미가 생성 되는가?
 	bool _enemyTime;				//enemy 스폰시간이 진행중인가?
+	bool _waveSkip;
 
 public:
 	EnemyManager();
@@ -53,10 +54,13 @@ public:
 	void EnemyRender();
 	void SpawnEnemy();
 	void DeadEvent();
+	
 
-	float GetTimeSecond() const { return _timeSecond; }
-	float GetTimeMinute() const { return _timeMinute; }
-	float GetCurWave() const { return _curWave; }
+	int GetTimeSecond() const { return _timeSecond; }
+	int GetTimeMinute() const { return _timeMinute; }
+	int GetCurWave() const { return _curWave; }
+
+	void SetWaveSkip(bool waveskip) { _waveSkip = waveskip; }
 
 	void SetProjectileManager(ProjectileManager* projectileManager){ _projectileManager = projectileManager; }
 	void SetTestCoreTransform(GameObject* testCore) { _testCore = testCore; _testCoreTransform = testCore->transform; }

@@ -65,6 +65,7 @@ void PlayerControler::Update()
 			transform->GetChild(2)->SetAngle(_targetAngle);
 
 		}
+
 		PlayerDirection();
 
 		/* === 웨폰 방향 ===*/

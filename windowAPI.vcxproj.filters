@@ -279,6 +279,9 @@
     <ClCompile Include="Astar.cpp">
       <Filter>Util</Filter>
     </ClCompile>
+    <ClCompile Include="CameraControler.cpp">
+      <Filter>CameraControler</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h" />
@@ -572,6 +575,9 @@
     <ClInclude Include="Astar.h">
       <Filter>Util</Filter>
     </ClInclude>
+    <ClInclude Include="CameraControler.h">
+      <Filter>CameraControler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="windowAPI.rc" />
@@ -634,6 +640,9 @@
     </Filter>
     <Filter Include="Scene">
       <UniqueIdentifier>{8c1e3ca4-f72a-411b-b346-bd0aa24e763a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CameraControler">
+      <UniqueIdentifier>{94b91f6c-578d-4156-885b-7c0595d0845e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

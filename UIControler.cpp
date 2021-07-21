@@ -4,6 +4,7 @@
 #include "Button.h"
 #include "PropContainer.h"
 #include "GameMap.h"
+#include "EnemyManager.h"
 
 UIControler::UIControler()
 	:_previewDir(false), _previewNum(0)
@@ -503,4 +504,15 @@ void UIControler::inMenu_ReturnToGameScene(bool* name, bool isActive)
 void UIControler::inMenu_AcitveChoiceImg_SaveAndExit(bool isActive)
 {
 	menu_SaveAndExitChoiceImg->SetActive(isActive);
+}
+
+void UIControler::EnemyWaveSkip(bool isActive)
+{
+	enemyWaveSkip->SetActive(false);
+	enemyWaveSkipClick->SetActive(isActive);
+}
+
+void UIControler::EnemyWaveSkipClick()
+{
+	enemyManager->SpawnEnemy();
 }

@@ -199,6 +199,7 @@ HRESULT GameScene::Init()
             false),
         EVENT::EXIT);
 
+    #pragma endregion
 	/*===================================================================== */
 	/* 플레이어 부분 초기화 -> 유림 */
 	PlayerInit();
@@ -210,6 +211,13 @@ HRESULT GameScene::Init()
 	SetEnemyManager();
 	SetCameraControler();
 	SetGameUI();
+
+	_uiControler->enemyWaveSkip = &_enemyWaveSkip;
+	_uiControler->enemyWaveSkipClick = &_enemyWaveSkipClick;
+
+	//_uiControler->enemyWaveSkip
+	//_uiControler->enemyWaveSkipButton = &_enemyWaveSkipButton;
+
 
     /* 사운드 작업 광철 210718 */
 	SOUNDMANAGER->addSound("start", "music/land.mp3", true, false);
@@ -272,11 +280,12 @@ void GameScene::Update()
     _propSelect.Update();
 
 	_core->Update();
-	//_enemyManager->Update();
+	
 
 	//07.20 민재 인 게임 Wave UI && Player UI 작업//
-	InGameUIUpdate();
 	_enemyManager->Update();
+	InGameUIUpdate();
+
     
     /* 시영 */
     // 연구 부분 Update
@@ -349,6 +358,7 @@ void GameScene::Render()
 		_projectileManager->Render();
 		_core->Render();
 		_cameraControler->Render();
+
 		MainCam->Render();
 	}
 
@@ -533,9 +543,11 @@ void GameScene::InitClip()
 	/////////////////// 07. 20 게임속 Wave UI && Player UI 민재 ////////////////////////////
 	{
 		CLIPMANAGER->AddClip("uiwavepane","sprites/ingameui/uiwavepane.png", 367, 100);
+		//CLIPMANAGER->AddClip("uiwavepane","sprites/ingameui/uiwavepane1.png", 38, 29);
 		CLIPMANAGER->AddClip("playerui", "sprites/ingameui/playerui.png", 70, 70);
 		CLIPMANAGER->AddClip("playerhpui", "sprites/ingameui/playerhpui.png", 133, 92);
-		CLIPMANAGER->AddClip("waveskipui", "sprites/ingameui/waveskipui.png", 57, 100);
+		CLIPMANAGER->AddClip("waveskipui", "sprites/ingameui/waveskipui.png", 36, 77);
+		CLIPMANAGER->AddClip("waveskipuienter", "sprites/ingameui/waveskipuienter.png", 36, 77);
 	}
 }
 
@@ -1634,14 +1646,36 @@ void GameScene::SetGameUI()
 	_playerUi.Init();
 	_playerUi.uiRenderer->Init("playerui");
 	_playerUi.transform->SetPosition(65, 45);
-
+		
 	_playerHpUi.Init();
 	_playerHpUi.uiRenderer->Init("playerhpui");
 	_playerHpUi.transform->SetPosition(65, 50);
 
-	_waveSkipUi.Init();
-	_waveSkipUi.uiRenderer->Init("waveskipui");
-	_waveSkipUi.transform->SetPosition(380, 45);
+	_enemyWaveSkip.Init();
+	_enemyWaveSkip.uiRenderer->Init("waveskipui");
+	_enemyWaveSkip.transform->SetScale(1.3, 1.3);
+	_enemyWaveSkip.uiMouseEvent->enable = false;
+	_enemyWaveSkip.transform->SetPosition(390.5f, 45.7f);
+
+	_enemyWaveSkipButton.Init();
+	_enemyWaveSkipButton.uiRenderer->Init(57, 100);
+	_enemyWaveSkipButton.transform->SetPosition(392, 45);
+	_enemyWaveSkipButton.SetActive(true);
+
+	_enemyWaveSkipClick.Init();
+	_enemyWaveSkipClick.uiRenderer->Init("waveskipuienter");
+	_enemyWaveSkipClick.transform->SetScale(1.3, 1.3);
+	_enemyWaveSkipClick.uiMouseEvent->enable = false;
+	_enemyWaveSkipClick.transform->SetPosition(390.5f, 45.7f);
+
+	_enemyWaveSkipButton.uiMouseEvent->RegistCallback(
+		std::bind(&UIControler::EnemyWaveSkip, _uiControler,true), EVENT::ENTER);
+
+	_enemyWaveSkipButton.uiMouseEvent->RegistCallback(
+		std::bind(&UIControler::EnemyWaveSkipClick, _uiControler), EVENT::CLICK);
+
+	_enemyWaveSkipButton.uiMouseEvent->RegistCallback(
+		std::bind(&UIControler::EnemyWaveSkip, _uiControler,false), EVENT::EXIT);
 }
 
 void GameScene::InGameUIUpdate()
@@ -1649,7 +1683,9 @@ void GameScene::InGameUIUpdate()
 	_wavePane.Update();
 	_playerUi.Update();
 	_playerHpUi.Update();
-	_waveSkipUi.Update();
+	_enemyWaveSkip.Update();
+	_enemyWaveSkipButton.Update();
+	_enemyWaveSkipClick.Update();
 }
 
 void GameScene::InGameUIRender()
@@ -1657,9 +1693,23 @@ void GameScene::InGameUIRender()
 	_wavePane.Render();
 	_playerUi.Render();
 	_playerHpUi.Render();
-	_waveSkipUi.Render();
-	D2DRENDERER->RenderText(150, 5, L"wave", 25, L"fontello", D2DRenderer::DefaultBrush::Yellow);
+	_enemyWaveSkip.Render();
+	_enemyWaveSkipButton.Render();
+	//_enemyWaveSkipClick.Render();
+	
+	wstring second = to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeSecond());
+	wstring minute = to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeMinute());
+	wstring wave = to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetCurWave());
+
+	D2DRENDERER->RenderText(150, 5, L"단계", 22, L"fontello", D2DRenderer::DefaultBrush::Yellow);
+	D2DRENDERER->RenderText(200, 5, wave, 22, L"mindustry", D2DRenderer::DefaultBrush::Yellow);
+	D2DRENDERER->RenderText(215, 5, L"/10", 22, L"mindustry", D2DRenderer::DefaultBrush::Yellow);
 	D2DRENDERER->RenderText(150, 35, L"다음 단계까지", 20, L"fontello", D2DRenderer::DefaultBrush::Yellow);
+
+	D2DRENDERER->RenderText(150, 60, minute, 20, L"mindustry", D2DRenderer::DefaultBrush::White);
+	D2DRENDERER->RenderText(165, 60, L"분", 20, L"mindustry", D2DRenderer::DefaultBrush::White);
+	D2DRENDERER->RenderText(190, 60, second, 20, L"mindustry", D2DRenderer::DefaultBrush::White);
+	D2DRENDERER->RenderText(213, 61, L"초", 20, L"mindustry", D2DRenderer::DefaultBrush::White);
 }
 
 void GameScene::StringRender()
@@ -1681,18 +1731,6 @@ void GameScene::StringRender()
 	/*wstring hp = L"HP : ";
 	hp.append(to_wstring(_player->GetComponent<PlayerControler>()->GetHp()));
 	D2DRENDERER->RenderText(10, 150, hp, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
-
-	wstring minute = L"MINUTE : ";
-	minute.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeMinute()));
-	D2DRENDERER->RenderText(10, 10, minute, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
-
-	wstring second = L"SECOND: ";
-	second.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeSecond()));
-	D2DRENDERER->RenderText(10, 60, second, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
-
-	wstring wave = L"CurWave: ";
-	wave.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetCurWave()));
-	D2DRENDERER->RenderText(10, 110, wave, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
 
     /*wstring mineCount = L"mineCount";
     mineCount.append(to_wstring(_mineCount));
