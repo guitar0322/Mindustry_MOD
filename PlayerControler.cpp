@@ -31,6 +31,7 @@ void PlayerControler::Init()
 	_isGathering = false;
 	_isDead = false;
 	_dir = IDLE;
+	SOUNDMANAGER->addSound("minelaserbgm", "sounds/minebeam.ogg", true, true);
 }
 
 void PlayerControler::Update()
@@ -289,16 +290,15 @@ void PlayerControler::Update()
 	{
 		worldX = ScreenToWorld(_ptMouse).x;
 		worldY = ScreenToWorld(_ptMouse).y;
-		
 		_playerLaser->SetLaserEndPoint(worldX / 32, worldY / 32);
 		_playerLaser->SetLaserStartPoint(worldX, worldY);
-
 
 		_playerLaser->_collectLaserFirst->SetActive(true);
 		_playerLaser->_collectLaserEnd->SetActive(true);
 		_playerLaser->_collectLaser->SetActive(true);
 		_playerLaser->_detectRc->SetActive(true);
 
+		SOUNDMANAGER->play("minelaserbgm", 100.0f);
 	}
 	_playerLaser->ShootLaser();
 	_playerLaser->SetLaserStartPoint(laserStartX, laserStartY);
@@ -309,7 +309,7 @@ void PlayerControler::Update()
 		_playerLaser->_collectLaser->SetActive(false);
 		_playerLaser->_detectRc->SetActive(false);
 
-	
+		SOUNDMANAGER->stop("minelaserbgm");
 	}
 
 }

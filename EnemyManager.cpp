@@ -23,7 +23,7 @@ void EnemyManager::Init()
 	SetEnemy();
 	_curWave = 1;
 	SOUNDMANAGER->addSound("wave", "sounds/wave.ogg", true, false);
-	SOUNDMANAGER->addSound("explosion", "sounds/place.ogg", true, false);
+	SOUNDMANAGER->addSound("explosion", "sounds/bang.ogg", true, false);
 }
 
 void EnemyManager::Update()

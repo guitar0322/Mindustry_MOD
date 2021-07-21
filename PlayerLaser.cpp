@@ -37,8 +37,6 @@ void PlayerLaser::Init()
 	_detectRc->Init();
 	_detectRc->renderer->Init("laser_rc");
 	_detectRc->SetActive(false);
-
-
 }
 
 void PlayerLaser::Update()
