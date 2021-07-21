@@ -39,7 +39,7 @@ namespace HDY_UTIL
 
 	float GetDistance(const Vector2& v1, const Vector2& v2)
 	{
-		float deltaX = v1.x - v2.y;
+		float deltaX = v1.x - v2.x;
 		float deltaY = v1.y - v2.y;
 		return sqrtf(deltaX * deltaX + deltaY * deltaY);
 	}

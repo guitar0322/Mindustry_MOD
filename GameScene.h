@@ -172,7 +172,11 @@ private:
 	UIBase _wavePane;
 	UIBase _playerUi;
 	UIBase _playerHpUi;
-	UIBase _waveSkipUi;
+
+	UIBase _enemyWaveSkip;
+	Button _enemyWaveSkipButton;
+
+	UIBase _enemyWaveSkipClick;
 
     GameObject* _cameraControler;
 public:
@@ -214,5 +218,6 @@ public:
 
 	/* 화면에 문자 띄울 때 여기 쓰세요 - 유림 (210719)*/
 	void StringRender();
+
 };
 

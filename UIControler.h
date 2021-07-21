@@ -8,6 +8,7 @@
 using namespace std;
 class GameMap;
 class Button;
+class EnemyManager;
 
 class UIControler
 {
@@ -45,7 +46,6 @@ public:
     void SetPreview(float deltaX, float deltaY);
     void SetPreviewTwo(float deltaX, float deltaY);
     void CheckValidTile();
-
     /* SHUNG 210715 */
     /* 시영 */
     /* 연구 */
@@ -108,4 +108,18 @@ public:
 
     /* 메뉴 상태에서 [저장 후 나가기] 버튼 ENTER, EXIT */
     void inMenu_AcitveChoiceImg_SaveAndExit(bool isActive);
+
+	//민재콩//
+	UIBase* enemyWaveSkip;
+	UIBase* enemyWaveSkipClick;
+	Button* enemyWaveSkipButton;
+
+	/* 민재 Enemy Wave Skip ENTER ,EXIT */
+	void EnemyWaveSkip(bool isActive);
+
+	EnemyManager* enemyManager;
+	void SetEnemyManager(EnemyManager* enemymanager) { enemyManager = enemymanager; }
+
+	/* 민재 Enemy Wave Skip CLICK*/
+	void EnemyWaveSkipClick();
 };

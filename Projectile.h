@@ -11,6 +11,9 @@ private:
 	float _angle;
 	float _speedX, _speedY;
 	float _radius;
+	
+	float _fireX;
+	float _fireY;
 
 	float _camX;
 	float _camY;

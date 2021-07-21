@@ -85,6 +85,7 @@ void ProjectileManager::ProjectileMove()
 		if (_enemyGroundProjectileV[i]->isActive == false) continue;
 		_enemyGroundProjectileV[i]->Update();
 	}
+	
 	for (int i = 0; i < PLAYER_PROJECTILE_MAX; i++)
 	{
 		if (_playerProjectileV[i]->isActive == false) continue;
