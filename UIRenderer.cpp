@@ -22,6 +22,8 @@ void UIRenderer::Init(string clipName)
 	_frameHeight = targetClip->GetFrameHeight();
 	_curFrameX = 0;
 	_curFrameY = 0;
+	_clipX = 0;
+	_clipY = 0;
 	_alpha = 1.f;
 	_rc = RectMakePivot(transform->position, Vector2(_frameWidth * transform->GetScaleX(), _frameHeight * transform->GetScaleX()), Pivot::Center);
 }
@@ -33,6 +35,8 @@ void UIRenderer::Init(float width, float height)
 	_frameHeight = height;
 	_curFrameX = 0;
 	_curFrameY = 0;
+	_clipX = 0;
+	_clipY = 0;
 	_alpha = 1.f;
 	_rc = RectMakePivot(transform->position, Vector2(_frameWidth * transform->GetScaleX(), _frameHeight * transform->GetScaleX()), Pivot::Center);
 }
@@ -59,8 +63,8 @@ void UIRenderer::Render()
 	D2D1_RECT_F clipArea =
 		D2D1::RectF
 		(
-			_curFrameX * _frameWidth,
-			_curFrameY * _frameHeight,
+			_curFrameX * _frameWidth + _clipX, 
+			_curFrameY * _frameHeight + _clipY, 
 			(_curFrameX + 1) * _frameWidth,
 			(_curFrameY + 1) * _frameHeight
 		);
@@ -68,8 +72,8 @@ void UIRenderer::Render()
 	D2D1_RECT_F backbufferArea
 		= D2D1::RectF
 		(
-			startX,
-			startY,
+			startX + _clipX,			// 이미지의 시작점X 부터 clipX만큼 이미지 렌더X
+			startY + _clipY,			// 이미지의 시작점Y 부터 clipY만큼 이미지 렌더X
 			startX + _frameWidth,
 			startY + _frameHeight
 		);

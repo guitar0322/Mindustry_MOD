@@ -18,6 +18,7 @@ HRESULT GameScene::Init()
 
 	InitClip();
 	PlayerClip();
+	InGameUIClip();
 
 	SetBackBufferSize(1600, 1600);
     COLLIDERMANAGER->PartitionArea(10, 10);
@@ -194,20 +195,6 @@ HRESULT GameScene::Init()
 
     #pragma endregion
 
-	/* 플레이어 부분 유림 */
-	_player = new Player();
-	_player->Init();
-	_player->tag = TAGMANAGER->GetTag("player");
-	_player->renderer->Init("player");
-	_player->transform->SetPosition(1500, 900);
-	_player->transform->SetAngle(0.0f);
-	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
-
-	//플레이어 포신 유림.
-	_playerWeaponL = new ImageObject;
-	_playerWeaponL->Init();
-	_playerWeaponL->renderer->Init("player_weapon_L");
-
 	/*===================================================================== */
 	/* 플레이어 부분 초기화 -> 유림 */
 	PlayerInit();
@@ -218,7 +205,7 @@ HRESULT GameScene::Init()
 	SetCore();
 	SetEnemyManager();
 	SetCameraControler();
-	SetGameUI();
+	SetGameUIInit();
 
     /* 사운드 작업 광철 210718 */
 	SOUNDMANAGER->addSound("start", "music/land.mp3", true, false);
@@ -379,14 +366,18 @@ void GameScene::Render()
     _categorySelect.Render();
     _propSelect.Render();
 
+	//07.20 민재 인 게임 Wave UI && Player UI 작업//
+	InGameUIRender();
+	_player->controler->playerUI.Render();
+	_player->controler->playerHpUIPane.Render();
+	_player->controler->playerHpUI.Render();
+	_player->controler->playerHpUIAlpha.Render();
+
     /* 시영 */
     // 연구
     if (_research) researchRender();
     // 메뉴
     if (_menu) menuRender();
-
-	//07.20 민재 인 게임 Wave UI && Player UI 작업//
-	InGameUIRender();
 
 	/* ================================여기 만지지 마세요 ========================================*/
 	//자원UI 렌더 -> 유림 (210719)
@@ -539,13 +530,6 @@ void GameScene::InitClip()
 		CLIPMANAGER->AddClip("projectile", "sprites/units/enemy/projectile.png", 52, 52);
 	}
 
-	/////////////////// 07. 20 게임속 Wave UI && Player UI 민재 ////////////////////////////
-	{
-		CLIPMANAGER->AddClip("uiwavepane","sprites/ingameui/uiwavepane.png", 367, 100);
-		CLIPMANAGER->AddClip("playerui", "sprites/ingameui/playerui.png", 70, 70);
-		CLIPMANAGER->AddClip("playerhpui", "sprites/ingameui/playerhpui.png", 133, 92);
-		CLIPMANAGER->AddClip("waveskipui", "sprites/ingameui/waveskipui.png", 57, 100);
-	}
 }
 
 void GameScene::InitCategoryUI()
@@ -665,7 +649,6 @@ void GameScene::PlayerClip()
 	CLIPMANAGER->AddClip("player_fire_circle", "player/alpha_fire_circle.png", 17, 17);
 	CLIPMANAGER->AddClip("player_fire", "player/alpha_fire.png", 30, 30);
 
-
 	//자원 클립
 	CLIPMANAGER->AddClip("copperUI", "sprites/items/item-copper.png", 32, 32);
 	CLIPMANAGER->AddClip("leadUI", "sprites/items/item-lead.png", 32, 32);
@@ -740,6 +723,7 @@ void GameScene::ResourcesRender()
 	_resourcesUI[0].Render();
 	_resourcesUI[1].Render();
 
+
 	wstring copperAmount;
 	wstring leadAmount;
 
@@ -749,18 +733,31 @@ void GameScene::ResourcesRender()
 	}
 	else
 	{
-		copperAmount = L"1.0k";
+		copperAmount = L"";
+		int thousand = _gameInfo->GetResourceAmount(COPPER) / 1000;
+		copperAmount.append(to_wstring(thousand));
+		copperAmount.append(L".");
+		int hundreds = (_gameInfo->GetResourceAmount(COPPER) - (1000 * thousand)) / 100;
+		copperAmount.append(to_wstring(hundreds));
+		copperAmount.append(L"k");
 	}
 
 	if (_gameInfo->GetResourceAmount(LEAD) < 1000)
 	{
 		leadAmount = to_wstring(_gameInfo->GetResourceAmount(LEAD));
 	}
-	else
+	else if(_gameInfo->GetResourceAmount(LEAD) > 1000)
 	{
-		leadAmount = L"1.0k";
+		leadAmount = L"";
+		int thousand = _gameInfo->GetResourceAmount(LEAD) / 1000;
+		leadAmount.append(to_wstring(thousand));
+		leadAmount.append(L".");
+		int hundreds = (_gameInfo->GetResourceAmount(LEAD) - (1000 * thousand)) / 100;
+		leadAmount.append(to_wstring(hundreds));
+		leadAmount.append(L"k");
+
 	}
-	
+
 	D2DRENDERER->RenderText(WINSIZEX / 2 - 70, 5, copperAmount, 28, L"mindustry", D2DRenderer::DefaultBrush::White);
 	D2DRENDERER->RenderText(WINSIZEX / 2 + 42, 5, leadAmount, 28, L"mindustry", D2DRenderer::DefaultBrush::White);
 }
@@ -1635,19 +1632,11 @@ void GameScene::SetCameraControler()
     _cameraControler->GetComponent<CameraControler>()->SetPlayerTr(_player->transform);
 }
 
-void GameScene::SetGameUI()
+void GameScene::SetGameUIInit()
 {
 	_wavePane.Init();
 	_wavePane.uiRenderer->Init("uiwavepane");
 	_wavePane.transform->SetPosition(183, 45);
-
-	_playerUi.Init();
-	_playerUi.uiRenderer->Init("playerui");
-	_playerUi.transform->SetPosition(65, 45);
-
-	_playerHpUi.Init();
-	_playerHpUi.uiRenderer->Init("playerhpui");
-	_playerHpUi.transform->SetPosition(65, 50);
 
 	_waveSkipUi.Init();
 	_waveSkipUi.uiRenderer->Init("waveskipui");
@@ -1657,19 +1646,25 @@ void GameScene::SetGameUI()
 void GameScene::InGameUIUpdate()
 {
 	_wavePane.Update();
-	_playerUi.Update();
-	_playerHpUi.Update();
 	_waveSkipUi.Update();
 }
 
 void GameScene::InGameUIRender()
 {
 	_wavePane.Render();
-	_playerUi.Render();
-	_playerHpUi.Render();
 	_waveSkipUi.Render();
+
 	D2DRENDERER->RenderText(150, 5, L"wave", 25, L"fontello", D2DRenderer::DefaultBrush::Yellow);
 	D2DRENDERER->RenderText(150, 35, L"다음 단계까지", 20, L"fontello", D2DRenderer::DefaultBrush::Yellow);
+}
+
+void GameScene::InGameUIClip()
+{
+	/////////////////// 07. 20 게임속 Wave UI && Player UI 민재 ////////////////////////////
+	{
+		CLIPMANAGER->AddClip("uiwavepane", "sprites/ingameui/uiwavepane.png", 367, 100);
+		CLIPMANAGER->AddClip("waveskipui", "sprites/ingameui/waveskipui.png", 57, 100);
+	}
 }
 
 void GameScene::StringRender()

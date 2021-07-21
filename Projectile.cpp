@@ -49,11 +49,13 @@ void Projectile::OnTriggerEnter(GameObject* gameObject)
 		{
 			transform->gameObject->SetActive(false);
 			gameObject->GetComponent<PlayerControler>()->Hit(_damage);
+
 		}
 		if (_targetTag.compare("enemy") == 0)
 		{
 			transform->gameObject->SetActive(false);
 			gameObject->GetComponent<EnemyInfo>()->Hit(_damage);
+
 		}
 	}
 }
