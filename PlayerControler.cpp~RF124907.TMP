@@ -84,6 +84,7 @@ void PlayerControler::Update()
 		}
 		}
 
+
 		//마우스 왼쪽 클릭 시
 		if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 		{
@@ -124,7 +125,6 @@ void PlayerControler::Update()
 		}
 
 		ShootResoucesLaser();
-
 		if (_isCollecting)
 		{
 			ResoucesCollect();
@@ -280,7 +280,6 @@ void PlayerControler::ShootResoucesLaser()
 			}
 		}
 	}
-	
 	if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
 	{
 		_playerLaser->_collectLaserFirst->SetActive(false);

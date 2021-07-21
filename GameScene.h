@@ -78,6 +78,12 @@ private:
     bool    _research;                       // 연구 상태
     bool    _inDetail;                       // 상세 설명 상태
 
+    UIBase  _all_Resources_Open_Img;         // 전체 자원 [열림]
+    UIBase  _all_Resources_Close_Img;        // 전체 자원 [닫힘]
+    UIBase  _all_Resources_Img;              // 전체 자원 이미지
+    UIBase  _all_Resources_Text;             // 전체 자원 텍스트
+    Button  _all_Resources_Button;           // 전체 자원 버튼
+
     UIBase  _choiceImg;
     UIBase  _lockImg;                        // 연구 상태 자물쇠 이미지
     UIBase  _inResearchChoiceImg;            // 연구상태 내 기본설명 볼 때 i에 마우스 충돌이 일어났을 경우에 나오는 회색선택창
@@ -158,12 +164,13 @@ private:
 
     UIBase  _menu_ReallyEnd_Img;            // 정말로 종료하시겠습니까? 이미지
 
-    UIBase  _menu_ReallyEnd_Check_Idle;     // 정말로 종료하시겠습니까? [확인] 기본 상태 이미지
-    UIBase  _menu_ReallyEnd_Check_Choice;   // 정말로 종료하시겠습니까? [확인] 선택 상태 이미지
-
     UIBase  _menu_ReallyEnd_Cancle_Idle;    // 정말로 종료하시겠습니까? [취소] 기본 상태 이미지
     UIBase  _menu_ReallyEnd_Cancle_Choice;  // 정말로 종료하시겠습니까? [취소] 선택 상태 이미지
+    Button  _menu_ReallyEnd_Cancle_Button;  // 정말로 종료하시겠습니까? [취소] 버튼
 
+    UIBase  _menu_ReallyEnd_Check_Idle;     // 정말로 종료하시겠습니까? [확인] 기본 상태 이미지
+    UIBase  _menu_ReallyEnd_Check_Choice;   // 정말로 종료하시겠습니까? [확인] 선택 상태 이미지
+    Button  _menu_ReallyEnd_Check_Button;   // 정말로 종료하시겠습니까? [확인] 버튼
 
 	// EnemyManager 210717 작업 - 민재 // 
 	GameObject* _enemyManager;
