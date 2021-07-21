@@ -156,6 +156,7 @@
     <ClInclude Include="CallbackTest.h" />
     <ClInclude Include="Cam.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraControler.h" />
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="ClipManager.h" />
@@ -166,6 +167,7 @@
     <ClInclude Include="CopperWall.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="D2DRenderer.h" />
+    <ClInclude Include="Drill.h" />
     <ClInclude Include="Duo.h" />
     <ClInclude Include="EditableText.h" />
     <ClInclude Include="EditText.h" />
@@ -190,6 +192,7 @@
     <ClInclude Include="ImageManager.h" />
     <ClInclude Include="ImageObject.h" />
     <ClInclude Include="IntroScene.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="keyManager.h" />
     <ClInclude Include="LibraryHeader.h" />
     <ClInclude Include="Line.h" />
@@ -202,8 +205,8 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerControler.h" />
     <ClInclude Include="PlayerLaser.h" />
-    <ClInclude Include="PlayerScene.h" />
     <ClInclude Include="playGround.h" />
+    <ClInclude Include="Production.h" />
     <ClInclude Include="Prop.h" />
     <ClInclude Include="PropInfo.h" />
     <ClInclude Include="Projectile.h" />
@@ -213,7 +216,7 @@
     <ClInclude Include="randomFunction.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Renderer.h" />
-    <ClInclude Include="Resource.h" />
+    <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="SampleScene.h" />
     <ClInclude Include="SampleScene2.h" />
     <ClInclude Include="Scene.h" />
@@ -234,6 +237,7 @@
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="TitleUIControler.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="Transport.h" />
     <ClInclude Include="TriggerTest.h" />
     <ClInclude Include="Turret.h" />
     <ClInclude Include="UIBase.h" />
@@ -257,6 +261,7 @@
     <ClCompile Include="CallbackTest.cpp" />
     <ClCompile Include="Cam.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraControler.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="ClipManager.cpp" />
@@ -267,6 +272,7 @@
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="D2DRenderer+Draw.cpp" />
     <ClCompile Include="D2DRenderer.cpp" />
+    <ClCompile Include="Drill.cpp" />
     <ClCompile Include="Duo.cpp" />
     <ClCompile Include="EditableText.cpp" />
     <ClCompile Include="EditText.cpp" />
@@ -291,6 +297,7 @@
     <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="ImageObject.cpp" />
     <ClCompile Include="IntroScene.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="keyManager.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="MapScene.cpp" />
@@ -301,8 +308,8 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerControler.cpp" />
     <ClCompile Include="PlayerLaser.cpp" />
-    <ClCompile Include="PlayerScene.cpp" />
     <ClCompile Include="playGround.cpp" />
+    <ClCompile Include="Production.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="ProjectileManager.cpp" />
     <ClCompile Include="ProjectileObject.cpp" />
@@ -310,6 +317,7 @@
     <ClCompile Include="PropStat.cpp" />
     <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="SampleScene.cpp" />
     <ClCompile Include="SampleScene2.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -332,6 +340,7 @@
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="TitleUIControler.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="Transport.cpp" />
     <ClCompile Include="TriggerTest.cpp" />
     <ClCompile Include="Turret.cpp" />
     <ClCompile Include="UIBase.cpp" />

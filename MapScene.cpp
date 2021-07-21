@@ -15,9 +15,9 @@ HRESULT MapScene::Init()
 	SOUNDMANAGER->addSound("editorbgm", "music/editor.mp3", true, true);
 	SOUNDMANAGER->play("editorbgm", 10.0f);
 
-	_background.Init();
-	_background.renderer->Init("background");
-	_background.transform->SetPosition(MAPWIDTH / 2, MAPHEIGHT / 2);
+	//_background.Init();
+	//_background.renderer->Init("background");
+	//_background.transform->SetPosition(MAPWIDTH / 2, MAPHEIGHT / 2);
 
 	char str[128];
 	/*string inputFileName;*/
@@ -28,7 +28,6 @@ HRESULT MapScene::Init()
 
 	_mapTool.AddComponent(new MapTool());
 	_mapTool.GetComponent<MapTool>()->Init();
-
 	return S_OK;
 }
 

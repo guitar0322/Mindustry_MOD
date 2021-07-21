@@ -6,6 +6,8 @@ static enum RESOURCE {
 	LEAD
 };
 
+static string resClipName[RESOURCE_NUM] = { "copper", "lead" };
+
 class GameInfo
 {
 private:
@@ -18,5 +20,6 @@ public:
 	void AddResource(RESOURCE resourceType, int amount);
 	void UseResource(RESOURCE resourceType, int amount);
 	bool IsValidResource(RESOURCE resourceType, int needAmount);
+	
 };
 

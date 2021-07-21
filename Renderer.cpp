@@ -41,15 +41,15 @@ void Renderer::Init(float width, float height)
 
 void Renderer::Render()
 {
-	if (_isStatic == true)
-		return;
+	//if (_isStatic == true)
+	//	return;
 	int renderStartX = transform->GetX() - _frameWidth / 2;
 	int renderStartY = transform->GetY() - _frameHeight / 2;
 
-	if (IntersectRect(&MainCam->GetRenderRc(), &_rc) == false)
-	{
-		return;
-	}
+	//if (IntersectRect(&MainCam->GetRenderRc(), &_rc) == false)
+	//{
+	//	return;
+	//}
 
 	if (KEYMANAGER->isToggleKey(VK_TAB))
 	{
@@ -73,25 +73,16 @@ void Renderer::Render()
 			renderStartY + _frameHeight
 		);
 
-	D2D1_MATRIX_3X2_F scale = D2D1::Matrix3x2F::Identity();
-
-	if (Math::FloatEqual(transform->GetScaleX(), 1.f) == false || Math::FloatEqual(transform->GetScaleY(), 1.f) == false)
-	{
-		scale = D2D1::Matrix3x2F::Scale(
+	D2D1_MATRIX_3X2_F scale = D2D1::Matrix3x2F::Scale(
 			transform->GetScaleX(),
 			transform->GetScaleY(),
 			D2D1::Point2F(transform->GetX(), transform->GetY())
 		);
-	}
 
-	D2D1_MATRIX_3X2_F rotation = D2D1::Matrix3x2F::Identity();
-	if (transform->angle != 0)
-	{
-		rotation = D2D1::Matrix3x2F::Rotation(
+	D2D1_MATRIX_3X2_F rotation = D2D1::Matrix3x2F::Rotation(
 			transform->angle,
 			D2D1::Point2F(transform->GetX(), transform->GetY())
 		);
-	}
 
 	BackBuffer->SetTransform(scale * rotation);
 
@@ -177,6 +168,12 @@ void Renderer::RenderStatic()
 	}
 	StaticBuffer->DrawBitmap(_targetBitmap, backbufferArea, _alpha, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, clipArea);
 	StaticBuffer->SetTransform(D2D1::Matrix3x2F::Identity());
+}
+
+void Renderer::DrawFillRect(D2D1::ColorF::Enum color)
+{
+	if (gameObject->isActive == false || enable == false) return;
+	D2DRENDERER->FillRectangleBack(_rc, color, _alpha);
 }
 
 /***********************************************

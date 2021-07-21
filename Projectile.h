@@ -2,7 +2,6 @@
 #include "Component.h"
 
 class Player;
-class EnemyInfo;
 
 class Projectile :
 	public Component
@@ -13,10 +12,14 @@ private:
 	float _speedX, _speedY;
 	float _radius;
 
+	float _camX;
+	float _camY;
+
 	int _damage;
+	string _targetTag;
 
 	Player* _player;
-	EnemyInfo* _enemyInfo;
+	Transform* _projectileTransform;
 
 public:
 	Projectile();
@@ -25,6 +28,7 @@ public:
 	virtual void Init();
 	virtual void Update();
 	virtual void OnTriggerEnter(GameObject* gameObject);
+	void EreaseProjectile();
 
 	float GetSpeed() const { return _speed; }
 	void SetSpeed(float speed) { _speed = speed; }
@@ -34,6 +38,9 @@ public:
 
 	int GetDamage()  const { return _damage; }
 	void SetDamage(int damage) { _damage = damage; }
+
+	void SetTargetTag(string targetTag) { _targetTag = targetTag; }
+	Transform* GetProjectileTransform(Transform* projectiletransform) { _projectileTransform = projectiletransform; }
 
 	void Move();
 };

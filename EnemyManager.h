@@ -2,7 +2,7 @@
 #include "Component.h"
 #include "EnemyInfo.h"
 
-#define ENEMY_MAX 10
+#define ENEMY_MAX 30
 #define WAVE_NUM 10
 
 class EnemyPlane;
@@ -19,6 +19,8 @@ private:
 	vector<int> _waveV[WAVE_NUM];
 
 	EnemyPlane* _enemyPlane;
+	EnemyGround* _enemyGround;
+
 	EnemyInfo* _enemyInfo;
 
 	ProjectileManager* _projectileManager;
@@ -38,8 +40,6 @@ private:
 public:
 	EnemyManager();
 	~EnemyManager();
-
-	EnemyGround* _enemyGround;
 
 	virtual void Init();
 	virtual void Update();

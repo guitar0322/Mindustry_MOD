@@ -1,6 +1,13 @@
 #include "stdafx.h"
 #include "PropContainer.h"
 #include "Prop.h"
+#include "Conveyor.h"
+#include "Transport.h"
+#include "TileInfo.h"
+#include "Drill.h"
+
+int conveyorDir[4][2] = { {1,0}, {0,1}, {-1,0}, {0,-1} };
+
 PropContainer::PropContainer()
 {
 }
@@ -19,23 +26,17 @@ void PropContainer::Release()
 
 void PropContainer::Update()
 {
-	for (_propVectorMapIter = _propVectorMap.begin(); _propVectorMapIter != _propVectorMap.end(); _propVectorMapIter++)
+	for (_propMapIter = _propMap.begin(); _propMapIter != _propMap.end(); _propMapIter++)
 	{
-		for (int i = 0; i < _propVectorMapIter->second.size(); i++)
-		{
-			_propVectorMapIter->second[i]->Update();
-		}
+		_propMapIter->second->Update();
 	}
 }
 
 void PropContainer::Render()
 {
-	for (_propVectorMapIter = _propVectorMap.begin(); _propVectorMapIter != _propVectorMap.end(); _propVectorMapIter++)
+	for (_propMapIter = _propMap.begin(); _propMapIter != _propMap.end(); _propMapIter++)
 	{
-		for (int i = 0; i < _propVectorMapIter->second.size(); i++)
-		{
-			_propVectorMapIter->second[i]->Render();
-		}
+		_propMapIter->second->Render();
 	}
 }
 
@@ -43,17 +44,76 @@ void PropContainer::LoadTileMap()
 {
 }
 
-void PropContainer::AddProp(wstring propName, Prop* newProp)
+void PropContainer::AddProp(int hashKey, Prop* newProp, PROPDIR dir)
 {
-	_propVectorMapIter = _propVectorMap.find(propName);
-	if (_propVectorMapIter == _propVectorMap.end())
+	int tileX = hashKey % TILENUMX;
+	int tileY = hashKey / TILENUMX;
+	_propMapIter = _propMap.find(hashKey);
+	if (_propMapIter == _propMap.end())
 	{
-		vector<Prop*> newPropVector;
-		newPropVector.push_back(newProp);
-		_propVectorMap.insert(pair<wstring, vector<Prop*>>(propName, newPropVector));
+		_propMap.insert(pair<int, Prop*>(hashKey, newProp));
 	}
-	else
+	Conveyor* conveyorCast = dynamic_cast<Conveyor*>(newProp);
+	if (conveyorCast != nullptr)
 	{
-		_propVectorMapIter->second.push_back(newProp);
+		for (int i = 0; i < 4; i++)
+		{
+			int nextX = tileX + conveyorDir[i][0];
+			int nextY = tileY + conveyorDir[i][1];
+			int nextHashKey = nextY * TILENUMX + nextX;
+			Prop* prop = GetPropMap(nextHashKey);
+			Conveyor* nearConveyor = dynamic_cast<Conveyor*>(prop);
+			Drill* nearDrill = dynamic_cast<Drill*>(prop);
+			if (nearConveyor != nullptr)
+			{
+				if (i == conveyorCast->transport->GetOutDir())
+				{
+					//(i + 2) % 4 = 반대방향
+					nearConveyor->transport->LinkConveyor(PROPDIR((i + 2) % 4));
+				}
+				else if (nearConveyor->transport->GetOutDir() == (i + 2) % 4)
+				{
+					conveyorCast->transport->LinkConveyor(PROPDIR(i));
+				}
+			}
+			if (nearDrill != nullptr)
+			{
+				conveyorCast->transport->LinkConveyor(PROPDIR(i));
+			}
+		}
 	}
+
+	Drill* drillCast = dynamic_cast<Drill*>(newProp);
+	if (drillCast != nullptr)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			int nextX = tileX + conveyorDir[i][0];
+			int nextY = tileY + conveyorDir[i][1];
+			int nextHashKey = nextY * TILENUMX + nextX;
+			Prop* prop = GetPropMap(nextHashKey);
+			Conveyor* nearConveyor = dynamic_cast<Conveyor*>(prop);
+			if (nearConveyor != nullptr)
+			{
+				nearConveyor->transport->LinkConveyor(PROPDIR((i + 2) % 4));
+				//if (i == conveyorCast->transport->GetOutDir())
+				//{
+				//	//(i + 2) % 4 = 반대방향
+				//}
+				//else if (nearConveyor->transport->GetOutDir() == (i + 2) % 4)
+				//{
+				// 
+				//}
+			}
+		}
+	}
+}
+
+Prop* PropContainer::GetPropMap(int hashKey)
+{
+	_propMapIter = _propMap.find(hashKey);
+	if (_propMapIter != _propMap.end())
+		return _propMapIter->second;
+
+	return nullptr;
 }

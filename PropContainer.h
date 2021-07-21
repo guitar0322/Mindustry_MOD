@@ -1,13 +1,16 @@
 #pragma once
 #include <map>
+#include "PropInfo.h"
 class Prop;
+class GameInfo;
 
 class PropContainer
 {
 private:
-	map<wstring, vector<Prop*>> _propVectorMap;
-	map<wstring, vector<Prop*>>::iterator _propVectorMapIter;
+	map<int, Prop*> _propMap;
+	map<int, Prop*>::iterator _propMapIter;
 public:
+	GameInfo* gameInfo;
 	PropContainer();
 	~PropContainer();
 	void Init();
@@ -15,6 +18,7 @@ public:
 	void Update();
 	void Render();
 	void LoadTileMap();
-	void AddProp(wstring propName, Prop* newProp);
+	void AddProp(int hashKey, Prop* newProp, PROPDIR dir);
+	Prop* GetPropMap(int hashKey);
 };
 

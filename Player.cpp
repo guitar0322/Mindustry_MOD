@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Player.h"
 #include "PlayerControler.h"
+
 Player::Player()
 {
 	renderer = new Renderer();
@@ -13,7 +14,6 @@ Player::Player()
 	collider = new BoxCollider();
 	AddComponent(collider);
 	collider->Init();
-
 }
 Player::~Player()
 {

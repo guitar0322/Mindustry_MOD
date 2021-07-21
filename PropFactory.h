@@ -4,6 +4,7 @@
 #include "PropInfo.h"
 class PropContainer;
 class GameInfo;
+class Prop;
 
 class PropFactory
 {
@@ -17,13 +18,16 @@ private:
 		wstring propName;
 	}PROPINFO;
 
-	typedef struct tagQueueProp {
+	typedef struct tagQueuePropElement {
 		int x;
 		int y;
 		int catagory;
 		int propIdx;
+		PROPDIR dir;
 	}ELEMPROP;
 private:
+	bool _isFirstConveyor;
+	Animator* _firstConveyorAnimator;
 	float _buildTime;
 	queue<ELEMPROP> _propQueue;
 	vector<ImageObject> _previewV;
@@ -40,9 +44,11 @@ public:
 
 	template<typename T>
 	ImageObject* CreateProp(int tileX, int tileY);
-
+	void CreateConveyor(int tileX, int tileY, PROPDIR dir);
+	void CreateDrill(int tileX, int tileY);
+	void ContainProp(int hashKey, Prop* newProp, PROPDIR dir);
 	ImageObject* CreatePreview(int tileX, int tileY);
-	void AddPropElem(vector<ImageObject>& previewV, int categoryIdx, int propIdx);
+	void AddPropElem(vector<ImageObject>& previewV, int categoryIdx, int propIdx, PROPDIR dir);
 	void InitPropInfo();
 	void LinkGameInfo(GameInfo* gameInfo) { _gameInfo = gameInfo; }
 };

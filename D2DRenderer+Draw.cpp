@@ -226,6 +226,29 @@ void D2DRenderer::DrawLine(const Vector2& start, const Vector2& end, const Defau
 		D2D1::Point2F(endPos.x, endPos.y), mDefaultBrushList[(UINT)defaultBrush], strokeWidth);
 
 }
+void D2DRenderer::DrawLineBack(const Vector2& start, const Vector2& end, const D2D1::ColorF::Enum& color, const float alpha, const float strokeWidth)
+{
+	ID2D1SolidColorBrush* brush;
+	mD2DBitmapRenderTarget->CreateSolidColorBrush(D2D1::ColorF(color, alpha), &brush);
+
+	mD2DBitmapRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
+
+	Vector2 startPos = start;
+	Vector2 endPos = end;
+
+	mD2DBitmapRenderTarget->DrawLine(D2D1::Point2F(startPos.x, startPos.y), D2D1::Point2F(endPos.x, endPos.y), brush, strokeWidth);
+	NEW_SAFE_RELEASE(brush);
+}
+void D2DRenderer::DrawLineBack(const Vector2& start, const Vector2& end, const DefaultBrush& defaultBrush, const float strokeWidth)
+{
+	mD2DBitmapRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
+
+	Vector2 startPos = start;
+	Vector2 endPos = end;
+
+	mD2DBitmapRenderTarget->DrawLine(D2D1::Point2F(startPos.x, startPos.y),
+		D2D1::Point2F(endPos.x, endPos.y), mDefaultBrushList[(UINT)defaultBrush], strokeWidth);
+}
 /**********************************************************************************************
 ## DrawRectangle ##
 @@ FloatRect rc : 렉트
@@ -323,6 +346,7 @@ void D2DRenderer::DrawEllipse(const Vector2& origin, const float radius, const D
 
 	NEW_SAFE_RELEASE(brush);
 }
+
 /**********************************************************************************************
 ## FillRectagle ##
 @@ FloatRect rc : 그릴 렉트
@@ -354,6 +378,26 @@ void D2DRenderer::FillRectangle(const Rect& rc, const DefaultBrush& defaultBrush
 	mD2DRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
 
 	mD2DRenderTarget->FillRectangle(D2D1::RectF((float)rect.left, (float)rect.top, (float)rect.right, (float)rect.bottom),
+		mDefaultBrushList[(UINT)defaultBrush]);
+}
+void D2DRenderer::FillRectangleBack(const Rect& rc, const D2D1::ColorF::Enum& color, const float alpha)
+{
+	Rect rect = rc;
+
+	ID2D1SolidColorBrush* brush;
+	mD2DBitmapRenderTarget->CreateSolidColorBrush(D2D1::ColorF(color, alpha), &brush);
+	mD2DBitmapRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
+	mD2DBitmapRenderTarget->FillRectangle(D2D1::RectF((float)rect.left, (float)rect.top, (float)rect.right, (float)rect.bottom), brush);
+
+	NEW_SAFE_RELEASE(brush);
+}
+void D2DRenderer::FillRectangleBack(const Rect& rc, const DefaultBrush& defaultBrush)
+{
+	Rect rect = rc;
+
+	mD2DBitmapRenderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
+
+	mD2DBitmapRenderTarget->FillRectangle(D2D1::RectF((float)rect.left, (float)rect.top, (float)rect.right, (float)rect.bottom),
 		mDefaultBrushList[(UINT)defaultBrush]);
 }
 /**********************************************************************************************

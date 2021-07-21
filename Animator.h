@@ -35,9 +35,9 @@ public:
     void Init();
     void Update();
     void Render();
-    //int GetCurFrameX() const { return _curFrameX; }
-    //void SetCurFrameX(int frameX) { _curFrameX = frameX; }
-    //int GetCurFrameY() const { return _curFrameY; }
+    int GetCurFrameX() const { return _curFrameX; }
+    float GetFrameTime() const { return _frameTime; }
+    void SetFrameTime(float frameTime) { _frameTime = frameTime; }
     void SetCurFrameY(int frameY);
 
     void SetClip(AnimationClip* newClip);
@@ -45,6 +45,7 @@ public:
     void SetClip(string clipName);
     void SetClip(string clipName, int startFrame);
     void AddClip(string clipName, AnimationClip* newClip);
+    void AddClip(string clipName);
     void AddClip(AnimationClip* newClip);
     AnimationClip* GetClip(string clipName);
     void AddTransaction(string name, AnimationClip* startClip, AnimationClip* nextClip);
