@@ -1668,8 +1668,17 @@ void GameScene::InGameUIRender()
 	_playerUi.Render();
 	_playerHpUi.Render();
 	_waveSkipUi.Render();
+	
+	
+	//wstring second = L"초: ";
+	wstring second = to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeSecond());
+	wstring minute = to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeMinute());
+	//second.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeSecond()));
+	D2DRENDERER->RenderText(10, 60, second, 20, L"fontello", D2DRenderer::DefaultBrush::Yellow);
+
 	D2DRENDERER->RenderText(150, 5, L"wave", 25, L"fontello", D2DRenderer::DefaultBrush::Yellow);
 	D2DRENDERER->RenderText(150, 35, L"다음 단계까지", 20, L"fontello", D2DRenderer::DefaultBrush::Yellow);
+
 }
 
 void GameScene::StringRender()
