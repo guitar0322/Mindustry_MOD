@@ -131,6 +131,7 @@ void PlayerControler::Update()
 				_playerLaser->_detectRc->SetActive(true);
 			}
 		}
+
 		if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
 		{
 			_playerLaser->_collectLaserFirst->SetActive(false);

@@ -43,7 +43,8 @@ public:
     void SetPreview(float deltaX, float deltaY);
     void SetPreviewTwo(float deltaX, float deltaY);
 
-    /* SHUNG 210715 */
+    /* 시영 */
+    /* 연구 */
     UIBase* choiceImg;
     UIBase* lockImg;
     UIBase* inResearchChoiceImg;
@@ -54,27 +55,53 @@ public:
     UIBase* detailDes_GoBackIdleImg;
     UIBase* detailDes_GoBackChoiceImg;
 
+    /* 메뉴 */
+    UIBase* menu_GoBackIdleImg;            // 메뉴 [돌아가기] 기본 상태 이미지
+    UIBase* menu_GoBackChoiceImg;          // 메뉴 [돌아가기] 선택 상태 이미지
+    UIBase* menu_SettingIdleImg;           // 메뉴 [설정] 기본 상태 이미지
+    UIBase* menu_SettingChoiceImg;         // 메뉴 [설정] 선택 상태 이미지
+    UIBase* menu_SaveAndExitIdleImg;       // 메뉴 [저장 후 나가기] 기본 상태 이미지
+    UIBase* menu_SaveAndExitChoiceImg;     // 메뉴 [저장 후 나가기] 선택 상태 이미지
+
     void inResearch_ActiveChoiceImg(Transform* menuTr, bool isActive);
+    
+    /* 연구 상태에서 [돌아가기] 버튼 ENTER, EXIT */
     void inResearch_ActiveGoBackImg(bool isActive);
+    /* 연구 상태에서 [돌아가기] 버튼 CLICK */
     void inResearch_ReturnToGameScene(bool* name, bool isActive);
+
+    /* 연구 상태에서 [코어 DB] 버튼 ENTER, EXIT */
     void inResearch_ActiveCoreDBImg(bool isActive);
-
-    // 코어 DB 화면 구성할 때 불 값으로 연결시켜주기
+    /* 연구 상태에서 [코어 DB] 버튼 CLICK */
     void inResearch_ReturnToCoreDBScene(bool* name, bool isActive);
-
-    /* 기본 이미지 버튼 클릭 시 */
+    
+    /* 연구 상태에서 [개개인의 객체] 버튼 ENTER */
     void inResearch_ActiveChoiceImgWithBasicDes(Transform* menuTr, UIBase* name, Button* name2, bool* name3, bool isActive);
+    /* 연구 상태에서 [개개인의 객체] 버튼 EXIT */
     void inResearch_inActiveChoiceImgWithBasicDes(Transform* menuTr, UIBase* name, bool* name2, Button* name3, bool isActive);
 
-    /* 기본 설명 이미지 클릭 시*/
+    /* 연구 상태에서 [기본 설명] 버튼 ENTER */
     void inResearch_inBasicDes(Transform* menuTr, UIBase* name, bool* name2, bool isActive);
+    /* 연구 상태에서 [기본 설명] 버튼 EXIT */
     void inResearch_disableInBasicDes(Transform* menuTr, UIBase* name, bool* name2, Button* name3, bool isActive);
 
-    /* 기본 설명 [i] 버튼을 누를 때 */
+    /* 연구 상태에서 [상세 설명] 버튼 ENTER, EXIT */
     void inResearch_ActiveInResearchChoiceImg(Transform* menuTr, bool isActive);
+    /* 연구 상태에서 [상세 설명] 버튼 CLICK */
     void inResearch_ActiveDetailImg(UIBase* name, bool* name2, bool isActive);
 
-    /* UI 상세보기 누를 경우 나오는 [뒤로가기] 버튼 전용 함수 */
-    void inDetailDes_ActiveGoBackImg(bool isActive);
-    void inDetailDes_ReturnToResearch(bool* name, bool isActive);
+    /* 상세 설명 상태에서 [돌아가기] 버튼 ENTER */
+    void inDetailDes_ActiveGoBackImg(bool* name, bool isActive);
+    /* 상세 설명 상태에서 [돌아가기] 버튼 CLICK */
+    void inResearch_ReturnToResearchScene(bool* name, UIBase* name2, bool isActive);
+    /* 상세 설명 상태에서 [돌아가기] 버튼 EXIT */
+    void inDetailDes_ReturnToResearch(bool isActive);
+
+    /* 메뉴 상태에서 [돌아가기] 버튼 ENTERT, EXIT */
+    void inMenu_ActiveChoiceImg_GoBack(bool isActive);
+    /* 메뉴 상태에서 [돌아가기] 버튼 CLICK */
+    void inMenu_ReturnToGameScene(bool* name, bool isActive);
+
+    /* 메뉴 상태에서 [저장 후 나가기] 버튼 ENTER, EXIT */
+    void inMenu_AcitveChoiceImg_SaveAndExit(bool isActive);
 };
