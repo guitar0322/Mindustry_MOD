@@ -12,6 +12,9 @@
 #include "CameraControler.h"
 #include "Item.h"
 #include "ResourceManager.h"
+#include "Core.h"
+#include "CoreComponent.h"
+#include "Astar.h"
 HRESULT GameScene::Init()
 {
     Scene::Init();
@@ -27,8 +30,11 @@ HRESULT GameScene::Init()
     MainCam->transform->SetPosition(1600 / 2, 1600 / 2);
 
     selectCategoryIdx = 0;
+    _aStar = new Astar();
+
     _gameInfo = new GameInfo();
     _gameInfo->Init();
+    _gameInfo->AddResource(COPPER, 500);
 
     _propContainer = new PropContainer();
     _propFactory = new PropFactory();
@@ -39,6 +45,7 @@ HRESULT GameScene::Init()
     _resourceManager = new ResourceManager();
     _resourceManager->propContainer = _propContainer;
     _resourceManager->Init();
+    _propFactory->LinkResourceManager(_resourceManager);
 
     _uiControler = new UIControler();
     _uiControler->Init();
@@ -60,7 +67,7 @@ HRESULT GameScene::Init()
 	_gameMap = new GameMap;
 	_gameMap->Init();
     _uiControler->gameMap = _gameMap;
-
+    _propFactory->LinkGameMap(_gameMap);
 	//자원 UI 초기화
 	ResourcesInit();
 	/*===================================*/
@@ -191,22 +198,6 @@ HRESULT GameScene::Init()
         std::bind(&UIControler::inDetailDes_ReturnToResearch, _uiControler,
             false),
         EVENT::EXIT);
-
-    #pragma endregion
-
-	/* 플레이어 부분 유림 */
-	_player = new Player();
-	_player->Init();
-	_player->tag = TAGMANAGER->GetTag("player");
-	_player->renderer->Init("player");
-	_player->transform->SetPosition(1500, 900);
-	_player->transform->SetAngle(0.0f);
-	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
-
-	//플레이어 포신 유림.
-	_playerWeaponL = new ImageObject;
-	_playerWeaponL->Init();
-	_playerWeaponL->renderer->Init("player_weapon_L");
 
 	/*===================================================================== */
 	/* 플레이어 부분 초기화 -> 유림 */
@@ -1602,19 +1593,18 @@ void GameScene::SetProjectileManager()
 	_projectileManager = new GameObject();
 	_projectileManager->AddComponent(new ProjectileManager());
 	_projectileManager->GetComponent<ProjectileManager>()->Init();
-	_projectileManager->GetComponent<ProjectileManager>()->SetPlayer(_player);
 	_player->controler->SetProjectileManager(_projectileManager->GetComponent<ProjectileManager>());
 }
 
 void GameScene::SetCore()
 {
-	_core = new Prop();
+	_core = new Core();
 	_core->Init();
 	_core->tag = TAGMANAGER->GetTag("prop");
-	_core->renderer->Init("core");
 	_core->transform->SetPosition(25 * TILESIZE + 16, 36 * TILESIZE + 16);
-	_core->collider->transform->SetPosition(_core->transform->GetX(), _core->transform->GetY());
 	_core->collider->RefreshPartition();
+    _core->coreComponent->LinkResourceManager(_resourceManager);
+    _core->coreComponent->LinkGameInfo(_gameInfo);
 }
 
 void GameScene::SetEnemyManager()
@@ -1623,8 +1613,8 @@ void GameScene::SetEnemyManager()
 	_enemyManager->AddComponent(new EnemyManager());
 	_enemyManager->GetComponent<EnemyManager>()->SetTestCoreTransform(_core);
 	_enemyManager->GetComponent<EnemyManager>()->SetProjectileManager(_projectileManager->GetComponent<ProjectileManager>());
+    _enemyManager->GetComponent<EnemyManager>()->SetAstar(_aStar);
 	_enemyManager->GetComponent<EnemyManager>()->Init();
-	_projectileManager->GetComponent<ProjectileManager>()->SetEnemyManager(_enemyManager->GetComponent<EnemyManager>());
 }
 
 void GameScene::SetCameraControler()

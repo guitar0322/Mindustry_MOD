@@ -12,6 +12,16 @@ void Transport::Init()
 
 void Transport::Update()
 {
+	if (_unLackFlag == true)
+	{
+		_unLackTerm += TIMEMANAGER->getElapsedTime();
+		if (_unLackTerm >= 1.f)
+		{
+			_unLackTerm = 0;
+			_unLackFlag = false;
+			_isLack = false;
+		}
+	}
 	//for (int i = 0; i < _resInfo.size(); i++)
 	//{
 	//	_resInfo[i].second->SetSpeed(60.f);
@@ -163,4 +173,14 @@ void Transport::LinkConveyor(PROPDIR dir)
 	* 반대방향은 dir 차이가 2, 수직은 1
 	* T에서 연결이되면 cross가 된다
 	***************************************************/
+}
+
+void Transport::SetIsLack(bool isLack)
+{
+	if (isLack == true)
+		_isLack = true;
+	else
+	{
+		_unLackFlag = true;
+	}
 }

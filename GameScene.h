@@ -17,6 +17,8 @@ class UIControler;
 class GameInfo;
 class Item;
 class ResourceManager;
+class Core;
+class Astar;
 
 class GameScene :
     public Scene
@@ -41,6 +43,7 @@ private:
     PropFactory* _propFactory;
     ResourceManager* _resourceManager;
     GameInfo* _gameInfo;
+    Astar* _aStar;
     UIControler* _uiControler;
     UIBase _categorySelect;
     UIBase _propSelect;
@@ -167,7 +170,7 @@ private:
 
 	// EnemyManager 210717 濛機 - 團營 // 
 	GameObject* _enemyManager;
-	Prop* _core;
+	Core* _core;
 	//// 07/20 團營 Enemy WAve 塽 Player UI 濛機/////
 	UIBase _wavePane;
 	UIBase _playerUi;

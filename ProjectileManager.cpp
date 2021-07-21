@@ -17,38 +17,38 @@ void ProjectileManager::Init()
 {
 	for (int i = 0; i < ENEMY_PROJECTILE_MAX;  i++)
 	{
-		_enemyPlaneProjectile = new ProjectileObject();
-		_enemyPlaneProjectile->GetRendererComponent()->Init("projectile");
-		_enemyPlaneProjectile->name = L"plane_projecilte";
-		_enemyPlaneProjectile->GetProjectileComponent()->SetSpeed(800.f);
-		_enemyPlaneProjectile->GetProjectileComponent()->SetDamage(50);
-		_enemyPlaneProjectile->GetProjectileComponent()->SetTargetTag("player");
-		_enemyPlaneProjectile->SetActive(false);
-		_enemyPlaneProjectileV.push_back(_enemyPlaneProjectile);
+		ProjectileObject* enemyPlaneProjectile = new ProjectileObject();
+		enemyPlaneProjectile->GetRendererComponent()->Init("projectile");
+		enemyPlaneProjectile->name = L"plane_projecilte";
+		enemyPlaneProjectile->GetProjectileComponent()->SetSpeed(800.f);
+		enemyPlaneProjectile->GetProjectileComponent()->SetDamage(5);
+		enemyPlaneProjectile->GetProjectileComponent()->SetTargetTag("player");
+		enemyPlaneProjectile->SetActive(false);
+		_enemyPlaneProjectileV.push_back(enemyPlaneProjectile);
 	}
 	for (int i = 0; i < ENEMY_PROJECTILE_MAX; i++)
 	{
-		_enemyGroundProjectile = new ProjectileObject();
-		_enemyGroundProjectile->GetRendererComponent()->Init("player_weapon_L");
-		_enemyGroundProjectile->name = L"ground_projecilte";
-		_enemyGroundProjectile->GetProjectileComponent()->SetSpeed(20.f);
-		_enemyGroundProjectile->GetProjectileComponent()->SetDamage(50);
-		_enemyGroundProjectile->GetProjectileComponent()->SetTargetTag("player");
-		_enemyGroundProjectile->SetActive(true);
-		_enemyGroundProjectileV.push_back(_enemyGroundProjectile);
+		ProjectileObject* enemyGroundProjectile = new ProjectileObject();
+		enemyGroundProjectile->name = L"ground_projecilte";
+		enemyGroundProjectile->GetRendererComponent()->Init("projectile");
+		enemyGroundProjectile->GetProjectileComponent()->SetSpeed(400.f);
+		enemyGroundProjectile->GetProjectileComponent()->SetDamage(5);
+		enemyGroundProjectile->GetProjectileComponent()->SetTargetTag("player");
+		enemyGroundProjectile->SetActive(false);
+		_enemyGroundProjectileV.push_back(enemyGroundProjectile);
 	}
 
 	for (int i = 0; i < PLAYER_PROJECTILE_MAX; i++)
 	{
-		_playerProjectile = new ProjectileObject();
-		_playerProjectile->GetRendererComponent()->Init("bullet");
-		_playerProjectile->name = L"player_projecilte";
-		_playerProjectile->transform->SetScale(0.5f, 0.5f);
-		_playerProjectile->GetProjectileComponent()->SetSpeed(500.f);
-		_playerProjectile->GetProjectileComponent()->SetDamage(50);
-		_playerProjectile->GetProjectileComponent()->SetTargetTag("enemy");
-		_playerProjectile->SetActive(false);
-		_playerProjectileV.push_back(_playerProjectile);
+		ProjectileObject* playerProjectile = new ProjectileObject();
+		playerProjectile->GetRendererComponent()->Init("bullet");
+		playerProjectile->name = L"player_projecilte";
+		playerProjectile->transform->SetScale(0.5f, 0.5f);
+		playerProjectile->GetProjectileComponent()->SetSpeed(500.f);
+		playerProjectile->GetProjectileComponent()->SetDamage(5);
+		playerProjectile->GetProjectileComponent()->SetTargetTag("enemy");
+		playerProjectile->SetActive(false);
+		_playerProjectileV.push_back(playerProjectile);
 	}
 	SOUNDMANAGER->addSound("shooting", "sounds/shoot.ogg", true, false);
 }
@@ -62,15 +62,20 @@ void ProjectileManager::Render()
 {
 	for (int i = 0; i < ENEMY_PROJECTILE_MAX; i++)
 	{
-		if (_enemyPlaneProjectileV[i]->isActive == false) continue;
+		if (_enemyPlaneProjectileV[i]->isActive == false)
+			continue;
 		_enemyPlaneProjectileV[i]->Render();
-
-		if (_enemyGroundProjectileV[i]->isActive == false) continue;
+	}
+	for (int i = 0; i < ENEMY_PROJECTILE_MAX; i++)
+	{
+		if (_enemyGroundProjectileV[i]->isActive == false) 
+			continue;
 		_enemyGroundProjectileV[i]->Render();
 	}
 	for (int i = 0; i < PLAYER_PROJECTILE_MAX; i++)
 	{
-		if (_playerProjectileV[i]->isActive == false) continue;
+		if (_playerProjectileV[i]->isActive == false)
+			continue;
 		_playerProjectileV[i]->Render();
 	}
 }
@@ -79,15 +84,22 @@ void ProjectileManager::ProjectileMove()
 {
 	for (int i = 0; i < ENEMY_PROJECTILE_MAX; i++)
 	{
-		if (_enemyPlaneProjectileV[i]->isActive == false) continue;
+		if (_enemyPlaneProjectileV[i]->isActive == false) 
+			continue;
 		_enemyPlaneProjectileV[i]->Update();
 		
-		if (_enemyGroundProjectileV[i]->isActive == false) continue;
+
+	}
+	for (int i = 0; i < ENEMY_PROJECTILE_MAX; i++)
+	{
+		if (_enemyGroundProjectileV[i]->isActive == false)
+			continue;
 		_enemyGroundProjectileV[i]->Update();
 	}
 	for (int i = 0; i < PLAYER_PROJECTILE_MAX; i++)
 	{
-		if (_playerProjectileV[i]->isActive == false) continue;
+		if (_playerProjectileV[i]->isActive == false) 
+			continue;
 		_playerProjectileV[i]->Update();
 	}
 }
@@ -103,7 +115,10 @@ void ProjectileManager::FireProjectile(float x, float y, float angle, PROJECTILE
 			if (_enemyPlaneProjectileV[i]->isActive == true) continue;
 			_enemyPlaneProjectileV[i]->SetActive(true);
 			_enemyPlaneProjectileV[i]->transform->SetPosition(x, y);
+			_enemyPlaneProjectileV[i]->GetColliderComponent()->RefreshPartition();
 			_enemyPlaneProjectileV[i]->transform->SetAngle(angle);
+			_enemyPlaneProjectileV[i]->GetProjectileComponent()->SetFirePoint(Vector2(x, y));
+			_enemyPlaneProjectileV[i]->GetProjectileComponent()->SetAngle(ConvertAngleAPI(angle));
 			break;
 		}
 		break;
@@ -112,10 +127,14 @@ void ProjectileManager::FireProjectile(float x, float y, float angle, PROJECTILE
 		SOUNDMANAGER->play("shooting", 20.0f);
 		for (int i = 0; i < ENEMY_PROJECTILE_MAX; i++)
 		{
-			if (_enemyGroundProjectileV[i]->isActive == true) continue;
+			if (_enemyGroundProjectileV[i]->isActive == true) 
+				continue;
 			_enemyGroundProjectileV[i]->SetActive(true);
 			_enemyGroundProjectileV[i]->transform->SetPosition(x, y);
+			_enemyGroundProjectileV[i]->GetColliderComponent()->RefreshPartition();
 			_enemyGroundProjectileV[i]->transform->SetAngle(angle);
+			_enemyGroundProjectileV[i]->GetProjectileComponent()->SetFirePoint(Vector2(x, y));
+			_enemyGroundProjectileV[i]->GetProjectileComponent()->SetAngle(ConvertAngleAPI(angle));
 			break;
 		}
 		break;
@@ -124,10 +143,14 @@ void ProjectileManager::FireProjectile(float x, float y, float angle, PROJECTILE
 		SOUNDMANAGER->play("shooting", 20.0f);
 		for (int i = 0; i < PLAYER_PROJECTILE_MAX; i++)
 		{
-			if (_playerProjectileV[i]->isActive == true) continue;
+			if (_playerProjectileV[i]->isActive == true)
+				continue;
 			_playerProjectileV[i]->SetActive(true);
 			_playerProjectileV[i]->transform->SetPosition(x, y);
+			_playerProjectileV[i]->GetColliderComponent()->RefreshPartition();
 			_playerProjectileV[i]->transform->SetAngle(angle);
+			_playerProjectileV[i]->GetProjectileComponent()->SetFirePoint(Vector2(x, y));
+			_playerProjectileV[i]->GetProjectileComponent()->SetAngle(ConvertAngleAPI(angle));
 			break;
 		}
 		break;

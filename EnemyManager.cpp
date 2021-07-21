@@ -8,7 +8,7 @@
 #include "EnemyGroundControler.h"
 #include "EnemyInfo.h"
 #include "EnemyObject.h"
-
+#include "Astar.h"
 EnemyManager::EnemyManager()
 {
 }
@@ -58,10 +58,11 @@ void EnemyManager::SetEnemy()
 		_enemyGround->GetComponent<EnemyInfo>()->SetEnemyManager(this);
 		_enemyGround->GetComponent<EnemyInfo>()->SetTestCore(_testCore);
 		_enemyGround->GetComponent<EnemyInfo>()->GetCoreAngle();
-		_enemyGround->GetComponent<EnemyInfo>()->SetSpeed(200.f);
+		_enemyGround->GetComponent<EnemyInfo>()->SetSpeed(150.f);
 		_enemyGround->GetComponent<EnemyInfo>()->SetHp(100);
 		_enemyGround->transform->SetScale(0.5f, 0.5f);
 		_enemyGround->GetComponent<EnemyGroundControler>()->SetProjectileManager(_projectileManager);
+		_enemyGround->GetComponent<EnemyGroundControler>()->SetAstar(_aStar);
 		_enemyGround->SetActive(false);
 		_enemyV.push_back(_enemyGround);
 	}

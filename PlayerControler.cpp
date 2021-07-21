@@ -69,19 +69,19 @@ void PlayerControler::Update()
 
 		/* === 웨폰 방향 ===*/
 		{
-		if (_weaponLTrackRadius < DEFAULT_WEAPON_DISTANCE)
-		{
-			_weaponLTrackRadius += 3.f * TIMEMANAGER->getElapsedTime();
-			if (_weaponLTrackRadius > DEFAULT_WEAPON_DISTANCE)
-				_weaponLTrackRadius = DEFAULT_WEAPON_DISTANCE;
-		}
+			if (_weaponLTrackRadius < DEFAULT_WEAPON_DISTANCE)
+			{
+				_weaponLTrackRadius += 3.f * TIMEMANAGER->getElapsedTime();
+				if (_weaponLTrackRadius > DEFAULT_WEAPON_DISTANCE)
+					_weaponLTrackRadius = DEFAULT_WEAPON_DISTANCE;
+			}
 
-		if (_weaponRTrackRadius < DEFAULT_WEAPON_DISTANCE)
-		{
-			_weaponRTrackRadius += 3.f * TIMEMANAGER->getElapsedTime();
-			if (_weaponRTrackRadius > DEFAULT_WEAPON_DISTANCE)
-				_weaponRTrackRadius = DEFAULT_WEAPON_DISTANCE;
-		}
+			if (_weaponRTrackRadius < DEFAULT_WEAPON_DISTANCE)
+			{
+				_weaponRTrackRadius += 3.f * TIMEMANAGER->getElapsedTime();
+				if (_weaponRTrackRadius > DEFAULT_WEAPON_DISTANCE)
+					_weaponRTrackRadius = DEFAULT_WEAPON_DISTANCE;
+			}
 		}
 
 
@@ -123,38 +123,9 @@ void PlayerControler::Update()
 				_attackSpeed = 0;
 			}
 		}
-		
 
-		float laserStartX = transform->GetX() + cosf(ConvertAngleAPI(transform->GetAngle())) * 18;
-		float laserStartY = transform->GetY() - sinf(ConvertAngleAPI(transform->GetAngle())) * 18;
-		_playerLaser->SetLaserStartPoint(laserStartX, laserStartY);
-
-		if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
-		{
-		   if (_isCollecting == false)
-		   {
-			  _collectTile.x = _worldX / TILESIZE;
-			  _collectTile.y = _worldY / TILESIZE;
-			  _playerLaser->SetLaserEndPoint(_collectTile.x, _collectTile.y);
-			  _isCollecting = true;
-			  _playerLaser->_collectLaserFirst->SetActive(true);
-			  _playerLaser->_collectLaserEnd->SetActive(true);
-			  _playerLaser->_collectLaser->SetActive(true);
-			  _playerLaser->_detectRc->SetActive(true);
-		   }
-		}
-
-		if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
-		{
-			_playerLaser->_collectLaserFirst->SetActive(false);
-			_playerLaser->_collectLaserEnd->SetActive(false);
-			_playerLaser->_collectLaser->SetActive(false);
-			_playerLaser->_detectRc->SetActive(false);
-			_isCollecting = false;
-		}
-		_playerLaser->Update();
-		if (_playerLaser->GetLaserDistance() >= 400)
 		ShootResoucesLaser();
+
 		if (_isCollecting)
 		{
 			ResoucesCollect();
@@ -300,13 +271,13 @@ void PlayerControler::ShootResoucesLaser()
 				{
 					_colletingResources = COPPER;
 					int test = 3;
-						test;
+					test;
 				}
 				else if (tileInfo.resources > 3 && tileInfo.resources < 6)
 				{
 					_colletingResources = LEAD;
 				}
-				
+
 			}
 		}
 	}
@@ -331,7 +302,7 @@ void PlayerControler::BoosterFireScale()
 {
 	_boosterTime += TIMEMANAGER->getElapsedTime();
 
-	if(_boosterTime >= 0.1f)
+	if (_boosterTime >= 0.1f)
 	{
 		float scaleX = transform->GetChild(4)->GetScaleX() + 0.05f * _scaleFlag;
 		float scaleY = transform->GetChild(4)->GetScaleY() + 0.05f * _scaleFlag;

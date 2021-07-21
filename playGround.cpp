@@ -34,8 +34,8 @@ HRESULT playGround::init()
 	SampleScene2* sampleScene2 = new SampleScene2();
 	SCENEMANAGER->AddScene("sample2", sampleScene2);
 	
-	ShootingScene* shootingScene = new ShootingScene();
-	SCENEMANAGER->AddScene("ShootingScene", shootingScene);
+	//ShootingScene* shootingScene = new ShootingScene();
+	//SCENEMANAGER->AddScene("ShootingScene", shootingScene);
 
 	GameScene* gameScene = new GameScene();
 	SCENEMANAGER->AddScene("game", gameScene);
@@ -114,13 +114,13 @@ void playGround::render()
 	//demoParticleSys->Render();
 
 	SCENEMANAGER->Render();
-	//wstring fps = L"FPS : ";
-	//fps.append(to_wstring(TIMEMANAGER->getFPS()));
-	//D2DRENDERER->RenderText(10, 10, fps, 30);
+	wstring fps = L"FPS : ";
+	fps.append(to_wstring(TIMEMANAGER->getFPS()));
+	D2DRENDERER->RenderText(10, WINSIZEY - 50, fps, 30, L"¸¼Àº°íµñ", D2DRenderer::DefaultBrush::Blue);
 
-	//wstring elapse = L"ElapseTime : ";
-	//elapse.append(to_wstring(TIMEMANAGER->getElapsedTime()));
-	//D2DRENDERER->RenderText(10, 50, elapse, 30, L"¸¼Àº°íµñ", D2DRenderer::DefaultBrush::White);
+	wstring elapse = L"ElapseTime : ";
+	elapse.append(to_wstring(TIMEMANAGER->getElapsedTime()));
+	D2DRENDERER->RenderText(10, WINSIZEY - 100, elapse, 30, L"¸¼Àº°íµñ", D2DRenderer::DefaultBrush::Blue);
 	//D2DRENDERER->RenderText(10, 10, fps, 30, L"¸¼Àº°íµñ", D2DRenderer::DefaultBrush::White);
 	//==================================================
 	//¿©±âµµ °ÇµéÁö¸¶¶ó

@@ -1,8 +1,8 @@
 #pragma once
 #include "Component.h"
 
-#define ENEMY_PROJECTILE_MAX 100
-#define PLAYER_PROJECTILE_MAX 200
+#define ENEMY_PROJECTILE_MAX 50
+#define PLAYER_PROJECTILE_MAX 20
 
 class ProjectileObject;
 class EnemyManager;
@@ -20,20 +20,8 @@ class ProjectileManager :
 {
 private:
 	vector<ProjectileObject*> _enemyPlaneProjectileV;
-	vector<ProjectileObject*> _playerProjectileV;
-
-	ProjectileObject* _enemyPlaneProjectile;
-	ProjectileObject* _playerProjectile;
-
 	vector<ProjectileObject*> _enemyGroundProjectileV;
-	ProjectileObject* _enemyGroundProjectile;
-	
-	Transform* _enemyControlerTransform;
-	EnemyManager* _enemyManager;
-	Player* _player;
-
-	float _deltaAngle;
-
+	vector<ProjectileObject*> _playerProjectileV;
 public:
 	ProjectileManager();
 	~ProjectileManager();
@@ -44,8 +32,5 @@ public:
 
 	void ProjectileMove();
 	void FireProjectile(float x, float y, float angle, PROJECTILE_TYPE type);
-
-	void SetEnemyManager(EnemyManager* enemyManager) { _enemyManager = enemyManager; }
-	void SetPlayer(Player* player) { _player = player; }
 };
 

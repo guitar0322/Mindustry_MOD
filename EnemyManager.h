@@ -10,6 +10,7 @@ class EnemyGround;
 class ProjectileManager;
 class EnemyInfo;
 class EnemyObject;
+class Astar;
 
 class EnemyManager :
 	public Component
@@ -27,7 +28,7 @@ private:
 
 	GameObject* _testCore;
 	Transform* _testCoreTransform;
-	
+	Astar* _aStar;
 	int _curWave;					//현재 웨이브
 	int _timeSecond;				//시간 초
 	int _timeMinute;				//시간 분
@@ -60,5 +61,6 @@ public:
 	void SetProjectileManager(ProjectileManager* projectileManager){ _projectileManager = projectileManager; }
 	void SetTestCoreTransform(GameObject* testCore) { _testCore = testCore; _testCoreTransform = testCore->transform; }
 	void SetEnemyInfo(EnemyInfo* enemyInfo) { _enemyInfo = enemyInfo; }
+	void SetAstar(Astar* aStar) { _aStar = aStar; }
 };
 
