@@ -70,12 +70,14 @@ void ProjectileManager::Render()
 			continue;
 		_enemyPlaneProjectileV[i]->Render();
 	}
+
 	for (int i = 0; i < ENEMY_PROJECTILE_MAX; i++)
 	{
 		if (_enemyGroundProjectileV[i]->isActive == false) 
 			continue;
 		_enemyGroundProjectileV[i]->Render();
 	}
+
 	for (int i = 0; i < PLAYER_PROJECTILE_MAX; i++)
 	{
 		if (_playerProjectileV[i]->isActive == false)

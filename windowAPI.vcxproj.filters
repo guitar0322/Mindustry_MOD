@@ -267,7 +267,6 @@
     <ClCompile Include="EnemyManager.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="CameraControler.cpp" />
     <ClCompile Include="Drill.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Production.cpp" />
@@ -284,6 +283,9 @@
     </ClCompile>
     <ClCompile Include="ParticleObject.cpp" />
     <ClCompile Include="Respawn.cpp" />
+    <ClCompile Include="CameraControler.cpp">
+      <Filter>CameraControler</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h" />
@@ -565,7 +567,6 @@
     <ClInclude Include="PropInfo.h">
       <Filter>헤더파일</Filter>
     </ClInclude>
-    <ClInclude Include="CameraControler.h" />
     <ClInclude Include="Drill.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Production.h" />
@@ -582,6 +583,9 @@
     </ClInclude>
     <ClInclude Include="ParticleObject.h" />
     <ClInclude Include="Respawn.h" />
+    <ClInclude Include="CameraControler.h">
+      <Filter>CameraControler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="windowAPI.rc" />

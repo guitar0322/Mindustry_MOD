@@ -16,6 +16,7 @@
 #include "CoreComponent.h"
 #include "Astar.h"
 #include "Respawn.h"
+
 HRESULT GameScene::Init()
 {
     Scene::Init();
@@ -39,9 +40,9 @@ HRESULT GameScene::Init()
     _gameInfo->AddResource(COPPER, 500);
 
     _propContainer = new PropContainer();
-    _propFactory = new PropFactory();
+	_propFactory = new PropFactory();
     _propFactory->Init();
-    _propFactory->propContainer = _propContainer;
+	_propFactory->propContainer = _propContainer;
     _propFactory->LinkGameInfo(_gameInfo);
 
     _resourceManager = new ResourceManager();
@@ -242,9 +243,6 @@ HRESULT GameScene::Init()
 	_uiControler->enemyWaveSkip = &_enemyWaveSkip;
 	_uiControler->enemyWaveSkipClick = &_enemyWaveSkipClick;
 
-	//_uiControler->enemyWaveSkip
-	//_uiControler->enemyWaveSkipButton = &_enemyWaveSkipButton;
-
     /* 사운드 작업 광철 210718 */
 	//SOUNDMANAGER->addSound("start", "music/land.mp3", true, false);
 	//SOUNDMANAGER->addSound("bgm1", "music/game1.mp3", true, false);
@@ -283,6 +281,7 @@ void GameScene::Update()
     _resourceManager->Update();
     _uiControler->Update();
     _respawn->Update();
+	InGameUIUpdate();
 	/* 플레이어 부분*/
 	_player->Update();
 	_playerWeaponL->Update();
@@ -309,8 +308,8 @@ void GameScene::Update()
 	
 
 	//07.20 민재 인 게임 Wave UI && Player UI 작업//
+
 	_enemyManager->Update();
-	InGameUIUpdate();
     
     /* 시영 */
     // 연구 부분 Update
@@ -1806,6 +1805,7 @@ void GameScene::SetEnemyManager()
     _enemyManager->GetComponent<EnemyManager>()->SetAstar(_aStar);
 	_enemyManager->GetComponent<EnemyManager>()->Init();
     _aStar->LinkEnemyManager(_enemyManager->GetComponent<EnemyManager>());
+	_uiControler->SetEnemyManager(_enemyManager->GetComponent<EnemyManager>());
 }
 
 void GameScene::SetCameraControler()
@@ -1840,13 +1840,13 @@ void GameScene::SetGameUIInit()
 	_enemyWaveSkipClick.transform->SetPosition(390.5f, 45.7f);
 
 	_enemyWaveSkipButton.uiMouseEvent->RegistCallback(
-		std::bind(&UIControler::EnemyWaveSkip, _uiControler,true), EVENT::ENTER);
+		std::bind(&UIControler::EnemyWaveSkip, _uiControler), EVENT::ENTER);
 
 	_enemyWaveSkipButton.uiMouseEvent->RegistCallback(
 		std::bind(&UIControler::EnemyWaveSkipClick, _uiControler), EVENT::CLICK);
 
 	_enemyWaveSkipButton.uiMouseEvent->RegistCallback(
-		std::bind(&UIControler::EnemyWaveSkip, _uiControler,false), EVENT::EXIT);
+		std::bind(&UIControler::EnemyWaveSkipExit, _uiControler), EVENT::EXIT);
 }
 
 void GameScene::InGameUIUpdate()
@@ -1860,23 +1860,24 @@ void GameScene::InGameUIUpdate()
 void GameScene::InGameUIRender()
 {
 	_wavePane.Render();
+	_enemyWaveSkipClick.Render();
 	_enemyWaveSkip.Render();
 	_enemyWaveSkipButton.Render();
-	//_enemyWaveSkipClick.Render();
 	
 	wstring second = to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeSecond());
 	wstring minute = to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeMinute());
 	wstring wave = to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetCurWave());
 
 	D2DRENDERER->RenderText(150, 5, L"단계", 22, L"fontello", D2DRenderer::DefaultBrush::Yellow);
-	D2DRENDERER->RenderText(200, 5, wave, 22, L"mindustry", D2DRenderer::DefaultBrush::Yellow);
-	D2DRENDERER->RenderText(215, 5, L"/10", 22, L"mindustry", D2DRenderer::DefaultBrush::Yellow);
-	D2DRENDERER->RenderText(150, 35, L"다음 단계까지", 20, L"fontello", D2DRenderer::DefaultBrush::Yellow);
+	D2DRENDERER->RenderText(202, 7, wave, 22, L"mindustry", D2DRenderer::DefaultBrush::Yellow);
+	D2DRENDERER->RenderText(220, 7, L"/10", 22, L"mindustry", D2DRenderer::DefaultBrush::Yellow);
+	D2DRENDERER->RenderText(150, 30, L"다음 단계까지", 20, L"fontello", D2DRenderer::DefaultBrush::Yellow);
 
-	D2DRENDERER->RenderText(150, 60, minute, 20, L"mindustry", D2DRenderer::DefaultBrush::White);
-	D2DRENDERER->RenderText(165, 60, L"분", 20, L"fontello", D2DRenderer::DefaultBrush::White);
-	D2DRENDERER->RenderText(190, 60, second, 20, L"mindustry", D2DRenderer::DefaultBrush::White);
-	D2DRENDERER->RenderText(213, 61, L"초", 20, L"fontello", D2DRenderer::DefaultBrush::White);
+	D2DRENDERER->RenderText(155, 58, minute, 20, L"mindustry", D2DRenderer::DefaultBrush::White);
+	D2DRENDERER->RenderText(173, 55, L"분", 20, L"fontello", D2DRenderer::DefaultBrush::White);
+	D2DRENDERER->RenderText(198, 58, second, 20, L"mindustry", D2DRenderer::DefaultBrush::White);
+	D2DRENDERER->RenderText(230, 55, L"초", 20, L"fontello", D2DRenderer::DefaultBrush::White);
+
 }
 
 void GameScene::InGameUIClip()

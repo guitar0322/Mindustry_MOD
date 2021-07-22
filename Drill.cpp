@@ -26,6 +26,10 @@ Drill::Drill()
 	production = new Production();
 	AddComponent(production);
 	production->Init();
+
+	this->tag = TAGMANAGER->GetTag("prop");
+	this->transform->AddChild(rotator);
+	this->transform->AddChild(top);
 }
 
 Drill::~Drill()

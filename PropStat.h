@@ -11,5 +11,8 @@ public:
 	void SetHP(int hp) { _hp = hp; }
 	void SetSize(int size) { _size = size; }
 	int GetSize() const { return _size; }
+
+	void Hit(int damage);
+	void Broken();
 };
 
