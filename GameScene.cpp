@@ -30,7 +30,7 @@ HRESULT GameScene::Init()
     selectCategoryIdx = 0;
     _gameInfo = new GameInfo();
     _gameInfo->Init();
-
+	_gameInfo->AddResource(COPPER, 1500);
     _propContainer = new PropContainer();
     _propFactory = new PropFactory();
     _propFactory->Init();
@@ -1692,7 +1692,7 @@ void GameScene::InGameUIRender()
 	_playerHpUi.Render();
 	_enemyWaveSkip.Render();
 	_enemyWaveSkipButton.Render();
-	//_enemyWaveSkipClick.Render();
+	_enemyWaveSkipClick.Render();
 	
 	wstring second = to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeSecond());
 	wstring minute = to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeMinute());

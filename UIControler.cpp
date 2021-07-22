@@ -508,8 +508,8 @@ void UIControler::inMenu_AcitveChoiceImg_SaveAndExit(bool isActive)
 
 void UIControler::EnemyWaveSkip(bool isActive)
 {
-	enemyWaveSkip->SetActive(false);
-	enemyWaveSkipClick->SetActive(isActive);
+	enemyWaveSkip->SetActive(isActive);			//false		//true
+	enemyWaveSkipClick->SetActive(isActive);	//true		//false
 }
 
 void UIControler::EnemyWaveSkipClick()
