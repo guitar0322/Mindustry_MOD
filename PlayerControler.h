@@ -101,6 +101,7 @@ public:
 	void SetGameInfo(GameInfo* gameInfo) { _gameInfo = gameInfo; }
 	void SetGameMap(GameMap* gameMap) { _gameMap = gameMap; }
 	void LinkProFactory(PropFactory* propFactory) { _propFactory = propFactory; }
+	void SetConstructLaser(int x, int y, int size);
 
 	void Hit(float damage);
 	void Dead();

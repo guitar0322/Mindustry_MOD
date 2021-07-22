@@ -82,14 +82,15 @@ void PlayerControler::Update()
 
 		if (_propFactory->isBuilding == true)
 		{
-			_targetAngle = ConvertAngleD2D(GetAngle(transform->GetX(), transform->GetY(), _propFactory->GetBuildPositionX(), _propFactory->GetBuildPositionY()));
-			playerConstructLaser->SetConstructEndPoint(_propFactory->GetBuildPositionX(), _propFactory->GetBuildPositionY());
+			Vector2 buildPoint = playerConstructLaser->GetConstructEndPoint();
+			_targetAngle = ConvertAngleD2D(GetAngle(transform->position, buildPoint));
 			playerConstructLaser->OnConstructLaser();
 		}
 		else
 		{
 			playerConstructLaser->OffConstructLaser();
 		}
+
 		PlayerDirection();
 
 		/* === 웨폰 방향 ===*/
@@ -109,26 +110,13 @@ void PlayerControler::Update()
 			}
 		}
 
-		//마우스 왼쪽 클릭 시
+		if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 		{
-			if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
+			_worldX = ScreenToWorld(_ptMouse).x;
+			_worldY = ScreenToWorld(_ptMouse).y;
+			if (_isCollecting == false && _propFactory->isBuilding == false)
 			{
-				_worldX = ScreenToWorld(_ptMouse).x;
-				_worldY = ScreenToWorld(_ptMouse).y;
-				if (_isCollecting == false)
-				{
-					
-					_targetAngle = ConvertAngleD2D(GetAngle(transform->position.x, transform->position.y, _worldX, _worldY));
-				}
-				//else
-				//{
-				//	_playerLaser->_collectLaserFirst->SetActive(false);
-				//	_playerLaser->_collectLaserEnd->SetActive(false);
-				//	_playerLaser->_collectLaser->SetActive(false);
-				//	_playerLaser->_detectRC->SetActive(false);
-				//	_isCollecting = false;
-				//}
-
+				_targetAngle = ConvertAngleD2D(GetAngle(transform->position.x, transform->position.y, _worldX, _worldY));
 				_attackSpeed += TIMEMANAGER->getElapsedTime();
 
 				if (_attackSpeed >= 0.3f)
@@ -159,26 +147,28 @@ void PlayerControler::Update()
 				}
 			}
 		}
-		ShootResoucesLaser();
-		ShootConstructLaser();
-		playerConstructLaser->Update();
 
+		if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
+		{
+			if (_isCollecting == true)
+			{
+				_playerLaser->OffLaser();
+				_isCollecting = false;
+			}
+		}
+
+		if (_propFactory->isBuilding == true)
+		{
+			ShootConstructLaser();
+			playerConstructLaser->Update();
+		}
+
+		ShootResoucesLaser();
 		if (_isCollecting)
 		{
 			ResoucesCollect();
 		}
 	}
-
-	/*테스트용*/
-	//float time = 0;
-	//time += TIMEMANAGER->getElapsedTime();
-
-	//if (time > 3.0f)
-	//{
-	//	Hit(3);
-	//	time = 0;
-
-	//}
 
 	PlayerHpAlpha();
 }
@@ -464,30 +454,11 @@ void PlayerControler::ShootResoucesLaser()
 				{
 					_colletingResources = LEAD;
 				}
-
 			}
 		}
 
 	}
-	
-	if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
-	{
-		if (_isCollecting == true)
-		{
-			_playerLaser->_collectLaserFirst->SetActive(false);
-			_playerLaser->_collectLaserEnd->SetActive(false);
-			_playerLaser->_collectLaser->SetActive(false);
-			_playerLaser->_detectRC->SetActive(false);
-			_isCollecting = false;
-		}
-		else if (_propFactory->isBuilding == true)
-		{
-			playerConstructLaser->_constructLaserRC->SetActive(false);
-			playerConstructLaser->_constuctLaserSizeS->SetActive(false);
-			playerConstructLaser->_constuctLaserSizeS->SetActive(false);
-			_propFactory->isBuilding = false;
-		}
-	}
+
 	_playerLaser->Update();
 
 	if (_playerLaser->GetLaserDistance() >= 400)
@@ -495,14 +466,6 @@ void PlayerControler::ShootResoucesLaser()
 		_playerLaser->OffLaser();
 		_isCollecting = false;
 	}
-
-	if (playerConstructLaser->GetConstructDistance() >= 400)
-	{
-		//_playerLaser->OffLaser();
-		_isCollecting = false;
-	}
-
-
 }
 
 void PlayerControler::ShootConstructLaser()
@@ -510,20 +473,6 @@ void PlayerControler::ShootConstructLaser()
 	float constructStatX = transform->GetX() + cosf(ConvertAngleAPI(transform->GetAngle())) * 18;
 	float constructStatY = transform->GetY() - sinf(ConvertAngleAPI(transform->GetAngle())) * 18;
 	playerConstructLaser->SetConstructStartPoint(constructStatX, constructStatY);
-
-	if (_propFactory->isProduction == true)
-	{
-		playerConstructLaser->SetConstructEndPoint(_propFactory->GetBuildPositionX(), _propFactory->GetBuildPositionY());
-		playerConstructLaser->SetIsLaserSizeL(true);
-	}
-	else
-	{
-		playerConstructLaser->SetConstructEndPoint(_propFactory->GetBuildPositionX(), _propFactory->GetBuildPositionY());
-		playerConstructLaser->SetIsLaserSizeL(false);
-	}
-
-
-
 }
 
 void PlayerControler::BoosterFireScale()
@@ -541,6 +490,16 @@ void PlayerControler::BoosterFireScale()
 			_scaleFlag *= -1;
 		_boosterTime = 0;
 	}
+}
+
+void PlayerControler::SetConstructLaser(int x, int y, int size)
+{
+	playerConstructLaser->SetConstructEndPoint(x * TILESIZE + 16, y * TILESIZE + 16);
+
+	if (size == 2)
+		playerConstructLaser->SetIsLaserSizeL(true);
+	else
+		playerConstructLaser->SetIsLaserSizeL(false);
 }
 
 void PlayerControler::Hit(float damage)

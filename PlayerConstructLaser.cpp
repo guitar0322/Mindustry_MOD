@@ -41,24 +41,31 @@ void PlayerConstructLaser::Init()
 	_deleteLaserRC->Init();
 	_deleteLaserRC->renderer->Init("delete_rc");
 	_deleteLaserRC->renderer->SetAlpha(0.5f);
+	_deleteLaserRC->SetActive(false);
 
 	_deleteLaserSizeS = new ImageObject;
 	_deleteLaserSizeS->Init();
 	_deleteLaserSizeS->renderer->Init("delete_laser_small");
 	_deleteLaserSizeS->renderer->SetAlpha(0.5f);
+	_deleteLaserSizeS->SetActive(false);
 
 	_deleteLaserSizeL = new ImageObject;
 	_deleteLaserSizeL->Init();
 	_deleteLaserSizeL->renderer->Init("construct_laser_large");
 	_deleteLaserSizeL->renderer->SetAlpha(0.5f);
+	_deleteLaserSizeL->SetActive(false);
+
 }
 
 void PlayerConstructLaser::Update()
 {
 	ShootLaser();
 	_constructLaserRC->Update();
-	_constuctLaserSizeS->Update();
-	_constuctLaserSizeL->Update();
+	if (_isLaserSizeL == false)
+		_constuctLaserSizeS->Update();
+	else
+		_constuctLaserSizeL->Update();
+
 	_deleteLaserRC->Update();
 	_deleteLaserSizeS->Update();
 	_deleteLaserSizeL->Update();
@@ -66,8 +73,10 @@ void PlayerConstructLaser::Update()
 
 void PlayerConstructLaser::Render()
 {
-	_constuctLaserSizeS->Render();
-	_constuctLaserSizeL->Render();
+	if(_isLaserSizeL == false)
+		_constuctLaserSizeS->Render();
+	else
+		_constuctLaserSizeL->Render();
 	_deleteLaserRC->Render();
 	_deleteLaserSizeS->Render();
 	_deleteLaserSizeL->Render();
@@ -75,18 +84,15 @@ void PlayerConstructLaser::Render()
 
 void PlayerConstructLaser::ShootLaser()
 {
-	_constructX = _constructEndX * TILESIZE + 16;
-	_constructY = _constructEndY * TILESIZE + 16;
-	_constructAngle = ConvertAngleD2D(GetAngle(_constructStartX, _constructStartY, _constructX, _constructY));
-	_constructDistance = GetDistance(_constructStartX, _constructStartY, _constructX, _constructY);
-	float constructCenterX = (_constructX + _constructStartX) / 2.f;
-	float constructCenterY = (_constructY + _constructStartY) / 2.f;
+	_constructAngle = ConvertAngleD2D(GetAngle(_constructStartX, _constructStartY, _constructEndX, _constructEndY));
+	_constructDistance = GetDistance(_constructStartX, _constructStartY, _constructEndX, _constructEndY);
+	float constructCenterX = (_constructEndX + _constructStartX) / 2.f;
+	float constructCenterY = (_constructEndY + _constructStartY) / 2.f;
 
 	_constuctLaserSizeS->transform->SetPosition(Vector2(constructCenterX, constructCenterY));
 	_constuctLaserSizeS->transform->SetAngle(_constructAngle);
 	_constuctLaserSizeS->transform->SetScale(0.65f, (_constructDistance / 274.f));
 
-	if (_isLaserSizeL == false) return;
 	_constuctLaserSizeL->transform->SetPosition(Vector2(constructCenterX, constructCenterY));
 	_constuctLaserSizeL->transform->SetAngle(_constructAngle);
 	_constuctLaserSizeL->transform->SetScale(1.f, (_constructDistance / 323.f));
@@ -110,12 +116,12 @@ void PlayerConstructLaser::OnConstructLaser()
 {
 	_constructLaserRC->SetActive(true);
 	_constuctLaserSizeS->SetActive(true);
-	_constuctLaserSizeS->SetActive(true);
+	_constuctLaserSizeL->SetActive(true);
 }
 
 void PlayerConstructLaser::OffConstructLaser()
 {
 	_constructLaserRC->SetActive(false);
 	_constuctLaserSizeS->SetActive(false);
-	_constuctLaserSizeS->SetActive(false);
+	_constuctLaserSizeL->SetActive(false);
 }
