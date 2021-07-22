@@ -7,6 +7,7 @@ class PlayerLaser;
 class PlayerConstructLaser;
 class EnemyInfo;
 class GameMap;
+class PropFactory;
 
 #define DEFAULT_WEAPON_DISTANCE 10.269f
 #define ATTACK_WEAPON_DISTANCE 9.13f
@@ -33,6 +34,7 @@ private:
 private:
 	EnemyInfo* _enemyInfo;
 	ProjectileManager* _projectileManager;
+	PropFactory* _propFactory;
 
 	/*================================================*/
 	//플레이어 상태//
@@ -76,9 +78,7 @@ private:
 	int _copperAmount, _leadAmount;
 	float _correctingTIme;
 	RESOURCE _colletingResources;
-	/*================================================*/
-	//0721 유림 -> 건축용
-	PlayerConstructLaser* _playerConstructLaser;
+
 
 public:
 	virtual void Init();
@@ -101,13 +101,16 @@ public:
 	void SetProjectileManager(ProjectileManager* projectileManager) { _projectileManager = projectileManager; }
 	void SetGameInfo(GameInfo* gameInfo) { _gameInfo = gameInfo; }
 	void SetGameMap(GameMap* gameMap) { _gameMap = gameMap; }
+	void LinkProFactory(PropFactory* propFactory) { _propFactory = propFactory; }
 
 	void Hit(float damage);
 	void Dead();
 	void Respawn();
 	void RespawnTime();
 	void MoveHandler();
-
+	/*================================================*/
+	//0721 유림 -> 건축용
+	PlayerConstructLaser* playerConstructLaser;
 	/*===================================================================*/
 	/*UI관련*/
 	//UI ->유림 210721

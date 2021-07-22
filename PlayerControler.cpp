@@ -6,6 +6,7 @@
 #include "EnemyInfo.h"
 #include "TileInfo.h"
 #include "GameMap.h"
+#include "PropFactory.h"
 
 void PlayerControler::Init()
 {
@@ -31,8 +32,12 @@ void PlayerControler::Init()
 	_playerLaser = new PlayerLaser;
 	_playerLaser->Init();
 
-	_playerConstructLaser = new PlayerConstructLaser;
-	_playerConstructLaser->Init();
+	playerConstructLaser = new PlayerConstructLaser;
+	playerConstructLaser->Init();
+	//건설용 렉트 -> 자식 0번째
+	transform->AddChild(playerConstructLaser->_constructLaserRC->transform);
+	transform->GetChild(0)->SetPosition(transform->GetX(), transform->GetY());
+
 
 	_attackSpeed = 0;
 	_correctingTIme = 0;
@@ -70,13 +75,23 @@ void PlayerControler::Update()
 	{
 		/* === 플레이어 방향 ===*/
 		KeyHandle();
-		if (_isCollecting == true)
+		if (_isCollecting == true )
 		{
 			_targetAngle = ConvertAngleD2D(GetAngle(transform->GetX(), transform->GetY(), _collectTile.x * TILESIZE + 16, _collectTile.y * TILESIZE + 16));
 			transform->GetChild(2)->SetAngle(_targetAngle);
-
+			transform->GetChild(0)->SetAngle(_targetAngle);
 		}
 
+		if (_propFactory->isBuilding == true)
+		{
+			_targetAngle = ConvertAngleD2D(GetAngle(transform->GetX(), transform->GetY(), _propFactory->GetBuildPositionX(), _propFactory->GetBuildPositionY()));
+			playerConstructLaser->SetConstructEndPoint(_propFactory->GetBuildPositionX(), _propFactory->GetBuildPositionY());
+			playerConstructLaser->OnConstructLaser();
+		}
+		else
+		{
+			playerConstructLaser->OffConstructLaser();
+		}
 		PlayerDirection();
 
 		/* === 웨폰 방향 ===*/
@@ -106,14 +121,14 @@ void PlayerControler::Update()
 				{
 					_targetAngle = ConvertAngleD2D(GetAngle(transform->position.x, transform->position.y, _worldX, _worldY));
 				}
-				else
-				{
-					_playerLaser->_collectLaserFirst->SetActive(false);
-					_playerLaser->_collectLaserEnd->SetActive(false);
-					_playerLaser->_collectLaser->SetActive(false);
-					_playerLaser->_detectRC->SetActive(false);
-					_isCollecting = false;
-				}
+				//else
+				//{
+				//	_playerLaser->_collectLaserFirst->SetActive(false);
+				//	_playerLaser->_collectLaserEnd->SetActive(false);
+				//	_playerLaser->_collectLaser->SetActive(false);
+				//	_playerLaser->_detectRC->SetActive(false);
+				//	_isCollecting = false;
+				//}
 
 				_attackSpeed += TIMEMANAGER->getElapsedTime();
 
@@ -122,14 +137,14 @@ void PlayerControler::Update()
 					if (_isLeft == false) // 만약에 왼쪽이 발동 안할 경우
 					{
 						_weaponRTrackRadius = 9.13;
-						_projectileManager->FireProjectile(transform->GetChild(0)->GetX(), transform->GetChild(0)->GetY(),
-							transform->GetChild(0)->GetAngle() + 2, PROJECTILE_TYPE::PLAYER);
+						_projectileManager->FireProjectile(transform->GetChild(1)->GetX(), transform->GetChild(1)->GetY(),
+							transform->GetChild(1)->GetAngle() + 2, PROJECTILE_TYPE::PLAYER);
 					}
 					else // 나머지 값
 					{
 						_weaponLTrackRadius = 9.13;
-						_projectileManager->FireProjectile(transform->GetChild(1)->GetX(), transform->GetChild(1)->GetY(),
-							transform->GetChild(1)->GetAngle() - 2, PROJECTILE_TYPE::PLAYER);
+						_projectileManager->FireProjectile(transform->GetChild(2)->GetX(), transform->GetChild(2)->GetY(),
+							transform->GetChild(2)->GetAngle() - 2, PROJECTILE_TYPE::PLAYER);
 					}
 					_isLeft = !_isLeft; // 반복되게 하기
 					_attackSpeed = 0;
@@ -138,6 +153,7 @@ void PlayerControler::Update()
 		}
 		ShootResoucesLaser();
 		ShootConstructLaser();
+		playerConstructLaser->Update();
 
 		if (_isCollecting)
 		{
@@ -161,13 +177,14 @@ void PlayerControler::Update()
 
 void PlayerControler::Render()
 {
-	transform->GetChild(0)->gameObject->Render();
 	transform->GetChild(1)->gameObject->Render();
 	transform->GetChild(2)->gameObject->Render();
-	transform->GetChild(4)->gameObject->Render();
+	transform->GetChild(3)->gameObject->Render();
+	transform->GetChild(5)->gameObject->Render();
+	transform->GetChild(0)->gameObject->Render();
 
 	_playerLaser->Render();
-	_playerConstructLaser->Render();
+	playerConstructLaser->Render();
 
 }
 
@@ -313,12 +330,12 @@ void PlayerControler::PlayerDirection()
 			{
 				transform->SetAngle(_targetAngle);
 				//포신 보정 해주고
-				transform->GetChild(0)->SetAngle(_targetAngle);
 				transform->GetChild(1)->SetAngle(_targetAngle);
 				transform->GetChild(2)->SetAngle(_targetAngle);
 				transform->GetChild(3)->SetAngle(_targetAngle);
 				transform->GetChild(4)->SetAngle(_targetAngle);
-
+				transform->GetChild(5)->SetAngle(_targetAngle);
+				transform->GetChild(0)->SetAngle(_targetAngle);
 			}
 		}
 	}
@@ -330,20 +347,24 @@ void PlayerControler::PlayerDirection()
 			if (_targetAngle < transform->GetAngle())
 			{
 				transform->SetAngle(_targetAngle);
-				transform->GetChild(0)->SetAngle(_targetAngle);
 				transform->GetChild(1)->SetAngle(_targetAngle);
 				transform->GetChild(2)->SetAngle(_targetAngle);
 				transform->GetChild(3)->SetAngle(_targetAngle);
 				transform->GetChild(4)->SetAngle(_targetAngle);
-
+				transform->GetChild(5)->SetAngle(_targetAngle);
+				transform->GetChild(0)->SetAngle(_targetAngle);
 			}
 		}
 	}
 
-	transform->GetChild(3)->SetPosition(transform->GetX() + cosf(ConvertAngleAPI(transform->GetChild(3)->GetAngle())) * (-26),
-		transform->GetY() - sinf(ConvertAngleAPI(transform->GetChild(3)->GetAngle())) * (-26));
-	transform->GetChild(4)->SetPosition(transform->GetX() + cosf(ConvertAngleAPI(transform->GetChild(4)->GetAngle())) * (-28),
-		transform->GetY() - sinf(ConvertAngleAPI(transform->GetChild(4)->GetAngle())) * (-28));
+	//플레이어 불꽃 몸체
+	transform->GetChild(4)->SetPosition(transform->GetX() + cosf(ConvertAngleAPI(transform->GetChild(3)->GetAngle())) * (-26),
+		transform->GetY() - sinf(ConvertAngleAPI(transform->GetChild(4)->GetAngle())) * (-26));
+	transform->GetChild(5)->SetPosition(transform->GetX() + cosf(ConvertAngleAPI(transform->GetChild(4)->GetAngle())) * (-28),
+		transform->GetY() - sinf(ConvertAngleAPI(transform->GetChild(5)->GetAngle())) * (-28));
+	//플레이어 건설 레이저
+	transform->GetChild(0)->SetPosition(transform->GetX() + cosf(ConvertAngleAPI(transform->GetChild(4)->GetAngle())) * (28),
+		transform->GetY() - sinf(ConvertAngleAPI(transform->GetChild(0)->GetAngle())) * (28));
 
 	/*******************************************************
 	1. 포신의 SetPotsition(플레이어 X + cosf(ConvertAngleAPI(transform->GetAngle())) * 포신궤도의 반지름,
@@ -358,11 +379,11 @@ void PlayerControler::PlayerDirection()
 	_weaponRdistanceAngle = ConvertAngleAPI(transform->GetAngle() + _weaponRTrackAngle);
 
 	if (_weaponLdistanceAngle < 0) _weaponLdistanceAngle += 360;
-	transform->GetChild(0)->SetPosition((transform->GetX() + cosf(_weaponLdistanceAngle) * _weaponLTrackRadius),
+	transform->GetChild(1)->SetPosition((transform->GetX() + cosf(_weaponLdistanceAngle) * _weaponLTrackRadius),
 		transform->GetY() - sinf(_weaponLdistanceAngle) * _weaponLTrackRadius);
 
 	if (_weaponRdistanceAngle > 360) _weaponLdistanceAngle -= 360;
-	transform->GetChild(1)->SetPosition((transform->GetX() + cosf(_weaponRdistanceAngle) * _weaponRTrackRadius),
+	transform->GetChild(2)->SetPosition((transform->GetX() + cosf(_weaponRdistanceAngle) * _weaponRTrackRadius),
 		transform->GetY() - sinf(_weaponRdistanceAngle) * _weaponRTrackRadius);
 }
 
@@ -399,8 +420,10 @@ void PlayerControler::ShootResoucesLaser()
 {
 	float laserStartX = transform->GetX() + cosf(ConvertAngleAPI(transform->GetAngle())) * 18;
 	float laserStartY = transform->GetY() - sinf(ConvertAngleAPI(transform->GetAngle())) * 18;
-	_playerLaser->SetLaserStartPoint(laserStartX, laserStartY);
 
+
+	_playerLaser->SetLaserStartPoint(laserStartX, laserStartY);
+	
 	if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
 	{
 		if (_isCollecting == false)
@@ -436,34 +459,60 @@ void PlayerControler::ShootResoucesLaser()
 
 			}
 		}
+
 	}
 	
 	if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
 	{
-		_playerLaser->_collectLaserFirst->SetActive(false);
-		_playerLaser->_collectLaserEnd->SetActive(false);
-		_playerLaser->_collectLaser->SetActive(false);
-		_playerLaser->_detectRC->SetActive(false);
-		_isCollecting = false;
+		if (_isCollecting == true)
+		{
+			_playerLaser->_collectLaserFirst->SetActive(false);
+			_playerLaser->_collectLaserEnd->SetActive(false);
+			_playerLaser->_collectLaser->SetActive(false);
+			_playerLaser->_detectRC->SetActive(false);
+			_isCollecting = false;
+		}
+		else if (_propFactory->isBuilding == true)
+		{
+			playerConstructLaser->_constructLaserRC->SetActive(false);
+			playerConstructLaser->_constuctLaserSizeS->SetActive(false);
+			playerConstructLaser->_constuctLaserSizeS->SetActive(false);
+			_propFactory->isBuilding = false;
+		}
 	}
 	_playerLaser->Update();
-	_playerConstructLaser->Update();
 
 	if (_playerLaser->GetLaserDistance() >= 400)
 	{
 		_playerLaser->OffLaser();
 		_isCollecting = false;
 	}
+
+	if (playerConstructLaser->GetConstructDistance() >= 400)
+	{
+		//_playerLaser->OffLaser();
+		_isCollecting = false;
+	}
+
+
 }
 
 void PlayerControler::ShootConstructLaser()
 {
-	float constructLaserStartX = transform->GetX() + cosf(ConvertAngleAPI(transform->GetAngle())) * 25;
-	float constructLaserStartY = transform->GetY() - sinf(ConvertAngleAPI(transform->GetAngle())) * 25;
-	_playerConstructLaser->SetLaserStartPoint(constructLaserStartX, constructLaserStartY);
+	float constructStatX = transform->GetX() + cosf(ConvertAngleAPI(transform->GetAngle())) * 18;
+	float constructStatY = transform->GetY() - sinf(ConvertAngleAPI(transform->GetAngle())) * 18;
+	playerConstructLaser->SetConstructStartPoint(constructStatX, constructStatY);
 
-
-
+	if (_propFactory->isProduction == true)
+	{
+		playerConstructLaser->SetConstructEndPoint(_propFactory->GetBuildPositionX(), _propFactory->GetBuildPositionY());
+		playerConstructLaser->SetIsLaserSizeL(true);
+	}
+	else
+	{
+		playerConstructLaser->SetConstructEndPoint(_propFactory->GetBuildPositionX(), _propFactory->GetBuildPositionY());
+		playerConstructLaser->SetIsLaserSizeL(false);
+	}
 
 
 
@@ -475,9 +524,9 @@ void PlayerControler::BoosterFireScale()
 
 	if (_boosterTime >= 0.1f)
 	{
-		float scaleX = transform->GetChild(4)->GetScaleX() + 0.05f * _scaleFlag;
-		float scaleY = transform->GetChild(4)->GetScaleY() + 0.05f * _scaleFlag;
-		transform->GetChild(4)->SetScale(scaleX, scaleY);
+		float scaleX = transform->GetChild(5)->GetScaleX() + 0.05f * _scaleFlag;
+		float scaleY = transform->GetChild(5)->GetScaleY() + 0.05f * _scaleFlag;
+		transform->GetChild(5)->SetScale(scaleX, scaleY);
 		if (scaleX >= 1.f)
 			_scaleFlag *= -1;
 		if (scaleX <= 0.7f)
