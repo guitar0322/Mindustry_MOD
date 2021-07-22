@@ -48,7 +48,7 @@ void ProjectileManager::Init()
 		playerProjectile->name = L"player_projecilte";
 		playerProjectile->transform->SetScale(0.7f, 0.7f);
 		playerProjectile->GetProjectileComponent()->SetSpeed(800.f);
-		playerProjectile->GetProjectileComponent()->SetDamage(100);
+		playerProjectile->GetProjectileComponent()->SetDamage(1000);
 		playerProjectile->GetProjectileComponent()->SetTargetTag("enemy");
 		playerProjectile->GetColliderComponent()->SetSize(16, 16);
 		playerProjectile->SetActive(false);

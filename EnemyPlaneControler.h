@@ -8,11 +8,12 @@ class EnemyPlaneControler :
 {
 private:
 	int _randomAngle;				//angle값 랜덤으로 설정해주기 위한 변수
-
+	bool _test;
 	GameObject* _testCore;
-	Transform* _testCoreTransform;
+	Transform* _coreTransform;
 	ProjectileManager* _projectileManager;
 
+	Transform* _playerTr;
 public:
 	EnemyPlaneControler();
 	~EnemyPlaneControler();
@@ -22,9 +23,10 @@ public:
 
 	void RandomAngle();			// Core와의 범위내에서 angle값 바꿔주는 함수
 
-	void SetTestCore(GameObject* testCore) { _testCore = testCore; _testCoreTransform = testCore->transform;}
+	void SetTestCore(GameObject* testCore) { _testCore = testCore; _coreTransform = testCore->transform;}
 	void SetProjectileManager(ProjectileManager* projectileManager) { _projectileManager = projectileManager; }
-
+	void SetPlayerTrasnform(Transform* playertr) { _playerTr = playertr; }
+	
 	float GetDeltaAngle() const { return _deltaAngle; }
 };
 

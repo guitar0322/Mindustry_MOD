@@ -1811,6 +1811,7 @@ void GameScene::SetEnemyManager()
 	_enemyManager->GetComponent<EnemyManager>()->Init();
     _aStar->LinkEnemyManager(_enemyManager->GetComponent<EnemyManager>());
 	_uiControler->SetEnemyManager(_enemyManager->GetComponent<EnemyManager>());
+	_enemyManager->GetComponent<EnemyManager>()->SetPlayerTransform(_player->transform);
 }
 
 void GameScene::SetCameraControler()
