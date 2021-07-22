@@ -149,8 +149,6 @@ void SampleScene::Update()
 	_time += TIMEMANAGER->getElapsedTime();
 	if (_time >= 0.5f)
 	{
-		EFFECTMANAGER->EmissionEffect("spark_circle", WINSIZEX / 2, WINSIZEY / 2);
-		_time = 0;
 	}
 	background.Update();
 	testAnimObj.Update();

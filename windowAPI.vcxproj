@@ -203,6 +203,7 @@
     <ClInclude Include="MapTool.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Outline.h" />
+    <ClInclude Include="ParticleObject.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerConstructLaser.h" />
@@ -220,6 +221,7 @@
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="Respawn.h" />
     <ClInclude Include="SampleScene.h" />
     <ClInclude Include="SampleScene2.h" />
     <ClInclude Include="Scene.h" />
@@ -309,6 +311,7 @@
     <ClCompile Include="MapTool.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Outline.cpp" />
+    <ClCompile Include="ParticleObject.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerConstructLaser.cpp" />
@@ -324,6 +327,7 @@
     <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="Respawn.cpp" />
     <ClCompile Include="SampleScene.cpp" />
     <ClCompile Include="SampleScene2.cpp" />
     <ClCompile Include="Scene.cpp" />

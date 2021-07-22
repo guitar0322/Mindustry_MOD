@@ -281,6 +281,8 @@
     <ClCompile Include="CameraControler.cpp">
       <Filter>CameraControler</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleObject.cpp" />
+    <ClCompile Include="Respawn.cpp" />
     <ClCompile Include="CameraControler.cpp">
       <Filter>CameraControler</Filter>
     </ClCompile>
@@ -579,6 +581,8 @@
     <ClInclude Include="CameraControler.h">
       <Filter>CameraControler</Filter>
     </ClInclude>
+    <ClInclude Include="ParticleObject.h" />
+    <ClInclude Include="Respawn.h" />
     <ClInclude Include="CameraControler.h">
       <Filter>CameraControler</Filter>
     </ClInclude>

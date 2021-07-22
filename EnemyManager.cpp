@@ -28,6 +28,10 @@ void EnemyManager::Init()
 
 void EnemyManager::Update()
 {
+	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
+	{
+		SpawnEnemy();
+	}
 	EnemyTimer();
 	EnemyUpdate();
 }
@@ -64,6 +68,8 @@ void EnemyManager::SetEnemy()
 		_enemyGround->transform->SetScale(0.5f, 0.5f);
 		_enemyGround->GetComponent<EnemyGroundControler>()->SetProjectileManager(_projectileManager);
 		_enemyGround->GetComponent<EnemyGroundControler>()->SetAstar(_aStar);
+		_enemyGround->GetComponent<BoxCollider>()->SetSize(48, 48);
+		_enemyGround->GetComponent<BoxCollider>()->SetIsTrigger(false);
 		_enemyGround->SetActive(false);
 		_enemyV.push_back(_enemyGround);
 	}
@@ -188,6 +194,16 @@ void EnemyManager::DeadEvent()
 	_enemyTime = true;
 	_curWave++;
 	return;
+}
+
+vector<EnemyObject*> EnemyManager::GetCurWaveEnemy()
+{
+	vector<EnemyObject*> result;
+	for (int i = 0; i < _waveV[_curWave].size(); i++)
+	{
+		result.push_back(_enemyV[_waveV[_curWave][i]]);
+	}
+	return result;
 }
 
 																																														

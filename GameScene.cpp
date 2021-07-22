@@ -15,6 +15,7 @@
 #include "Core.h"
 #include "CoreComponent.h"
 #include "Astar.h"
+#include "Respawn.h"
 
 HRESULT GameScene::Init()
 {
@@ -32,7 +33,7 @@ HRESULT GameScene::Init()
     MainCam->transform->SetPosition(1600 / 2, 1600 / 2);
 
     selectCategoryIdx = 0;
-    _aStar = new Astar();
+
 
     _gameInfo = new GameInfo();
     _gameInfo->Init();
@@ -64,10 +65,16 @@ HRESULT GameScene::Init()
     _uiControler->propFactory = _propFactory;
     _uiControler->propContainer = _propContainer;
 
+    _respawn = new Respawn();
 	/*===================================*/
 	/*인게임 맵 초기화 -> 유림*/
 	_gameMap = new GameMap;
 	_gameMap->Init();
+
+    _aStar = new Astar();
+    _aStar->LinkGameMap(_gameMap);
+    _aStar->LinkPropContainer(_propContainer);
+
     _uiControler->gameMap = _gameMap;
     _propFactory->LinkGameMap(_gameMap);
 	//자원 UI 초기화
@@ -223,6 +230,7 @@ HRESULT GameScene::Init()
 	/*===================================================================== */
 	/* 플레이어 부분 초기화 -> 유림 */
 	PlayerInit();
+    _respawn->LinkPlayer(_player->controler);
 	/*===================================================================== */
 
     /* 게임신 에너미 관련 작업 함수, by 민재. 삭제 금지 */
@@ -250,7 +258,7 @@ HRESULT GameScene::Init()
 void GameScene::Update()
 {
 	MainCam->Update();
-
+    EFFECTMANAGER->Update();
     //07-19 플레이어와 UI간의 마우스 클릭 우선순위때문에 UI업데이트 위로 올림
     //카테고리 아이콘 업데이트
     {
@@ -272,8 +280,8 @@ void GameScene::Update()
     _propContainer->Update();
     _resourceManager->Update();
     _uiControler->Update();
+    _respawn->Update();
 	InGameUIUpdate();
-
 	/* 플레이어 부분*/
 	_player->Update();
 	_playerWeaponL->Update();
@@ -370,12 +378,12 @@ void GameScene::Render()
 	//플레이어 관련 렌더 -> 유림
 	{
 		_player->transform->GetChild(3)->gameObject->Render();
-		_player->Render();
 		_enemyManager->Render();
+        EFFECTMANAGER->Render();
+		_player->Render();
 		_projectileManager->Render();
 		_core->Render();
 		_cameraControler->Render();
-
 		MainCam->Render();
 	}
 
@@ -1796,6 +1804,7 @@ void GameScene::SetEnemyManager()
 	_enemyManager->GetComponent<EnemyManager>()->SetProjectileManager(_projectileManager->GetComponent<ProjectileManager>());
     _enemyManager->GetComponent<EnemyManager>()->SetAstar(_aStar);
 	_enemyManager->GetComponent<EnemyManager>()->Init();
+    _aStar->LinkEnemyManager(_enemyManager->GetComponent<EnemyManager>());
 	_uiControler->SetEnemyManager(_enemyManager->GetComponent<EnemyManager>());
 }
 
