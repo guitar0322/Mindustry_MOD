@@ -25,7 +25,7 @@ void Production::Update()
 	_distributionTime += TIMEMANAGER->getElapsedTime();
 	_productTime += TIMEMANAGER->getElapsedTime();
 
-	if (_distributionTime >= 2.f && _resourceAmount > 0)
+	if (_distributionTime >= 4.f && _resourceAmount > 0)
 	{
 		if (_linkTransport[_transportIdx] != nullptr)
 		{

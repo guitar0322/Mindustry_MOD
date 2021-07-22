@@ -84,10 +84,17 @@ void UIControler::Update()
 
 		if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
 		{
-			RefreshPreview();
-			propPreview->SetActive(false);
-			propSelect->SetActive(false);
-			conveyorArrow.SetActive(false);
+			if (propPreview->isActive == true)
+			{
+				RefreshPreview();
+				propPreview->SetActive(false);
+				propSelect->SetActive(false);
+				conveyorArrow.SetActive(false);
+			}
+			else
+			{
+
+			}
 		}
 
 		if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))

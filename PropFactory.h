@@ -7,6 +7,8 @@ class GameInfo;
 class Prop;
 class GameMap;
 class ResourceManager;
+class ProjectileManager;
+class EnemyManager;
 
 class PropFactory
 {
@@ -37,6 +39,9 @@ private:
 	GameInfo* _gameInfo;
 	GameMap* _gameMap;
 	ResourceManager* _resourceManager;
+	ProjectileManager* _projectileManager;
+	EnemyManager* _enemyManager;
+
 public:
 	PropFactory();
 	~PropFactory();
@@ -50,6 +55,7 @@ public:
 	ImageObject* CreateProp(int tileX, int tileY);
 	void CreateConveyor(int tileX, int tileY, PROPDIR dir);
 	void CreateDrill(int tileX, int tileY);
+	void CreateTurret(int tileX, int tileY);
 	void ContainProp(int hashKey, Prop* newProp, PROPDIR dir);
 	ImageObject* CreatePreview(int tileX, int tileY);
 	void AddPropElem(vector<ImageObject>& previewV, int categoryIdx, int propIdx, PROPDIR dir);
@@ -57,5 +63,7 @@ public:
 	void LinkGameInfo(GameInfo* gameInfo) { _gameInfo = gameInfo; }
 	void LinkGameMap(GameMap* gameMap) { _gameMap = gameMap; }
 	void LinkResourceManager(ResourceManager* resourceManager) { _resourceManager = resourceManager; }
+	void LinkProjectileManager(ProjectileManager* projectileManager) { _projectileManager = projectileManager; }
+	void LinkEnemyManager(EnemyManager* enemyManager) { _enemyManager = enemyManager; }
 };
 

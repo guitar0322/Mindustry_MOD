@@ -11,6 +11,8 @@
 #include "Drill.h"
 #include "GameMap.h"
 #include "Production.h"
+#include "Turret.h"
+#include "ProjectileManager.h"
 PropFactory::PropFactory()
 {
 }
@@ -61,7 +63,7 @@ void PropFactory::Update()
 			switch (buildProp.propIdx)
 			{
 			case 0:
-				CreateProp<Duo>(buildProp.x, buildProp.y);
+				CreateTurret(buildProp.x, buildProp.y);
 				break;
 			}
 			break;
@@ -170,6 +172,17 @@ void PropFactory::CreateDrill(int tileX, int tileY)
 	}
 	_previewV.erase(_previewV.begin());
 	_propQueue.pop();
+}
+
+void PropFactory::CreateTurret(int tileX, int tileY)
+{
+	Duo* newDuo = new Duo();
+	newDuo->transform->SetPosition(tileX * TILESIZE + 16, tileY * TILESIZE + 16);
+	newDuo->base->transform->SetPosition(tileX * TILESIZE + 16, tileY * TILESIZE + 16);
+	newDuo->collider->RefreshPartition();
+	newDuo->turret->LinkProjectileManager(_projectileManager);
+	newDuo->turret->LinkEnemyManager(_enemyManager);
+	ContainProp(tileY * TILENUMX + tileX, newDuo, RIGHT);
 }
 
 void PropFactory::ContainProp(int hashKey, Prop* newProp, PROPDIR dir)
