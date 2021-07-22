@@ -24,6 +24,7 @@ class ParticleSystem :
 {
 private:
 	bool _isStop;
+	bool _isEnd;
 	AnimationClip* _targetClip;
 	ID2D1Bitmap* _targetBitmap;
 	string _loadClipName;
@@ -84,5 +85,7 @@ public:
 	void SetEmissionTerm(float term) { _emissionTerm = term; }
 
 	void SetScaleY(float minScaleY, float maxScaleY) { _minScaleY = minScaleY, _maxScaleY = maxScaleY; }
+
+	bool GetIsEnd() const { return _isEnd; }
 };
 

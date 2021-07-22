@@ -59,7 +59,7 @@ public:
 	int GetTimeSecond() const { return _timeSecond; }
 	int GetTimeMinute() const { return _timeMinute; }
 	int GetCurWave() const { return _curWave; }
-
+	vector<EnemyObject*> GetCurWaveEnemy();
 	void SetWaveSkip(bool waveskip) { _waveSkip = waveskip; }
 
 	void SetProjectileManager(ProjectileManager* projectileManager){ _projectileManager = projectileManager; }

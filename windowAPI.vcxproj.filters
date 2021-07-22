@@ -282,6 +282,8 @@
     <ClCompile Include="CameraControler.cpp">
       <Filter>CameraControler</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleObject.cpp" />
+    <ClCompile Include="Respawn.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h" />
@@ -578,6 +580,8 @@
     <ClInclude Include="CameraControler.h">
       <Filter>CameraControler</Filter>
     </ClInclude>
+    <ClInclude Include="ParticleObject.h" />
+    <ClInclude Include="Respawn.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="windowAPI.rc" />

@@ -31,6 +31,7 @@ void Projectile::Move()
 	transform->Move(_speedX, _speedY);
 	if (GetDistance(_firePt, transform->position) >= 500)
 	{
+		EFFECTMANAGER->ActiveSmallParticle(transform->GetX(), transform->GetY());
 		gameObject->SetActive(false);
 	}
 }
@@ -42,11 +43,13 @@ void Projectile::OnTriggerEnter(GameObject* gameObject)
 		if (_targetTag.compare("player") == 0)
 		{
 			this->gameObject->SetActive(false);
+			EFFECTMANAGER->ActiveSmallParticle(transform->GetX(), transform->GetY());
 			gameObject->GetComponent<PlayerControler>()->Hit(_damage);
 		}
 		if (_targetTag.compare("enemy") == 0)
 		{
 			this->gameObject->SetActive(false);
+			EFFECTMANAGER->ActiveSmallParticle(transform->GetX(), transform->GetY());
 			gameObject->GetComponent<EnemyInfo>()->Hit(_damage);
 		}
 	}

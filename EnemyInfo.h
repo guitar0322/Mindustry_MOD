@@ -44,7 +44,7 @@ public:
 
 	void SetSpeed(float speed) { _speed = speed; }
 
-	void SetHp(int hp) { hp = _hp; }
+	void SetHp(int hp) { _hp = hp; }
 	int GetHp() const { return _hp; }
 
 	float GetSpeed() const { return _speed; }

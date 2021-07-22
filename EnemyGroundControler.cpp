@@ -47,7 +47,7 @@ void EnemyGroundControler::Update()
 		int coreTileX = _enemyInfo->GetCoreTransform()->GetX() / TILESIZE;
 		int coreTileY = _enemyInfo->GetCoreTransform()->GetY() / TILESIZE;
 		_pathFindTime = 0;
-		_corePath = _aStar->PathFind(mTileX, mTileY, coreTileX, coreTileY);
+		_corePath = _aStar->PathFind(mTileX, mTileY, coreTileX, coreTileY, gameObject);
 		if (_corePath.empty() == false)
 		{
 			_targetX = _corePath[_corePath.size() - _tileIdx].first * TILESIZE + 16;
@@ -57,7 +57,7 @@ void EnemyGroundControler::Update()
 
 	transform->SetAngle(ConvertAngleD2D(_angle));
 
-	if (GetDistance(transform->position, _enemyInfo->GetCoreTransform()->position) >= 600)
+	if (GetDistance(transform->position, _enemyInfo->GetCoreTransform()->position) >= 400)
 	{
 		_angle = GetAngle(transform->GetX(), transform->GetY(), _targetX, _targetY);
 		MoveTowardTo(transform, _targetX, _targetY, _enemyInfo->GetSpeed() * TIMEMANAGER->getElapsedTime());
@@ -142,9 +142,9 @@ void EnemyGroundControler::Render()
 	//Rect pathRect = RectMakePivot(Vector2(_corePath[_corePath.size() - _tileIdx].first * TILESIZE + 16, 
 	//	_corePath[_corePath.size() - _tileIdx].second * TILESIZE + 16), Vector2(TILESIZE, TILESIZE), Pivot::Center);
 	//D2DRENDERER->FillRectangleBack(pathRect);
-	//for (int i = 0; i < _corePath.size(); i++)
-	//{
-	//	Rect pathRect = RectMakePivot(Vector2(_corePath[i].first * TILESIZE + 16, _corePath[i].second * TILESIZE + 16), Vector2(TILESIZE, TILESIZE), Pivot::Center);
-	//	D2DRENDERER->FillRectangleBack(pathRect);
-	//}
+	for (int i = 0; i < _corePath.size(); i++)
+	{
+		Rect pathRect = RectMakePivot(Vector2(_corePath[i].first * TILESIZE + 16, _corePath[i].second * TILESIZE + 16), Vector2(TILESIZE, TILESIZE), Pivot::Center);
+		D2DRENDERER->FillRectangleBack(pathRect);
+	}
 }

@@ -1,11 +1,15 @@
 #include "stdafx.h"
 #include "Astar.h"
 #include "TileInfo.h"
-#include <algorithm>
-
-vector<pair<int, int>> Astar::PathFind(int startX, int startY, int endX, int endY)
+#include "EnemyManager.h"
+#include "EnemyObject.h"
+#include "GameMap.h"
+#include "PropContainer.h"
+#include "EnemyPlane.h"
+vector<pair<int, int>> Astar::PathFind(int startX, int startY, int endX, int endY, GameObject* caller)
 {
     Clear();
+    _caller = caller;
     _startNode = new NODE();
     _startNode->x = startX;
     _startNode->y = startY;
@@ -66,8 +70,8 @@ void Astar::AddOpenList(NODE* node)
 
             int curX = startX + i;
             int curY = startY + j;
-            if (curX < 0 || curX == 50 || curY < 0 || curY == 50)
-                continue;
+            if (IsValidNode(curX, curY) == false) continue;
+            if (curX < 0 || curX == 50 || curY < 0 || curY == 50) continue;
             if (IsExistCloseList(curX , curY) == true) continue;
 
             float h = Math::Abs(_endNode->x - curX) + Math::Abs(_endNode->y - curY);
@@ -79,6 +83,8 @@ void Astar::AddOpenList(NODE* node)
                 if (_openList[openListIdx]->f > f)
                 {
                     _openList[openListIdx]->f = f;
+                    _openList[openListIdx]->g = g;
+                    _openList[openListIdx]->h = h;
                     _openList[openListIdx]->parentNode = node;
                 }
             }
@@ -121,9 +127,38 @@ int Astar::IsExistOpenList(int x, int y)
     return -1;
 }
 
-bool Astar::IsValidNode(NODE node)
+bool Astar::IsValidNode(int x, int y)
 {
-    return false;
+    vector<EnemyObject*> curWaveEnemy = _enemyManager->GetCurWaveEnemy();
+    for (int i = 0; i < curWaveEnemy.size(); i++)
+    {
+        if (curWaveEnemy[i]->isActive == false) continue;
+        if (curWaveEnemy[i] == _caller) continue;
+        if (dynamic_cast<EnemyPlane*>(curWaveEnemy[i]) != nullptr) continue;
+
+        Transform* tr = curWaveEnemy[i]->transform;
+        BoxCollider* col = curWaveEnemy[i]->GetComponent<BoxCollider>();
+        BoxCollider* callerCol = _caller->GetComponent<BoxCollider>();
+        Rect colRc = RectMakeCenter(Vector2(tr->position), Vector2(col->GetRc().GetWidth() + callerCol->GetRc().GetWidth(), col->GetRc().GetHeight() + callerCol->GetRc().GetHeight()));
+        Vector2 tilePoint = Vector2(x * TILESIZE + 16, y * TILESIZE + 16);
+        if (Vector2InRect(&colRc, &tilePoint) == true)
+        {
+            return false;
+        }
+
+    }
+    //애너미가 있는곳도 경로에서 제외시켜야한다
+    //현재 애너미 웨이브를 받아온다
+    //애너미의 충돌 박스가 차지하고 있는 타일들을 구한다.
+    //자기자신은 제외시킨다.
+    //호출자 포인터를 가지고 있어야한다
+    //
+    Prop* prop = _propContainer->GetPropMap(y * TILENUMX + x);
+    if (prop != nullptr)
+        return false;
+
+
+    return true;
 }
 
 int Astar::GetMinOpenListNode()
