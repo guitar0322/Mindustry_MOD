@@ -17,6 +17,7 @@ void ProjectileManager::Init()
 {
 	for (int i = 0; i < ENEMY_PROJECTILE_MAX;  i++)
 	{
+
 		ProjectileObject* enemyPlaneProjectile = new ProjectileObject();
 		enemyPlaneProjectile->GetRendererComponent()->Init("projectile");
 		enemyPlaneProjectile->name = L"plane_projecilte";

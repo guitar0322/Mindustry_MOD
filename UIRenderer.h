@@ -10,6 +10,8 @@ private:
     float _alpha;
     int _curFrameX;
     int _curFrameY;
+	float _clipX;
+	float _clipY;
     Rect _rc;
     string _clipName;
 public:
@@ -25,5 +27,7 @@ public:
     float GetAlpha() const { return _alpha; }
 	Rect GetRc() const { return _rc; }
     string GetClipName() const { return _clipName; }
+	void SetClipX(float clipX) { _clipX = clipX; }
+	void SetClipY(float clipY) { _clipY = clipY; }
 };
 

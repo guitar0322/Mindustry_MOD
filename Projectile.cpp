@@ -45,12 +45,14 @@ void Projectile::OnTriggerEnter(GameObject* gameObject)
 			this->gameObject->SetActive(false);
 			EFFECTMANAGER->ActiveSmallParticle(transform->GetX(), transform->GetY());
 			gameObject->GetComponent<PlayerControler>()->Hit(_damage);
+
 		}
 		if (_targetTag.compare("enemy") == 0)
 		{
 			this->gameObject->SetActive(false);
 			EFFECTMANAGER->ActiveSmallParticle(transform->GetX(), transform->GetY());
 			gameObject->GetComponent<EnemyInfo>()->Hit(_damage);
+
 		}
 	}
 }

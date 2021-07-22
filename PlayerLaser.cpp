@@ -30,16 +30,13 @@ void PlayerLaser::Init()
 
 	_collectLaser = new ImageObject;
 	_collectLaser->Init();
-	//_collectLaser->renderer->Init("laser");
 	_collectLaser->renderer->Init("laser_center");
 	_collectLaser->SetActive(false);
 
-
-	_detectRc = new ImageObject;
-	_detectRc->Init();
-	_detectRc->renderer->Init("laser_rc");
-	_detectRc->SetActive(false);
-
+	_detectRC = new ImageObject;
+	_detectRC->Init();
+	_detectRC->renderer->Init("laser_rc");
+	_detectRC->SetActive(false);
 }
 
 void PlayerLaser::Update()
@@ -50,7 +47,7 @@ void PlayerLaser::Update()
 	_collectLaserFirst->Update();
 	_collectLaserEnd->Update();
 	_collectLaser->Update();
-	_detectRc->Update();
+	_detectRC->Update();
 }
 
 void PlayerLaser::Render()
@@ -58,8 +55,7 @@ void PlayerLaser::Render()
 	_collectLaserFirst->Render();
 	_collectLaser->Render();
 	_collectLaserEnd->Render();
-	_detectRc->Render();
-
+	_detectRC->Render();
 }
 
 void PlayerLaser::ShootLaser()
@@ -72,7 +68,7 @@ void PlayerLaser::ShootLaser()
 	float laserCenterY = (_laserY + _laserStartY) / 2.f;
 
 	_collectLaserEnd->transform->SetPosition(Vector2(_laserX, _laserY));
-	_detectRc->transform->SetPosition(Vector2(_laserX, _laserY));
+	_detectRC->transform->SetPosition(Vector2(_laserX, _laserY));
 	_collectLaserFirst->transform->SetPosition(Vector2(_laserStartX, _laserStartY));
 	_collectLaser->transform->SetPosition(Vector2(laserCenterX, laserCenterY));
 	_collectLaser->transform->SetScale((_laserDistance / 280.f), 0.8f);
@@ -108,14 +104,14 @@ void PlayerLaser::RcRotate()
 		_rcRotateTime = 0;
 	}
 
-	_detectRc->transform->Rotate(_rcRotate);
+	_detectRC->transform->Rotate(_rcRotate);
 
 }
 
 void PlayerLaser::SetImage()
 {
+	//자원추출용
 	CLIPMANAGER->AddClip("laser_end", "sprites/effects/laser-end.png", 72, 72);
-	//CLIPMANAGER->AddClip("laser", "sprites/effects/laser.png", 4, 48);
 	CLIPMANAGER->AddClip("laser_rc", "player/laser_rc.png", 35, 35);
 	CLIPMANAGER->AddClip("laser_center", "player/laser_center.png", 280, 48);
 
@@ -126,5 +122,5 @@ void PlayerLaser::OffLaser()
 	_collectLaserFirst->SetActive(false);
 	_collectLaserEnd->SetActive(false);
 	_collectLaser->SetActive(false);
-	_detectRc->SetActive(false);
+	_detectRC->SetActive(false);
 }

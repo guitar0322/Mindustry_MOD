@@ -39,6 +39,7 @@ private:
 	ImageObject* _playerFire;
 	GameObject* _projectileManager;
 
+
 	//======
     PropContainer* _propContainer;
     PropFactory* _propFactory;
@@ -182,8 +183,6 @@ private:
 	Core* _core;
 	//// 07/20 민재 Enemy WAve 및 Player UI 작업/////
 	UIBase _wavePane;
-	UIBase _playerUi;
-	UIBase _playerHpUi;
 
 	UIBase _enemyWaveSkip;
 	Button _enemyWaveSkipButton;
@@ -224,9 +223,11 @@ public:
 	void SetCore();
 	void SetEnemyManager();
 	void SetCameraControler();
-	void SetGameUI();
+	void SetGameUIInit();
 	void InGameUIUpdate();
 	void InGameUIRender();
+	//유림20210721 
+	void InGameUIClip();
 
 	/* 화면에 문자 띄울 때 여기 쓰세요 - 유림 (210719)*/
 	void StringRender();

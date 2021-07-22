@@ -24,6 +24,8 @@ void Renderer::Init(string clipName)
 	_curFrameX = 0;
 	_curFrameY = 0;
 	_alpha = 1.f;
+	_clipX = 0;
+	_clipY = 0;
 	_rc = RectMakePivot(transform->position, Vector2(_frameWidth, _frameHeight), Pivot::Center);
 }
 
@@ -36,6 +38,8 @@ void Renderer::Init(float width, float height)
 	_curFrameY = 0;
 	_alpha = 1.f;
 	_clipName = "";
+	_clipX = 0;
+	_clipY = 0;
 	_rc = RectMakePivot(transform->position, Vector2(_frameWidth, _frameHeight), Pivot::Center);
 }
 
@@ -58,8 +62,8 @@ void Renderer::Render()
 	D2D1_RECT_F clipArea = 
 		D2D1::RectF
 		(
-			_curFrameX * _frameWidth, 
-			_curFrameY * _frameHeight, 
+			_curFrameX * _frameWidth + _clipX,
+			_curFrameY * _frameHeight + +_clipY,
 			(_curFrameX + 1) * _frameWidth,
 			(_curFrameY + 1) * _frameHeight
 		);
@@ -67,10 +71,10 @@ void Renderer::Render()
 	D2D1_RECT_F backbufferArea 
 		= D2D1::RectF
 		(
-			renderStartX, 
-			renderStartY, 
-			renderStartX + _frameWidth, 
-			renderStartY + _frameHeight
+			renderStartX + _clipX,
+			renderStartY + _clipY,
+			renderStartX + _frameWidth + _clipX,
+			renderStartY + _frameHeight + _clipY
 		);
 
 	D2D1_MATRIX_3X2_F scale = D2D1::Matrix3x2F::Scale(
