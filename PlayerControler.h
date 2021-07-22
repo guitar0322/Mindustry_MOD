@@ -57,7 +57,6 @@ private:
 	float _worldX, _worldY;
 	float _boosterTime;
 	float _barrelLength;
-	int _hp;
 
 	//상태 관련//
 	DIRECTION _dir;
@@ -98,8 +97,6 @@ public:
 	float GetSpeed() const { return _speed; }
 	float GetTargetAngle() const { return _targetAngle; }
 	bool GetPlayerDead() const { return _isDead; }
-	void KeyHandle();
-	bool GetPlayerRespawn() const { return _isRespawn; }
 	void SetProjectileManager(ProjectileManager* projectileManager) { _projectileManager = projectileManager; }
 	void SetGameInfo(GameInfo* gameInfo) { _gameInfo = gameInfo; }
 	void SetGameMap(GameMap* gameMap) { _gameMap = gameMap; }
