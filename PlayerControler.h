@@ -4,6 +4,7 @@
 
 class ProjectileManager;
 class PlayerLaser;
+class PlayerConstructLaser;
 class EnemyInfo;
 class GameMap;
 
@@ -75,6 +76,9 @@ private:
 	int _copperAmount, _leadAmount;
 	float _correctingTIme;
 	RESOURCE _colletingResources;
+	/*================================================*/
+	//0721 유림 -> 건축용
+	PlayerConstructLaser* _playerConstructLaser;
 
 public:
 	virtual void Init();
@@ -85,6 +89,8 @@ public:
 	void PlayerDirection();
 	void ResoucesCollect();
 	void ShootResoucesLaser();
+	void ShootConstructLaser();
+
 	void BoosterFireScale();
 
 	float GetHp() const { return _hp; }

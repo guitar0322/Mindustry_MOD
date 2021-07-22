@@ -709,6 +709,7 @@ void GameScene::ResourcesInit()
 	_resourcesUI[1].Init();
 	_resourcesUI[1].uiRenderer->Init("leadUI");
     _resourcesUI[1].transform->SetPosition(WINSIZEX / 2 + 20, 20);
+
 }
 
 void GameScene::ResourcesUpdate()

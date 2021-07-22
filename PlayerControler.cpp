@@ -2,6 +2,7 @@
 #include "PlayerControler.h"
 #include "ProjectileManager.h"
 #include "PlayerLaser.h"
+#include "PlayerConstructLaser.h"
 #include "EnemyInfo.h"
 #include "TileInfo.h"
 #include "GameMap.h"
@@ -29,6 +30,9 @@ void PlayerControler::Init()
 
 	_playerLaser = new PlayerLaser;
 	_playerLaser->Init();
+
+	_playerConstructLaser = new PlayerConstructLaser;
+	_playerConstructLaser->Init();
 
 	_attackSpeed = 0;
 	_correctingTIme = 0;
@@ -94,45 +98,46 @@ void PlayerControler::Update()
 
 		//마우스 왼쪽 클릭 시
 		{
-		if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
-		{
-			_worldX = ScreenToWorld(_ptMouse).x;
-			_worldY = ScreenToWorld(_ptMouse).y;
-			if (_isCollecting == false)
+			if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 			{
-				_targetAngle = ConvertAngleD2D(GetAngle(transform->position.x, transform->position.y, _worldX, _worldY));
-			}
-			else
-			{
-				_playerLaser->_collectLaserFirst->SetActive(false);
-				_playerLaser->_collectLaserEnd->SetActive(false);
-				_playerLaser->_collectLaser->SetActive(false);
-				_playerLaser->_detectRc->SetActive(false);
-				_isCollecting = false;
-			}
-
-			_attackSpeed += TIMEMANAGER->getElapsedTime();
-
-			if (_attackSpeed >= 0.3f)
-			{
-				if (_isLeft == false) // 만약에 왼쪽이 발동 안할 경우
+				_worldX = ScreenToWorld(_ptMouse).x;
+				_worldY = ScreenToWorld(_ptMouse).y;
+				if (_isCollecting == false)
 				{
-					_weaponRTrackRadius = 9.13;
-					_projectileManager->FireProjectile(transform->GetChild(0)->GetX(), transform->GetChild(0)->GetY(),
-						transform->GetChild(0)->GetAngle() + 2, PROJECTILE_TYPE::PLAYER);
+					_targetAngle = ConvertAngleD2D(GetAngle(transform->position.x, transform->position.y, _worldX, _worldY));
 				}
-				else // 나머지 값
+				else
 				{
-					_weaponLTrackRadius = 9.13;
-					_projectileManager->FireProjectile(transform->GetChild(1)->GetX(), transform->GetChild(1)->GetY(),
-						transform->GetChild(1)->GetAngle() - 2, PROJECTILE_TYPE::PLAYER);
+					_playerLaser->_collectLaserFirst->SetActive(false);
+					_playerLaser->_collectLaserEnd->SetActive(false);
+					_playerLaser->_collectLaser->SetActive(false);
+					_playerLaser->_detectRC->SetActive(false);
+					_isCollecting = false;
 				}
-				_isLeft = !_isLeft; // 반복되게 하기
-				_attackSpeed = 0;
+
+				_attackSpeed += TIMEMANAGER->getElapsedTime();
+
+				if (_attackSpeed >= 0.3f)
+				{
+					if (_isLeft == false) // 만약에 왼쪽이 발동 안할 경우
+					{
+						_weaponRTrackRadius = 9.13;
+						_projectileManager->FireProjectile(transform->GetChild(0)->GetX(), transform->GetChild(0)->GetY(),
+							transform->GetChild(0)->GetAngle() + 2, PROJECTILE_TYPE::PLAYER);
+					}
+					else // 나머지 값
+					{
+						_weaponLTrackRadius = 9.13;
+						_projectileManager->FireProjectile(transform->GetChild(1)->GetX(), transform->GetChild(1)->GetY(),
+							transform->GetChild(1)->GetAngle() - 2, PROJECTILE_TYPE::PLAYER);
+					}
+					_isLeft = !_isLeft; // 반복되게 하기
+					_attackSpeed = 0;
+				}
 			}
-		}
 		}
 		ShootResoucesLaser();
+		ShootConstructLaser();
 
 		if (_isCollecting)
 		{
@@ -162,6 +167,8 @@ void PlayerControler::Render()
 	transform->GetChild(4)->gameObject->Render();
 
 	_playerLaser->Render();
+	_playerConstructLaser->Render();
+
 }
 
 void PlayerControler::KeyHandle()
@@ -362,7 +369,6 @@ void PlayerControler::PlayerDirection()
 void PlayerControler::ResoucesCollect()
 {
 
-	
 	_correctingTIme += TIMEMANAGER->getElapsedTime();
 
 	if (_correctingTIme >= 0.2f)
@@ -417,13 +423,12 @@ void PlayerControler::ShootResoucesLaser()
 				_playerLaser->_collectLaserFirst->SetActive(true);
 				_playerLaser->_collectLaserEnd->SetActive(true);
 				_playerLaser->_collectLaser->SetActive(true);
-				_playerLaser->_detectRc->SetActive(true);
+				_playerLaser->_detectRC->SetActive(true);
 
 				if (tileInfo.resources < 3)
 				{
 					_colletingResources = COPPER;
-					int test = 3;
-						test;
+				
 				}
 				else if (tileInfo.resources > 3 && tileInfo.resources < 6)
 				{
@@ -438,16 +443,30 @@ void PlayerControler::ShootResoucesLaser()
 		_playerLaser->_collectLaserFirst->SetActive(false);
 		_playerLaser->_collectLaserEnd->SetActive(false);
 		_playerLaser->_collectLaser->SetActive(false);
-		_playerLaser->_detectRc->SetActive(false);
+		_playerLaser->_detectRC->SetActive(false);
 		_isCollecting = false;
 	}
 	_playerLaser->Update();
+	_playerConstructLaser->Update();
 
 	if (_playerLaser->GetLaserDistance() >= 400)
 	{
 		_playerLaser->OffLaser();
 		_isCollecting = false;
 	}
+}
+
+void PlayerControler::ShootConstructLaser()
+{
+	float constructLaserStartX = transform->GetX() + cosf(ConvertAngleAPI(transform->GetAngle())) * 25;
+	float constructLaserStartY = transform->GetY() - sinf(ConvertAngleAPI(transform->GetAngle())) * 25;
+	_playerConstructLaser->SetLaserStartPoint(constructLaserStartX, constructLaserStartY);
+
+
+
+
+
+
 }
 
 void PlayerControler::BoosterFireScale()

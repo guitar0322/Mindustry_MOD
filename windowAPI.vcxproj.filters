@@ -273,6 +273,7 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Production.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="PlayerConstructLaser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h" />
@@ -560,6 +561,7 @@
     <ClInclude Include="Item.h" />
     <ClInclude Include="Production.h" />
     <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="PlayerConstructLaser.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="windowAPI.rc" />
