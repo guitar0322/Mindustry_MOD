@@ -12,7 +12,7 @@ private:
 	float _speedX, _speedY;
 	int _damage;
 	string _targetTag;
-
+	//Vector2 _targetTag;
 	Vector2 _firePt;
 
 public:
@@ -33,6 +33,7 @@ public:
 	void SetDamage(int damage) { _damage = damage; }
 
 	void SetTargetTag(string targetTag) { _targetTag = targetTag; }
+	//void SetTargetTag(Vector2 targetTag) { _targetTag = targetTag; }
 
 	void Move();
 

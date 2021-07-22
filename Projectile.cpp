@@ -55,10 +55,13 @@ void Projectile::OnTriggerEnter(GameObject* gameObject)
 			gameObject->GetComponent<EnemyInfo>()->Hit(_damage);
 
 		}
-		if (_targetTag.compare("prop") == 0)
+		/*if (_targetTag.compare("prop") == 0)
 		{
 			this->gameObject->SetActive(false);
+			EFFECTMANAGER->ActiveSmallParticle(transform->GetX(), transform->GetY());
 			gameObject->GetComponent<PropStat>()->Hit(_damage);
-		}
+		}*/
 	}
+
+
 }

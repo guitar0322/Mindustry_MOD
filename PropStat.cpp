@@ -16,6 +16,9 @@ void PropStat::Hit(int damage)
 
 void PropStat::Broken()
 {
+	EFFECTMANAGER->EmissionEffect("explosion", transform->GetX(), transform->GetY(), 0);
+	EFFECTMANAGER->ActiveSmokeParticle(transform->GetX(), transform->GetY());
+
 	gameObject->SetActive(false);
 
 	for (int i = 0; i < gameObject->transform->GetChildCount(); i++)
