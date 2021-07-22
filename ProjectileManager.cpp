@@ -21,8 +21,10 @@ void ProjectileManager::Init()
 		enemyPlaneProjectile->GetRendererComponent()->Init("projectile");
 		enemyPlaneProjectile->name = L"plane_projecilte";
 		enemyPlaneProjectile->GetProjectileComponent()->SetSpeed(800.f);
-		enemyPlaneProjectile->GetProjectileComponent()->SetDamage(5);
+		enemyPlaneProjectile->GetProjectileComponent()->SetDamage(200);
 		enemyPlaneProjectile->GetProjectileComponent()->SetTargetTag("player");
+		enemyPlaneProjectile->GetProjectileComponent()->SetTargetTag("prop");
+
 		enemyPlaneProjectile->SetActive(false);
 		_enemyPlaneProjectileV.push_back(enemyPlaneProjectile);
 	}
@@ -32,8 +34,9 @@ void ProjectileManager::Init()
 		enemyGroundProjectile->name = L"ground_projecilte";
 		enemyGroundProjectile->GetRendererComponent()->Init("projectile");
 		enemyGroundProjectile->GetProjectileComponent()->SetSpeed(400.f);
-		enemyGroundProjectile->GetProjectileComponent()->SetDamage(5);
+		enemyGroundProjectile->GetProjectileComponent()->SetDamage(200);
 		enemyGroundProjectile->GetProjectileComponent()->SetTargetTag("player");
+		enemyGroundProjectile->GetProjectileComponent()->SetTargetTag("prop");
 		enemyGroundProjectile->SetActive(false);
 		_enemyGroundProjectileV.push_back(enemyGroundProjectile);
 	}
@@ -66,12 +69,14 @@ void ProjectileManager::Render()
 			continue;
 		_enemyPlaneProjectileV[i]->Render();
 	}
+
 	for (int i = 0; i < ENEMY_PROJECTILE_MAX; i++)
 	{
 		if (_enemyGroundProjectileV[i]->isActive == false) 
 			continue;
 		_enemyGroundProjectileV[i]->Render();
 	}
+
 	for (int i = 0; i < PLAYER_PROJECTILE_MAX; i++)
 	{
 		if (_playerProjectileV[i]->isActive == false)
@@ -87,9 +92,8 @@ void ProjectileManager::ProjectileMove()
 		if (_enemyPlaneProjectileV[i]->isActive == false) 
 			continue;
 		_enemyPlaneProjectileV[i]->Update();
-		
-
 	}
+
 	for (int i = 0; i < ENEMY_PROJECTILE_MAX; i++)
 	{
 		if (_enemyGroundProjectileV[i]->isActive == false)

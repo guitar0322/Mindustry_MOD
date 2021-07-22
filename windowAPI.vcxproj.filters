@@ -267,7 +267,6 @@
     <ClCompile Include="EnemyManager.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="CameraControler.cpp" />
     <ClCompile Include="Drill.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Production.cpp" />
@@ -278,6 +277,9 @@
     <ClCompile Include="CoreComponent.cpp" />
     <ClCompile Include="Astar.cpp">
       <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraControler.cpp">
+      <Filter>CameraControler</Filter>
     </ClCompile>
     <ClCompile Include="CameraControler.cpp">
       <Filter>CameraControler</Filter>
@@ -563,7 +565,6 @@
     <ClInclude Include="PropInfo.h">
       <Filter>헤더파일</Filter>
     </ClInclude>
-    <ClInclude Include="CameraControler.h" />
     <ClInclude Include="Drill.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Production.h" />
@@ -574,6 +575,9 @@
     <ClInclude Include="CoreComponent.h" />
     <ClInclude Include="Astar.h">
       <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraControler.h">
+      <Filter>CameraControler</Filter>
     </ClInclude>
     <ClInclude Include="CameraControler.h">
       <Filter>CameraControler</Filter>

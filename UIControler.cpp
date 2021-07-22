@@ -556,10 +556,16 @@ void UIControler::inReallyEnd_Return_To_TilteScene(string SceneName)
 	SCENEMANAGER->LoadScene(SceneName);
 }
 
-void UIControler::EnemyWaveSkip(bool isActive)
+void UIControler::EnemyWaveSkip()
 {
-	enemyWaveSkip->SetActive(isActive);			//false		//true
-	enemyWaveSkipClick->SetActive(isActive);	//true		//false
+	enemyWaveSkip->SetActive(false);			
+	enemyWaveSkipClick->SetActive(true);		
+}
+
+void UIControler::EnemyWaveSkipExit()
+{
+	enemyWaveSkip->SetActive(true);
+	enemyWaveSkipClick->SetActive(false);
 }
 
 void UIControler::EnemyWaveSkipClick()

@@ -30,6 +30,8 @@ Conveyor::Conveyor()
 	transport = new Transport();
 	AddComponent(transport);
 	transport->Init();
+
+	this->tag = TAGMANAGER->GetTag("prop");
 }
 
 Conveyor::~Conveyor()

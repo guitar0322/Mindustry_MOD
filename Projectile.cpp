@@ -2,6 +2,7 @@
 #include "Projectile.h"
 #include "EnemyInfo.h"
 #include "PlayerControler.h"
+#include "PropStat.h"
 
 Projectile::Projectile()
 {
@@ -48,6 +49,11 @@ void Projectile::OnTriggerEnter(GameObject* gameObject)
 		{
 			this->gameObject->SetActive(false);
 			gameObject->GetComponent<EnemyInfo>()->Hit(_damage);
+		}
+		if (_targetTag.compare("prop") == 0)
+		{
+			this->gameObject->SetActive(false);
+			gameObject->GetComponent<PropStat>()->Hit(_damage);
 		}
 	}
 }

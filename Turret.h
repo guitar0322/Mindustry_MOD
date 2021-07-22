@@ -1,8 +1,8 @@
 #pragma once
 #include "Component.h"
 class ProjectileObject;
-
 #define PROJECTILE_MIN 3
+
 class Turret :
     public Component
 {
