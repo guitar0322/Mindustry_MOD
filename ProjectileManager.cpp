@@ -21,9 +21,10 @@ void ProjectileManager::Init()
 		ProjectileObject* enemyPlaneProjectile = new ProjectileObject();
 		enemyPlaneProjectile->GetRendererComponent()->Init("projectile");
 		enemyPlaneProjectile->name = L"plane_projecilte";
-		enemyPlaneProjectile->GetProjectileComponent()->SetSpeed(800.f);
+		enemyPlaneProjectile->GetProjectileComponent()->SetSpeed(1000.f);
 		enemyPlaneProjectile->GetProjectileComponent()->SetDamage(5);
 		enemyPlaneProjectile->GetProjectileComponent()->SetTargetTag("player");
+		enemyPlaneProjectile->GetColliderComponent()->SetSize(16, 16);
 		enemyPlaneProjectile->SetActive(false);
 		_enemyPlaneProjectileV.push_back(enemyPlaneProjectile);
 	}
@@ -32,9 +33,10 @@ void ProjectileManager::Init()
 		ProjectileObject* enemyGroundProjectile = new ProjectileObject();
 		enemyGroundProjectile->name = L"ground_projecilte";
 		enemyGroundProjectile->GetRendererComponent()->Init("projectile");
-		enemyGroundProjectile->GetProjectileComponent()->SetSpeed(400.f);
-		enemyGroundProjectile->GetProjectileComponent()->SetDamage(5);
+		enemyGroundProjectile->GetProjectileComponent()->SetSpeed(1000.f);
+		enemyGroundProjectile->GetProjectileComponent()->SetDamage(20);
 		enemyGroundProjectile->GetProjectileComponent()->SetTargetTag("player");
+		enemyGroundProjectile->GetColliderComponent()->SetSize(16, 16);
 		enemyGroundProjectile->SetActive(false);
 		_enemyGroundProjectileV.push_back(enemyGroundProjectile);
 	}
@@ -44,10 +46,11 @@ void ProjectileManager::Init()
 		ProjectileObject* playerProjectile = new ProjectileObject();
 		playerProjectile->GetRendererComponent()->Init("bullet");
 		playerProjectile->name = L"player_projecilte";
-		playerProjectile->transform->SetScale(0.5f, 0.5f);
-		playerProjectile->GetProjectileComponent()->SetSpeed(500.f);
-		playerProjectile->GetProjectileComponent()->SetDamage(5);
+		playerProjectile->transform->SetScale(0.7f, 0.7f);
+		playerProjectile->GetProjectileComponent()->SetSpeed(800.f);
+		playerProjectile->GetProjectileComponent()->SetDamage(100);
 		playerProjectile->GetProjectileComponent()->SetTargetTag("enemy");
+		playerProjectile->GetColliderComponent()->SetSize(16, 16);
 		playerProjectile->SetActive(false);
 		_playerProjectileV.push_back(playerProjectile);
 	}
@@ -67,12 +70,14 @@ void ProjectileManager::Render()
 			continue;
 		_enemyPlaneProjectileV[i]->Render();
 	}
+
 	for (int i = 0; i < ENEMY_PROJECTILE_MAX; i++)
 	{
 		if (_enemyGroundProjectileV[i]->isActive == false) 
 			continue;
 		_enemyGroundProjectileV[i]->Render();
 	}
+
 	for (int i = 0; i < PLAYER_PROJECTILE_MAX; i++)
 	{
 		if (_playerProjectileV[i]->isActive == false)
@@ -88,9 +93,8 @@ void ProjectileManager::ProjectileMove()
 		if (_enemyPlaneProjectileV[i]->isActive == false) 
 			continue;
 		_enemyPlaneProjectileV[i]->Update();
-		
-
 	}
+
 	for (int i = 0; i < ENEMY_PROJECTILE_MAX; i++)
 	{
 		if (_enemyGroundProjectileV[i]->isActive == false)

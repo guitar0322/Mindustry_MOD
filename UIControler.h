@@ -153,7 +153,8 @@ public:
     Button* enemyWaveSkipButton;
     
     /* πŒ¿Á Enemy Wave Skip ENTER ,EXIT */
-    void EnemyWaveSkip(bool isActive);
+    void EnemyWaveSkip();
+    void EnemyWaveSkipExit();
     
     EnemyManager* enemyManager;
     void SetEnemyManager(EnemyManager* enemymanager) { enemyManager = enemymanager; }

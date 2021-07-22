@@ -58,6 +58,7 @@ private:
 	float _attackSpeed;
 	float _worldX, _worldY;
 	float _boosterTime;
+	float _barrelLength;
 
 	//상태 관련//
 	DIRECTION _dir;
@@ -66,7 +67,6 @@ private:
 	bool _isCollecting;
 	Vector2 _collectTile;
 	bool _isDead;
-	bool _isRespawn;
 	int _scaleFlag;
 	bool _isHit;
 
@@ -97,7 +97,6 @@ public:
 	float GetSpeed() const { return _speed; }
 	float GetTargetAngle() const { return _targetAngle; }
 	bool GetPlayerDead() const { return _isDead; }
-	bool GetPlayerRespawn() const { return _isRespawn; }
 	void SetProjectileManager(ProjectileManager* projectileManager) { _projectileManager = projectileManager; }
 	void SetGameInfo(GameInfo* gameInfo) { _gameInfo = gameInfo; }
 	void SetGameMap(GameMap* gameMap) { _gameMap = gameMap; }
@@ -106,7 +105,6 @@ public:
 	void Hit(float damage);
 	void Dead();
 	void Respawn();
-	void RespawnTime();
 	void MoveHandler();
 	/*================================================*/
 	//0721 유림 -> 건축용

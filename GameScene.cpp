@@ -15,6 +15,8 @@
 #include "Core.h"
 #include "CoreComponent.h"
 #include "Astar.h"
+#include "Respawn.h"
+
 HRESULT GameScene::Init()
 {
     Scene::Init();
@@ -31,16 +33,16 @@ HRESULT GameScene::Init()
     MainCam->transform->SetPosition(1600 / 2, 1600 / 2);
 
     selectCategoryIdx = 0;
-    _aStar = new Astar();
+
 
     _gameInfo = new GameInfo();
     _gameInfo->Init();
     _gameInfo->AddResource(COPPER, 500);
 
     _propContainer = new PropContainer();
-    _propFactory = new PropFactory();
+	_propFactory = new PropFactory();
     _propFactory->Init();
-    _propFactory->propContainer = _propContainer;
+	_propFactory->propContainer = _propContainer;
     _propFactory->LinkGameInfo(_gameInfo);
 
     _resourceManager = new ResourceManager();
@@ -63,10 +65,16 @@ HRESULT GameScene::Init()
     _uiControler->propFactory = _propFactory;
     _uiControler->propContainer = _propContainer;
 
+    _respawn = new Respawn();
 	/*===================================*/
 	/*인게임 맵 초기화 -> 유림*/
 	_gameMap = new GameMap;
 	_gameMap->Init();
+
+    _aStar = new Astar();
+    _aStar->LinkGameMap(_gameMap);
+    _aStar->LinkPropContainer(_propContainer);
+
     _uiControler->gameMap = _gameMap;
     _propFactory->LinkGameMap(_gameMap);
 	//자원 UI 초기화
@@ -222,6 +230,7 @@ HRESULT GameScene::Init()
 	/*===================================================================== */
 	/* 플레이어 부분 초기화 -> 유림 */
 	PlayerInit();
+    _respawn->LinkPlayer(_player->controler);
 	/*===================================================================== */
 
     /* 게임신 에너미 관련 작업 함수, by 민재. 삭제 금지 */
@@ -233,9 +242,6 @@ HRESULT GameScene::Init()
 
 	_uiControler->enemyWaveSkip = &_enemyWaveSkip;
 	_uiControler->enemyWaveSkipClick = &_enemyWaveSkipClick;
-
-	//_uiControler->enemyWaveSkip
-	//_uiControler->enemyWaveSkipButton = &_enemyWaveSkipButton;
 
     /* 사운드 작업 광철 210718 */
 	//SOUNDMANAGER->addSound("start", "music/land.mp3", true, false);
@@ -252,7 +258,7 @@ HRESULT GameScene::Init()
 void GameScene::Update()
 {
 	MainCam->Update();
-
+    EFFECTMANAGER->Update();
     //07-19 플레이어와 UI간의 마우스 클릭 우선순위때문에 UI업데이트 위로 올림
     //카테고리 아이콘 업데이트
     {
@@ -274,7 +280,8 @@ void GameScene::Update()
     _propContainer->Update();
     _resourceManager->Update();
     _uiControler->Update();
-
+    _respawn->Update();
+	InGameUIUpdate();
 	/* 플레이어 부분*/
 	_player->Update();
 	_playerWeaponL->Update();
@@ -301,8 +308,8 @@ void GameScene::Update()
 	
 
 	//07.20 민재 인 게임 Wave UI && Player UI 작업//
+
 	_enemyManager->Update();
-	InGameUIUpdate();
     
     /* 시영 */
     // 연구 부분 Update
@@ -373,10 +380,11 @@ void GameScene::Render()
 		_player->transform->GetChild(4)->gameObject->Render();
 		_player->Render();
 		_enemyManager->Render();
+        EFFECTMANAGER->Render();
+		_player->Render();
 		_projectileManager->Render();
 		_core->Render();
 		_cameraControler->Render();
-
 		MainCam->Render();
 	}
 
@@ -1801,6 +1809,8 @@ void GameScene::SetEnemyManager()
 	_enemyManager->GetComponent<EnemyManager>()->SetProjectileManager(_projectileManager->GetComponent<ProjectileManager>());
     _enemyManager->GetComponent<EnemyManager>()->SetAstar(_aStar);
 	_enemyManager->GetComponent<EnemyManager>()->Init();
+    _aStar->LinkEnemyManager(_enemyManager->GetComponent<EnemyManager>());
+	_uiControler->SetEnemyManager(_enemyManager->GetComponent<EnemyManager>());
 }
 
 void GameScene::SetCameraControler()
@@ -1835,13 +1845,13 @@ void GameScene::SetGameUIInit()
 	_enemyWaveSkipClick.transform->SetPosition(390.5f, 45.7f);
 
 	_enemyWaveSkipButton.uiMouseEvent->RegistCallback(
-		std::bind(&UIControler::EnemyWaveSkip, _uiControler,true), EVENT::ENTER);
+		std::bind(&UIControler::EnemyWaveSkip, _uiControler), EVENT::ENTER);
 
 	_enemyWaveSkipButton.uiMouseEvent->RegistCallback(
 		std::bind(&UIControler::EnemyWaveSkipClick, _uiControler), EVENT::CLICK);
 
 	_enemyWaveSkipButton.uiMouseEvent->RegistCallback(
-		std::bind(&UIControler::EnemyWaveSkip, _uiControler,false), EVENT::EXIT);
+		std::bind(&UIControler::EnemyWaveSkipExit, _uiControler), EVENT::EXIT);
 }
 
 void GameScene::InGameUIUpdate()
@@ -1855,23 +1865,24 @@ void GameScene::InGameUIUpdate()
 void GameScene::InGameUIRender()
 {
 	_wavePane.Render();
+	_enemyWaveSkipClick.Render();
 	_enemyWaveSkip.Render();
 	_enemyWaveSkipButton.Render();
-	//_enemyWaveSkipClick.Render();
 	
 	wstring second = to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeSecond());
 	wstring minute = to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeMinute());
 	wstring wave = to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetCurWave());
 
 	D2DRENDERER->RenderText(150, 5, L"단계", 22, L"fontello", D2DRenderer::DefaultBrush::Yellow);
-	D2DRENDERER->RenderText(200, 5, wave, 22, L"mindustry", D2DRenderer::DefaultBrush::Yellow);
-	D2DRENDERER->RenderText(215, 5, L"/10", 22, L"mindustry", D2DRenderer::DefaultBrush::Yellow);
-	D2DRENDERER->RenderText(150, 35, L"다음 단계까지", 20, L"fontello", D2DRenderer::DefaultBrush::Yellow);
+	D2DRENDERER->RenderText(202, 7, wave, 22, L"mindustry", D2DRenderer::DefaultBrush::Yellow);
+	D2DRENDERER->RenderText(220, 7, L"/10", 22, L"mindustry", D2DRenderer::DefaultBrush::Yellow);
+	D2DRENDERER->RenderText(150, 30, L"다음 단계까지", 20, L"fontello", D2DRenderer::DefaultBrush::Yellow);
 
-	D2DRENDERER->RenderText(150, 60, minute, 20, L"mindustry", D2DRenderer::DefaultBrush::White);
-	D2DRENDERER->RenderText(165, 60, L"분", 20, L"fontello", D2DRenderer::DefaultBrush::White);
-	D2DRENDERER->RenderText(190, 60, second, 20, L"mindustry", D2DRenderer::DefaultBrush::White);
-	D2DRENDERER->RenderText(213, 61, L"초", 20, L"fontello", D2DRenderer::DefaultBrush::White);
+	D2DRENDERER->RenderText(155, 58, minute, 20, L"mindustry", D2DRenderer::DefaultBrush::White);
+	D2DRENDERER->RenderText(173, 55, L"분", 20, L"fontello", D2DRenderer::DefaultBrush::White);
+	D2DRENDERER->RenderText(198, 58, second, 20, L"mindustry", D2DRenderer::DefaultBrush::White);
+	D2DRENDERER->RenderText(230, 55, L"초", 20, L"fontello", D2DRenderer::DefaultBrush::White);
+
 }
 
 void GameScene::InGameUIClip()

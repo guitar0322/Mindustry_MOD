@@ -7,7 +7,7 @@ ParticleSystem::ParticleSystem()
 	:_minDuration(1.f), _maxDuration(1.f), _minSpeed(1.f), _maxSpeed(1.f), _isLoop(true),
 	_isStop(false), _gravity(0), _frameTerm(Math::FloatMax), _totalParticleNum(0),
 	_minAlpha(1.f), _maxAlpha(1.f), _pivotDistance(0), _emissionTerm(0),
-	_minScaleY(1.f), _maxScaleY(1.f)
+	_minScaleY(1.f), _maxScaleY(1.f), _isEnd(false)
 {
 
 }
@@ -47,6 +47,7 @@ void ParticleSystem::Emission(int idx)
 		_particleV[idx].x = transform->GetX() + _pivotDistance * cosf(_particleV[idx].angle);
 		_particleV[idx].y = transform->GetY() + _pivotDistance * -sinf(_particleV[idx].angle);
 		_particleV[idx].isEmission = true;
+		_particleV[idx].curFrameX = 0;
 		_particleV[idx].speedX = cosf(_particleV[idx].angle) * RND->getFromFloatTo(_minSpeed, _maxSpeed);
 		_particleV[idx].speedY = -sinf(_particleV[idx].angle) * RND->getFromFloatTo(_minSpeed, _maxSpeed);
 		_particleV[idx].alpha = RND->getFromFloatTo(_minAlpha, _maxAlpha);
@@ -60,6 +61,7 @@ void ParticleSystem::Emission(int idx)
 		if (_emissionNum == _totalParticleNum && _isLoop == true) {
 			_emissionNum = 0;
 		}
+
 	}
 }
 
@@ -92,10 +94,14 @@ void ParticleSystem::Update()
 		if (_particleV[i].frameTick >= _frameTerm) {
 			_particleV[i].frameTick = 0;
 			_particleV[i].curFrameX++;
-			if (_particleV[i].curFrameX == _targetClip->GetFrameNum())
+			if (_particleV[i].curFrameX == _targetClip->GetFrameNum() && _targetClip->GetIsLoop() == true)
 				_particleV[i].curFrameX = 0;
 		}
 		if (_particleV[i].activeTime >= _particleV[i].duration) {
+			if (_emissionNum == _totalParticleNum && _isLoop == false)
+			{
+				_isEnd = true;
+			}
 			_particleV[i].isEmission = false;
 		}
 		_particleV[i].x += _particleV[i].speedX;
@@ -127,6 +133,7 @@ void ParticleSystem::Render()
 void ParticleSystem::Play()
 {
 	_isStop = false;
+	_isEnd = false;
 	_emissionNum = 0;
 	for (int i = 0; i < _totalParticleNum; i++) {
 		_particleV[i].isEmission = false;

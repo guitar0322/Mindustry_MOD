@@ -28,7 +28,7 @@ void PlayerControler::Init()
 	_weaponRTrackRadius = DEFAULT_WEAPON_DISTANCE;
 	_weaponLTrackAngle = DEFAULT_WEAPON_ANGLE;
 	_weaponRTrackAngle = DEFAULT_WEAPON_ANGLE;
-
+	_barrelLength = 30.f;
 	_playerLaser = new PlayerLaser;
 	_playerLaser->Init();
 
@@ -45,7 +45,6 @@ void PlayerControler::Init()
 	_isSlow = false;
 	_isCollecting = false;
 	_isDead = false;
-	_isRespawn = false;
 	_dir = IDLE;
 	_isHit = false;
 }
@@ -68,7 +67,6 @@ void PlayerControler::Update()
 	}
 
 	MoveHandler();
-	RespawnTime();
 	BoosterFireScale();
 
 	if (!_isDead)
@@ -119,6 +117,7 @@ void PlayerControler::Update()
 				_worldY = ScreenToWorld(_ptMouse).y;
 				if (_isCollecting == false)
 				{
+					
 					_targetAngle = ConvertAngleD2D(GetAngle(transform->position.x, transform->position.y, _worldX, _worldY));
 				}
 				//else
@@ -134,17 +133,26 @@ void PlayerControler::Update()
 
 				if (_attackSpeed >= 0.3f)
 				{
+					_weaponLTrackRadius = 9.13;
 					if (_isLeft == false) // 만약에 왼쪽이 발동 안할 경우
 					{
 						_weaponRTrackRadius = 9.13;
 						_projectileManager->FireProjectile(transform->GetChild(1)->GetX(), transform->GetChild(1)->GetY(),
 							transform->GetChild(1)->GetAngle() + 2, PROJECTILE_TYPE::PLAYER);
+						EFFECTMANAGER->EmissionEffect("shoot",
+							transform->GetChild(0)->GetX() + cosf(ConvertAngleAPI(transform->GetAngle())) * _barrelLength,
+							transform->GetChild(0)->GetY() - sinf(ConvertAngleAPI(transform->GetAngle())) * _barrelLength,
+							transform->GetAngle());
 					}
 					else // 나머지 값
 					{
 						_weaponLTrackRadius = 9.13;
 						_projectileManager->FireProjectile(transform->GetChild(2)->GetX(), transform->GetChild(2)->GetY(),
 							transform->GetChild(2)->GetAngle() - 2, PROJECTILE_TYPE::PLAYER);
+						EFFECTMANAGER->EmissionEffect("shoot",
+							transform->GetChild(1)->GetX() + cosf(ConvertAngleAPI(transform->GetAngle())) * _barrelLength,
+							transform->GetChild(1)->GetY() - sinf(ConvertAngleAPI(transform->GetAngle())) * _barrelLength,
+							transform->GetAngle());
 					}
 					_isLeft = !_isLeft; // 반복되게 하기
 					_attackSpeed = 0;
@@ -546,41 +554,28 @@ void PlayerControler::Hit(float damage)
 	{
 		Dead();
 	}
-
-	if (_isDead == true)
-	{
-		_isRespawn = true;
-	}
 }
 
 void PlayerControler::Dead()
 {
+	EFFECTMANAGER->EmissionEffect("explosion", transform->GetX(), transform->GetY(), 0);
+	EFFECTMANAGER->ActiveSmokeParticle(transform->GetX(), transform->GetY());
+	gameObject->SetActive(false);
+	transform->GetChild(3)->gameObject->SetActive(false);
+	transform->GetChild(4)->gameObject->SetActive(false);
+	_playerLaser->OffLaser();
 	_isDead = true;
 }
 
 void PlayerControler::Respawn()
 {
 	gameObject->transform->SetPosition(25 * TILESIZE + 16, 36 * TILESIZE + 16);
+	transform->GetChild(2)->SetPosition(25 * TILESIZE + 16, 36 * TILESIZE + 16);
+	gameObject->SetActive(true);
+	transform->GetChild(3)->gameObject->SetActive(true);
+	transform->GetChild(4)->gameObject->SetActive(true);
 	_hp = 100;
 	_isDead = false;
-	_isRespawn = false;
-}
-
-void PlayerControler::RespawnTime()
-{
-	if (_isRespawn == true)
-	{
-		_respawnTime += TIMEMANAGER->getElapsedTime();
-	}
-	else if (_isRespawn == false)
-	{
-		_respawnTime = 0.f;
-	}
-
-	if (_respawnTime >= 3.0f)
-	{
-		Respawn();
-	}
 }
 
 void PlayerControler::MoveHandler()

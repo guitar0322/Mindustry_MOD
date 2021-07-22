@@ -28,6 +28,10 @@ void EnemyManager::Init()
 
 void EnemyManager::Update()
 {
+	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
+	{
+		SpawnEnemy();
+	}
 	EnemyTimer();
 	EnemyUpdate();
 }
@@ -64,10 +68,12 @@ void EnemyManager::SetEnemy()
 		_enemyGround->transform->SetScale(0.5f, 0.5f);
 		_enemyGround->GetComponent<EnemyGroundControler>()->SetProjectileManager(_projectileManager);
 		_enemyGround->GetComponent<EnemyGroundControler>()->SetAstar(_aStar);
+		_enemyGround->GetComponent<BoxCollider>()->SetSize(48, 48);
+		_enemyGround->GetComponent<BoxCollider>()->SetIsTrigger(false);
 		_enemyGround->SetActive(false);
 		_enemyV.push_back(_enemyGround);
 	}
-	for (int i = 7; i < 30; i++)
+	for (int i = 8; i < 30; i++)
 	{
 		_enemyPlane = new EnemyPlane();
 		_enemyPlane->tag = TAGMANAGER->GetTag("enemy");
@@ -83,34 +89,31 @@ void EnemyManager::SetEnemy()
 		_enemyV.push_back(_enemyPlane);
 	}
 
-
 	for (int i = 0; i < 1; i++)
 	{
 		_waveV[0].push_back(i);
 	}
 
-	for (int i = 6; i < 9; i++)
+	for (int i = 8; i < 10; i++)
 	{
 		_waveV[0].push_back(i);
 	}	
 
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 2; i++)				//2
 	{
-
 		_waveV[1].push_back(i);
 	}	
 
-	for (int i = 6; i < 12; i++)
+	for (int i = 8; i < 12; i++)			//12
 	{
 		_waveV[1].push_back(i);
 	}
-
 
 	for (int i = 0; i < 4; i++)
 	{
 		_waveV[2].push_back(i);
 	}
-	for (int i = 6; i < 14; i++)
+	for (int i = 8; i < 14; i++)
 	{
 		_waveV[2].push_back(i);
 	}
@@ -139,6 +142,10 @@ void EnemyManager::EnemyTimer()
 			_enemyTime = false;
 			_enemySpawnTime = 124.f;
 		}
+	}
+	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
+	{
+		SpawnEnemy();
 	}
 
 }
@@ -187,6 +194,16 @@ void EnemyManager::DeadEvent()
 	_enemyTime = true;
 	_curWave++;
 	return;
+}
+
+vector<EnemyObject*> EnemyManager::GetCurWaveEnemy()
+{
+	vector<EnemyObject*> result;
+	for (int i = 0; i < _waveV[_curWave].size(); i++)
+	{
+		result.push_back(_enemyV[_waveV[_curWave][i]]);
+	}
+	return result;
 }
 
 																																														

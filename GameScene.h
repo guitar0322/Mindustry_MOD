@@ -19,6 +19,7 @@ class Item;
 class ResourceManager;
 class Core;
 class Astar;
+class Respawn;
 
 class GameScene :
     public Scene
@@ -46,6 +47,7 @@ private:
     GameInfo* _gameInfo;
     Astar* _aStar;
     UIControler* _uiControler;
+    Respawn* _respawn;
     UIBase _categorySelect;
     UIBase _propSelect;
 
