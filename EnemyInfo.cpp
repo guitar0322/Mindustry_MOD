@@ -14,7 +14,6 @@ void EnemyInfo::Init()
 {
 	_angle = GetAngle(transform->position, _testCoreTransform->position);
 	_deadTime = 0.f;
-	//_isDeath = false;
 }
 
 void EnemyInfo::Update()
@@ -37,6 +36,5 @@ void EnemyInfo::Dead()
 {
 	gameObject->SetActive(false);
 	_enemyManager->DeadEvent();
-	//_isDeath = false;
 }
  
