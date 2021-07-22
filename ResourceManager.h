@@ -13,6 +13,7 @@ public:
 	void Render();
 	vector<Item*> _resV;
 
-	void AddResource(Item* item) { _resV.push_back(item); }
+	void AddResource(Item* item);
+	void RemoveResource(Item* item);
 };
 

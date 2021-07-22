@@ -150,6 +150,7 @@
     <ClInclude Include="AnimationClip.h" />
     <ClInclude Include="Animator.h" />
     <ClInclude Include="AnimObject.h" />
+    <ClInclude Include="Astar.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="Button.h" />
@@ -166,6 +167,7 @@
     <ClInclude Include="Conveyor.h" />
     <ClInclude Include="CopperWall.h" />
     <ClInclude Include="Core.h" />
+    <ClInclude Include="CoreComponent.h" />
     <ClInclude Include="D2DRenderer.h" />
     <ClInclude Include="Drill.h" />
     <ClInclude Include="Duo.h" />
@@ -256,6 +258,7 @@
     <ClCompile Include="AnimationClip.cpp" />
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="AnimObject.cpp" />
+    <ClCompile Include="Astar.cpp" />
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="Button.cpp" />
@@ -271,6 +274,7 @@
     <ClCompile Include="Conveyor.cpp" />
     <ClCompile Include="CopperWall.cpp" />
     <ClCompile Include="Core.cpp" />
+    <ClCompile Include="CoreComponent.cpp" />
     <ClCompile Include="D2DRenderer+Draw.cpp" />
     <ClCompile Include="D2DRenderer.cpp" />
     <ClCompile Include="Drill.cpp" />

@@ -12,6 +12,9 @@
 #include "CameraControler.h"
 #include "Item.h"
 #include "ResourceManager.h"
+#include "Core.h"
+#include "CoreComponent.h"
+#include "Astar.h"
 HRESULT GameScene::Init()
 {
     Scene::Init();
@@ -28,8 +31,11 @@ HRESULT GameScene::Init()
     MainCam->transform->SetPosition(1600 / 2, 1600 / 2);
 
     selectCategoryIdx = 0;
+    _aStar = new Astar();
+
     _gameInfo = new GameInfo();
     _gameInfo->Init();
+    _gameInfo->AddResource(COPPER, 500);
 
     _propContainer = new PropContainer();
     _propFactory = new PropFactory();
@@ -40,6 +46,7 @@ HRESULT GameScene::Init()
     _resourceManager = new ResourceManager();
     _resourceManager->propContainer = _propContainer;
     _resourceManager->Init();
+    _propFactory->LinkResourceManager(_resourceManager);
 
     _uiControler = new UIControler();
     _uiControler->Init();
@@ -61,7 +68,7 @@ HRESULT GameScene::Init()
 	_gameMap = new GameMap;
 	_gameMap->Init();
     _uiControler->gameMap = _gameMap;
-
+    _propFactory->LinkGameMap(_gameMap);
 	//자원 UI 초기화
 	ResourcesInit();
 	/*===================================*/
@@ -89,14 +96,23 @@ HRESULT GameScene::Init()
 
     // _uiControler 이미지 연동
     {
-        /* 연구부분 */
+        // 연구
+        /* 전체 자원 버튼 (회색) */
+        _uiControler->all_Resources_Img = &_all_Resources_Img;
+        _uiControler->all_Resources_Close_Img = &_all_Resources_Close_Img;
+
+        /* ? */
         _uiControler->choiceImg = &_choiceImg;
         _uiControler->lockImg = &_lockImg;
         _uiControler->inResearchChoiceImg = &_inResearchChoiceImg;
+
+        /* 연구 */
         _uiControler->research_goBackIdleImg = &_research_goBackIdleImg;
         _uiControler->research_goBackChoiceImg = &_research_goBackChoiceImg;
         _uiControler->coreDBIdleImg = &_coreDBIdleImg;
         _uiControler->coreDBChoiceImg = &_coreDBChoiceImg;
+
+        /* 상세보기 */
         _uiControler->detailDes_GoBackIdleImg = &_detailDes_goBackIdleImg;
         _uiControler->detailDes_GoBackChoiceImg = &_detailDes_goBackChoiceImg;
 
@@ -107,6 +123,14 @@ HRESULT GameScene::Init()
         _uiControler->menu_SettingChoiceImg = &_menu_SettingChoiceImg;
         _uiControler->menu_SaveAndExitIdleImg = &_menu_SaveAndExitIdleImg;
         _uiControler->menu_SaveAndExitChoiceImg = &_menu_SaveAndExitChoiceImg;
+        _uiControler->menu_SaveAndExitButton = &_menu_SaveAndExitButton;
+
+        /* 정말로 종료하시겠습니까? 부분 */
+        _uiControler->menu_ReallyEnd_Img = &_menu_ReallyEnd_Img;
+        _uiControler->menu_ReallyEnd_Check_Idle = &_menu_ReallyEnd_Check_Idle;
+        _uiControler->menu_ReallyEnd_Check_Choice = &_menu_ReallyEnd_Check_Choice;
+        _uiControler->menu_ReallyEnd_Cancle_Idle = &_menu_ReallyEnd_Cancle_Idle;
+        _uiControler->menu_ReallyEnd_Cancle_Choice = &_menu_ReallyEnd_Cancle_Choice;
     }
 
     #pragma region 연구 상태에서 [돌아가기] 이미지, 버튼
@@ -207,14 +231,20 @@ HRESULT GameScene::Init()
 	SetCameraControler();
 	SetGameUIInit();
 
+	_uiControler->enemyWaveSkip = &_enemyWaveSkip;
+	_uiControler->enemyWaveSkipClick = &_enemyWaveSkipClick;
+
+	//_uiControler->enemyWaveSkip
+	//_uiControler->enemyWaveSkipButton = &_enemyWaveSkipButton;
+
     /* 사운드 작업 광철 210718 */
-	SOUNDMANAGER->addSound("start", "music/land.mp3", true, false);
-	SOUNDMANAGER->addSound("bgm1", "music/game1.mp3", true, false);
-	SOUNDMANAGER->addSound("bgm2", "music/game2.mp3", true, false);
-	SOUNDMANAGER->addSound("bgm3", "music/game9.mp3", true, false);
-	SOUNDMANAGER->play("start", 10.0f);
-	_musicTime = 0;
-   StaticBuffer->EndDraw();
+	//SOUNDMANAGER->addSound("start", "music/land.mp3", true, false);
+	//SOUNDMANAGER->addSound("bgm1", "music/game1.mp3", true, false);
+	//SOUNDMANAGER->addSound("bgm2", "music/game2.mp3", true, false);
+	//SOUNDMANAGER->addSound("bgm3", "music/game9.mp3", true, false);
+	//SOUNDMANAGER->play("start", 10.0f);
+	//_musicTime = 0;
+    //StaticBuffer->EndDraw();
 
     return S_OK;
 }
@@ -268,11 +298,11 @@ void GameScene::Update()
     _propSelect.Update();
 
 	_core->Update();
-	//_enemyManager->Update();
+	
 
 	//07.20 민재 인 게임 Wave UI && Player UI 작업//
-	InGameUIUpdate();
 	_enemyManager->Update();
+	InGameUIUpdate();
     
     /* 시영 */
     // 연구 부분 Update
@@ -298,6 +328,7 @@ void GameScene::Update()
             {
                 _menu = true;
                 _menuImg.SetActive(true);
+                _menu_SaveAndExitButton.uiMouseEvent->enable = true;
             }
         }
  
@@ -345,6 +376,7 @@ void GameScene::Render()
 		_projectileManager->Render();
 		_core->Render();
 		_cameraControler->Render();
+
 		MainCam->Render();
 	}
 
@@ -366,8 +398,10 @@ void GameScene::Render()
     _categorySelect.Render();
     _propSelect.Render();
 
-	//07.20 민재 인 게임 Wave UI && Player UI 작업//
 	InGameUIRender();
+    //07.20 민재 인 게임 Wave UI && Player UI 작업//
+	//자원UI 렌더 -> 유림 (210719)
+	ResourcesRender();
 	_player->controler->playerUI.Render();
 	_player->controler->playerHpUIPane.Render();
 	_player->controler->playerHpUI.Render();
@@ -379,9 +413,7 @@ void GameScene::Render()
     // 메뉴
     if (_menu) menuRender();
 
-	/* ================================여기 만지지 마세요 ========================================*/
-	//자원UI 렌더 -> 유림 (210719)
-	ResourcesRender();
+
 	/* ================================여기 만지지 마세요 ========================================*/
 	
     //210719 유림 수정
@@ -448,10 +480,16 @@ void GameScene::InitClip()
 	}
 	CLIPMANAGER->AddClip("button_select", "sprites/ui/button-select.10.png", 52, 52);
 
-
     /* 시영 */
     /* 연구 클립 */
     {
+        // 전체 자원
+        CLIPMANAGER->AddClip("all_resources_open_null", "sprites/game/all_resources_open_null.png", 224, 80);
+        CLIPMANAGER->AddClip("all_resources_close", "sprites/game/all_resources_close.png", 224, 80);
+        CLIPMANAGER->AddClip("all_resources_text", "sprites/game/all_resources_text.png", 136, 20);
+        CLIPMANAGER->AddClip("all_resources_event", "sprites/game/all_resources_event.png", 200, 51);
+
+        // 연구
         CLIPMANAGER->AddClip("research_choice", "sprites/game/choice.png", 75, 56);
         CLIPMANAGER->AddClip("research_lock", "sprites/game/lock.png", 74, 56);
         CLIPMANAGER->AddClip("in_research_choice", "sprites/game/in_research_choice.png", 50, 60);
@@ -515,11 +553,12 @@ void GameScene::InitClip()
         // 정말로 종료하시겠습니까?
         CLIPMANAGER->AddClip("menu_reallyendimg", "sprites/game/menu_reallyend.png", WINSIZEX, WINSIZEY);
 
+        CLIPMANAGER->AddClip("menu_reallyend_cancel_idle", "sprites/game/menu_reallyend_cancel_idle.png", 200, 54);
+        CLIPMANAGER->AddClip("menu_reallyend_cancel_choice", "sprites/game/menu_reallyend_cancel_choice.png", 200, 54);
+
         CLIPMANAGER->AddClip("menu_reallyend_check_idle", "sprites/game/menu_reallyend_check_idle.png", 200, 54);
         CLIPMANAGER->AddClip("menu_reallyend_check_choice", "sprites/game/menu_reallyend_check_choice.png", 200, 54);
 
-        CLIPMANAGER->AddClip("menu_reallyend_cancel_idle", "sprites/game/menu_reallyend_cancel_idle.png", 200, 54);
-        CLIPMANAGER->AddClip("menu_reallyend_cancel_choice", "sprites/game/menu_reallyend_cancel_choice.png", 200, 54);
     }
 
 	//// ENEMY & CORE 클립 작업 민재 /////
@@ -529,7 +568,6 @@ void GameScene::InitClip()
 		CLIPMANAGER->AddClip("enemy_dagger_walk", "sprites/units/enemy/enemy_dagger_walk.png", 369, 114, 3, 1, 0.8f);
 		CLIPMANAGER->AddClip("projectile", "sprites/units/enemy/projectile.png", 52, 52);
 	}
-
 }
 
 void GameScene::InitCategoryUI()
@@ -730,6 +768,7 @@ void GameScene::ResourcesRender()
 
 	if (_gameInfo->GetResourceAmount(COPPER) < 1000)
 	{
+        // 구리 현재 카운트 출력
 		copperAmount = to_wstring(_gameInfo->GetResourceAmount(COPPER));
 	}
 	else
@@ -745,6 +784,7 @@ void GameScene::ResourcesRender()
 
 	if (_gameInfo->GetResourceAmount(LEAD) < 1000)
 	{
+        // 보라 콩 숫자 출력
 		leadAmount = to_wstring(_gameInfo->GetResourceAmount(LEAD));
 	}
 	else if(_gameInfo->GetResourceAmount(LEAD) > 1000)
@@ -765,6 +805,14 @@ void GameScene::ResourcesRender()
 
 void GameScene::researchUpdate()
 {
+    // 전체 자원
+    _all_Resources_Open_Img.Update();
+    _all_Resources_Close_Img.Update();
+    _all_Resources_Img.Update();
+    _all_Resources_Text.Update();
+    _all_Resources_Button.Update();
+
+    //
     _choiceImg.Update();
     _lockImg.Update();
     _inResearchChoiceImg.Update();
@@ -814,7 +862,13 @@ void GameScene::researchUpdate()
 
 void GameScene::researchRender()
 {
-    /* 버튼 Render */
+    // 전체 자원
+    _all_Resources_Open_Img.Render();
+    _all_Resources_Close_Img.Render();
+    _all_Resources_Img.Render();
+    _all_Resources_Text.Render();
+    _all_Resources_Button.Render();
+
     _coreSlice.Render();
     _mechanicalDrill.Render();
     _conveyor.Render();
@@ -877,7 +931,6 @@ void GameScene::researchRender()
     /* 상세 설명 넣으세요 */
     _coreDetailDescriptionImg.Render();
 
-    //
     _detailDes_goBackIdleImg.Render();
     _detailDes_goBackChoiceImg.Render();
     _detailDes_goBackButton.Render();
@@ -885,6 +938,53 @@ void GameScene::researchRender()
 
 void GameScene::researchInitUI()
 {
+#pragma region 전체 자원 [열림]
+
+    _all_Resources_Open_Img.uiRenderer->Init("all_resources_open_null");
+    _all_Resources_Open_Img.uiMouseEvent->enable = false;
+    _all_Resources_Open_Img.transform->SetPosition(WINSIZEX / 2 - 560, WINSIZEY / 2 - 380);
+    _all_Resources_Open_Img.transform->SetScale(1.0f, 1.0f);
+    _all_Resources_Open_Img.SetActive(true);
+
+    _all_Resources_Close_Img.uiRenderer->Init("all_resources_close");
+    _all_Resources_Close_Img.uiMouseEvent->enable = false;
+    _all_Resources_Close_Img.transform->SetPosition(WINSIZEX / 2 - 560, WINSIZEY / 2 - 380);
+    _all_Resources_Close_Img.transform->SetScale(1.0f, 1.0f);
+    _all_Resources_Close_Img.SetActive(false);
+
+    _all_Resources_Img.uiRenderer->Init("all_resources_event");
+    _all_Resources_Img.uiMouseEvent->enable = false;
+    _all_Resources_Img.transform->SetPosition(WINSIZEX / 2 - 560, WINSIZEY / 2 - 380);
+    _all_Resources_Img.transform->SetScale(1.0f, 1.0f);
+    _all_Resources_Img.SetActive(false);
+
+    _all_Resources_Text.uiRenderer->Init("all_resources_text");
+    _all_Resources_Text.uiMouseEvent->enable = false;
+    _all_Resources_Text.transform->SetPosition(WINSIZEX / 2 - 580, WINSIZEY / 2 - 378);
+    _all_Resources_Text.transform->SetScale(1.0f, 1.0f);
+    _all_Resources_Text.SetActive(true);
+
+    _all_Resources_Button.Init();
+    _all_Resources_Button.uiRenderer->Init(200, 50);
+    _all_Resources_Button.transform->SetPosition(WINSIZEX / 2 - 560, WINSIZEY / 2 - 380);
+
+    _all_Resources_Button.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inResearch_Active_Choice_Img, _uiControler,
+            true),
+        EVENT::ENTER);
+
+    _all_Resources_Button.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inResearch_Active_all_Resources_Close_Img, _uiControler,
+            true),
+        EVENT::CLICK);
+    
+    _all_Resources_Button.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inResearch_Active_Choice_Img, _uiControler,
+            false),
+        EVENT::EXIT);
+
+#pragma endregion
+
 #pragma region ChoiceImg
 
     _choiceImg.uiRenderer->Init("research_choice");
@@ -1459,7 +1559,7 @@ void GameScene::menuInitUI()
 
 #pragma endregion
 
-#pragma region 메뉴 [돌아가기]
+#pragma region 메뉴 [돌아가기] 이미지 & 버튼
     
     _menu_GoBackIdleImg.uiRenderer->Init("menu_goback_idle");
     _menu_GoBackIdleImg.uiMouseEvent->enable = false;
@@ -1494,7 +1594,11 @@ void GameScene::menuInitUI()
 
 #pragma endregion
 
-#pragma region 메뉴 [저장 후 나가기]
+#pragma region 메뉴 [설정] 이미지 & 버튼
+
+#pragma endregion
+
+#pragma region 메뉴 [저장 후 나가기] 이미지 & 버튼
 
     _menu_SaveAndExitIdleImg.uiRenderer->Init("menu_save_and_exit_idle");
     _menu_SaveAndExitIdleImg.uiMouseEvent->enable = false;
@@ -1510,27 +1614,23 @@ void GameScene::menuInitUI()
     
     _menu_SaveAndExitButton.Init();
     _menu_SaveAndExitButton.uiRenderer->Init(360, 80);
+    _menu_SaveAndExitButton.uiMouseEvent->enable = false;
     _menu_SaveAndExitButton.transform->SetPosition(WINSIZEX / 2, WINSIZEY / 2 + 100);
-
-    /* _menu_SaveAndExitButton ENTERT, CLICK, EXIT 하기 */
 
     _menu_SaveAndExitButton.uiMouseEvent->RegistCallback(
         std::bind(&UIControler::inMenu_AcitveChoiceImg_SaveAndExit, _uiControler,
             true),
         EVENT::ENTER);
 
-    // CLICK
+    _menu_SaveAndExitButton.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inMenu_AcitveRellayEnd, _uiControler,
+            &_menu_ReallyEnd, true),
+        EVENT::CLICK);
 
     _menu_SaveAndExitButton.uiMouseEvent->RegistCallback(
         std::bind(&UIControler::inMenu_AcitveChoiceImg_SaveAndExit, _uiControler,
             false),
         EVENT::EXIT);
-
-    //_menu_GoBackButton.uiMouseEvent->RegistCallback(l
-    //    std::bind(&UIControler::inMenu_ReturnToGameScene, _uiControler,
-    //        &_menu, false),
-    //    EVENT::CLICK);
-
 
 #pragma endregion
 
@@ -1543,6 +1643,77 @@ void GameScene::menuInitUI()
     _menu_ReallyEnd_Img.SetActive(false);
 
 #pragma endregion
+
+#pragma region 정말로 종료하시겠습니까? [취소] 이미지 & 버튼
+
+    _menu_ReallyEnd_Cancle_Idle.uiRenderer->Init("menu_reallyend_cancel_idle");
+    _menu_ReallyEnd_Cancle_Idle.uiMouseEvent->enable = false;
+    _menu_ReallyEnd_Cancle_Idle.transform->SetPosition(WINSIZEX / 2 - 153, WINSIZEY / 2 + 100);
+    _menu_ReallyEnd_Cancle_Idle.transform->SetScale(1.5f, 1.4f);
+    _menu_ReallyEnd_Cancle_Idle.SetActive(false);
+
+    _menu_ReallyEnd_Cancle_Choice.uiRenderer->Init("menu_reallyend_cancel_choice");
+    _menu_ReallyEnd_Cancle_Choice.uiMouseEvent->enable = false;
+    _menu_ReallyEnd_Cancle_Choice.transform->SetPosition(WINSIZEX / 2 - 153, WINSIZEY / 2 + 100);
+    _menu_ReallyEnd_Cancle_Choice.transform->SetScale(1.5f, 1.4f);
+    _menu_ReallyEnd_Cancle_Choice.SetActive(false);
+
+    _menu_ReallyEnd_Cancle_Button.Init();
+    _menu_ReallyEnd_Cancle_Button.uiRenderer->Init(300, 80);
+    _menu_ReallyEnd_Cancle_Button.transform->SetPosition(WINSIZEX / 2 - 153, WINSIZEY / 2 + 100);
+
+    _menu_ReallyEnd_Cancle_Button.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inReallyEnd_Active_CancleImg, _uiControler,
+            &_menu_ReallyEnd, true),
+        EVENT::ENTER);
+
+    _menu_ReallyEnd_Cancle_Button.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inReallyEnd_Return_To_MenuState, _uiControler,
+            &_menu_ReallyEnd, false),
+        EVENT::CLICK);
+    
+    _menu_ReallyEnd_Cancle_Button.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inReallyEnd_Active_CancleImg, _uiControler,
+            &_menu_ReallyEnd, false),
+        EVENT::EXIT);
+
+#pragma endregion
+
+#pragma region 정말로 종료하시겠습니까? [확인] 이미지 & 버튼
+
+    _menu_ReallyEnd_Check_Idle.uiRenderer->Init("menu_reallyend_check_idle");
+    _menu_ReallyEnd_Check_Idle.uiMouseEvent->enable = false;
+    _menu_ReallyEnd_Check_Idle.transform->SetPosition(WINSIZEX / 2 + 153, WINSIZEY / 2 + 100);
+    _menu_ReallyEnd_Check_Idle.transform->SetScale(1.5f, 1.4f);
+    _menu_ReallyEnd_Check_Idle.SetActive(false);
+
+    _menu_ReallyEnd_Check_Choice.uiRenderer->Init("menu_reallyend_check_choice");
+    _menu_ReallyEnd_Check_Choice.uiMouseEvent->enable = false;
+    _menu_ReallyEnd_Check_Choice.transform->SetPosition(WINSIZEX / 2 + 153, WINSIZEY / 2 + 100);
+    _menu_ReallyEnd_Check_Choice.transform->SetScale(1.5f, 1.4f);
+    _menu_ReallyEnd_Check_Choice.SetActive(false);
+
+    _menu_ReallyEnd_Check_Button.Init();
+    _menu_ReallyEnd_Check_Button.uiRenderer->Init(300, 80);
+    _menu_ReallyEnd_Check_Button.transform->SetPosition(WINSIZEX / 2 + 153, WINSIZEY / 2 + 100);
+
+    _menu_ReallyEnd_Check_Button.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inReallyEnd_Active_CheckImg, _uiControler,
+            &_menu_ReallyEnd, true),
+        EVENT::ENTER);
+    
+    _menu_ReallyEnd_Check_Button.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inReallyEnd_Return_To_TilteScene, _uiControler,
+            "title"),
+        EVENT::CLICK);
+    
+    _menu_ReallyEnd_Check_Button.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inReallyEnd_Active_CheckImg, _uiControler,
+            &_menu_ReallyEnd, false),
+        EVENT::EXIT);
+
+#pragma endregion
+
 }
 
 void GameScene::menuUpdate()
@@ -1563,9 +1734,11 @@ void GameScene::menuUpdate()
     // 정말로 종료하시겠습니까?
     _menu_ReallyEnd_Check_Idle.Update();
     _menu_ReallyEnd_Check_Choice.Update();
+    _menu_ReallyEnd_Check_Button.Update();
 
     _menu_ReallyEnd_Cancle_Idle.Update();
     _menu_ReallyEnd_Cancle_Choice.Update();
+    _menu_ReallyEnd_Cancle_Button.Update();
 }
 
 void GameScene::menuRender()
@@ -1590,9 +1763,11 @@ void GameScene::menuRender()
 
     _menu_ReallyEnd_Check_Idle.Render();
     _menu_ReallyEnd_Check_Choice.Render();
+    _menu_ReallyEnd_Check_Button.Render();
 
     _menu_ReallyEnd_Cancle_Idle.Render();
     _menu_ReallyEnd_Cancle_Choice.Render();
+    _menu_ReallyEnd_Cancle_Button.Render();
 }
 
 void GameScene::SetProjectileManager()
@@ -1600,19 +1775,18 @@ void GameScene::SetProjectileManager()
 	_projectileManager = new GameObject();
 	_projectileManager->AddComponent(new ProjectileManager());
 	_projectileManager->GetComponent<ProjectileManager>()->Init();
-	_projectileManager->GetComponent<ProjectileManager>()->SetPlayer(_player);
 	_player->controler->SetProjectileManager(_projectileManager->GetComponent<ProjectileManager>());
 }
 
 void GameScene::SetCore()
 {
-	_core = new Prop();
+	_core = new Core();
 	_core->Init();
 	_core->tag = TAGMANAGER->GetTag("prop");
-	_core->renderer->Init("core");
 	_core->transform->SetPosition(25 * TILESIZE + 16, 36 * TILESIZE + 16);
-	_core->collider->transform->SetPosition(_core->transform->GetX(), _core->transform->GetY());
 	_core->collider->RefreshPartition();
+    _core->coreComponent->LinkResourceManager(_resourceManager);
+    _core->coreComponent->LinkGameInfo(_gameInfo);
 }
 
 void GameScene::SetEnemyManager()
@@ -1621,8 +1795,8 @@ void GameScene::SetEnemyManager()
 	_enemyManager->AddComponent(new EnemyManager());
 	_enemyManager->GetComponent<EnemyManager>()->SetTestCoreTransform(_core);
 	_enemyManager->GetComponent<EnemyManager>()->SetProjectileManager(_projectileManager->GetComponent<ProjectileManager>());
+    _enemyManager->GetComponent<EnemyManager>()->SetAstar(_aStar);
 	_enemyManager->GetComponent<EnemyManager>()->Init();
-	_projectileManager->GetComponent<ProjectileManager>()->SetEnemyManager(_enemyManager->GetComponent<EnemyManager>());
 }
 
 void GameScene::SetCameraControler()
@@ -1639,24 +1813,61 @@ void GameScene::SetGameUIInit()
 	_wavePane.uiRenderer->Init("uiwavepane");
 	_wavePane.transform->SetPosition(183, 45);
 
-	_waveSkipUi.Init();
-	_waveSkipUi.uiRenderer->Init("waveskipui");
-	_waveSkipUi.transform->SetPosition(380, 45);
+	_enemyWaveSkip.Init();
+	_enemyWaveSkip.uiRenderer->Init("waveskipui");
+	_enemyWaveSkip.transform->SetScale(1.3, 1.3);
+	_enemyWaveSkip.uiMouseEvent->enable = false;
+	_enemyWaveSkip.transform->SetPosition(390.5f, 45.7f);
+
+	_enemyWaveSkipButton.Init();
+	_enemyWaveSkipButton.uiRenderer->Init(57, 100);
+	_enemyWaveSkipButton.transform->SetPosition(392, 45);
+	_enemyWaveSkipButton.SetActive(true);
+
+	_enemyWaveSkipClick.Init();
+	_enemyWaveSkipClick.uiRenderer->Init("waveskipuienter");
+	_enemyWaveSkipClick.transform->SetScale(1.3, 1.3);
+	_enemyWaveSkipClick.uiMouseEvent->enable = false;
+	_enemyWaveSkipClick.transform->SetPosition(390.5f, 45.7f);
+
+	_enemyWaveSkipButton.uiMouseEvent->RegistCallback(
+		std::bind(&UIControler::EnemyWaveSkip, _uiControler,true), EVENT::ENTER);
+
+	_enemyWaveSkipButton.uiMouseEvent->RegistCallback(
+		std::bind(&UIControler::EnemyWaveSkipClick, _uiControler), EVENT::CLICK);
+
+	_enemyWaveSkipButton.uiMouseEvent->RegistCallback(
+		std::bind(&UIControler::EnemyWaveSkip, _uiControler,false), EVENT::EXIT);
 }
 
 void GameScene::InGameUIUpdate()
 {
 	_wavePane.Update();
-	_waveSkipUi.Update();
+	_enemyWaveSkip.Update();
+	_enemyWaveSkipButton.Update();
+	_enemyWaveSkipClick.Update();
 }
 
 void GameScene::InGameUIRender()
 {
 	_wavePane.Render();
-	_waveSkipUi.Render();
+	_enemyWaveSkip.Render();
+	_enemyWaveSkipButton.Render();
+	//_enemyWaveSkipClick.Render();
+	
+	wstring second = to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeSecond());
+	wstring minute = to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeMinute());
+	wstring wave = to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetCurWave());
 
-	D2DRENDERER->RenderText(150, 5, L"wave", 25, L"fontello", D2DRenderer::DefaultBrush::Yellow);
+	D2DRENDERER->RenderText(150, 5, L"단계", 22, L"fontello", D2DRenderer::DefaultBrush::Yellow);
+	D2DRENDERER->RenderText(200, 5, wave, 22, L"mindustry", D2DRenderer::DefaultBrush::Yellow);
+	D2DRENDERER->RenderText(215, 5, L"/10", 22, L"mindustry", D2DRenderer::DefaultBrush::Yellow);
 	D2DRENDERER->RenderText(150, 35, L"다음 단계까지", 20, L"fontello", D2DRenderer::DefaultBrush::Yellow);
+
+	D2DRENDERER->RenderText(150, 60, minute, 20, L"mindustry", D2DRenderer::DefaultBrush::White);
+	D2DRENDERER->RenderText(165, 60, L"분", 20, L"fontello", D2DRenderer::DefaultBrush::White);
+	D2DRENDERER->RenderText(190, 60, second, 20, L"mindustry", D2DRenderer::DefaultBrush::White);
+	D2DRENDERER->RenderText(213, 61, L"초", 20, L"fontello", D2DRenderer::DefaultBrush::White);
 }
 
 void GameScene::InGameUIClip()
@@ -1664,7 +1875,8 @@ void GameScene::InGameUIClip()
 	/////////////////// 07. 20 게임속 Wave UI && Player UI 민재 ////////////////////////////
 	{
 		CLIPMANAGER->AddClip("uiwavepane", "sprites/ingameui/uiwavepane.png", 367, 100);
-		CLIPMANAGER->AddClip("waveskipui", "sprites/ingameui/waveskipui.png", 57, 100);
+		CLIPMANAGER->AddClip("waveskipui", "sprites/ingameui/waveskipui.png", 36, 77);
+		CLIPMANAGER->AddClip("waveskipuienter", "sprites/ingameui/waveskipuienter.png", 36, 77);
 	}
 }
 
@@ -1687,18 +1899,6 @@ void GameScene::StringRender()
 	/*wstring hp = L"HP : ";
 	hp.append(to_wstring(_player->GetComponent<PlayerControler>()->GetHp()));
 	D2DRENDERER->RenderText(10, 150, hp, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
-
-	wstring minute = L"MINUTE : ";
-	minute.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeMinute()));
-	D2DRENDERER->RenderText(10, 10, minute, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
-
-	wstring second = L"SECOND: ";
-	second.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeSecond()));
-	D2DRENDERER->RenderText(10, 60, second, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
-
-	wstring wave = L"CurWave: ";
-	wave.append(to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetCurWave()));
-	D2DRENDERER->RenderText(10, 110, wave, 30, L"fontello", D2DRenderer::DefaultBrush::Blue);
 
     /*wstring mineCount = L"mineCount";
     mineCount.append(to_wstring(_mineCount));

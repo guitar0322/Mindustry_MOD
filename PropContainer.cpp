@@ -5,6 +5,7 @@
 #include "Transport.h"
 #include "TileInfo.h"
 #include "Drill.h"
+#include "Production.h"
 
 int conveyorDir[4][2] = { {1,0}, {0,1}, {-1,0}, {0,-1} };
 
@@ -79,6 +80,7 @@ void PropContainer::AddProp(int hashKey, Prop* newProp, PROPDIR dir)
 			if (nearDrill != nullptr)
 			{
 				conveyorCast->transport->LinkConveyor(PROPDIR(i));
+				nearDrill->production->Link(tileX, tileY, conveyorCast->transport);
 			}
 		}
 	}
@@ -96,14 +98,7 @@ void PropContainer::AddProp(int hashKey, Prop* newProp, PROPDIR dir)
 			if (nearConveyor != nullptr)
 			{
 				nearConveyor->transport->LinkConveyor(PROPDIR((i + 2) % 4));
-				//if (i == conveyorCast->transport->GetOutDir())
-				//{
-				//	//(i + 2) % 4 = 반대방향
-				//}
-				//else if (nearConveyor->transport->GetOutDir() == (i + 2) % 4)
-				//{
-				// 
-				//}
+				drillCast->production->Link(nextX, nextY, nearConveyor->transport);
 			}
 		}
 	}

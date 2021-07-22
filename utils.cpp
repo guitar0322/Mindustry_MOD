@@ -39,7 +39,7 @@ namespace HDY_UTIL
 
 	float GetDistance(const Vector2& v1, const Vector2& v2)
 	{
-		float deltaX = v1.x - v2.y;
+		float deltaX = v1.x - v2.x;
 		float deltaY = v1.y - v2.y;
 		return sqrtf(deltaX * deltaX + deltaY * deltaY);
 	}
@@ -174,6 +174,7 @@ namespace HDY_UTIL
 		}
 		return Vector2(nextX, nextY);
 	}
+
 	Vector2 MoveTowardTo(Transform* moveTr, Transform* targetTr, float speed, float limit)
 	{
 		float angle = GetAngle(moveTr->GetX(), moveTr->GetY(), targetTr->GetX(), targetTr->GetY());
@@ -195,6 +196,29 @@ namespace HDY_UTIL
 
 		return Vector2(nextX, nextY);
 	}
+
+	Vector2 MoveTowardTo(Transform* moveTr, float x2, float y2, float speed, float limit)
+	{
+		float angle = GetAngle(moveTr->GetX(), moveTr->GetY(), x2, y2);
+		float nextX, nextY;
+		float distance;
+		distance = GetDistance(moveTr->GetX(), moveTr->GetY(), x2, y2);
+		float remain = distance - limit;
+		if (remain > speed)
+		{
+			nextX = moveTr->GetX() + cosf(angle) * speed;
+			nextY = moveTr->GetY() - sinf(angle) * speed;
+		}
+		else
+		{
+			nextX = moveTr->GetX() + cosf(angle) * remain;
+			nextY = moveTr->GetY() - sinf(angle) * remain;
+		}
+		moveTr->Move(cosf(angle) * speed, -sinf(angle) * speed);
+
+		return Vector2(nextX, nextY);
+	}
+
 	Vector2 MoveTowardTo(RECT& rc1, RECT& rc2, float speed, int limit)
 	{
 		POINTF center1 = GetCenterF(rc1);

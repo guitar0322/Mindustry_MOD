@@ -8,7 +8,7 @@
 #include "EnemyGroundControler.h"
 #include "EnemyInfo.h"
 #include "EnemyObject.h"
-
+#include "Astar.h"
 EnemyManager::EnemyManager()
 {
 }
@@ -39,11 +39,12 @@ void EnemyManager::Render()
 
 void EnemyManager::SetEnemyTime()
 {
-	_enemySpawnTime = 3.f;
+	_enemySpawnTime = 124.f;
 	_timeSecond = 0;
 	_timeMinute = 0;
 	_spawnEnemy = false;
 	_enemyTime = true;
+	_waveSkip = false;
 }
 
 void EnemyManager::SetEnemy()
@@ -58,10 +59,11 @@ void EnemyManager::SetEnemy()
 		_enemyGround->GetComponent<EnemyInfo>()->SetEnemyManager(this);
 		_enemyGround->GetComponent<EnemyInfo>()->SetTestCore(_testCore);
 		_enemyGround->GetComponent<EnemyInfo>()->GetCoreAngle();
-		_enemyGround->GetComponent<EnemyInfo>()->SetSpeed(200.f);
+		_enemyGround->GetComponent<EnemyInfo>()->SetSpeed(150.f);
 		_enemyGround->GetComponent<EnemyInfo>()->SetHp(100);
 		_enemyGround->transform->SetScale(0.5f, 0.5f);
 		_enemyGround->GetComponent<EnemyGroundControler>()->SetProjectileManager(_projectileManager);
+		_enemyGround->GetComponent<EnemyGroundControler>()->SetAstar(_aStar);
 		_enemyGround->SetActive(false);
 		_enemyV.push_back(_enemyGround);
 	}
@@ -116,33 +118,29 @@ void EnemyManager::SetEnemy()
 
 void EnemyManager::EnemyTimer()
 {
-	//if (_enemyTime)
-	//{
-	//	_enemySpawnTime -= TIMEMANAGER->getElapsedTime();
-	//	int _intEnemySpawnTime = int(_enemySpawnTime);
-
-	//	_timeSecond = _intEnemySpawnTime % 3;		//60
-	//	_timeMinute = _intEnemySpawnTime / 3;		//60
-
-	//	if (_intEnemySpawnTime == 0)
-	//	{
-	//		_spawnEnemy = true;
-	//		_enemyTime = false;
-	//	}
-
-	//	if (_spawnEnemy == true && _enemyTime == false)
-	//	{
-	//		SpawnEnemy();
-	//		_spawnEnemy = false;
-	//		_enemyTime = false;
-	//		_enemySpawnTime = 3.f;
-	//	}
-	//}
-
-	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
+	if (_enemyTime)
 	{
-		SpawnEnemy();
+		_enemySpawnTime -= TIMEMANAGER->getElapsedTime();
+		int _intEnemySpawnTime = int(_enemySpawnTime);
+
+		_timeSecond = _intEnemySpawnTime % 60;		//60
+		_timeMinute = _intEnemySpawnTime / 60;		//60
+
+		if (_intEnemySpawnTime == 0)
+		{
+			_spawnEnemy = true;
+			_enemyTime = false;
+		}
+
+		if (_spawnEnemy == true && _enemyTime == false)
+		{
+			SpawnEnemy();
+			_spawnEnemy = false;
+			_enemyTime = false;
+			_enemySpawnTime = 124.f;
+		}
 	}
+
 }
 
 void EnemyManager::EnemyUpdate()
@@ -152,6 +150,7 @@ void EnemyManager::EnemyUpdate()
 		if (_enemyV[_waveV[_curWave][i]]->isActive == false) continue;
 		_enemyV[_waveV[_curWave][i]]->Update();
 	}
+	
 }
 
 void EnemyManager::EnemyRender()
@@ -174,6 +173,7 @@ void EnemyManager::SpawnEnemy()
 		_enemyV[_waveV[_curWave][i]]->SetActive(true);
 		_enemyV[_waveV[_curWave][i]]->transform->SetPosition(100 + 200 * i , 100 + 50 * i);
 	}
+	_enemySpawnTime = 0.f;
 }
 
 void EnemyManager::DeadEvent()
@@ -188,4 +188,5 @@ void EnemyManager::DeadEvent()
 	_curWave++;
 	return;
 }
-																																																			
+
+																																														

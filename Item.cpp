@@ -7,7 +7,7 @@
 int moveDir[4][2] = { {1, 0},{0,1},{-1,0},{0,-1} };
 
 Item::Item(RESOURCE type)
-	:_speed(45.f), _isOverCenter(false)
+	:_speed(60.f), _isOverCenter(false)
 {
 	_type = type;
 	tag = TAGMANAGER->GetTag("resource");
@@ -26,7 +26,6 @@ Item::Item(RESOURCE type)
 	collider = new BoxCollider();
 	AddComponent(collider);
 	collider->Init();
-	collider->SetIsTrigger(false);
 	collider->SetSize(20, 16);
 }
 
@@ -37,6 +36,15 @@ Item::~Item()
 void Item::Update()
 {
 	GameObject::Update();
+	if (collider->GetIsTrigger() == true)
+	{
+		_colliderDelay += TIMEMANAGER->getElapsedTime();
+		if (_colliderDelay >= 0.5f)
+		{
+			_colliderDelay = 0;
+			collider->SetIsTrigger(false);
+		}
+	}
 	int tileX = transform->GetX() / TILESIZE;
 	int tileY = transform->GetY() / TILESIZE;
 	if (_preTile.first != tileX || _preTile.second != tileY)
@@ -50,12 +58,22 @@ void Item::Update()
 		}
 		else
 		{
+			string sname;
+			sname.assign(name.begin(), name.end());
+			cout << sname << endl;
 			_speed = 0;
 		}
 	}
 	if (_speed != 0.f)
 	{
-		transform->Move(_speed * TIMEMANAGER->getElapsedTime() * moveDir[_dir][0], _speed * TIMEMANAGER->getElapsedTime() * moveDir[_dir][1]);
+		if (transform->Move(_speed * TIMEMANAGER->getElapsedTime() * moveDir[_dir][0], _speed * TIMEMANAGER->getElapsedTime() * moveDir[_dir][1]) == false)
+		{
+			_curConveyor->transport->SetIsLack(true);
+		}
+		else
+		{
+			_curConveyor->transport->SetIsLack(false);
+		}
 		if (_isOverCenter == false) {
 			switch (_dir) {
 			case 0:
@@ -100,7 +118,7 @@ void Item::SetConveyor(Conveyor* conveyor)
 {
 	_curConveyor = conveyor;
 	_isOverCenter = false;
-	_speed = 45.f;
+	_speed = 60.f;
 	if (_curConveyor->transform->GetX() > transform->GetX())
 		_dir = 0;
 	else if (_curConveyor->transform->GetY() > transform->GetY())
