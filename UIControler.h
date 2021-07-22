@@ -50,6 +50,8 @@ public:
     /* 시영 */
     // 연구
     /* 전체 자원 버튼 (회색) */
+    int     all_Resources_Count;
+
     UIBase* all_Resources_Open1_Img;            // 전체 자원 [열림] 1개
     UIBase* all_Resources_Open2_Img;            // 전체 자원 [열림] 2개
     UIBase* all_Resources_Open3_Img;            // 전체 자원 [열림] 3개

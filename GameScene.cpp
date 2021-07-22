@@ -35,8 +35,8 @@ HRESULT GameScene::Init()
     _gameInfo = new GameInfo();
     _gameInfo->Init();
     _gameInfo->AddResource(COPPER, 500);
-    _gameInfo->AddResource(LEAD, 500);
-    _gameInfo->AddResource(SCRAP, 500);
+    _gameInfo->AddResource(LEAD, 0);
+    _gameInfo->AddResource(SCRAP, 0);
 
     _propContainer = new PropContainer();
     _propFactory = new PropFactory();
@@ -63,6 +63,7 @@ HRESULT GameScene::Init()
 
     _uiControler->propFactory = _propFactory;
     _uiControler->propContainer = _propContainer;
+
 
 	/*===================================*/
 	/*인게임 맵 초기화 -> 유림*/
@@ -104,6 +105,7 @@ HRESULT GameScene::Init()
     {
         // 연구
         /* 전체 자원 버튼 (회색) */
+        _uiControler->all_Resources_Count = _all_Resources_Count;
         _uiControler->all_Resources_Img = &_all_Resources_Img;
         _uiControler->all_Resources_Open1_Img = &_all_Resources_Open1_Img;
         _uiControler->all_Resources_Open2_Img = &_all_Resources_Open2_Img;
@@ -354,7 +356,11 @@ void GameScene::Update()
 
         if (KEYMANAGER->isOnceKeyDown(VK_F1)) _research = true;
         if (KEYMANAGER->isOnceKeyDown(VK_F2)) _research = false;
-        if (_research) researchUpdate();
+        if (_research)
+        {
+            researchUpdate();
+            if (KEYMANAGER->isOnceKeyDown(VK_ESCAPE)) _research = false;
+        }
         _research_goBackButton.Update();
         _coreDBButton.Update();
         _detailDes_goBackButton.Update();

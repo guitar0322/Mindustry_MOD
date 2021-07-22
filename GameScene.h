@@ -81,8 +81,8 @@ private:
     bool    _research;                       // 연구 상태
     bool    _inDetail;                       // 상세 설명 상태
     bool    _all_Resources_State;            // 전체 자원 [열림], [닫힘] 상태
-
     int     _all_Resources_Count;            // 전체 자원 개수
+
     UIBase  _all_Resources_Open1_Img;        // 전체 자원 [열림] 1개
     UIBase  _all_Resources_Open2_Img;        // 전체 자원 [열림] 2개
     UIBase  _all_Resources_Open3_Img;        // 전체 자원 [열림] 3개

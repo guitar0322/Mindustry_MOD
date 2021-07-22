@@ -406,9 +406,9 @@ void UIControler::inResearch_Active_all_Resources_Click_Event(bool* name)
 	{
 		*name = false;
 		all_Resources_Img->SetActive(false);
-		all_Resources_Open1_Img->SetActive(false);
-		all_Resources_Open2_Img->SetActive(false);
-		all_Resources_Open3_Img->SetActive(false);
+		if (all_Resources_Count == 1) all_Resources_Open1_Img->SetActive(false);
+		if (all_Resources_Count == 2) all_Resources_Open2_Img->SetActive(false);
+		if (all_Resources_Count == 3) all_Resources_Open3_Img->SetActive(false);
 		all_Resources_Text->SetActive(false);
 		all_Resources_Close_Img->SetActive(true);
 
