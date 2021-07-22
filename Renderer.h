@@ -13,6 +13,8 @@ private:
     float _frameWidth;
     float _frameHeight;
     float _alpha;
+	float _clipX;
+	float _clipY;
     int _curFrameX;
     int _curFrameY;
     bool _isStatic;
@@ -42,5 +44,7 @@ public:
     void ChangeTargetBitmap(string newClipName, int startFrame);
     void SetFrameX(int frameX) { _curFrameX = frameX; }
     void SetFrameY(int frameY) { _curFrameY = frameY; }
+	void SetClipX(float clipX) { _clipX = clipX; }
+	void SetClipY(float clipY) { _clipY = clipY; }
 };
 

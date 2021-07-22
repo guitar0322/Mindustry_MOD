@@ -8,7 +8,8 @@ public:
 	ImageObject* _collectLaserFirst;	//자원추출 레이저 시작
 	ImageObject* _collectLaserEnd;		//자원추출 레이저 끝
 	ImageObject* _collectLaser;			//자원추출 레이저 중간
-	ImageObject* _detectRc;				//자원 탐지용 렉트
+	ImageObject* _detectRC;				//자원 탐지용 렉트
+
 
 private:
 	float _laserStartX, _laserStartY;
@@ -34,7 +35,7 @@ public:
 	void SetImage();
 	void OffLaser();
 	void SetLaserStartPoint(float laserStartX, float laserStartY) { _laserStartX = laserStartX; _laserStartY = laserStartY; }
-	pair <float, float> GetLaserFirstPoint() { return { _laserStartX, _laserStartY }; }
+	pair <float, float> GetLaserStartPoint() { return { _laserStartX, _laserStartY }; }
 	void SetLaserEndPoint(int laserEndX, int laserEndY) { _laserEndX = laserEndX; _laserEndY = laserEndY; }
 	pair <float, float> GetLaserEndPoint() { return { _laserEndX, _laserEndY }; }
 	void SetLaserPoint(float laserX, float laserY) { _laserX = laserX; _laserY = laserY; }

@@ -22,6 +22,7 @@ HRESULT GameScene::Init()
 
 	InitClip();
 	PlayerClip();
+	InGameUIClip();
 
 	SetBackBufferSize(1600, 1600);
     COLLIDERMANAGER->PartitionArea(10, 10);
@@ -229,7 +230,7 @@ HRESULT GameScene::Init()
 	SetCore();
 	SetEnemyManager();
 	SetCameraControler();
-	SetGameUI();
+	SetGameUIInit();
 
 	_uiControler->enemyWaveSkip = &_enemyWaveSkip;
 	_uiControler->enemyWaveSkipClick = &_enemyWaveSkipClick;
@@ -396,8 +397,14 @@ void GameScene::Render()
     _categorySelect.Render();
     _propSelect.Render();
 
+	InGameUIRender();
     //07.20 민재 인 게임 Wave UI && Player UI 작업//
-    InGameUIRender();
+	//자원UI 렌더 -> 유림 (210719)
+	ResourcesRender();
+	_player->controler->playerUI.Render();
+	_player->controler->playerHpUIPane.Render();
+	_player->controler->playerHpUI.Render();
+	_player->controler->playerHpUIAlpha.Render();
 
     /* 시영 */
     // 연구
@@ -405,9 +412,7 @@ void GameScene::Render()
     // 메뉴
     if (_menu) menuRender();
 
-	/* ================================여기 만지지 마세요 ========================================*/
-	//자원UI 렌더 -> 유림 (210719)
-	ResourcesRender();
+
 	/* ================================여기 만지지 마세요 ========================================*/
 	
     //210719 유림 수정
@@ -562,15 +567,6 @@ void GameScene::InitClip()
 		CLIPMANAGER->AddClip("enemy_dagger_walk", "sprites/units/enemy/enemy_dagger_walk.png", 369, 114, 3, 1, 0.8f);
 		CLIPMANAGER->AddClip("projectile", "sprites/units/enemy/projectile.png", 52, 52);
 	}
-
-	/////////////////// 07. 20 게임속 Wave UI && Player UI 민재 ////////////////////////////
-	{
-		CLIPMANAGER->AddClip("uiwavepane","sprites/ingameui/uiwavepane.png", 367, 100);
-		CLIPMANAGER->AddClip("playerui", "sprites/ingameui/playerui.png", 70, 70);
-		CLIPMANAGER->AddClip("playerhpui", "sprites/ingameui/playerhpui.png", 133, 92);
-		CLIPMANAGER->AddClip("waveskipui", "sprites/ingameui/waveskipui.png", 36, 77);
-		CLIPMANAGER->AddClip("waveskipuienter", "sprites/ingameui/waveskipuienter.png", 36, 77);
-	}
 }
 
 void GameScene::InitCategoryUI()
@@ -690,7 +686,6 @@ void GameScene::PlayerClip()
 	CLIPMANAGER->AddClip("player_fire_circle", "player/alpha_fire_circle.png", 17, 17);
 	CLIPMANAGER->AddClip("player_fire", "player/alpha_fire.png", 30, 30);
 
-
 	//자원 클립
 	CLIPMANAGER->AddClip("copperUI", "sprites/items/item-copper.png", 32, 32);
 	CLIPMANAGER->AddClip("leadUI", "sprites/items/item-lead.png", 32, 32);
@@ -752,8 +747,6 @@ void GameScene::ResourcesInit()
 	_resourcesUI[1].uiRenderer->Init("leadUI");
     _resourcesUI[1].transform->SetPosition(WINSIZEX / 2 + 20, 20);
 
-    /* 시영 수정 0721 대영이형네 집에서 유림이 허락 받고 */
-    _gameInfo->AddResource(COPPER, 200);
 }
 
 void GameScene::ResourcesUpdate()
@@ -768,6 +761,7 @@ void GameScene::ResourcesRender()
 	_resourcesUI[0].Render();
 	_resourcesUI[1].Render();
 
+
 	wstring copperAmount;
 	wstring leadAmount;
 
@@ -778,7 +772,13 @@ void GameScene::ResourcesRender()
 	}
 	else
 	{
-		copperAmount = L"1.0k";
+		copperAmount = L"";
+		int thousand = _gameInfo->GetResourceAmount(COPPER) / 1000;
+		copperAmount.append(to_wstring(thousand));
+		copperAmount.append(L".");
+		int hundreds = (_gameInfo->GetResourceAmount(COPPER) - (1000 * thousand)) / 100;
+		copperAmount.append(to_wstring(hundreds));
+		copperAmount.append(L"k");
 	}
 
 	if (_gameInfo->GetResourceAmount(LEAD) < 1000)
@@ -786,11 +786,18 @@ void GameScene::ResourcesRender()
         // 보라 콩 숫자 출력
 		leadAmount = to_wstring(_gameInfo->GetResourceAmount(LEAD));
 	}
-	else
+	else if(_gameInfo->GetResourceAmount(LEAD) > 1000)
 	{
-		leadAmount = L"1.0k";
+		leadAmount = L"";
+		int thousand = _gameInfo->GetResourceAmount(LEAD) / 1000;
+		leadAmount.append(to_wstring(thousand));
+		leadAmount.append(L".");
+		int hundreds = (_gameInfo->GetResourceAmount(LEAD) - (1000 * thousand)) / 100;
+		leadAmount.append(to_wstring(hundreds));
+		leadAmount.append(L"k");
+
 	}
-	
+
 	D2DRENDERER->RenderText(WINSIZEX / 2 - 70, 5, copperAmount, 28, L"mindustry", D2DRenderer::DefaultBrush::White);
 	D2DRENDERER->RenderText(WINSIZEX / 2 + 42, 5, leadAmount, 28, L"mindustry", D2DRenderer::DefaultBrush::White);
 }
@@ -1800,19 +1807,11 @@ void GameScene::SetCameraControler()
     _cameraControler->GetComponent<CameraControler>()->SetPlayerTr(_player->transform);
 }
 
-void GameScene::SetGameUI()
+void GameScene::SetGameUIInit()
 {
 	_wavePane.Init();
 	_wavePane.uiRenderer->Init("uiwavepane");
 	_wavePane.transform->SetPosition(183, 45);
-
-	_playerUi.Init();												//민재 한거 나중에 지우기
-	_playerUi.uiRenderer->Init("playerui");							//민재 한거 나중에 지우기
-	_playerUi.transform->SetPosition(65, 45);						//민재 한거 나중에 지우기
-
-	_playerHpUi.Init();												//민재 한거 나중에 지우기
-	_playerHpUi.uiRenderer->Init("playerhpui");						//민재 한거 나중에 지우기
-	_playerHpUi.transform->SetPosition(65, 50);						//민재 한거 나중에 지우기
 
 	_enemyWaveSkip.Init();
 	_enemyWaveSkip.uiRenderer->Init("waveskipui");
@@ -1844,8 +1843,6 @@ void GameScene::SetGameUI()
 void GameScene::InGameUIUpdate()
 {
 	_wavePane.Update();
-	_playerUi.Update();				//민재 한거 나중에 지우기
-	_playerHpUi.Update();			//민재 한거 나중에 지우기
 	_enemyWaveSkip.Update();
 	_enemyWaveSkipButton.Update();
 	_enemyWaveSkipClick.Update();
@@ -1854,8 +1851,6 @@ void GameScene::InGameUIUpdate()
 void GameScene::InGameUIRender()
 {
 	_wavePane.Render();
-	_playerUi.Render();				//민재 한거 나중에 지우기
-	_playerHpUi.Render();			//민재 한거 나중에 지우기
 	_enemyWaveSkipClick.Render();
 	_enemyWaveSkip.Render();
 	_enemyWaveSkipButton.Render();
@@ -1873,6 +1868,17 @@ void GameScene::InGameUIRender()
 	D2DRENDERER->RenderText(173, 55, L"분", 20, L"fontello", D2DRenderer::DefaultBrush::White);
 	D2DRENDERER->RenderText(198, 58, second, 20, L"mindustry", D2DRenderer::DefaultBrush::White);
 	D2DRENDERER->RenderText(230, 55, L"초", 20, L"fontello", D2DRenderer::DefaultBrush::White);
+
+}
+
+void GameScene::InGameUIClip()
+{
+	/////////////////// 07. 20 게임속 Wave UI && Player UI 민재 ////////////////////////////
+	{
+		CLIPMANAGER->AddClip("uiwavepane", "sprites/ingameui/uiwavepane.png", 367, 100);
+		CLIPMANAGER->AddClip("waveskipui", "sprites/ingameui/waveskipui.png", 36, 77);
+		CLIPMANAGER->AddClip("waveskipuienter", "sprites/ingameui/waveskipuienter.png", 36, 77);
+	}
 }
 
 void GameScene::StringRender()

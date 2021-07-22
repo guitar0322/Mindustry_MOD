@@ -4,6 +4,7 @@
 
 class ProjectileManager;
 class PlayerLaser;
+class PlayerConstructLaser;
 class EnemyInfo;
 class GameMap;
 
@@ -30,13 +31,21 @@ private:
 		IDLE
 	};
 private:
+	EnemyInfo* _enemyInfo;
+	ProjectileManager* _projectileManager;
 
-	float _speed;
-	float _accel;
-	float _armRecoverySpeed;
-	float _targetAngle;
-	float _angleSpeed;
-	float _breakTime;
+	/*================================================*/
+	//플레이어 상태//
+	float _speed;			//스피드
+	float _accel;			//가속도
+	float _targetAngle;		//회전방향
+	float _angleSpeed;		//회전속도
+	float _friction;		//마찰력
+	int _hp;				//체력
+	float _damage;
+
+	/*================================================*/
+	//웨폰 관련//
 	float _respawnTime;
 	float _weaponLTrackRadius; //r2
 	float _weaponRTrackRadius; //r2
@@ -48,8 +57,7 @@ private:
 	float _worldX, _worldY;
 	float _boosterTime;
 
-	int _hp;
-
+	//상태 관련//
 	DIRECTION _dir;
 	bool _isLeft;
 	bool _isSlow;
@@ -58,29 +66,31 @@ private:
 	bool _isDead;
 	bool _isRespawn;
 	int _scaleFlag;
-	ProjectileManager* _projectileManager;
+	bool _isHit;
 
-	//자원 추출 레이저
-	PlayerLaser* _playerLaser;
-
-	EnemyInfo* _enemyInfo;
-
+	/*================================================*/
 	//0720 유림 -> 자원 추출용
+	PlayerLaser* _playerLaser;
 	GameMap* _gameMap;
 	GameInfo* _gameInfo;
 	int _copperAmount, _leadAmount;
 	float _correctingTIme;
 	RESOURCE _colletingResources;
-
+	/*================================================*/
+	//0721 유림 -> 건축용
+	PlayerConstructLaser* _playerConstructLaser;
 
 public:
 	virtual void Init();
 	virtual void Update();
 	virtual void Render();
 
+	void KeyHandle();
 	void PlayerDirection();
 	void ResoucesCollect();
 	void ShootResoucesLaser();
+	void ShootConstructLaser();
+
 	void BoosterFireScale();
 
 	float GetHp() const { return _hp; }
@@ -88,16 +98,32 @@ public:
 	float GetTargetAngle() const { return _targetAngle; }
 	bool GetPlayerDead() const { return _isDead; }
 	bool GetPlayerRespawn() const { return _isRespawn; }
-	void KeyHandle();
 	void SetProjectileManager(ProjectileManager* projectileManager) { _projectileManager = projectileManager; }
 	void SetGameInfo(GameInfo* gameInfo) { _gameInfo = gameInfo; }
 	void SetGameMap(GameMap* gameMap) { _gameMap = gameMap; }
-
 
 	void Hit(float damage);
 	void Dead();
 	void Respawn();
 	void RespawnTime();
 	void MoveHandler();
+
+	/*===================================================================*/
+	/*UI관련*/
+	//UI ->유림 210721
+	UIBase playerUI;
+	UIBase playerHpUI;
+	UIBase playerHpUIAlpha;
+	UIBase playerHpUIPane;
+	float hpUI;
+	float reduceHP;
+	float reduceTime;
+	float alphaTime;
+
+	void PlayerUIInit();
+	void PlayerUIUpdate();
+	void PlayerHpAlpha();
+	/*===================================================================*/
+
 };
 

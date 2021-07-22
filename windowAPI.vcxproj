@@ -205,6 +205,7 @@
     <ClInclude Include="Outline.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerConstructLaser.h" />
     <ClInclude Include="PlayerControler.h" />
     <ClInclude Include="PlayerLaser.h" />
     <ClInclude Include="playGround.h" />
@@ -310,6 +311,7 @@
     <ClCompile Include="Outline.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerConstructLaser.cpp" />
     <ClCompile Include="PlayerControler.cpp" />
     <ClCompile Include="PlayerLaser.cpp" />
     <ClCompile Include="playGround.cpp" />
