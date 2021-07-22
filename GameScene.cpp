@@ -377,7 +377,8 @@ void GameScene::Render()
     COLLIDERMANAGER->Render();
 	//플레이어 관련 렌더 -> 유림
 	{
-		_player->transform->GetChild(3)->gameObject->Render();
+		_player->transform->GetChild(4)->gameObject->Render();
+		_player->Render();
 		_enemyManager->Render();
         EFFECTMANAGER->Render();
 		_player->Render();
@@ -708,6 +709,9 @@ void GameScene::PlayerInit()
 	_player->renderer->Init("player");
 	_player->transform->SetPosition(1500, 900);
 	_player->transform->SetAngle(0.0f);
+	_player->controler->LinkProFactory(_propFactory);
+	_propFactory->LinkPlayerControler(_player->controler);
+
 	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
 
 	//플레이어 포신 유림.
@@ -731,12 +735,13 @@ void GameScene::PlayerInit()
 	_playerFire->Init();
 	_playerFire->renderer->Init("player_fire");
 
-	_player->transform->AddChild(_playerWeaponL->transform);
-	_player->transform->AddChild(_playerWeaponR->transform);
-	_player->transform->AddChild(_playerCell->transform);
-	_player->transform->AddChild(_playerFireCircle->transform);
-	_player->transform->AddChild(_playerFire->transform);
-	_player->transform->GetChild(2)->SetPosition(_player->transform->GetX() , _player->transform->GetY());
+	_player->transform->AddChild(_playerWeaponL->transform);		//웨폰L 자식 1
+	_player->transform->AddChild(_playerWeaponR->transform);		//웨폰R 자식 2
+	_player->transform->AddChild(_playerCell->transform);			//플레이어 부선기 자식3
+	_player->transform->AddChild(_playerFireCircle->transform);		//플레이어 불꽃 하얀부분 자식4
+	_player->transform->AddChild(_playerFire->transform);			//플레이어 불꽃 자식5
+	//부선기만 이곳에서 렌더하므로 초기화
+	_player->transform->GetChild(3)->SetPosition(_player->transform->GetX() , _player->transform->GetY());
 
 	_player->controler->SetGameInfo(_gameInfo);
 	_player->controler->SetGameMap(_gameMap);
