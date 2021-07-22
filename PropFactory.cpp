@@ -13,6 +13,8 @@
 #include "Production.h"
 #include "Turret.h"
 #include "ProjectileManager.h"
+#include "PlayerControler.h"
+
 PropFactory::PropFactory()
 {
 }
@@ -24,6 +26,7 @@ PropFactory::~PropFactory()
 void PropFactory::Init()
 {
 	InitPropInfo();
+	isProduction = false;
 }
 
 void PropFactory::Update()
@@ -34,7 +37,13 @@ void PropFactory::Update()
 		_propQueue.pop();
 	}
 	if (_propQueue.empty() == true)
+	{
+		isBuilding = false;
 		return;
+	}
+	else {
+		isBuilding = true;
+	}
 	if(_gameInfo->IsValidResource((RESOURCE)_propInfoV[_propQueue.front().catagory][_propQueue.front().propIdx].resource, 
 		_propInfoV[_propQueue.front().catagory][_propQueue.front().propIdx].resourceAmount) == false)
 		return;
@@ -46,10 +55,13 @@ void PropFactory::Update()
 	* 3.setalpha(초기알파값 + (1.f - 초기알파값) * percent)
 	*********************************************************/
 	_buildTime += TIMEMANAGER->getElapsedTime();
-
-
+	
 	float percent = _buildTime / _propInfoV[_propQueue.front().catagory][_propQueue.front().propIdx].buildTime;
 	_previewV[0].renderer->SetAlpha(0.5f + (0.5f) * percent);
+
+	//플레이어컨트롤로 좌표 받아오기	
+
+
 
 	if (_buildTime >= _propInfoV[_propQueue.front().catagory][_propQueue.front().propIdx].buildTime)
 	{
@@ -57,6 +69,8 @@ void PropFactory::Update()
 			_propInfoV[_propQueue.front().catagory][_propQueue.front().propIdx].resourceAmount);
 
 		ELEMPROP buildProp = _propQueue.front();
+
+
 		switch (buildProp.catagory)
 		{
 		case TURRET:
@@ -92,6 +106,7 @@ void PropFactory::Update()
 			}
 			break;
 		}
+
 		_buildTime = 0;
 	}
 	for (int i = 0; i < _previewV.size(); i++)
@@ -172,6 +187,17 @@ void PropFactory::CreateDrill(int tileX, int tileY)
 	}
 	_previewV.erase(_previewV.begin());
 	_propQueue.pop();
+	if (_propQueue.empty() == false)
+	{
+		if (_propQueue.front().catagory == PRODUCTION)
+		{
+			_playerControler->SetConstructLaser(_propQueue.front().x, _propQueue.front().y, 2);
+		}
+		else
+		{
+			_playerControler->SetConstructLaser(_propQueue.front().x, _propQueue.front().y, 1);
+		}
+	}
 }
 
 void PropFactory::CreateTurret(int tileX, int tileY)
@@ -190,6 +216,17 @@ void PropFactory::ContainProp(int hashKey, Prop* newProp, PROPDIR dir)
 	propContainer->AddProp(hashKey, newProp, dir);
 	_previewV.erase(_previewV.begin());
 	_propQueue.pop();
+	if (_propQueue.empty() == false)
+	{
+		if (_propQueue.front().catagory == PRODUCTION)
+		{
+			_playerControler->SetConstructLaser(_propQueue.front().x, _propQueue.front().y, 2);
+		}
+		else
+		{
+			_playerControler->SetConstructLaser(_propQueue.front().x, _propQueue.front().y, 1);
+		}
+	}
 }
 
 ImageObject* PropFactory::CreatePreview(int tileX, int tileY)
@@ -212,12 +249,20 @@ void PropFactory::AddPropElem(vector<ImageObject>& previewV,int categoryIdx, int
 		_propQueue.push(newProp);
 		_previewV.push_back(previewV[i]);
 	}
+	if (_propQueue.front().catagory == PRODUCTION)
+	{
+		_playerControler->SetConstructLaser(_propQueue.front().x, _propQueue.front().y, 2);
+	}
+	else
+	{
+		_playerControler->SetConstructLaser(_propQueue.front().x, _propQueue.front().y, 1);
+	}
 }
 
 void PropFactory::InitPropInfo()
 {
 	_propInfoV[TURRET].push_back({ 0.05f, 1, 0, 10, "duo" , L"듀오"});
-	_propInfoV[PRODUCTION].push_back({ 0.05f, 2, 0, 10, "mechanical_drill", L"기계식 드릴" });
+	_propInfoV[PRODUCTION].push_back({ 0.5f, 2, 0, 10, "mechanical_drill", L"기계식 드릴" });
 	_propInfoV[RAIL].push_back({ 0.05f, 1, 0, 10, "conveyor", L"컨베이어" });
 	_propInfoV[DEFENSE].push_back({ 1.f, 1, 0, 35, "copper_wall" ,L"구리 벽"});
 }
