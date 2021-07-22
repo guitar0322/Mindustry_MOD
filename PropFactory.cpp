@@ -9,7 +9,8 @@
 #include "GameInfo.h"
 #include "Prop.h"
 #include "Drill.h"
-
+#include "GameMap.h"
+#include "Production.h"
 PropFactory::PropFactory()
 {
 }
@@ -134,11 +135,6 @@ void PropFactory::CreateConveyor(int tileX, int tileY, PROPDIR dir)
 	newConveyor->transform->SetPosition(tileX * TILESIZE + TILESIZE / 2, tileY * TILESIZE + TILESIZE / 2);
 	newConveyor->transform->SetAngle(dir * 90);
 	newConveyor->collider->RefreshPartition();
-	vector<pair<int, int>> idx = newConveyor->collider->GetPartitionIdx();
-	for (int i = 0; i < idx.size(); i++)
-	{
-		cout << idx[i].first << " , " << idx[i].second << endl;
-	}
 	newConveyor->collider->CheckCollision();
 	newConveyor->transport->SetX(tileX);
 	newConveyor->transport->SetY(tileY);
@@ -157,6 +153,7 @@ void PropFactory::CreateDrill(int tileX, int tileY)
 	newDrill->collider->RefreshPartition();
 	newDrill->rotator->transform->SetPosition(tileX * TILESIZE, tileY * TILESIZE);
 	newDrill->top->transform->SetPosition(tileX * TILESIZE, tileY * TILESIZE);
+	newDrill->production->LinkResourceManager(_resourceManager);
 	vector<int> drillTileV;
 	drillTileV.push_back(tileY * TILENUMX + tileX);
 	drillTileV.push_back((tileY-1) * TILENUMX + tileX);
@@ -164,6 +161,11 @@ void PropFactory::CreateDrill(int tileX, int tileY)
 	drillTileV.push_back((tileY - 1) * TILENUMX + tileX - 1);
 	for (int i = 0; i < 4; i++)
 	{
+		tagTile tileInfo = _gameMap->GetTileInfo(drillTileV[i]);
+		if (tileInfo.resources >= RES_COPPER1 && tileInfo.resources <= RES_COPPER3)
+			newDrill->production->SetTargetResource(COPPER);
+		else if(tileInfo.resources >= RES_LEAD1 && tileInfo.resources <= RES_LEAD3)
+			newDrill->production->SetTargetResource(LEAD);
 		propContainer->AddProp(drillTileV[i], newDrill, RIGHT);
 	}
 	_previewV.erase(_previewV.begin());

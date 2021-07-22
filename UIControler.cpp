@@ -383,6 +383,18 @@ void UIControler::inResearch_ActiveChoiceImg(Transform* menuTr, bool isActive)
 	choiceImg->SetActive(isActive);
 }
 
+/* 연구 상태에서 [전체자원] 버튼 ENTER, EXIT */
+void UIControler::inResearch_Active_Choice_Img(bool isActive)
+{
+	all_Resources_Img->SetActive(isActive);
+}
+
+/* 연구 상태에서 [전체자원] 버튼 CLICK */
+void UIControler::inResearch_Active_all_Resources_Close_Img(bool isActive)
+{
+	all_Resources_Close_Img->SetActive(isActive);
+}
+
 /* 연구 상태에서 [돌아가기] 버튼 ENTER, EXIT */
 void UIControler::inResearch_ActiveGoBackImg(bool isActive)
 {
@@ -501,9 +513,47 @@ void UIControler::inMenu_ReturnToGameScene(bool* name, bool isActive)
 	*name = isActive;
 }
 
+/* 메뉴 상태에서 [저장 후 나가기] 버튼 ENTER, EXIT */
 void UIControler::inMenu_AcitveChoiceImg_SaveAndExit(bool isActive)
 {
 	menu_SaveAndExitChoiceImg->SetActive(isActive);
+}
+
+/* 메뉴 상태에서 [저장 후 나가기] 버튼 CLICK */
+void UIControler::inMenu_AcitveRellayEnd(bool* name, bool isAcitve)
+{
+	*name = isAcitve;
+	menu_SaveAndExitButton->uiMouseEvent->enable = false;
+	menu_ReallyEnd_Img->SetActive(isAcitve);
+}
+
+/* 정말로 종료하시겠습니까? 상태에서 [취소] 버튼 ENTERT, EXIT */
+void UIControler::inReallyEnd_Active_CancleImg(bool* name, bool isActive)
+{
+	if (!*name) return;
+	menu_ReallyEnd_Cancle_Choice->SetActive(isActive);
+}
+
+/* 정말로 종료하시겠습니까? 상태에서 [취소] 버튼 CLICK */
+void UIControler::inReallyEnd_Return_To_MenuState(bool* name, bool isAcitve)
+{
+	*name = isAcitve;
+	menu_SaveAndExitButton->uiMouseEvent->enable = true;
+	menu_ReallyEnd_Img->SetActive(isAcitve);
+	menu_ReallyEnd_Cancle_Choice->SetActive(isAcitve);
+}
+
+/* 정말로 종료하시겠습니까? 상태에서 [확인] 버튼 ENTERT, EXIT */
+void UIControler::inReallyEnd_Active_CheckImg(bool* name, bool isActive)
+{
+	if (!*name) return;
+	menu_ReallyEnd_Check_Choice->SetActive(isActive);
+}
+
+/* 정말로 종료하시겠습니까? 상태에서 [확인] 버튼 CLICK */
+void UIControler::inReallyEnd_Return_To_TilteScene(string SceneName)
+{
+	SCENEMANAGER->LoadScene(SceneName);
 }
 
 void UIControler::EnemyWaveSkip(bool isActive)

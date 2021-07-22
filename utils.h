@@ -47,4 +47,6 @@ namespace HDY_UTIL
 	T GetCenter(T a, T b);
 	Vector2 MoveTowardTo(float x1, float y1, float x2, float y2, float speed, int limit = 0);
 	Vector2 MoveTowardTo(RECT& rc1, RECT& rc2, float speed, int limit = 0);
+	Vector2 MoveTowardTo(Transform* moveTr, Transform* targetTr, float speed, float limit = 0);
+	Vector2 MoveTowardTo(Transform* moveTr, float x2, float y2, float speed, float limit = 0);
 }

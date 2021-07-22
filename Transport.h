@@ -26,6 +26,9 @@ private:
     vector<pair<int, Item*>> _resInfo;
     int _tileX;
     int _tileY;
+    bool _isLack;
+    float _unLackTerm;
+    bool _unLackFlag;
 public:
     virtual void Init();
     virtual void Update();
@@ -40,6 +43,8 @@ public:
     PROPDIR GetOutDir() const { return _outDir; }
     void SetShape(int shape) { _shape = SHAPE(shape); }
     void SetFirstAnimator(Animator* firstAnimator) { _firstConveyorAnimator = firstAnimator; }
+    void SetIsLack(bool isLack);
+    bool GetIsLeck() const { return _isLack; }
     /*************************************************
     * 컨베이어 설계
     * 네개의 연결 고리가 있다 (구조체 LINK)

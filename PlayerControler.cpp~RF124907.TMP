@@ -65,25 +65,25 @@ void PlayerControler::Update()
 			transform->GetChild(2)->SetAngle(_targetAngle);
 
 		}
-
 		PlayerDirection();
 
 		/* === 웨폰 방향 ===*/
 		{
-			if (_weaponLTrackRadius < DEFAULT_WEAPON_DISTANCE)
-			{
-				_weaponLTrackRadius += 3.f * TIMEMANAGER->getElapsedTime();
-				if (_weaponLTrackRadius > DEFAULT_WEAPON_DISTANCE)
-					_weaponLTrackRadius = DEFAULT_WEAPON_DISTANCE;
-			}
-
-			if (_weaponRTrackRadius < DEFAULT_WEAPON_DISTANCE)
-			{
-				_weaponRTrackRadius += 3.f * TIMEMANAGER->getElapsedTime();
-				if (_weaponRTrackRadius > DEFAULT_WEAPON_DISTANCE)
-					_weaponRTrackRadius = DEFAULT_WEAPON_DISTANCE;
-			}
+		if (_weaponLTrackRadius < DEFAULT_WEAPON_DISTANCE)
+		{
+			_weaponLTrackRadius += 3.f * TIMEMANAGER->getElapsedTime();
+			if (_weaponLTrackRadius > DEFAULT_WEAPON_DISTANCE)
+				_weaponLTrackRadius = DEFAULT_WEAPON_DISTANCE;
 		}
+
+		if (_weaponRTrackRadius < DEFAULT_WEAPON_DISTANCE)
+		{
+			_weaponRTrackRadius += 3.f * TIMEMANAGER->getElapsedTime();
+			if (_weaponRTrackRadius > DEFAULT_WEAPON_DISTANCE)
+				_weaponRTrackRadius = DEFAULT_WEAPON_DISTANCE;
+		}
+		}
+
 
 		//마우스 왼쪽 클릭 시
 		if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
@@ -125,7 +125,6 @@ void PlayerControler::Update()
 		}
 
 		ShootResoucesLaser();
-
 		if (_isCollecting)
 		{
 			ResoucesCollect();
@@ -271,17 +270,16 @@ void PlayerControler::ShootResoucesLaser()
 				{
 					_colletingResources = COPPER;
 					int test = 3;
-					test;
+						test;
 				}
 				else if (tileInfo.resources > 3 && tileInfo.resources < 6)
 				{
 					_colletingResources = LEAD;
 				}
-
+				
 			}
 		}
 	}
-	
 	if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
 	{
 		_playerLaser->_collectLaserFirst->SetActive(false);
@@ -303,7 +301,7 @@ void PlayerControler::BoosterFireScale()
 {
 	_boosterTime += TIMEMANAGER->getElapsedTime();
 
-	if (_boosterTime >= 0.1f)
+	if(_boosterTime >= 0.1f)
 	{
 		float scaleX = transform->GetChild(4)->GetScaleX() + 0.05f * _scaleFlag;
 		float scaleY = transform->GetChild(4)->GetScaleY() + 0.05f * _scaleFlag;

@@ -5,6 +5,8 @@
 class PropContainer;
 class GameInfo;
 class Prop;
+class GameMap;
+class ResourceManager;
 
 class PropFactory
 {
@@ -33,6 +35,8 @@ private:
 	vector<ImageObject> _previewV;
 	vector<PROPINFO> _propInfoV[CATEGORY_NUM];
 	GameInfo* _gameInfo;
+	GameMap* _gameMap;
+	ResourceManager* _resourceManager;
 public:
 	PropFactory();
 	~PropFactory();
@@ -51,5 +55,7 @@ public:
 	void AddPropElem(vector<ImageObject>& previewV, int categoryIdx, int propIdx, PROPDIR dir);
 	void InitPropInfo();
 	void LinkGameInfo(GameInfo* gameInfo) { _gameInfo = gameInfo; }
+	void LinkGameMap(GameMap* gameMap) { _gameMap = gameMap; }
+	void LinkResourceManager(ResourceManager* resourceManager) { _resourceManager = resourceManager; }
 };
 

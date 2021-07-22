@@ -47,7 +47,7 @@ private:
 	float _attackSpeed;
 	float _worldX, _worldY;
 	float _boosterTime;
-	
+
 	int _hp;
 
 	DIRECTION _dir;

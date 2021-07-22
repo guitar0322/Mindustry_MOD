@@ -15,8 +15,8 @@ public:
 	ProjectileObject();
 	~ProjectileObject();
 
-	Projectile* GetProjectileComponent() const { return _projectile; }
 	Renderer* GetRendererComponent() const { return _renderer; }
+	Projectile* GetProjectileComponent() const { return _projectile; }
 	BoxCollider* GetColliderComponent() const { return _collider; }
 };
 

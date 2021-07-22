@@ -16,16 +16,11 @@ void Projectile::Init()
 	_speed = 0.f;
 	_angle = 0.f;
 	_speedX, _speedY = 0.f;
-	_camX = 0.f;
-	_camY = 0.f;
-	_fireX = transform->GetX();
-	_fireY = transform->GetY();
 }
 
 void Projectile::Update()
 {
 	Move();
-	EreaseProjectile();
 }
 
 void Projectile::Move()
@@ -34,7 +29,10 @@ void Projectile::Move()
 	_speedY = -sinf(ConvertAngleAPI(transform->GetAngle())) * _speed * TIMEMANAGER->getElapsedTime();
 
 	transform->Move(_speedX, _speedY);
-
+	if (GetDistance(_firePt, transform->position) >= 500)
+	{
+		gameObject->SetActive(false);
+	}
 }
 
 void Projectile::OnTriggerEnter(GameObject* gameObject)
@@ -43,39 +41,13 @@ void Projectile::OnTriggerEnter(GameObject* gameObject)
 	{
 		if (_targetTag.compare("player") == 0)
 		{
-			transform->gameObject->SetActive(false);
+			this->gameObject->SetActive(false);
 			gameObject->GetComponent<PlayerControler>()->Hit(_damage);
 		}
 		if (_targetTag.compare("enemy") == 0)
 		{
-			transform->gameObject->SetActive(false);
+			this->gameObject->SetActive(false);
 			gameObject->GetComponent<EnemyInfo>()->Hit(_damage);
 		}
 	}
-}
-
-void Projectile::EreaseProjectile()
-{
-	if (Math::Abs(_fireX) - Math::Abs(transform->GetX()) >= 350)
-		gameObject->SetActive(false);
-
-	//if (Math::Abs(_fireX) + Math::Abs(transform->GetX()) <= 150)
-	//	gameObject->SetActive(false);
-	//if (MainCam->GetRenderWidth() + 150 <= transform->GetX())
-	//{
-	//	gameObject->SetActive(false);
-	//}
-	//if (MainCam->GetCameraStartX() - 150 >= transform->GetX())
-	//{
-	//	gameObject->SetActive(false);
-	//}
-
-	//if (MainCam->GetRenderHeight() + 150 <= transform->GetY())
-	//{
-	//	gameObject->SetActive(false);
-	//}
-	//if (MainCam->GetCameraStartY() - 150 >= transform->GetY())
-	//{
-	//	gameObject->SetActive(false);
-	//}
 }
