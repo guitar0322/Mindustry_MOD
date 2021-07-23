@@ -51,7 +51,6 @@ void PlayerControler::Init()
 void PlayerControler::Update()
 {
 	PlayerUIUpdate();
-	
 
 	if (_isSlow == true)
 	{
@@ -83,13 +82,22 @@ void PlayerControler::Update()
 		{
 			Vector2 buildPoint = playerConstructLaser->GetConstructEndPoint();
 			_targetAngle = ConvertAngleD2D(GetAngle(transform->position, buildPoint));
+			playerConstructLaser->SetIsDelete(false);
 			playerConstructLaser->OnConstructLaser();
 		}
-		else
+
+		if (_propFactory->isDelete == true)
+		{
+			Vector2 buildPoint = playerConstructLaser->GetConstructEndPoint();
+			_targetAngle = ConvertAngleD2D(GetAngle(transform->position, buildPoint));
+			playerConstructLaser->SetIsDelete(true);
+			playerConstructLaser->OnConstructLaser();
+		}
+
+		if(_propFactory->isDelete == false && _propFactory->isBuilding == false)
 		{
 			playerConstructLaser->OffConstructLaser();
 		}
-
 		PlayerDirection();
 
 		/* === 웨폰 방향 ===*/
@@ -147,22 +155,23 @@ void PlayerControler::Update()
 			}
 		}
 
-		if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
+		if (_isCollecting == true)
 		{
-			if (_isCollecting == true)
+			if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
 			{
 				_playerLaser->OffLaser();
 				_isCollecting = false;
 			}
 		}
 
-		if (_propFactory->isBuilding == true)
+		if (_propFactory->isBuilding == true || _propFactory->isDelete == true)
 		{
 			ShootConstructLaser();
 			playerConstructLaser->Update();
 		}
 
 		ShootResoucesLaser();
+
 		if (_isCollecting)
 		{
 			ResoucesCollect();
@@ -417,7 +426,6 @@ void PlayerControler::ShootResoucesLaser()
 {
 	float laserStartX = transform->GetX() + cosf(ConvertAngleAPI(transform->GetAngle())) * 18;
 	float laserStartY = transform->GetY() - sinf(ConvertAngleAPI(transform->GetAngle())) * 18;
-
 
 	_playerLaser->SetLaserStartPoint(laserStartX, laserStartY);
 	

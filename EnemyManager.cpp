@@ -23,7 +23,7 @@ void EnemyManager::Init()
 	SetEnemy();
 	_curWave = 0;
 	SOUNDMANAGER->addSound("wave", "sounds/wave.ogg", true, false);
-	SOUNDMANAGER->addSound("explosion", "sounds/explosion.ogg", true, false);
+	SOUNDMANAGER->addSound("explosion", "sounds/bang.ogg", true, false);
 }
 
 void EnemyManager::Update()
@@ -85,6 +85,8 @@ void EnemyManager::SetEnemy()
 		_enemyPlane->GetComponent<EnemyInfo>()->SetHp(100);
 		_enemyPlane->transform->SetScale(0.5f, 0.5f);
 		_enemyPlane->GetComponent<EnemyPlaneControler>()->SetProjectileManager(_projectileManager);
+		_enemyPlane->GetComponent<EnemyPlaneControler>()->SetPlayerTrasnform(_playerTr);
+		
 		_enemyPlane->SetActive(false);
 		_enemyV.push_back(_enemyPlane);
 	}
@@ -99,12 +101,12 @@ void EnemyManager::SetEnemy()
 		_waveV[0].push_back(i);
 	}	
 
-	for (int i = 0; i < 2; i++)				//2
+	for (int i = 0; i < 2; i++)				
 	{
 		_waveV[1].push_back(i);
 	}	
 
-	for (int i = 8; i < 12; i++)			//12
+	for (int i = 10; i < 13; i++)			
 	{
 		_waveV[1].push_back(i);
 	}
@@ -113,9 +115,18 @@ void EnemyManager::SetEnemy()
 	{
 		_waveV[2].push_back(i);
 	}
-	for (int i = 8; i < 14; i++)
+	for (int i = 13; i < 16; i++)
 	{
 		_waveV[2].push_back(i);
+	}
+
+	for (int i = 0; i < 5; i++)
+	{
+		_waveV[3].push_back(i);
+	}
+	for (int i = 16; i < 22; i++)
+	{
+		_waveV[3].push_back(i);
 	}
 }
 
@@ -143,11 +154,11 @@ void EnemyManager::EnemyTimer()
 			_enemySpawnTime = 124.f;
 		}
 	}
-	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
+
+	/*if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 	{
 		SpawnEnemy();
-	}
-
+	}*/
 }
 
 void EnemyManager::EnemyUpdate()
@@ -178,7 +189,7 @@ void EnemyManager::SpawnEnemy()
 			continue;
 
 		_enemyV[_waveV[_curWave][i]]->SetActive(true);
-		_enemyV[_waveV[_curWave][i]]->transform->SetPosition(100 + 200 * i , 100 + 50 * i);
+		_enemyV[_waveV[_curWave][i]]->transform->SetPosition(100 + 200 * i ,-100);
 	}
 	_enemySpawnTime = 0.f;
 }
@@ -205,5 +216,3 @@ vector<EnemyObject*> EnemyManager::GetCurWaveEnemy()
 	}
 	return result;
 }
-
-																																														

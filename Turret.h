@@ -1,7 +1,9 @@
 #pragma once
 #include "Component.h"
-class ProjectileObject;
-#define PROJECTILE_MIN 3
+
+class ProjectileManager;
+class EnemyManager;
+class EnemyObject;
 
 class Turret :
     public Component
@@ -9,19 +11,21 @@ class Turret :
 private:
     float _attackSpeed;
     float _attackRange;
-    float _damage;
-    float _projectileSpeed;
     float _barrelLength;
-    vector<ProjectileObject*> _projectileV;
+    float _minDistance;
+    int _preWave;
+    int _nearEnemyIdx;
+    float _distance;
+    ProjectileManager* _projectileManager;
+    EnemyManager* _enemyManager;
+    EnemyObject* _nearEnemy;
+    vector<EnemyObject*> _curWaveEnemyV;
 public:
     Turret();
     ~Turret();
-    virtual void Init(float attackSpeed, float attackRange, float damage, float projectileSpeed, float barrelLength);
+    virtual void Init(float attackSpeed, float attackRange, float barrelLength);
     virtual void Update();
     virtual void Render();
-
-    void SetDamage(float damage) { _damage = damage; }
-    float GetDamage() const { return _damage; }
 
     void SetAttackRange(float range) { _attackRange = range; }
     float GetAttackRange() const { return _attackRange; }
@@ -30,10 +34,10 @@ public:
     float GetAttackSpeed() const { return _attackSpeed; }
 
     void SetBarrelLength(float length) { _barrelLength = length; }
-    void SetProjectileSpeed(float speed);
-
     void Fire();
     void ProbeEnemy();
-    int GetActiveProjectileNum();
+
+    void LinkProjectileManager(ProjectileManager* projectileManager) { _projectileManager = projectileManager; }
+    void LinkEnemyManager(EnemyManager* enemyManager) { _enemyManager = enemyManager; }
 };
 

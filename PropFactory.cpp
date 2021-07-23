@@ -9,8 +9,11 @@
 #include "GameInfo.h"
 #include "Prop.h"
 #include "Drill.h"
+#include "EnemyManager.h"
 #include "GameMap.h"
 #include "Production.h"
+#include "Turret.h"
+#include "ProjectileManager.h"
 #include "PlayerControler.h"
 
 PropFactory::PropFactory()
@@ -29,6 +32,42 @@ void PropFactory::Init()
 
 void PropFactory::Update()
 {
+	Building();
+	Delete();
+	for (int i = 0; i < _previewV.size(); i++)
+	{
+		_previewV[i].Update();
+	}
+}
+
+void PropFactory::Render()
+{
+	for (int i = 0; i < _previewV.size(); i++)
+	{
+		_previewV[i].Render();
+	}
+}
+
+void PropFactory::Release()
+{
+}
+
+template<typename T>
+ImageObject* PropFactory::CreateProp(int tileX, int tileY)
+{
+	T* newProp = new T();
+	Prop* newPropCast = dynamic_cast<Prop*>(newProp);
+	if (newPropCast != nullptr)
+	{
+		newPropCast->transform->SetPosition(tileX * TILESIZE + TILESIZE / 2, tileY * TILESIZE + TILESIZE / 2);
+		newPropCast->GetComponent<BoxCollider>()->RefreshPartition();
+	}
+	ContainProp(tileY * TILENUMX + tileX, newPropCast, PROPDIR(0));
+	return nullptr;
+}
+
+void PropFactory::Building()
+{
 	while (_previewV.empty() == false && Math::FloatEqual(_previewV[0].renderer->GetAlpha(), 0.4f) == true)
 	{
 		_previewV.erase(_previewV.begin());
@@ -42,7 +81,7 @@ void PropFactory::Update()
 	else {
 		isBuilding = true;
 	}
-	if(_gameInfo->IsValidResource((RESOURCE)_propInfoV[_propQueue.front().catagory][_propQueue.front().propIdx].resource, 
+	if (_gameInfo->IsValidResource((RESOURCE)_propInfoV[_propQueue.front().catagory][_propQueue.front().propIdx].resource,
 		_propInfoV[_propQueue.front().catagory][_propQueue.front().propIdx].resourceAmount) == false)
 		return;
 
@@ -53,13 +92,9 @@ void PropFactory::Update()
 	* 3.setalpha(초기알파값 + (1.f - 초기알파값) * percent)
 	*********************************************************/
 	_buildTime += TIMEMANAGER->getElapsedTime();
-	
+
 	float percent = _buildTime / _propInfoV[_propQueue.front().catagory][_propQueue.front().propIdx].buildTime;
 	_previewV[0].renderer->SetAlpha(0.5f + (0.5f) * percent);
-
-	//플레이어컨트롤로 좌표 받아오기	
-
-
 
 	if (_buildTime >= _propInfoV[_propQueue.front().catagory][_propQueue.front().propIdx].buildTime)
 	{
@@ -75,7 +110,7 @@ void PropFactory::Update()
 			switch (buildProp.propIdx)
 			{
 			case 0:
-				CreateProp<Duo>(buildProp.x, buildProp.y);
+				CreateTurret(buildProp.x, buildProp.y);
 				break;
 			}
 			break;
@@ -107,36 +142,30 @@ void PropFactory::Update()
 
 		_buildTime = 0;
 	}
-	for (int i = 0; i < _previewV.size(); i++)
-	{
-		_previewV[i].Update();
-	}
 }
 
-void PropFactory::Render()
+void PropFactory::Delete()
 {
-	for (int i = 0; i < _previewV.size(); i++)
+	if (_deleteQueue.empty() == true)
 	{
-		_previewV[i].Render();
+		isDelete = false;
+		return;
 	}
-}
+	else {
+		isDelete = true;
+	}
 
-void PropFactory::Release()
-{
-}
-
-template<typename T>
-ImageObject* PropFactory::CreateProp(int tileX, int tileY)
-{
-	T* newProp = new T();
-	Prop* newPropCast = dynamic_cast<Prop*>(newProp);
-	if (newPropCast != nullptr)
+	_deleteTime += TIMEMANAGER->getElapsedTime();
+	if (_deleteTime >= 0.2f)
 	{
-		newPropCast->transform->SetPosition(tileX * TILESIZE + TILESIZE / 2, tileY * TILESIZE + TILESIZE / 2);
-		newPropCast->GetComponent<BoxCollider>()->RefreshPartition();
+		propContainer->DeleteProp(_deleteQueue.front().x, _deleteQueue.front().y);
+		_deleteQueue.pop();
+		if (_deleteQueue.empty() == false)
+		{
+			_playerControler->SetConstructLaser(_deleteQueue.front().x, _deleteQueue.front().y, _deleteQueue.front().isDrill ? 2 : 1);
+		}
+		_deleteTime = 0;
 	}
-	ContainProp(tileY * TILENUMX + tileX, newPropCast, PROPDIR(0));
-	return nullptr;
 }
 
 void PropFactory::CreateConveyor(int tileX, int tileY, PROPDIR dir)
@@ -198,6 +227,17 @@ void PropFactory::CreateDrill(int tileX, int tileY)
 	}
 }
 
+void PropFactory::CreateTurret(int tileX, int tileY)
+{
+	Duo* newDuo = new Duo();
+	newDuo->transform->SetPosition(tileX * TILESIZE + 16, tileY * TILESIZE + 16);
+	newDuo->base->transform->SetPosition(tileX * TILESIZE + 16, tileY * TILESIZE + 16);
+	newDuo->collider->RefreshPartition();
+	newDuo->turret->LinkProjectileManager(_projectileManager);
+	newDuo->turret->LinkEnemyManager(_enemyManager);
+	ContainProp(tileY * TILENUMX + tileX, newDuo, RIGHT);
+}
+
 void PropFactory::ContainProp(int hashKey, Prop* newProp, PROPDIR dir)
 {
 	propContainer->AddProp(hashKey, newProp, dir);
@@ -246,10 +286,31 @@ void PropFactory::AddPropElem(vector<ImageObject>& previewV,int categoryIdx, int
 	}
 }
 
+void PropFactory::AddDeleteQue(int startX, int startY, int endX, int endY)
+{
+	for (int i = startY; i < endY + 1; i++)
+	{
+		for (int j = startX; j < endX + 1; j++)
+		{
+			Prop* deleteProp = propContainer->GetPropMap(i * TILENUMX + j);
+			bool isDrill;
+			if (dynamic_cast<Drill*>(deleteProp) != nullptr)
+				isDrill = true;
+			else
+				isDrill = false;
+			if (deleteProp != nullptr)
+			{
+				_deleteQueue.push({ j, i , isDrill });
+			}
+		}
+	}
+	_playerControler->SetConstructLaser(_deleteQueue.front().x, _deleteQueue.front().y, _deleteQueue.front().isDrill ? 2 : 1);
+}
+
 void PropFactory::InitPropInfo()
 {
-	_propInfoV[TURRET].push_back({ 0.05f, 1, 0, 10, "duo" , L"듀오"});
-	_propInfoV[PRODUCTION].push_back({ 0.5f, 2, 0, 10, "mechanical_drill", L"기계식 드릴" });
-	_propInfoV[RAIL].push_back({ 0.05f, 1, 0, 10, "conveyor", L"컨베이어" });
-	_propInfoV[DEFENSE].push_back({ 1.f, 1, 0, 35, "copper_wall" ,L"구리 벽"});
+	_propInfoV[TURRET].push_back({ 0.15f, 1, 0, 10, "duo" , L"듀오"});
+	_propInfoV[PRODUCTION].push_back({ 1.f, 2, 0, 10, "mechanical_drill", L"기계식 드릴" });
+	_propInfoV[RAIL].push_back({ 0.15f, 1, 0, 10, "conveyor", L"컨베이어" });
+	_propInfoV[DEFENSE].push_back({ 0.5f, 1, 0, 35, "copper_wall" ,L"구리 벽"});
 }

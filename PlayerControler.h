@@ -103,6 +103,7 @@ public:
 	void LinkProFactory(PropFactory* propFactory) { _propFactory = propFactory; }
 	void SetConstructLaser(int x, int y, int size);
 
+	bool GetIsCollecting() const { return _isCollecting; }
 	void Hit(float damage);
 	void Dead();
 	void Respawn();

@@ -2,6 +2,7 @@
 #include "EnemyPlaneControler.h"
 #include "ProjectileManager.h"
 #include "EnemyInfo.h"
+#include "Player.h"
 
 EnemyPlaneControler::EnemyPlaneControler()
 {
@@ -14,9 +15,9 @@ EnemyPlaneControler::~EnemyPlaneControler()
 void EnemyPlaneControler::Init()
 {
 	_enemyInfo = gameObject->GetComponent<EnemyInfo>();
-	_testCoreTransform = _enemyInfo->GetCoreTransform();
+	_coreTransform = _enemyInfo->GetCoreTransform();
 	_speed = _enemyInfo->GetSpeed();
-
+//	_playerTr = gameObject->GetComponent<Player>()->transform;	
 	_speedX = 0.f;
 	_speedY = 0.f;
 
@@ -36,7 +37,8 @@ void EnemyPlaneControler::Init()
 void EnemyPlaneControler::Update()
 {
 	_angle = _enemyInfo->GetCoreAngle();						//deltaAngle값을 저장
-	_testCoreTransform = _enemyInfo->GetCoreTransform();
+	//_angle = _playerTr->angle;
+	_coreTransform = _enemyInfo->GetCoreTransform();
 	_speed = _enemyInfo->GetSpeed();
 
 	if (_chaseCore)
@@ -45,39 +47,36 @@ void EnemyPlaneControler::Update()
 		_deltaAngle = _angle;
 	}
 
-	if (GetDistance(transform->position, _testCoreTransform->position) <= 800 && _isAttack == false)   //200
+	if (GetDistance(transform->position, _coreTransform->position) <= 700 && _isAttack == false)
 	{
-		_chaseCore = false;											//getangle값을 안 주기 위함 false되면 그 전의 Angle값이 게속 남아있음
+		_chaseCore = false;
 		_isAttack = true;
-		_randomAngle = RND->getInt(2);
-
-		_deltaX = _enemyRadius * cosf(_deltaAngle);
-		_deltaY = _enemyRadius * -sinf(_deltaAngle);
-
-		_projectileManager->FireProjectile(transform->GetX() + _deltaX, transform->GetY() + _deltaY, ConvertAngleD2D(_deltaAngle), PROJECTILE_TYPE::ENEMYPLANE);
+		_deltaAngle = _angle;
 	}
-
+	
 	if (_isAttack == true)
 	{
-
 		_attackSpeed += TIMEMANAGER->getElapsedTime();
-		if (GetDistance(transform->position, _testCoreTransform->position) <= 700)
-		{
-			if (Math::FloatEqual(_deltaAngle, _angle) <= 30 && _attackSpeed >= 7.f)
-			{
-				_isAttack = false;
-				_attackSpeed = 0.f;
-			}
+
+		if (_attackSpeed >= 0.5f && Math::FloatEqual(_deltaAngle, _angle))
+		{	
+			_deltaX = _enemyRadius * cosf(_deltaAngle);
+			_deltaY = _enemyRadius * -sinf(_deltaAngle);
+
+			_projectileManager->FireProjectile(transform->GetX() + _deltaX, transform->GetY() + _deltaY, ConvertAngleD2D(_deltaAngle), ENEMYPLANE);
+			_attackSpeed = 0.f;
 		}
+		_randomAngle = RND->getInt(2);
 	}
 
-	if (GetDistance(transform->position, _testCoreTransform->position) >= 900)
+	if (GetDistance(transform->position, _coreTransform->position) >= 1300)
 	{
 		RandomAngle();
+		_isAttack = false;
 	}
 
-	_speedX = cosf(_deltaAngle) * _speed * TIMEMANAGER->getElapsedTime();	//deltaAngle 
-	_speedY = -sinf(_deltaAngle) * _speed * TIMEMANAGER->getElapsedTime();	//deltaAngle 
+	_speedX = cosf(_deltaAngle) * _speed * TIMEMANAGER->getElapsedTime();
+	_speedY = -sinf(_deltaAngle) * _speed * TIMEMANAGER->getElapsedTime();
 
 	transform->Move(_speedX, _speedY);
 

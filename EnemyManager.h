@@ -29,6 +29,9 @@ private:
 	GameObject* _testCore;
 	Transform* _testCoreTransform;
 	Astar* _aStar;
+
+	Transform* _playerTr;
+
 	int _curWave;					//현재 웨이브
 	int _timeSecond;				//시간 초
 	int _timeMinute;				//시간 분
@@ -66,5 +69,6 @@ public:
 	void SetTestCoreTransform(GameObject* testCore) { _testCore = testCore; _testCoreTransform = testCore->transform; }
 	void SetEnemyInfo(EnemyInfo* enemyInfo) { _enemyInfo = enemyInfo; }
 	void SetAstar(Astar* aStar) { _aStar = aStar; }
+	void SetPlayerTransform(Transform* playertr) {_playerTr = playertr;}
 };
 

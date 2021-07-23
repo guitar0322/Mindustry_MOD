@@ -20,5 +20,6 @@ public:
 	void LoadTileMap();
 	void AddProp(int hashKey, Prop* newProp, PROPDIR dir);
 	Prop* GetPropMap(int hashKey);
+	void DeleteProp(int tileX, int tileY);
 };
 
