@@ -716,7 +716,7 @@ void GameScene::PlayerInit()
 	_player->transform->SetAngle(0.0f);
 	_player->controler->LinkProFactory(_propFactory);
 	_propFactory->LinkPlayerControler(_player->controler);
-
+    _uiControler->LinkPlayerControler(_player->controler);
 	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
 
 	//플레이어 포신 유림.

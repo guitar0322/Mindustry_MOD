@@ -18,7 +18,7 @@ private:
 	float _constructDistance;							//레이저 스타트와 엔드의 거리
 	float _constructAngle;					//레이저 앵글값
 	bool _isLaserSizeL;
-
+	bool _isDelete;
 public:
 	PlayerConstructLaser();
 	~PlayerConstructLaser();
@@ -37,6 +37,7 @@ public:
 	void SetConstructDistance(float constructDistance) { _constructDistance = constructDistance; }
 	float GetConstructDistance() { return _constructDistance; }
 	void SetIsLaserSizeL(bool isLaserSizeL) { _isLaserSizeL = isLaserSizeL; }
+	void SetIsDelete(bool isDelete) { _isDelete = isDelete; }
 	void OnConstructLaser();
 	void OffConstructLaser();
 };

@@ -27,7 +27,7 @@ void PlayerConstructLaser::Init()
 	_constuctLaserSizeS = new ImageObject;
 	_constuctLaserSizeS->Init();
 	_constuctLaserSizeS->renderer->Init("construct_laser_small");
-	_constuctLaserSizeS->renderer->SetAlpha(0.5f);
+	_constuctLaserSizeS->renderer->SetAlpha(0.2f);
 	_constuctLaserSizeS->SetActive(false);
 
 	_constuctLaserSizeL = new ImageObject;
@@ -60,26 +60,42 @@ void PlayerConstructLaser::Init()
 void PlayerConstructLaser::Update()
 {
 	ShootLaser();
-	_constructLaserRC->Update();
-	if (_isLaserSizeL == false)
-		_constuctLaserSizeS->Update();
-	else
-		_constuctLaserSizeL->Update();
 
-	_deleteLaserRC->Update();
-	_deleteLaserSizeS->Update();
-	_deleteLaserSizeL->Update();
+	if (_isDelete == false)
+	{
+		_constructLaserRC->Update();
+		if (_isLaserSizeL == false)
+			_constuctLaserSizeS->Update();
+		else
+			_constuctLaserSizeL->Update();
+	}
+	else
+	{
+		_deleteLaserRC->Update();
+		if (_isLaserSizeL == false)
+			_deleteLaserSizeS->Update();
+		else
+			_deleteLaserSizeL->Update();
+	}
 }
 
 void PlayerConstructLaser::Render()
 {
-	if(_isLaserSizeL == false)
-		_constuctLaserSizeS->Render();
+	if (_isDelete == false)
+	{
+		if (_isLaserSizeL == false)
+			_constuctLaserSizeS->Render();
+		else
+			_constuctLaserSizeL->Render();
+	}
 	else
-		_constuctLaserSizeL->Render();
-	_deleteLaserRC->Render();
-	_deleteLaserSizeS->Render();
-	_deleteLaserSizeL->Render();
+	{
+		_deleteLaserRC->Render();
+		if (_isLaserSizeL == false)
+			_deleteLaserSizeS->Render();
+		else
+			_deleteLaserSizeL->Render();
+	}
 }
 
 void PlayerConstructLaser::ShootLaser()
@@ -88,15 +104,26 @@ void PlayerConstructLaser::ShootLaser()
 	_constructDistance = GetDistance(_constructStartX, _constructStartY, _constructEndX, _constructEndY);
 	float constructCenterX = (_constructEndX + _constructStartX) / 2.f;
 	float constructCenterY = (_constructEndY + _constructStartY) / 2.f;
+	if (_isDelete == false)
+	{
+		_constuctLaserSizeS->transform->SetPosition(Vector2(constructCenterX, constructCenterY));
+		_constuctLaserSizeS->transform->SetAngle(_constructAngle);
+		_constuctLaserSizeS->transform->SetScale(0.65f, (_constructDistance / 274.f));
 
-	_constuctLaserSizeS->transform->SetPosition(Vector2(constructCenterX, constructCenterY));
-	_constuctLaserSizeS->transform->SetAngle(_constructAngle);
-	_constuctLaserSizeS->transform->SetScale(0.65f, (_constructDistance / 274.f));
+		_constuctLaserSizeL->transform->SetPosition(Vector2(constructCenterX, constructCenterY));
+		_constuctLaserSizeL->transform->SetAngle(_constructAngle);
+		_constuctLaserSizeL->transform->SetScale(1.f, (_constructDistance / 323.f));
+	}
+	else
+	{
+		_deleteLaserSizeS->transform->SetPosition(Vector2(constructCenterX, constructCenterY));
+		_deleteLaserSizeS->transform->SetAngle(_constructAngle);
+		_deleteLaserSizeS->transform->SetScale(0.65f, (_constructDistance / 274.f));
 
-	_constuctLaserSizeL->transform->SetPosition(Vector2(constructCenterX, constructCenterY));
-	_constuctLaserSizeL->transform->SetAngle(_constructAngle);
-	_constuctLaserSizeL->transform->SetScale(1.f, (_constructDistance / 323.f));
-
+		_deleteLaserSizeL->transform->SetPosition(Vector2(constructCenterX, constructCenterY));
+		_deleteLaserSizeL->transform->SetAngle(_constructAngle);
+		_deleteLaserSizeL->transform->SetScale(1.f, (_constructDistance / 323.f));
+	}
 }
 
 void PlayerConstructLaser::SetImage()
@@ -114,14 +141,32 @@ void PlayerConstructLaser::SetImage()
 
 void PlayerConstructLaser::OnConstructLaser()
 {
-	_constructLaserRC->SetActive(true);
-	_constuctLaserSizeS->SetActive(true);
-	_constuctLaserSizeL->SetActive(true);
+	if (_isDelete == false)
+	{
+		_constructLaserRC->SetActive(true);
+		_constuctLaserSizeS->SetActive(true);
+		_constuctLaserSizeL->SetActive(true);
+	}
+	else
+	{
+		_deleteLaserRC->SetActive(true);
+		_deleteLaserSizeS->SetActive(true);
+		_deleteLaserSizeL->SetActive(true);
+	}
 }
 
 void PlayerConstructLaser::OffConstructLaser()
 {
-	_constructLaserRC->SetActive(false);
-	_constuctLaserSizeS->SetActive(false);
-	_constuctLaserSizeL->SetActive(false);
+	if (_isDelete == false)
+	{
+		_constructLaserRC->SetActive(false);
+		_constuctLaserSizeS->SetActive(false);
+		_constuctLaserSizeL->SetActive(false);
+	}
+	else
+	{
+		_deleteLaserRC->SetActive(false);
+		_deleteLaserSizeS->SetActive(false);
+		_deleteLaserSizeL->SetActive(false);
+	}
 }

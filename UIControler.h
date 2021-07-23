@@ -9,6 +9,7 @@ using namespace std;
 class GameMap;
 class Button;
 class EnemyManager;
+class PlayerControler;
 
 class UIControler
 {
@@ -16,11 +17,14 @@ private:
     int _selectCategoryIdx;
     int _selectPropIdx;
     int _previewNum;
+    Vector2 _deleteStart;
     bool _previewDir;
     Vector2 _worldStartPtMouse;
     vector<string> _clipArr[CATEGORY_NUM];
     vector<ImageObject> _previewV;
     PROPDIR _dir;
+    Rect _deleteRc;
+    PlayerControler* _playerControler;
 public:
     GameMap* gameMap;
     PropFactory* propFactory;
@@ -46,7 +50,7 @@ public:
     void SetPreview(float deltaX, float deltaY);
     void SetPreviewTwo(float deltaX, float deltaY);
     void CheckValidTile();
-
+    void LinkPlayerControler(PlayerControler* playerControler) { _playerControler = playerControler; }
     /* 시영 */
     // 연구
     /* 전체 자원 버튼 (회색) */
