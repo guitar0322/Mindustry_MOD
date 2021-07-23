@@ -36,7 +36,10 @@ private:
 	ImageObject* _playerCell;
 	ImageObject* _playerFireCircle;
 	ImageObject* _playerFire;
-	GameObject* _projectileManager;
+    // 플레이어 그림자 (시영 추가) ==
+    ImageObject* _playerShadow;       
+    // ============================
+    GameObject* _projectileManager;
 
 	//======
     PropContainer* _propContainer;
@@ -236,6 +239,4 @@ public:
 
 	/* 화면에 문자 띄울 때 여기 쓰세요 - 유림 (210719)*/
 	void StringRender();
-
 };
-

@@ -86,7 +86,6 @@ void PlayerControler::Update()
 		}
 
 		//마우스 왼쪽 클릭 시
-		/*
 		if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 		{
 			_worldX = ScreenToWorld(_ptMouse).x;
@@ -124,7 +123,7 @@ void PlayerControler::Update()
 				_attackSpeed = 0;
 			}
 		}
-		*/
+
 		ShootResoucesLaser();
 
 		if (_isCollecting)
@@ -243,7 +242,7 @@ void PlayerControler::ShootResoucesLaser()
 	float laserStartX = transform->GetX() + cosf(ConvertAngleAPI(transform->GetAngle())) * 18;
 	float laserStartY = transform->GetY() - sinf(ConvertAngleAPI(transform->GetAngle())) * 18;
 	_playerLaser->SetLaserStartPoint(laserStartX, laserStartY);
-	/*
+	
 	if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
 	{
 		if (_isCollecting == false)
@@ -278,11 +277,10 @@ void PlayerControler::ShootResoucesLaser()
 				{
 					_colletingResources = LEAD;
 				}
-
 			}
 		}
 	}
-	*/
+
 	if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
 	{
 		_playerLaser->_collectLaserFirst->SetActive(false);

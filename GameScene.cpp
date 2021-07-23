@@ -287,85 +287,7 @@ void GameScene::Update()
     _resourceManager->Update();
     _uiControler->Update();
 
-	/* 플레이어 부분*/
-	_player->Update();
-	_playerWeaponL->Update();
-	_playerWeaponR->Update();
-	_playerCell->Update();
-	_projectileManager->Update();
-    _cameraControler->Update();
-
-	// 광물 부분 -> 유림 210719
-	ResourcesUpdate();
-
-	//========================================
-	_cameraControler->Update();
-    _buildingCategoryFrame.Update();
-
-    //카테고리 아이콘 업데이트 
-    _propPreview.Update();
-	_gameMap->Update();
-	//========================================
-    _categorySelect.Update();
-    _propSelect.Update();
-	_core->Update();
-
-	//07.20 민재 인 게임 Wave UI && Player UI 작업//
-	_enemyManager->Update();
-	InGameUIUpdate();
-    
     /* 시영 */
-    // 연구 부분 Update
-    {
-        // 전체 자원 개수 파악
-        if (_gameInfo->GetResourceAmount(COPPER) >= 1)
-        {
-            _all_Resources_Count = 1;
-        }
-
-        if (_gameInfo->GetResourceAmount(COPPER) >= 1 &&
-            _gameInfo->GetResourceAmount(LEAD) >= 1)
-        {
-            _all_Resources_Count = 2;
-        }
-
-        if (_gameInfo->GetResourceAmount(COPPER) >= 1 &&
-            _gameInfo->GetResourceAmount(LEAD) >= 1 &&
-            _gameInfo->GetResourceAmount(SCRAP) >= 1)
-        {
-            _all_Resources_Count = 3;
-        }
-
-        // 광물 변수 카운트 출력 - 구리
-        if (_gameInfo->GetResourceAmount(COPPER) >= 1)
-        {
-            _all_Resources_Copper_Count = to_wstring(_gameInfo->GetResourceAmount(COPPER));
-        }
-
-        // 광물 변수 카운트 출력 - 납
-        if (_gameInfo->GetResourceAmount(LEAD) >= 1)
-        {
-            _all_Resources_Lead_Count = to_wstring(_gameInfo->GetResourceAmount(LEAD));
-        }
-
-        // 광물 변수 카운트 출력 - 고철
-        if (_gameInfo->GetResourceAmount(SCRAP) >= 1)
-        {
-            _all_Resources_Scrap_Count = to_wstring(_gameInfo->GetResourceAmount(SCRAP));
-        }
-
-        if (KEYMANAGER->isOnceKeyDown(VK_F1)) _research = true;
-        if (KEYMANAGER->isOnceKeyDown(VK_F2)) _research = false;
-        if (_research)
-        {
-            researchUpdate();
-            if (KEYMANAGER->isOnceKeyDown(VK_ESCAPE)) _research = false;
-        }
-        _research_goBackButton.Update();
-        _coreDBButton.Update();
-        _detailDes_goBackButton.Update();
-    }
-
     // 메뉴 부분 Update
     {
         if (KEYMANAGER->isOnceKeyDown(VK_ESCAPE))
@@ -382,9 +304,79 @@ void GameScene::Update()
                 _menu_SaveAndExitButton.uiMouseEvent->enable = true;
             }
         }
- 
+
         if (_menu) menuUpdate();
     }
+
+    // 연구 부분 Update
+    {
+        // 전체 자원 개수 파악
+        if (_gameInfo->GetResourceAmount(COPPER) >= 1)
+            _all_Resources_Count = 1;
+
+        if (_gameInfo->GetResourceAmount(COPPER) >= 1 && _gameInfo->GetResourceAmount(LEAD) >= 1)
+            _all_Resources_Count = 2;
+
+        if (_gameInfo->GetResourceAmount(COPPER) >= 1 && _gameInfo->GetResourceAmount(LEAD) >= 1 && _gameInfo->GetResourceAmount(SCRAP) >= 1)
+            _all_Resources_Count = 3;
+
+        // 광물 변수 카운트 출력 - 구리
+        if (_gameInfo->GetResourceAmount(COPPER) >= 1)
+            _all_Resources_Copper_Count = to_wstring(_gameInfo->GetResourceAmount(COPPER));
+
+        // 광물 변수 카운트 출력 - 납
+        if (_gameInfo->GetResourceAmount(LEAD) >= 1)
+            _all_Resources_Lead_Count = to_wstring(_gameInfo->GetResourceAmount(LEAD));
+
+        // 광물 변수 카운트 출력 - 고철
+        if (_gameInfo->GetResourceAmount(SCRAP) >= 1)
+            _all_Resources_Scrap_Count = to_wstring(_gameInfo->GetResourceAmount(SCRAP));
+
+        if (KEYMANAGER->isOnceKeyDown(VK_F1)) _research = true;
+        if (KEYMANAGER->isOnceKeyDown(VK_F2)) _research = false;
+        if (_research)
+        {
+            researchUpdate();
+            if (KEYMANAGER->isOnceKeyDown(VK_ESCAPE)) _research = false;
+        }
+        _research_goBackButton.Update();
+        _coreDBButton.Update();
+        _detailDes_goBackButton.Update();
+    }
+
+	/* 플레이어 부분*/
+	_player->Update();
+    // 플레이어 그림자 (시영 추가) ==
+    _playerShadow->Update();
+    _playerShadow->transform->SetPosition(_player->transform->GetX() - 50, _player->transform->GetY() + 50);
+    // ============================
+	_playerWeaponL->Update();
+	_playerWeaponR->Update();
+	_playerCell->Update();
+	_projectileManager->Update();
+    _cameraControler->Update();
+
+	// 광물 부분 -> 유림 210719
+	ResourcesUpdate();
+	//========================================
+	_cameraControler->Update();
+    _buildingCategoryFrame.Update();
+
+    //카테고리 아이콘 업데이트 
+    _propPreview.Update();
+	_gameMap->Update();
+	//========================================
+    _categorySelect.Update();
+    _propSelect.Update();
+	_core->Update();
+
+	//07.20 민재 인 게임 Wave UI && Player UI 작업//
+	_enemyManager->Update();
+	InGameUIUpdate();
+    
+    
+
+
 
     /* 사운드 작업 광철 210718 */
     _musicTime += TIMEMANAGER->getElapsedTime();
@@ -423,6 +415,9 @@ void GameScene::Render()
 	{
 		_player->transform->GetChild(3)->gameObject->Render();
 		_player->Render();
+        // 플레이어 그림자 (시영 추가) ==
+        _playerShadow->Render();
+        // ============================
 		_enemyManager->Render();
 		_projectileManager->Render();
 		_core->Render();
@@ -784,6 +779,8 @@ void GameScene::PlayerClip()
 	CLIPMANAGER->AddClip("player_cell", "player/alpha-cell.png", 48, 48);
 	CLIPMANAGER->AddClip("player_fire_circle", "player/alpha_fire_circle.png", 17, 17);
 	CLIPMANAGER->AddClip("player_fire", "player/alpha_fire.png", 30, 30);
+    // 플레이어 그림자 추가 (시영)
+    CLIPMANAGER->AddClip("player_shadow", "player/shadow/alpha_shadow.png", 48, 48);
 
 	//자원 클립
 	CLIPMANAGER->AddClip("copperUI", "sprites/items/item-copper.png", 32, 32);
@@ -823,6 +820,16 @@ void GameScene::PlayerInit()
 	_playerFire = new ImageObject;
 	_playerFire->Init();
 	_playerFire->renderer->Init("player_fire");
+
+    // 플레이어 그림자 (시영 추가) =================
+    _playerShadow = new ImageObject();
+    _playerShadow->renderer->Init("player_shadow");
+    _playerShadow->renderer->SetAlpha(0.375f);
+    //_playerShadow->transform->SetScale(0.2f, 0.2f);
+    _playerShadow->transform->SetAngle(0.0f);
+    _playerShadow->SetActive(true);
+    _player->transform->AddChild(_playerShadow->transform);
+    // ===========================================
 
 	_player->transform->AddChild(_playerWeaponL->transform);
 	_player->transform->AddChild(_playerWeaponR->transform);
@@ -1985,7 +1992,7 @@ void GameScene::SetGameUI()
 
 void GameScene::InGameUIUpdate()
 {
-    /* 시영 주석 
+    /* 시영 주석
 	_wavePane.Update();
 	_playerUi.Update();
 	_playerHpUi.Update();
@@ -1997,7 +2004,7 @@ void GameScene::InGameUIUpdate()
 
 void GameScene::InGameUIRender()
 {
-    /* 시영 주석 
+    /*
 	_wavePane.Render();
 	_playerUi.Render();
 	_playerHpUi.Render();

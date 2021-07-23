@@ -140,7 +140,6 @@ void EnemyManager::EnemyTimer()
 			_enemySpawnTime = 124.f;
 		}
 	}
-
 }
 
 void EnemyManager::EnemyUpdate()
