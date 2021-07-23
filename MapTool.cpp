@@ -282,6 +282,11 @@ void MapTool::SetTileImage()
 	//스페이스
 	CLIPMANAGER->AddClip("space", "sprites/blocks/environment/space.png", 32, 32);
 
+	/*WALL*/
+
+
+
+
 	/*======자원======*/
 	//구리
 	CLIPMANAGER->AddClip("copper1", "sprites/blocks/environment/copper1.png", 32, 32);

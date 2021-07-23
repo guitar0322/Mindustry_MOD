@@ -118,9 +118,7 @@ public:
 	UIBase playerHpUIAlpha;
 	UIBase playerHpUIPane;
 	float hpUI;
-	float reduceHP;
 	float reduceTime;
-	float alphaTime;
 
 	void PlayerUIInit();
 	void PlayerUIUpdate();
