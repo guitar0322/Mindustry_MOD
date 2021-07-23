@@ -17,7 +17,7 @@ void EnemyPlaneControler::Init()
 	_enemyInfo = gameObject->GetComponent<EnemyInfo>();
 	_coreTransform = _enemyInfo->GetCoreTransform();
 	_speed = _enemyInfo->GetSpeed();
-	_playerTr = gameObject->GetComponent<Player>()->transform;	
+//	_playerTr = gameObject->GetComponent<Player>()->transform;	
 	_speedX = 0.f;
 	_speedY = 0.f;
 

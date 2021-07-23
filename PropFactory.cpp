@@ -238,24 +238,6 @@ void PropFactory::CreateTurret(int tileX, int tileY)
 	ContainProp(tileY * TILENUMX + tileX, newDuo, RIGHT);
 }
 
-void PropFactory::Createturret(int tileX, int tileY)
-{
-	/*******************************
-	1. tileX, tileY로 터렛 transform-SetPosition 해주기
-	2. 터렛에 애너미매니저, 프로젝틸 매니저 연결
-	3. Containprop에서 PropCatainer에 추가해주기
-	****************************/
-	Duo* newDuo = new Duo();
-	EnemyManager* newEnemyManager = new EnemyManager();
-	ProjectileManager* newProjectilemanager = new ProjectileManager();
-	newDuo->collider->RefreshPartition();
-	newDuo->turret_Body->transform->SetPosition(tileX * TILESIZE + TILESIZE / 2, tileY * TILESIZE + TILESIZE / 2);
-	newDuo->turret_Head->transform->SetPosition(tileX * TILESIZE + TILESIZE / 2, tileY * TILESIZE + TILESIZE / 2);
-	ContainProp(tileY * TILENUMX + tileX, newDuo, PROPDIR(0));
-	_previewV.erase(_previewV.begin());
-	_propQueue.pop();
-}
-
 void PropFactory::ContainProp(int hashKey, Prop* newProp, PROPDIR dir)
 {
 	propContainer->AddProp(hashKey, newProp, dir);

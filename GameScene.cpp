@@ -42,6 +42,7 @@ HRESULT GameScene::Init()
     _gameInfo->AddResource(SCRAP, 0);
 
     _propContainer = new PropContainer();
+	_propContainer->Init();
 	_propFactory = new PropFactory();
     _propFactory->Init();
 	_propFactory->propContainer = _propContainer;
