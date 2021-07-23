@@ -85,7 +85,7 @@ void EnemyManager::SetEnemy()
 		_enemyPlane->GetComponent<EnemyInfo>()->SetHp(100);
 		_enemyPlane->transform->SetScale(0.5f, 0.5f);
 		_enemyPlane->GetComponent<EnemyPlaneControler>()->SetProjectileManager(_projectileManager);
-		_enemyPlane->GetComponent<EnemyPlaneControler>()->SetPlayerTrasnform(_playerTr);
+		//_enemyPlane->GetComponent<EnemyPlaneControler>()->SetPlayerTransform(_player->transform);
 		
 		_enemyPlane->SetActive(false);
 		_enemyV.push_back(_enemyPlane);

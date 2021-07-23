@@ -17,7 +17,7 @@ void EnemyPlaneControler::Init()
 	_enemyInfo = gameObject->GetComponent<EnemyInfo>();
 	_coreTransform = _enemyInfo->GetCoreTransform();
 	_speed = _enemyInfo->GetSpeed();
-	_playerTr = gameObject->GetComponent<Player>()->transform;	
+	//_playerTr = _player->GetComponent<Player>()->transform;
 	_speedX = 0.f;
 	_speedY = 0.f;
 
@@ -37,15 +37,20 @@ void EnemyPlaneControler::Init()
 void EnemyPlaneControler::Update()
 {
 	_angle = _enemyInfo->GetCoreAngle();						//deltaAngle값을 저장
-	//_angle = _playerTr->angle;
 	_coreTransform = _enemyInfo->GetCoreTransform();
 	_speed = _enemyInfo->GetSpeed();
+//	_playerTr = _player->GetComponent<Player>()->transform;
+
 
 	if (_chaseCore)
 	{
 		_isAttack = false;
 		_deltaAngle = _angle;
 	}
+	/*if (GetDistance(transform->position, _playerTr->position) <= 500)
+	{
+		_deltaAngle = GetAngle(transform->position, _playerTr->position);
+	}*/
 
 	if (GetDistance(transform->position, _coreTransform->position) <= 700 && _isAttack == false)
 	{
@@ -74,6 +79,14 @@ void EnemyPlaneControler::Update()
 		RandomAngle();
 		_isAttack = false;
 	}
+
+	/*
+	1.Plane은 Core와 player의 거리를 비교한다
+	2. Plane과 Core의 Distance를 A
+	3.Core쪽으로 가다가 A가 500보다 작아지면 Player와 GetAngle값을 구하고, 이동 및 ,발사
+	4.A가 500보다 커지면 다시 Core쪽으로 이동
+
+	*/
 
 	_speedX = cosf(_deltaAngle) * _speed * TIMEMANAGER->getElapsedTime();
 	_speedY = -sinf(_deltaAngle) * _speed * TIMEMANAGER->getElapsedTime();
