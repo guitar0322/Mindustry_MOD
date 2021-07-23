@@ -112,7 +112,7 @@ void PlayerConstructLaser::ShootLaser()
 
 		_constuctLaserSizeL->transform->SetPosition(Vector2(constructCenterX, constructCenterY));
 		_constuctLaserSizeL->transform->SetAngle(_constructAngle);
-		_constuctLaserSizeL->transform->SetScale(1.f, (_constructDistance / 323.f));
+		_constuctLaserSizeL->transform->SetScale(0.7f, (_constructDistance / 385.f));
 	}
 	else
 	{
@@ -122,7 +122,7 @@ void PlayerConstructLaser::ShootLaser()
 
 		_deleteLaserSizeL->transform->SetPosition(Vector2(constructCenterX, constructCenterY));
 		_deleteLaserSizeL->transform->SetAngle(_constructAngle);
-		_deleteLaserSizeL->transform->SetScale(1.f, (_constructDistance / 323.f));
+		_deleteLaserSizeL->transform->SetScale(0.8f, (_constructDistance / 360.f));
 	}
 }
 

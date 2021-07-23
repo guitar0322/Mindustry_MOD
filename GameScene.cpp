@@ -843,13 +843,6 @@ void GameScene::PlayerInit()
     _player->transform->AddChild(_playerShadow->transform);
     // ===========================================
 
-	_player->transform->AddChild(_playerWeaponL->transform);
-	_player->transform->AddChild(_playerWeaponR->transform);
-	_player->transform->AddChild(_playerCell->transform);
-	_player->transform->AddChild(_playerFireCircle->transform);
-	_player->transform->AddChild(_playerFire->transform);
-	_player->transform->GetChild(2)->SetPosition(_player->transform->GetX() , _player->transform->GetY());
-
 	_player->controler->SetGameInfo(_gameInfo);
 	_player->controler->SetGameMap(_gameMap);
 }
