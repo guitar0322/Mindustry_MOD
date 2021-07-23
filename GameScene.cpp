@@ -46,8 +46,8 @@ HRESULT GameScene::Init()
     _dataManager->LinkGameInfo(_gameInfo);
 
     _propContainer = new PropContainer();
+	_propContainer->Init();
     _dataManager->LinkPropContainer(_propContainer);
-
 	_propFactory = new PropFactory();
     _propFactory->Init();
 	_propFactory->propContainer = _propContainer;
