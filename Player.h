@@ -13,5 +13,6 @@ public:
 	Renderer* renderer;
 	PlayerControler* controler;
 	BoxCollider* collider;
+
 };
 
