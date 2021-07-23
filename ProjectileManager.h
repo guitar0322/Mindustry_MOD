@@ -12,7 +12,7 @@ static enum PROJECTILE_TYPE
 {
 	ENEMYPLANE,
 	ENEMYGROUND,
-	PLAYER
+	PLAYER,
 };	
 
 class ProjectileManager :

@@ -60,5 +60,6 @@ public:
 	void SetProjectileManager(ProjectileManager* projectileManager){ _projectileManager = projectileManager; }
 	void SetTestCoreTransform(GameObject* testCore) { _testCore = testCore; _testCoreTransform = testCore->transform; }
 	void SetEnemyInfo(EnemyInfo* enemyInfo) { _enemyInfo = enemyInfo; }
+	vector<EnemyObject*> GetCurWaveEnemy();
 };
 

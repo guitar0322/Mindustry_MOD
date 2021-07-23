@@ -43,19 +43,19 @@ void Projectile::Move()
 
 void Projectile::OnTriggerEnter(GameObject* gameObject)
 {
-	if (gameObject->tag == TAGMANAGER->GetTag(_targetTag))
-	{
-		if (_targetTag.compare("player") == 0)
-		{
-			transform->gameObject->SetActive(false);
-			gameObject->GetComponent<PlayerControler>()->Hit(_damage);
-		}
-		if (_targetTag.compare("enemy") == 0)
-		{
-			transform->gameObject->SetActive(false);
-			gameObject->GetComponent<EnemyInfo>()->Hit(_damage);
-		}
-	}
+	//if (gameObject->tag == TAGMANAGER->GetTag(_targetTag))
+	//{
+	//	if (_targetTag.compare("player") == 0)
+	//	{
+	//		transform->gameObject->SetActive(false);
+	//		gameObject->GetComponent<PlayerControler>()->Hit(_damage);
+	//	}
+	//	if (_targetTag.compare("enemy") == 0)
+	//	{
+	//		transform->gameObject->SetActive(false);
+	//		gameObject->GetComponent<EnemyInfo>()->Hit(_damage);
+	//	}
+	//}
 }
 
 void Projectile::EreaseProjectile()

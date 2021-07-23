@@ -8,9 +8,18 @@ Duo::Duo()
 {
 	name = L"µà¿À";
 
-	renderer->Init("duo");
+	//renderer->Init("duo_body");
+	renderer->Init("duo_top");
 
-	stat->SetSize(1);
+	turret_Head = new ImageObject();
+	turret_Head->Init();
+	turret_Head->renderer->Init("duo_top");
+
+	turret_Body = new ImageObject();
+	turret_Body->Init();
+	turret_Body->renderer->Init("duo_body");
+
+	stat->SetSize(2);
 	stat->SetHP(50);
 
 	collider->SetSize(stat->GetSize() * TILESIZE, stat->GetSize() * TILESIZE);

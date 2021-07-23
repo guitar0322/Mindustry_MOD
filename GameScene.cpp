@@ -33,6 +33,7 @@ HRESULT GameScene::Init()
     _propContainer = new PropContainer();
     _propFactory = new PropFactory();
     _propFactory->Init();
+	//_propFactory->tag = TAGMANAGER->GetTag("player");
     _propFactory->propContainer = _propContainer;
     _propFactory->LinkGameInfo(_gameInfo);
 
@@ -193,20 +194,6 @@ HRESULT GameScene::Init()
         EVENT::EXIT);
 
     #pragma endregion
-
-	/* 플레이어 부분 유림 */
-	_player = new Player();
-	_player->Init();
-	_player->tag = TAGMANAGER->GetTag("player");
-	_player->renderer->Init("player");
-	_player->transform->SetPosition(1500, 900);
-	_player->transform->SetAngle(0.0f);
-	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
-
-	//플레이어 포신 유림.
-	_playerWeaponL = new ImageObject;
-	_playerWeaponL->Init();
-	_playerWeaponL->renderer->Init("player_weapon_L");
 
 	/*===================================================================== */
 	/* 플레이어 부분 초기화 -> 유림 */
@@ -441,6 +428,11 @@ void GameScene::InitClip()
         CLIPMANAGER->AddClip("drill_top", "sprites/blocks/drills/mechanical-drill-top.png", 64, 64);
         CLIPMANAGER->AddClip("drill_rotator", "sprites/blocks/drills/mechanical-drill-rotator.png", 64, 64);
     }
+	//터렛 클립
+	{
+		CLIPMANAGER->AddClip("duo_top","duo/duo.png",32,32);
+		CLIPMANAGER->AddClip("duo_body","duo/block-1.png",32,32);
+	}
     //그 이외 클립
     {
         CLIPMANAGER->AddClip("conveyor_arrow", "sprites/blocks/extra/conveyor-arrow.png", 96, 96);

@@ -9,6 +9,8 @@
 #include "GameInfo.h"
 #include "Prop.h"
 #include "Drill.h"
+#include "EnemyManager.h"
+#include "ProjectileManager.h"
 
 PropFactory::PropFactory()
 {
@@ -60,7 +62,7 @@ void PropFactory::Update()
 			switch (buildProp.propIdx)
 			{
 			case 0:
-				CreateProp<Duo>(buildProp.x, buildProp.y);
+				Createturret(buildProp.x, buildProp.y);
 				break;
 			}
 			break;
@@ -166,6 +168,24 @@ void PropFactory::CreateDrill(int tileX, int tileY)
 	{
 		propContainer->AddProp(drillTileV[i], newDrill, RIGHT);
 	}
+	_previewV.erase(_previewV.begin());
+	_propQueue.pop();
+}
+
+void PropFactory::Createturret(int tileX, int tileY)
+{
+	/*******************************
+	1. tileX, tileY로 터렛 transform-SetPosition 해주기
+	2. 터렛에 애너미매니저, 프로젝틸 매니저 연결
+	3. Containprop에서 PropCatainer에 추가해주기
+	****************************/
+	Duo* newDuo = new Duo();
+	EnemyManager* newEnemyManager = new EnemyManager();
+	ProjectileManager* newProjectilemanager = new ProjectileManager();
+	newDuo->collider->RefreshPartition();
+	newDuo->turret_Body->transform->SetPosition(tileX * TILESIZE + TILESIZE / 2, tileY * TILESIZE + TILESIZE / 2);
+	newDuo->turret_Head->transform->SetPosition(tileX * TILESIZE + TILESIZE / 2, tileY * TILESIZE + TILESIZE / 2);
+	ContainProp(tileY * TILENUMX + tileX, newDuo, PROPDIR(0));
 	_previewV.erase(_previewV.begin());
 	_propQueue.pop();
 }

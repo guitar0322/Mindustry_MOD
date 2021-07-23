@@ -34,7 +34,6 @@ void PlayerControler::Init()
 	_isDead = false;
 	_isRespawn = false;
 	_dir = IDLE;
-	SOUNDMANAGER->addSound("minelaserbgm", "sounds/minebeam.ogg", true, true);
 
 }
 
@@ -125,37 +124,8 @@ void PlayerControler::Update()
 			}
 		}
 		
-
-		float laserStartX = transform->GetX() + cosf(ConvertAngleAPI(transform->GetAngle())) * 18;
-		float laserStartY = transform->GetY() - sinf(ConvertAngleAPI(transform->GetAngle())) * 18;
-		_playerLaser->SetLaserStartPoint(laserStartX, laserStartY);
-
-		if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
-		{
-		   if (_isCollecting == false)
-		   {
-			  _collectTile.x = _worldX / TILESIZE;
-			  _collectTile.y = _worldY / TILESIZE;
-			  _playerLaser->SetLaserEndPoint(_collectTile.x, _collectTile.y);
-			  _isCollecting = true;
-			  _playerLaser->_collectLaserFirst->SetActive(true);
-			  _playerLaser->_collectLaserEnd->SetActive(true);
-			  _playerLaser->_collectLaser->SetActive(true);
-			  _playerLaser->_detectRc->SetActive(true);
-		   }
-		}
-
-		if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
-		{
-			_playerLaser->_collectLaserFirst->SetActive(false);
-			_playerLaser->_collectLaserEnd->SetActive(false);
-			_playerLaser->_collectLaser->SetActive(false);
-			_playerLaser->_detectRc->SetActive(false);
-			_isCollecting = false;
-		}
-		_playerLaser->Update();
-		if (_playerLaser->GetLaserDistance() >= 400)
 		ShootResoucesLaser();
+
 		if (_isCollecting)
 		{
 			ResoucesCollect();
@@ -469,34 +439,6 @@ void PlayerControler::KeyHandle()
 			_speed = 250.f;
 		}
 	}
-	
-	float laserStartX = (transform->GetX() + cosf(ConvertAngleAPI(transform->GetAngle())) * 18);
-	float laserStartY = (transform->GetY() - sinf(ConvertAngleAPI(transform->GetAngle())) * 18);
-
-	if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
-	{
-		worldX = ScreenToWorld(_ptMouse).x;
-		worldY = ScreenToWorld(_ptMouse).y;
-		_playerLaser->SetLaserEndPoint(worldX / 32, worldY / 32);
-		_playerLaser->SetLaserStartPoint(worldX, worldY);
-
-		_playerLaser->_collectLaserFirst->SetActive(true);
-		_playerLaser->_collectLaserEnd->SetActive(true);
-		_playerLaser->_collectLaser->SetActive(true);
-		_playerLaser->_detectRc->SetActive(true);
-
-		SOUNDMANAGER->play("minelaserbgm", 100.0f);
-	}
-	_playerLaser->ShootLaser();
-	_playerLaser->SetLaserStartPoint(laserStartX, laserStartY);
-	if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
-	{
-		_playerLaser->_collectLaserFirst->SetActive(false);
-		_playerLaser->_collectLaserEnd->SetActive(false);
-		_playerLaser->_collectLaser->SetActive(false);
-		_playerLaser->_detectRc->SetActive(false);
-
-		SOUNDMANAGER->stop("minelaserbgm");
 }
 
 void PlayerControler::Hit(float damage)

@@ -26,6 +26,9 @@ Drill::Drill()
 	production = new Production();
 	AddComponent(production);
 	production->Init();
+
+	SOUNDMANAGER->addSound("drillbgm", "sounds/drill.ogg", true, true);
+	SOUNDMANAGER->play("drillbgm", 10.f);
 }
 
 Drill::~Drill()
