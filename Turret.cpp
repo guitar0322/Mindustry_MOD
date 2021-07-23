@@ -51,6 +51,7 @@ void Turret::Fire()
 		float angle = GetAngle(transform->position, _curWaveEnemyV[_nearEnemyIdx]->transform->position);
 		transform->SetAngle(ConvertAngleD2D(angle));
 		_projectileManager->FireProjectile(transform->GetX() + cosf(angle) * _barrelLength, transform->GetY() - sinf(angle) * _barrelLength, ConvertAngleD2D(angle), PLAYER);
+		EFFECTMANAGER->EmissionEffect("shoot", transform->GetX() + cosf(angle) * _barrelLength, transform->GetY() - sinf(angle) * _barrelLength, ConvertAngleD2D(angle));
 		_attackSpeed = 0;
 	}
 }

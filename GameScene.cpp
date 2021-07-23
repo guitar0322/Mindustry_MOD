@@ -25,14 +25,18 @@ HRESULT GameScene::Init()
 	InitClip();
 	PlayerClip();
 	InGameUIClip();
+    InitIntro();
 
 	SetBackBufferSize(1600, 1600);
     COLLIDERMANAGER->PartitionArea(10, 10);
     StaticBuffer->BeginDraw();
 	MainCam->SetScreenSize(WINSIZEX, WINSIZEY);
-	MainCam->SetRenderSize(1600, 1010);
-    MainCam->transform->SetPosition(1600 / 2, 1600 / 2);
-
+    _screenRatio = (float)WINSIZEY / (float)WINSIZEX;
+    _intro = true;
+	MainCam->SetRenderSize(1600, 1600 * _screenRatio);
+    MainCam->transform->SetPosition(1600 / 2, 1600 * _screenRatio / 2);
+    MainCam->SetScreenSize(100, 100 * _screenRatio);
+    MainCam->SetScreenStart((WINSIZEX - MainCam->GetScreenWidth()) / 2, (WINSIZEY - MainCam->GetScreenHeight()) / 2);
     selectCategoryIdx = 0;
 
     _dataManager = new DataManager();
@@ -279,6 +283,30 @@ HRESULT GameScene::Init()
 void GameScene::Update()
 {
 	MainCam->Update();
+    introCore.Update();
+    introEffect.Update();
+
+    if (_intro == true)
+    {
+        float screenWidth = MainCam->GetScreenWidth();
+        float screenHeight = MainCam->GetScreenHeight();
+
+        float curScale = introEffect.transform->GetScaleX();
+        if(curScale > 0.4f)
+            introEffect.transform->SetScale(curScale - 0.02, curScale - 0.02);
+        MainCam->SetScreenSize(screenWidth + 10, screenHeight + 10 * _screenRatio);
+        MainCam->SetScreenStart((WINSIZEX - MainCam->GetScreenWidth()) / 2, (WINSIZEY - MainCam->GetScreenHeight()) / 2);
+        if (MainCam->GetScreenWidth() > WINSIZEX)
+        {
+            MainCam->SetScreenSize(WINSIZEX, WINSIZEY);
+            MainCam->SetScreenStart(0, 0);
+            introEffect.SetActive(false);
+            introCore.SetActive(false);
+            EFFECTMANAGER->EmissionEffect("big_explosion", ScreenToWorld(Vector2(WINSIZEX / 2 + 10, WINSIZEY / 2)).x, ScreenToWorld(Vector2(WINSIZEX / 2 + 10, WINSIZEY / 2)).y, 0);
+            _intro = false;
+        }
+    }
+
     EFFECTMANAGER->Update();
     if (KEYMANAGER->isOnceKeyDown('M'))
     {
@@ -430,7 +458,7 @@ void GameScene::Render()
 {
     MainCam->StaticToBackBuffer();
 	_gameMap->Render();
-
+    
     _propFactory->Render();
     _propContainer->Render();
     _resourceManager->Render();
@@ -440,19 +468,24 @@ void GameScene::Render()
 	//플레이어 관련 렌더 -> 유림
 	{
 		_player->transform->GetChild(4)->gameObject->Render();
+		_core->Render();
 		_player->Render();
         // 플레이어 그림자 (시영 추가) ==
         _playerShadow->Render();
         // ============================
 		_enemyManager->Render();
-        EFFECTMANAGER->Render();
 		_player->Render();
 		_projectileManager->Render();
-		_core->Render();
+        EFFECTMANAGER->Render();
 		_cameraControler->Render();
 		MainCam->Render();
 	}
 
+    {
+        introEffect.Render();
+		introCore.Render();
+    }
+    
     //카테고리 아이콘 렌더
     {
         _buildingCategoryFrame.Render();
@@ -539,8 +572,25 @@ void GameScene::Release()
     SAFE_DELETE(_uiControler);
 }
 
+void GameScene::InitIntro()
+{
+    introCore.Init();
+    introCore.uiMouseEvent->enable = false;
+    introCore.uiRenderer->Init("core");
+    introCore.transform->SetScale(0.9f, 0.9f);
+    introCore.transform->SetPosition(WINSIZEX / 2 + 10, WINSIZEY / 2);
+
+    introEffect.Init();
+    introEffect.uiMouseEvent->enable = false;
+    introEffect.uiRenderer->Init("big_particle_light");
+    introEffect.transform->SetPosition(WINSIZEX / 2 + 10, WINSIZEY / 2);
+    introEffect.transform->SetScale(2.f, 2.f);
+}
+
 void GameScene::InitClip()
 {
+    CLIPMANAGER->AddClip("big_particle_light","sprites/effects/big-particle-light.png", 120, 120);
+
 	//카테고리 아이콘 클립
 	{
 		CLIPMANAGER->AddClip("turret_icon", "icons/turret.png", 32, 32);
@@ -683,7 +733,7 @@ void GameScene::InitClip()
 	{
 		CLIPMANAGER->AddClip("core", "sprites/blocks/storage/core.png", 96, 96);
 		CLIPMANAGER->AddClip("enemy_atrax", "sprites/units/enemy/enemy_atrax.png", 188, 329);
-		CLIPMANAGER->AddClip("enemy_dagger_walk", "sprites/units/enemy/enemy_dagger_walk.png", 369, 114, 3, 1, 0.8f);
+		CLIPMANAGER->AddClip("enemy_dagger_walk", "sprites/units/enemy/enemy_dagger_walk.png", 369, 114, 3, 1, 0.3f);
 		CLIPMANAGER->AddClip("projectile", "sprites/units/enemy/projectile.png", 52, 52);
 	}
 }
@@ -821,7 +871,7 @@ void GameScene::PlayerInit()
 	_player->Init();
 	_player->tag = TAGMANAGER->GetTag("player");
 	_player->renderer->Init("player");
-	_player->transform->SetPosition(1500, 900);
+	_player->transform->SetPosition(25 * TILESIZE + 16, 32 * TILESIZE + 16);
 	_player->transform->SetAngle(0.0f);
 	_player->controler->LinkProFactory(_propFactory);
 	_propFactory->LinkPlayerControler(_player->controler);
@@ -1952,7 +2002,7 @@ void GameScene::SetCore()
 	_core = new Core();
 	_core->Init();
 	_core->tag = TAGMANAGER->GetTag("prop");
-	_core->transform->SetPosition(25 * TILESIZE + 16, 36 * TILESIZE + 16);
+	_core->transform->SetPosition(25 * TILESIZE + 16, 32 * TILESIZE + 16);
 	_core->collider->RefreshPartition();
     _core->coreComponent->LinkResourceManager(_resourceManager);
     _core->coreComponent->LinkGameInfo(_gameInfo);

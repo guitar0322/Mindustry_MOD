@@ -21,7 +21,7 @@ Duo::Duo()
 
 	turret = new Turret();
 	AddComponent(turret);
-	turret->Init(0.5f, 500.f, 16.f);
+	turret->Init(0.5f, 500.f, 32.f);
 	this->tag = TAGMANAGER->GetTag("prop");
 }
 

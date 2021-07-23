@@ -31,18 +31,13 @@ HRESULT GameMap::Init()
 			_tileInfo[i * TILENUMX + j].resources = RES_NONE;
 		}
 	}
-
+	Load();
 	return S_OK;
 }
 
 void GameMap::Update()
 {
 
-	//엔터누르면 저장된 맵 로드
-	if (KEYMANAGER->isOnceKeyDown(VK_RETURN))
-	{
-		Load();
-	}
 }
 
 void GameMap::Render()

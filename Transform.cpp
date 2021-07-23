@@ -72,8 +72,8 @@ void Transform::Rotate(float degree)
 	}
 	angle += degree;
 	if (angle < 0.f)
-		angle = 360 - (-angle);
-	if (angle > 360.f)
+		angle = 360 + angle;
+	if (angle >= 360.f)
 		angle -= 360.f;
 }
 
