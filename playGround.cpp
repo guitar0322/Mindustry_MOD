@@ -121,6 +121,7 @@ void playGround::render()
 	wstring elapse = L"ElapseTime : ";
 	elapse.append(to_wstring(TIMEMANAGER->getElapsedTime()));
 	D2DRENDERER->RenderText(10, WINSIZEY - 100, elapse, 30, L"¸¼Àº°íµñ", D2DRenderer::DefaultBrush::Blue);
+
 	//D2DRENDERER->RenderText(10, 10, fps, 30, L"¸¼Àº°íµñ", D2DRenderer::DefaultBrush::White);
 	//==================================================
 	//¿©±âµµ °ÇµéÁö¸¶¶ó

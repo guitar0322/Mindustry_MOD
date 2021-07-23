@@ -34,7 +34,6 @@ public:
     float GetAttackSpeed() const { return _attackSpeed; }
 
     void SetBarrelLength(float length) { _barrelLength = length; }
-
     void Fire();
     void ProbeEnemy();
 

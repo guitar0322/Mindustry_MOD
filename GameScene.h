@@ -37,7 +37,10 @@ private:
 	ImageObject* _playerCell;
 	ImageObject* _playerFireCircle;
 	ImageObject* _playerFire;
-	GameObject* _projectileManager;
+    // 플레이어 그림자 (시영 추가) ==
+    ImageObject* _playerShadow;       
+    // ============================
+    GameObject* _projectileManager;
 
 
 	//======
@@ -83,12 +86,20 @@ private:
     bool    _lockDes;
     bool    _research;                       // 연구 상태
     bool    _inDetail;                       // 상세 설명 상태
+    bool    _all_Resources_State;            // 전체 자원 [열림], [닫힘] 상태
+    int     _all_Resources_Count;            // 전체 자원 개수
 
-    UIBase  _all_Resources_Open_Img;         // 전체 자원 [열림]
+    UIBase  _all_Resources_Open1_Img;        // 전체 자원 [열림] 1개
+    UIBase  _all_Resources_Open2_Img;        // 전체 자원 [열림] 2개
+    UIBase  _all_Resources_Open3_Img;        // 전체 자원 [열림] 3개
     UIBase  _all_Resources_Close_Img;        // 전체 자원 [닫힘]
-    UIBase  _all_Resources_Img;              // 전체 자원 이미지
+    UIBase  _all_Resources_Img;              // 전체 자원 이미지 (충돌 - 회색)
     UIBase  _all_Resources_Text;             // 전체 자원 텍스트
     Button  _all_Resources_Button;           // 전체 자원 버튼
+    UIBase  _all_Resources_Mineral[3];       // 전체 자원 광물 이미지 
+    wstring _all_Resources_Copper_Count;
+    wstring _all_Resources_Lead_Count;
+    wstring _all_Resources_Scrap_Count;
 
     UIBase  _choiceImg;
     UIBase  _lockImg;                        // 연구 상태 자물쇠 이미지
@@ -231,6 +242,4 @@ public:
 
 	/* 화면에 문자 띄울 때 여기 쓰세요 - 유림 (210719)*/
 	void StringRender();
-
 };
-

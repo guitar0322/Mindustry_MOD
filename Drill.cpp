@@ -27,6 +27,8 @@ Drill::Drill()
 	AddComponent(production);
 	production->Init();
 
+	SOUNDMANAGER->addSound("drillbgm", "sounds/drill.ogg", true, true);
+	SOUNDMANAGER->play("drillbgm", 10.f);
 	this->tag = TAGMANAGER->GetTag("prop");
 	this->transform->AddChild(rotator);
 	this->transform->AddChild(top);

@@ -54,7 +54,6 @@ void Turret::Fire()
 		_attackSpeed = 0;
 	}
 }
-
 void Turret::ProbeEnemy()
 {
 	_nearEnemyIdx = -1;

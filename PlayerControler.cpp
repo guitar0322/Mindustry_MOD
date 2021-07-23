@@ -172,6 +172,7 @@ void PlayerControler::Update()
 		}
 
 		ShootResoucesLaser();
+
 		if (_isCollecting)
 		{
 			ResoucesCollect();
@@ -426,7 +427,6 @@ void PlayerControler::ShootResoucesLaser()
 {
 	float laserStartX = transform->GetX() + cosf(ConvertAngleAPI(transform->GetAngle())) * 18;
 	float laserStartY = transform->GetY() - sinf(ConvertAngleAPI(transform->GetAngle())) * 18;
-
 
 	_playerLaser->SetLaserStartPoint(laserStartX, laserStartY);
 	

@@ -23,7 +23,7 @@ void EnemyManager::Init()
 	SetEnemy();
 	_curWave = 0;
 	SOUNDMANAGER->addSound("wave", "sounds/wave.ogg", true, false);
-	SOUNDMANAGER->addSound("explosion", "sounds/explosion.ogg", true, false);
+	SOUNDMANAGER->addSound("explosion", "sounds/bang.ogg", true, false);
 }
 
 void EnemyManager::Update()
@@ -154,11 +154,11 @@ void EnemyManager::EnemyTimer()
 			_enemySpawnTime = 124.f;
 		}
 	}
-	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
+
+	/*if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 	{
 		SpawnEnemy();
-	}
-
+	}*/
 }
 
 void EnemyManager::EnemyUpdate()
@@ -216,5 +216,3 @@ vector<EnemyObject*> EnemyManager::GetCurWaveEnemy()
 	}
 	return result;
 }
-
-																																														

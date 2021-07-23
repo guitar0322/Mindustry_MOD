@@ -62,6 +62,4 @@ void Projectile::OnTriggerEnter(GameObject* gameObject)
 			gameObject->GetComponent<PropStat>()->Hit(_damage);
 		}*/
 	}
-
-
 }

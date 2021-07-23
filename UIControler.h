@@ -54,8 +54,14 @@ public:
     /* 시영 */
     // 연구
     /* 전체 자원 버튼 (회색) */
-    UIBase* all_Resources_Img;                  // 전체 자원 버튼 (회색)
+    int     all_Resources_Count;
+
+    UIBase* all_Resources_Open1_Img;            // 전체 자원 [열림] 1개
+    UIBase* all_Resources_Open2_Img;            // 전체 자원 [열림] 2개
+    UIBase* all_Resources_Open3_Img;            // 전체 자원 [열림] 3개
     UIBase* all_Resources_Close_Img;            // 전체 자원 [닫힘]
+    UIBase* all_Resources_Img;                  // 전체 자원 버튼 (회색)
+    UIBase* all_Resources_Text;                 // 전체 자원 텍스트
 
     /* ? */
     UIBase* choiceImg;
@@ -85,15 +91,17 @@ public:
     UIBase* menu_ReallyEnd_Img;                 // 정말로 종료하시겠습니까? 이미지
     UIBase* menu_ReallyEnd_Check_Idle;          // 정말로 종료하시겠습니까? [확인] 기본 상태 이미지
     UIBase* menu_ReallyEnd_Check_Choice;        // 정말로 종료하시겠습니까? [확인] 선택 상태 이미지
-    UIBase* menu_ReallyEnd_Cancle_Idle;         // 정말로 종료하시겠습니까? [취소] 기본 상태 이미지
+    UIBase* menu_ReallyEnd_Cancle_Idle;         // 정말로 종료하시겠습니까? [취소] 기본 상태 이미지b
     UIBase* menu_ReallyEnd_Cancle_Choice;       // 정말로 종료하시겠습니까? [취소] 선택 상태 이미지
 
     void inResearch_ActiveChoiceImg(Transform* menuTr, bool isActive);
 
-    /* 연구 상태에서 [전체자원] 버튼 EVENT, EXIT */
-    void inResearch_Active_Choice_Img(bool isActive);
+    /* 연구 상태에서 [전체자원] 버튼 EVENT */
+    void inResearch_Active_Choice_Img(bool* name);
     /* 연구 상태에서 [전체자원] 버튼 CLICK*/
-    void inResearch_Active_all_Resources_Close_Img(bool isActive);
+    void inResearch_Active_all_Resources_Click_Event(bool* name);
+    /* 연구 상태에서 [전체자원] 버튼 EXIT */
+    void inResearch_InActive_Choice_Img();
     
     /* 연구 상태에서 [돌아가기] 버튼 ENTER, EXIT */
     void inResearch_ActiveGoBackImg(bool isActive);
