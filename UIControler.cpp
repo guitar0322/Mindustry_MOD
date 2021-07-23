@@ -5,7 +5,7 @@
 #include "PropContainer.h"
 #include "GameMap.h"
 #include "EnemyManager.h"
-
+#include "PlayerControler.h"
 UIControler::UIControler()
 	:_previewDir(false), _previewNum(0)
 {
@@ -25,11 +25,11 @@ void UIControler::Init()
 void UIControler::Update()
 {
 	propPreview->Update();
+	Vector2 worldMouse = ScreenToWorld(_ptMouse);
+	int tileX = worldMouse.x / TILESIZE;
+	int tileY = worldMouse.y / TILESIZE;
 	if (propPreview->isActive == true)
 	{
-		Vector2 worldMouse = ScreenToWorld(_ptMouse);
-		int tileX = worldMouse.x / TILESIZE;
-		int tileY = worldMouse.y / TILESIZE;
 		if (_previewV.empty() == true)
 		{
 			if (_selectCategoryIdx != PRODUCTION)
@@ -84,18 +84,52 @@ void UIControler::Update()
 
 		if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
 		{
-			RefreshPreview();
-			propPreview->SetActive(false);
-			propSelect->SetActive(false);
-			conveyorArrow.SetActive(false);
+			if (propPreview->isActive == true)
+			{
+				RefreshPreview();
+				propPreview->SetActive(false);
+				propSelect->SetActive(false);
+				conveyorArrow.SetActive(false);
+			}
 		}
-
+		
 		if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
 		{
 			propFactory->AddPropElem(_previewV, _selectCategoryIdx, _selectPropIdx, _dir);
 			RefreshPreview();
 		}
 	}
+	if (_playerControler->GetIsCollecting() == false)
+	{
+		if (KEYMANAGER->isOnceKeyDown(VK_RBUTTON))
+		{
+			_deleteStart.x = tileX;
+			_deleteStart.y = tileY;
+		}
+
+		if (KEYMANAGER->isStayKeyDown(VK_RBUTTON))
+		{
+			int deltaX = tileX - _deleteStart.x;
+			int deltaY = tileY - _deleteStart.y;
+			if(_deleteStart.x != -1)
+				_deleteRc = RectMakePivot(Vector2(_deleteStart.x * TILESIZE, _deleteStart.y * TILESIZE), Vector2(deltaX * TILESIZE, deltaY * TILESIZE), Pivot::LeftTop);
+			if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
+			{
+				_deleteStart.x = -1;
+				_deleteRc = Rect();
+			}
+		}
+
+		if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
+		{
+			if (_deleteRc.GetWidth() != 0)
+			{
+				propFactory->AddDeleteQue(_deleteStart.x, _deleteStart.y, _deleteRc.right / TILESIZE, _deleteRc.bottom / TILESIZE);
+				_deleteRc = Rect();
+			}
+		}
+	}
+
 	for (int i = 0; i < _previewV.size(); i++)
 	{
 		_previewV[i].Update();
@@ -113,6 +147,10 @@ void UIControler::Render()
 {
 	conveyorArrow.Render();
 	propPreview->Render();
+	if (_deleteRc.GetWidth() != 0)
+	{
+		D2DRENDERER->DrawRectangle(_deleteRc, D2DRenderer::DefaultBrush::Red);
+	}
 	if (Math::FloatEqual(propPreview->renderer->GetAlpha(), 0.4f) == true)
 	{
 		propPreview->renderer->DrawFillRect(D2D1::ColorF::Red);
@@ -167,7 +205,6 @@ void UIControler::ClickPropIcon(GameObject* clickedButton, int propIdx)
 	{
 		propSelect->SetActive(true);
 		propPreview->SetActive(true);
-
 
 		if (_selectCategoryIdx == RAIL)
 		{

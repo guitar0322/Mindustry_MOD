@@ -472,6 +472,11 @@ void GameScene::InitClip()
         CLIPMANAGER->AddClip("drill_top", "sprites/blocks/drills/mechanical-drill-top.png", 64, 64);
         CLIPMANAGER->AddClip("drill_rotator", "sprites/blocks/drills/mechanical-drill-rotator.png", 64, 64);
     }
+    //터렛 클립
+    {
+        CLIPMANAGER->AddClip("duo_head", "sprites/blocks/turrets/duo-head.png", 32, 32);
+        CLIPMANAGER->AddClip("duo_base", "sprites/blocks/turrets/bases/block-1.png", 32, 32);
+    }
     //그 이외 클립
     {
         CLIPMANAGER->AddClip("conveyor_arrow", "sprites/blocks/extra/conveyor-arrow.png", 96, 96);
@@ -711,7 +716,7 @@ void GameScene::PlayerInit()
 	_player->transform->SetAngle(0.0f);
 	_player->controler->LinkProFactory(_propFactory);
 	_propFactory->LinkPlayerControler(_player->controler);
-
+    _uiControler->LinkPlayerControler(_player->controler);
 	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
 
 	//플레이어 포신 유림.
@@ -1788,6 +1793,7 @@ void GameScene::SetProjectileManager()
 	_projectileManager->AddComponent(new ProjectileManager());
 	_projectileManager->GetComponent<ProjectileManager>()->Init();
 	_player->controler->SetProjectileManager(_projectileManager->GetComponent<ProjectileManager>());
+    _propFactory->LinkProjectileManager(_projectileManager->GetComponent<ProjectileManager>());
 }
 
 void GameScene::SetCore()
@@ -1812,6 +1818,7 @@ void GameScene::SetEnemyManager()
     _aStar->LinkEnemyManager(_enemyManager->GetComponent<EnemyManager>());
 	_uiControler->SetEnemyManager(_enemyManager->GetComponent<EnemyManager>());
 	_enemyManager->GetComponent<EnemyManager>()->SetPlayerTransform(_player->transform);
+    _propFactory->LinkEnemyManager(_enemyManager->GetComponent<EnemyManager>());
 }
 
 void GameScene::SetCameraControler()

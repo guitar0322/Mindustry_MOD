@@ -2,9 +2,11 @@
 #include "Turret.h"
 #include "ProjectileObject.h"
 #include "Projectile.h"
-
+#include "EnemyManager.h"
+#include "EnemyObject.h"
+#include "ProjectileManager.h"
 Turret::Turret()
-	: _projectileSpeed(100.f)
+	:_preWave(-1)
 {
 }
 
@@ -12,85 +14,64 @@ Turret::~Turret()
 {
 }
 
-void Turret::Init(float attackSpeed, float attackRange, float damage, float projectileSpeed, float barrelLength)
+void Turret::Init(float attackSpeed, float attackRange, float barrelLength)
 {
 	_attackSpeed = attackSpeed;
 	_attackRange = attackRange;
-	_damage = damage;
-	_projectileSpeed = projectileSpeed;
 	_barrelLength = barrelLength;
-
-	for (int i = 0; i < PROJECTILE_MIN; i++)
-	{
-		_projectileV.push_back(new ProjectileObject());
-		_projectileV[i]->GetProjectileComponent()->SetSpeed(_projectileSpeed);
-	}
 }
 
 void Turret::Update()
 {
+	if (_preWave != _enemyManager->GetCurWave())
+	
+	{	_preWave = _enemyManager->GetCurWave();
+		_curWaveEnemyV = _enemyManager->GetCurWaveEnemy();
+		_minDistance = INT_MAX;
+		_nearEnemyIdx = -1;
+	}
+
 	ProbeEnemy();
 }
 
 void Turret::Render()
 {
-}
 
-void Turret::SetProjectileSpeed(float speed)
-{
-	for (int i = 0; i < _projectileV.size(); i++)
-	{
-		_projectileV[i]->GetProjectileComponent()->SetSpeed(speed);
-	}
 }
 
 void Turret::Fire()
 {
-	if (PROJECTILE_MIN == GetActiveProjectileNum())
+	if (_curWaveEnemyV[_nearEnemyIdx]->isActive == false)
 	{
-		ProjectileObject* newProjectile = new ProjectileObject();
-		newProjectile->GetProjectileComponent()->SetSpeed(_projectileSpeed);
-		newProjectile->transform->SetPosition(
-			Vector2
-			(
-				this->transform->GetX() + cosf(ConvertAngleAPI(transform->GetAngle())) * _barrelLength,
-				this->transform->GetY() - sinf(ConvertAngleAPI(transform->GetAngle())) * _barrelLength
-			)
-		);
-		newProjectile->SetActive(true);
-		_projectileV.push_back(newProjectile);
+		return;
 	}
-	else
+	_attackSpeed += TIMEMANAGER->getElapsedTime();
+	if (_attackSpeed >= 0.5f)
 	{
-		for (int i = 0; i < _projectileV.size(); i++)
-		{
-			if (_projectileV[i]->isActive == true) continue;
-			_projectileV[i]->transform->SetPosition(
-				Vector2
-				(
-					this->transform->GetX() + cosf(ConvertAngleAPI(transform->GetAngle())) * _barrelLength,
-					this->transform->GetY() - sinf(ConvertAngleAPI(transform->GetAngle())) * _barrelLength
-				)
-			);
-			_projectileV[i]->SetActive(true);
-			break;
-		}
+		float angle = GetAngle(transform->position, _curWaveEnemyV[_nearEnemyIdx]->transform->position);
+		transform->SetAngle(ConvertAngleD2D(angle));
+		_projectileManager->FireProjectile(transform->GetX() + cosf(angle) * _barrelLength, transform->GetY() - sinf(angle) * _barrelLength, ConvertAngleD2D(angle), PLAYER);
+		_attackSpeed = 0;
 	}
 }
 
 void Turret::ProbeEnemy()
 {
-	if(false)
-		Fire();
-}
+	_nearEnemyIdx = -1;
+	_minDistance = INT_MAX;
 
-int Turret::GetActiveProjectileNum()
-{
-	int result = 0;
-	for (int i = 0; i < _projectileV.size(); i++)
+	for (int i = 0; i < _curWaveEnemyV.size(); i++)
 	{
-		if (_projectileV[i]->isActive == true)
-			result++;
+		if (_curWaveEnemyV[i]->isActive == false) continue;
+		_distance = GetDistance(_curWaveEnemyV[i]->transform->position, transform->position);
+		if (_distance > _attackRange)
+			continue;
+		if (_distance < _minDistance) {
+			_minDistance = _distance;
+			_nearEnemyIdx = i;
+		}
 	}
-	return result;
+
+	if(_nearEnemyIdx != -1)
+		Fire();
 }

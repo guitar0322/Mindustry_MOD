@@ -52,7 +52,6 @@ void PlayerControler::Init()
 void PlayerControler::Update()
 {
 	PlayerUIUpdate();
-	
 
 	if (_isSlow == true)
 	{
@@ -84,13 +83,22 @@ void PlayerControler::Update()
 		{
 			Vector2 buildPoint = playerConstructLaser->GetConstructEndPoint();
 			_targetAngle = ConvertAngleD2D(GetAngle(transform->position, buildPoint));
+			playerConstructLaser->SetIsDelete(false);
 			playerConstructLaser->OnConstructLaser();
 		}
-		else
+
+		if (_propFactory->isDelete == true)
+		{
+			Vector2 buildPoint = playerConstructLaser->GetConstructEndPoint();
+			_targetAngle = ConvertAngleD2D(GetAngle(transform->position, buildPoint));
+			playerConstructLaser->SetIsDelete(true);
+			playerConstructLaser->OnConstructLaser();
+		}
+
+		if(_propFactory->isDelete == false && _propFactory->isBuilding == false)
 		{
 			playerConstructLaser->OffConstructLaser();
 		}
-
 		PlayerDirection();
 
 		/* === 웨폰 방향 ===*/
@@ -128,8 +136,8 @@ void PlayerControler::Update()
 						_projectileManager->FireProjectile(transform->GetChild(1)->GetX(), transform->GetChild(1)->GetY(),
 							transform->GetChild(1)->GetAngle() + 2, PROJECTILE_TYPE::PLAYER);
 						EFFECTMANAGER->EmissionEffect("shoot",
-							transform->GetChild(0)->GetX() + cosf(ConvertAngleAPI(transform->GetAngle())) * _barrelLength,
-							transform->GetChild(0)->GetY() - sinf(ConvertAngleAPI(transform->GetAngle())) * _barrelLength,
+							transform->GetChild(1)->GetX() + cosf(ConvertAngleAPI(transform->GetAngle())) * _barrelLength,
+							transform->GetChild(1)->GetY() - sinf(ConvertAngleAPI(transform->GetAngle())) * _barrelLength,
 							transform->GetAngle());
 					}
 					else // 나머지 값
@@ -138,8 +146,8 @@ void PlayerControler::Update()
 						_projectileManager->FireProjectile(transform->GetChild(2)->GetX(), transform->GetChild(2)->GetY(),
 							transform->GetChild(2)->GetAngle() - 2, PROJECTILE_TYPE::PLAYER);
 						EFFECTMANAGER->EmissionEffect("shoot",
-							transform->GetChild(1)->GetX() + cosf(ConvertAngleAPI(transform->GetAngle())) * _barrelLength,
-							transform->GetChild(1)->GetY() - sinf(ConvertAngleAPI(transform->GetAngle())) * _barrelLength,
+							transform->GetChild(2)->GetX() + cosf(ConvertAngleAPI(transform->GetAngle())) * _barrelLength,
+							transform->GetChild(2)->GetY() - sinf(ConvertAngleAPI(transform->GetAngle())) * _barrelLength,
 							transform->GetAngle());
 					}
 					_isLeft = !_isLeft; // 반복되게 하기
@@ -148,16 +156,16 @@ void PlayerControler::Update()
 			}
 		}
 
-		if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
+		if (_isCollecting == true)
 		{
-			if (_isCollecting == true)
+			if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
 			{
 				_playerLaser->OffLaser();
 				_isCollecting = false;
 			}
 		}
 
-		if (_propFactory->isBuilding == true)
+		if (_propFactory->isBuilding == true || _propFactory->isDelete == true)
 		{
 			ShootConstructLaser();
 			playerConstructLaser->Update();

@@ -112,3 +112,13 @@ Prop* PropContainer::GetPropMap(int hashKey)
 
 	return nullptr;
 }
+
+void PropContainer::DeleteProp(int tileX, int tileY)
+{
+	Prop* targetProp = GetPropMap(tileY * TILENUMX + tileX);
+	if (targetProp != nullptr)
+	{
+		_propMap.erase(tileY * TILENUMX + tileX);
+		SAFE_DELETE(targetProp);
+	}
+}
