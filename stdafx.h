@@ -60,7 +60,7 @@ using namespace HDY_UTIL;
 // ## 매크로 처리 ## 21.04.23 ##
 //==================================
 
-#define WINNAME (LPTSTR)(TEXT("28기 API"))
+#define WINNAME (LPTSTR)(TEXT("Mindustry"))
 #define WINSTARTX 10	//윈도우 창 시작좌표 (left)
 #define WINSTARTY 0	//윈도우 창 시작좌표 (top)
 #define WINSIZEX 1350	//윈도우 가로크기

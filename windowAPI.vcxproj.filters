@@ -593,6 +593,8 @@
   <ItemGroup>
     <Image Include="small.ico" />
     <Image Include="windowAPI.ico" />
+    <Image Include="..\..\..\바탕 화면\경일\14. 찐 팀 프로젝트\3. 내 작업폴더\아이콘\icon_64.png" />
+    <Image Include="Mindustryicon.ico" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="헤더파일">

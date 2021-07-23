@@ -35,11 +35,14 @@ HRESULT TitleScene::Init()
 void TitleScene::Update()
 {
 	MainCam->Update();
+
+	/* Enemy Update 1 */
 	for (int i = 0; i < ENEMY_PLANE_MAX; i++)
 	{
 		_enemyPlane[i]->Update();
 		_enemyPlaneShadow[i]->Update();
 	}
+
 	/* Buuton Update */
 	_playButton.Update();
 	_ediotrButton.Update();
@@ -49,7 +52,7 @@ void TitleScene::Update()
 	_goBackButton.Update();
 	_soundButton.Update();
 
-	/* Enemy Update */
+	/* Enemy Update 2 */
 	EnemyMove();
 }
 

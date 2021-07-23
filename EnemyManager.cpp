@@ -154,11 +154,6 @@ void EnemyManager::EnemyTimer()
 			_enemySpawnTime = 124.f;
 		}
 	}
-	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
-	{
-		SpawnEnemy();
-	}
-
 }
 
 void EnemyManager::EnemyUpdate()
