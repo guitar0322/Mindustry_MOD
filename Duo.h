@@ -6,10 +6,11 @@ class Duo :
 {
 public:
     Turret* turret;
-	ImageObject* turret_Head;
-	ImageObject* turret_Body;
+    ImageObject* base;
     Duo();
     ~Duo();
 
+    virtual void Update();
+    virtual void Render();
 };
 

@@ -17,6 +17,9 @@ class UIControler;
 class GameInfo;
 class Item;
 class ResourceManager;
+class Core;
+class Astar;
+class Respawn;
 
 class GameScene :
     public Scene
@@ -34,14 +37,20 @@ private:
 	ImageObject* _playerCell;
 	ImageObject* _playerFireCircle;
 	ImageObject* _playerFire;
-	GameObject* _projectileManager;
+    // 플레이어 그림자 (시영 추가) ==
+    ImageObject* _playerShadow;       
+    // ============================
+    GameObject* _projectileManager;
+
 
 	//======
     PropContainer* _propContainer;
     PropFactory* _propFactory;
     ResourceManager* _resourceManager;
     GameInfo* _gameInfo;
+    Astar* _aStar;
     UIControler* _uiControler;
+    Respawn* _respawn;
     UIBase _categorySelect;
     UIBase _propSelect;
 
@@ -77,6 +86,20 @@ private:
     bool    _lockDes;
     bool    _research;                       // 연구 상태
     bool    _inDetail;                       // 상세 설명 상태
+    bool    _all_Resources_State;            // 전체 자원 [열림], [닫힘] 상태
+    int     _all_Resources_Count;            // 전체 자원 개수
+
+    UIBase  _all_Resources_Open1_Img;        // 전체 자원 [열림] 1개
+    UIBase  _all_Resources_Open2_Img;        // 전체 자원 [열림] 2개
+    UIBase  _all_Resources_Open3_Img;        // 전체 자원 [열림] 3개
+    UIBase  _all_Resources_Close_Img;        // 전체 자원 [닫힘]
+    UIBase  _all_Resources_Img;              // 전체 자원 이미지 (충돌 - 회색)
+    UIBase  _all_Resources_Text;             // 전체 자원 텍스트
+    Button  _all_Resources_Button;           // 전체 자원 버튼
+    UIBase  _all_Resources_Mineral[3];       // 전체 자원 광물 이미지 
+    wstring _all_Resources_Copper_Count;
+    wstring _all_Resources_Lead_Count;
+    wstring _all_Resources_Scrap_Count;
 
     UIBase  _choiceImg;
     UIBase  _lockImg;                        // 연구 상태 자물쇠 이미지
@@ -158,21 +181,24 @@ private:
 
     UIBase  _menu_ReallyEnd_Img;            // 정말로 종료하시겠습니까? 이미지
 
-    UIBase  _menu_ReallyEnd_Check_Idle;     // 정말로 종료하시겠습니까? [확인] 기본 상태 이미지
-    UIBase  _menu_ReallyEnd_Check_Choice;   // 정말로 종료하시겠습니까? [확인] 선택 상태 이미지
-
     UIBase  _menu_ReallyEnd_Cancle_Idle;    // 정말로 종료하시겠습니까? [취소] 기본 상태 이미지
     UIBase  _menu_ReallyEnd_Cancle_Choice;  // 정말로 종료하시겠습니까? [취소] 선택 상태 이미지
+    Button  _menu_ReallyEnd_Cancle_Button;  // 정말로 종료하시겠습니까? [취소] 버튼
 
+    UIBase  _menu_ReallyEnd_Check_Idle;     // 정말로 종료하시겠습니까? [확인] 기본 상태 이미지
+    UIBase  _menu_ReallyEnd_Check_Choice;   // 정말로 종료하시겠습니까? [확인] 선택 상태 이미지
+    Button  _menu_ReallyEnd_Check_Button;   // 정말로 종료하시겠습니까? [확인] 버튼
 
 	// EnemyManager 210717 작업 - 민재 // 
 	GameObject* _enemyManager;
-	Prop* _core;
+	Core* _core;
 	//// 07/20 민재 Enemy WAve 및 Player UI 작업/////
 	UIBase _wavePane;
-	UIBase _playerUi;
-	UIBase _playerHpUi;
-	UIBase _waveSkipUi;
+
+	UIBase _enemyWaveSkip;
+	Button _enemyWaveSkipButton;
+
+	UIBase _enemyWaveSkipClick;
 
     GameObject* _cameraControler;
 public:
@@ -208,11 +234,12 @@ public:
 	void SetCore();
 	void SetEnemyManager();
 	void SetCameraControler();
-	void SetGameUI();
+	void SetGameUIInit();
 	void InGameUIUpdate();
 	void InGameUIRender();
+	//유림20210721 
+	void InGameUIClip();
 
 	/* 화면에 문자 띄울 때 여기 쓰세요 - 유림 (210719)*/
 	void StringRender();
 };
-

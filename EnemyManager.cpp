@@ -8,7 +8,7 @@
 #include "EnemyGroundControler.h"
 #include "EnemyInfo.h"
 #include "EnemyObject.h"
-
+#include "Astar.h"
 EnemyManager::EnemyManager()
 {
 }
@@ -28,6 +28,10 @@ void EnemyManager::Init()
 
 void EnemyManager::Update()
 {
+	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
+	{
+		SpawnEnemy();
+	}
 	EnemyTimer();
 	EnemyUpdate();
 }
@@ -39,11 +43,12 @@ void EnemyManager::Render()
 
 void EnemyManager::SetEnemyTime()
 {
-	_enemySpawnTime = 3.f;
+	_enemySpawnTime = 124.f;
 	_timeSecond = 0;
 	_timeMinute = 0;
 	_spawnEnemy = false;
 	_enemyTime = true;
+	_waveSkip = false;
 }
 
 void EnemyManager::SetEnemy()
@@ -58,14 +63,17 @@ void EnemyManager::SetEnemy()
 		_enemyGround->GetComponent<EnemyInfo>()->SetEnemyManager(this);
 		_enemyGround->GetComponent<EnemyInfo>()->SetTestCore(_testCore);
 		_enemyGround->GetComponent<EnemyInfo>()->GetCoreAngle();
-		_enemyGround->GetComponent<EnemyInfo>()->SetSpeed(200.f);
+		_enemyGround->GetComponent<EnemyInfo>()->SetSpeed(150.f);
 		_enemyGround->GetComponent<EnemyInfo>()->SetHp(100);
 		_enemyGround->transform->SetScale(0.5f, 0.5f);
 		_enemyGround->GetComponent<EnemyGroundControler>()->SetProjectileManager(_projectileManager);
+		_enemyGround->GetComponent<EnemyGroundControler>()->SetAstar(_aStar);
+		_enemyGround->GetComponent<BoxCollider>()->SetSize(48, 48);
+		_enemyGround->GetComponent<BoxCollider>()->SetIsTrigger(false);
 		_enemyGround->SetActive(false);
 		_enemyV.push_back(_enemyGround);
 	}
-	for (int i = 7; i < 30; i++)
+	for (int i = 8; i < 30; i++)
 	{
 		_enemyPlane = new EnemyPlane();
 		_enemyPlane->tag = TAGMANAGER->GetTag("enemy");
@@ -77,40 +85,48 @@ void EnemyManager::SetEnemy()
 		_enemyPlane->GetComponent<EnemyInfo>()->SetHp(100);
 		_enemyPlane->transform->SetScale(0.5f, 0.5f);
 		_enemyPlane->GetComponent<EnemyPlaneControler>()->SetProjectileManager(_projectileManager);
+		_enemyPlane->GetComponent<EnemyPlaneControler>()->SetPlayerTrasnform(_playerTr);
+		
 		_enemyPlane->SetActive(false);
 		_enemyV.push_back(_enemyPlane);
 	}
-
 
 	for (int i = 0; i < 1; i++)
 	{
 		_waveV[0].push_back(i);
 	}
 
-	for (int i = 6; i < 9; i++)
+	for (int i = 8; i < 10; i++)
 	{
 		_waveV[0].push_back(i);
 	}	
 
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 2; i++)				
 	{
-
 		_waveV[1].push_back(i);
 	}	
 
-	for (int i = 6; i < 12; i++)
+	for (int i = 10; i < 13; i++)			
 	{
 		_waveV[1].push_back(i);
 	}
-
 
 	for (int i = 0; i < 4; i++)
 	{
 		_waveV[2].push_back(i);
 	}
-	for (int i = 6; i < 14; i++)
+	for (int i = 13; i < 16; i++)
 	{
 		_waveV[2].push_back(i);
+	}
+
+	for (int i = 0; i < 5; i++)
+	{
+		_waveV[3].push_back(i);
+	}
+	for (int i = 16; i < 22; i++)
+	{
+		_waveV[3].push_back(i);
 	}
 }
 
@@ -121,8 +137,8 @@ void EnemyManager::EnemyTimer()
 		_enemySpawnTime -= TIMEMANAGER->getElapsedTime();
 		int _intEnemySpawnTime = int(_enemySpawnTime);
 
-		_timeSecond = _intEnemySpawnTime % 3;		//60
-		_timeMinute = _intEnemySpawnTime / 3;		//60
+		_timeSecond = _intEnemySpawnTime % 60;		//60
+		_timeMinute = _intEnemySpawnTime / 60;		//60
 
 		if (_intEnemySpawnTime == 0)
 		{
@@ -135,7 +151,7 @@ void EnemyManager::EnemyTimer()
 			SpawnEnemy();
 			_spawnEnemy = false;
 			_enemyTime = false;
-			_enemySpawnTime = 3.f;
+			_enemySpawnTime = 124.f;
 		}
 	}
 
@@ -152,6 +168,7 @@ void EnemyManager::EnemyUpdate()
 		if (_enemyV[_waveV[_curWave][i]]->isActive == false) continue;
 		_enemyV[_waveV[_curWave][i]]->Update();
 	}
+	
 }
 
 void EnemyManager::EnemyRender()
@@ -172,8 +189,9 @@ void EnemyManager::SpawnEnemy()
 			continue;
 
 		_enemyV[_waveV[_curWave][i]]->SetActive(true);
-		_enemyV[_waveV[_curWave][i]]->transform->SetPosition(100 + 200 * i , 100 + 50 * i);
+		_enemyV[_waveV[_curWave][i]]->transform->SetPosition(100 + 200 * i ,-100);
 	}
+	_enemySpawnTime = 0.f;
 }
 
 void EnemyManager::DeadEvent()
@@ -198,4 +216,3 @@ vector<EnemyObject*> EnemyManager::GetCurWaveEnemy()
 	}
 	return result;
 }
-																																																			

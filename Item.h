@@ -16,12 +16,14 @@ private:
     float _speed;
     int _dir;
     bool _isOverCenter;
+    float _colliderDelay;
 public:
     Item(RESOURCE type);
     ~Item();
     Renderer* renderer;
     BoxCollider* collider;
     virtual void Update();
+    RESOURCE GetTargetResource() const { return _type; }
     void SetType(RESOURCE type) { _type = type; }
     void SetConveyor(Conveyor* conveyor);
     void SetLinkPropContainer(PropContainer* propContainer) { _propContainer = propContainer; }

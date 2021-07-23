@@ -2,7 +2,6 @@
 #include "Component.h"
 
 class EnemyManager;
-//class Projectile;
 
 class EnemyInfo :
 	public Component
@@ -24,7 +23,6 @@ private:
 	GameObject* _testCore;
 	Transform* _testCoreTransform;
 	EnemyManager* _enemyManager;
-	//Projectile* _projectile;
 	
 public:
 	EnemyInfo();
@@ -40,11 +38,10 @@ public:
 	Transform* GetCoreTransform() const { return _testCoreTransform; }
 	
 	void SetEnemyManager(EnemyManager* enemyManager) {_enemyManager = enemyManager;	}
-	//void SetProjectile(Projectile* projectile) { _projectile = projectile; }
 
 	void SetSpeed(float speed) { _speed = speed; }
 
-	void SetHp(int hp) { hp = _hp; }
+	void SetHp(int hp) { _hp = hp; }
 	int GetHp() const { return _hp; }
 
 	float GetSpeed() const { return _speed; }

@@ -2,6 +2,7 @@
 #include "EnemyControler.h"
 
 class ProjectileManager;
+class Astar;
 
 class EnemyGroundControler :
 	public EnemyControler
@@ -13,15 +14,23 @@ private:
 	GameObject* _testCore;
 	Transform* _testCoreTransform;
 	ProjectileManager* _projectileManager;
-
+	Astar* _aStar;
+	vector<pair<int, int>> _corePath;
+	float _barrelLength;
+	float _barrelAngle;
+	float _pathFindTime;
+	float _targetX;
+	float _targetY;
+	int _tileIdx;
 public:
 	EnemyGroundControler();
 	~EnemyGroundControler();
 
 	virtual void Init();
 	virtual void Update();
-
+	virtual void Render();
 	void SetTestCore(GameObject* testCore) { _testCore = testCore; _testCoreTransform = testCore->transform; }
 	void SetProjectileManager(ProjectileManager* projectileManager) { _projectileManager = projectileManager; }
+	void SetAstar(Astar* aStar) { _aStar = aStar; }
 };
 

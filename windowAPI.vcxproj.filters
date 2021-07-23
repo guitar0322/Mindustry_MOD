@@ -261,7 +261,6 @@
     <ClCompile Include="EnemyManager.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Core.cpp" />
     <ClCompile Include="Transport.cpp">
       <Filter>Prop\Component</Filter>
     </ClCompile>
@@ -273,6 +272,21 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Production.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="Core.cpp">
+      <Filter>Prop\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="CoreComponent.cpp" />
+    <ClCompile Include="Astar.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraControler.cpp">
+      <Filter>CameraControler</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleObject.cpp" />
+    <ClCompile Include="Respawn.cpp" />
+    <ClCompile Include="CameraControler.cpp">
+      <Filter>CameraControler</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h" />
@@ -545,7 +559,6 @@
     <ClInclude Include="EnemyManager.h">
       <Filter>Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Core.h" />
     <ClInclude Include="Transport.h">
       <Filter>Prop\Component</Filter>
     </ClInclude>
@@ -560,6 +573,21 @@
     <ClInclude Include="Item.h" />
     <ClInclude Include="Production.h" />
     <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="Core.h">
+      <Filter>Prop\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="CoreComponent.h" />
+    <ClInclude Include="Astar.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraControler.h">
+      <Filter>CameraControler</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleObject.h" />
+    <ClInclude Include="Respawn.h" />
+    <ClInclude Include="CameraControler.h">
+      <Filter>CameraControler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="windowAPI.rc" />
@@ -567,6 +595,8 @@
   <ItemGroup>
     <Image Include="small.ico" />
     <Image Include="windowAPI.ico" />
+    <Image Include="..\..\..\바탕 화면\경일\14. 찐 팀 프로젝트\3. 내 작업폴더\아이콘\icon_64.png" />
+    <Image Include="Mindustryicon.ico" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="헤더파일">
@@ -622,6 +652,9 @@
     </Filter>
     <Filter Include="Scene">
       <UniqueIdentifier>{8c1e3ca4-f72a-411b-b346-bd0aa24e763a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CameraControler">
+      <UniqueIdentifier>{94b91f6c-578d-4156-885b-7c0595d0845e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

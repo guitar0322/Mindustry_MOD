@@ -2,7 +2,7 @@
 #include "Core.h"
 #include "PropStat.h"
 #include "TileInfo.h"
-
+#include "CoreComponent.h"
 Core::Core()
 {
 }
@@ -21,4 +21,8 @@ void Core::Init()
 	stat->SetHP(30);
 
 	collider->SetSize(stat->GetSize() * TILESIZE, stat->GetSize() * TILESIZE);
+
+	coreComponent = new CoreComponent();
+	AddComponent(coreComponent);
+	coreComponent->Init();
 }

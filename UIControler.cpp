@@ -4,6 +4,9 @@
 #include "Button.h"
 #include "PropContainer.h"
 #include "GameMap.h"
+#include "EnemyManager.h"
+#include "PlayerControler.h"
+#include "GameInfo.h"
 
 UIControler::UIControler()
 	:_previewDir(false), _previewNum(0)
@@ -24,11 +27,11 @@ void UIControler::Init()
 void UIControler::Update()
 {
 	propPreview->Update();
+	Vector2 worldMouse = ScreenToWorld(_ptMouse);
+	int tileX = worldMouse.x / TILESIZE;
+	int tileY = worldMouse.y / TILESIZE;
 	if (propPreview->isActive == true)
 	{
-		Vector2 worldMouse = ScreenToWorld(_ptMouse);
-		int tileX = worldMouse.x / TILESIZE;
-		int tileY = worldMouse.y / TILESIZE;
 		if (_previewV.empty() == true)
 		{
 			if (_selectCategoryIdx != PRODUCTION)
@@ -83,18 +86,52 @@ void UIControler::Update()
 
 		if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
 		{
-			RefreshPreview();
-			propPreview->SetActive(false);
-			propSelect->SetActive(false);
-			conveyorArrow.SetActive(false);
+			if (propPreview->isActive == true)
+			{
+				RefreshPreview();
+				propPreview->SetActive(false);
+				propSelect->SetActive(false);
+				conveyorArrow.SetActive(false);
+			}
 		}
-
+		
 		if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
 		{
 			propFactory->AddPropElem(_previewV, _selectCategoryIdx, _selectPropIdx, _dir);
 			RefreshPreview();
 		}
 	}
+	if (_playerControler->GetIsCollecting() == false)
+	{
+		if (KEYMANAGER->isOnceKeyDown(VK_RBUTTON))
+		{
+			_deleteStart.x = tileX;
+			_deleteStart.y = tileY;
+		}
+
+		if (KEYMANAGER->isStayKeyDown(VK_RBUTTON))
+		{
+			int deltaX = tileX - _deleteStart.x;
+			int deltaY = tileY - _deleteStart.y;
+			if(_deleteStart.x != -1)
+				_deleteRc = RectMakePivot(Vector2(_deleteStart.x * TILESIZE, _deleteStart.y * TILESIZE), Vector2(deltaX * TILESIZE, deltaY * TILESIZE), Pivot::LeftTop);
+			if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
+			{
+				_deleteStart.x = -1;
+				_deleteRc = Rect();
+			}
+		}
+
+		if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
+		{
+			if (_deleteRc.GetWidth() != 0)
+			{
+				propFactory->AddDeleteQue(_deleteStart.x, _deleteStart.y, _deleteRc.right / TILESIZE, _deleteRc.bottom / TILESIZE);
+				_deleteRc = Rect();
+			}
+		}
+	}
+
 	for (int i = 0; i < _previewV.size(); i++)
 	{
 		_previewV[i].Update();
@@ -112,6 +149,10 @@ void UIControler::Render()
 {
 	conveyorArrow.Render();
 	propPreview->Render();
+	if (_deleteRc.GetWidth() != 0)
+	{
+		D2DRENDERER->DrawRectangle(_deleteRc, D2DRenderer::DefaultBrush::Red);
+	}
 	if (Math::FloatEqual(propPreview->renderer->GetAlpha(), 0.4f) == true)
 	{
 		propPreview->renderer->DrawFillRect(D2D1::ColorF::Red);
@@ -166,7 +207,6 @@ void UIControler::ClickPropIcon(GameObject* clickedButton, int propIdx)
 	{
 		propSelect->SetActive(true);
 		propPreview->SetActive(true);
-
 
 		if (_selectCategoryIdx == RAIL)
 		{
@@ -382,6 +422,63 @@ void UIControler::inResearch_ActiveChoiceImg(Transform* menuTr, bool isActive)
 	choiceImg->SetActive(isActive);
 }
 
+/* 연구 상태에서 [전체자원] 버튼 EVENT */
+void UIControler::inResearch_Active_Choice_Img(bool* name)
+{
+	// true = 열려 있는 상태
+	// false = 닫혀있는 상태
+	if (*name)
+	{
+		all_Resources_Img->SetActive(true);
+	}
+	else
+	{
+		all_Resources_Img->SetActive(false);
+	}
+}
+
+/* 연구 상태에서 [전체자원] 버튼 CLICK*/
+void UIControler::inResearch_Active_all_Resources_Click_Event(bool* name)
+{
+	if (*name) // true = 열려 있는 상태
+	{
+		*name = false;
+		all_Resources_Img->SetActive(false);
+		if (all_Resources_Count == 1) all_Resources_Open1_Img->SetActive(false);
+		if (all_Resources_Count == 2) all_Resources_Open2_Img->SetActive(false);
+		if (all_Resources_Count == 3) all_Resources_Open3_Img->SetActive(false);
+		all_Resources_Text->SetActive(false);
+		all_Resources_Close_Img->SetActive(true);
+
+		//광물 1개 이상인지 파악 - 구리
+		//if (gameInfo->GetResourceAmount(COPPER) >= 1)
+		//{
+		//	float heightRange = 0;
+		//	heightRange += TIMEMANAGER->getElapsedTime();
+		//	all_Resources_Add->transform->SetScaleY(heightRange);
+		//
+		//	if (heightRange > 5)
+		//    {
+		//		heightRange = 0;
+		//    }
+		//    //_all_Resources_Bottom_Border.transform->SetPosition(_all_Resources_LR_Border.transform->SetX(), _all_Resources_LR_Border.transform->SetY());
+		//}
+	}
+	else // false = 닫혀있는 상태
+	{
+		*name = true;
+		all_Resources_Open1_Img->SetActive(true);
+		all_Resources_Text->SetActive(true);
+		all_Resources_Close_Img->SetActive(false);
+	}
+}
+
+/* 연구 상태에서 [전체자원] 버튼 EXIT */
+void UIControler::inResearch_InActive_Choice_Img()
+{
+	all_Resources_Img->SetActive(false);
+}
+
 /* 연구 상태에서 [돌아가기] 버튼 ENTER, EXIT */
 void UIControler::inResearch_ActiveGoBackImg(bool isActive)
 {
@@ -500,7 +597,62 @@ void UIControler::inMenu_ReturnToGameScene(bool* name, bool isActive)
 	*name = isActive;
 }
 
+/* 메뉴 상태에서 [저장 후 나가기] 버튼 ENTER, EXIT */
 void UIControler::inMenu_AcitveChoiceImg_SaveAndExit(bool isActive)
 {
 	menu_SaveAndExitChoiceImg->SetActive(isActive);
+}
+
+/* 메뉴 상태에서 [저장 후 나가기] 버튼 CLICK */
+void UIControler::inMenu_AcitveRellayEnd(bool* name, bool isAcitve)
+{
+	*name = isAcitve;
+	menu_SaveAndExitButton->uiMouseEvent->enable = false;
+	menu_ReallyEnd_Img->SetActive(isAcitve);
+}
+
+/* 정말로 종료하시겠습니까? 상태에서 [취소] 버튼 ENTERT, EXIT */
+void UIControler::inReallyEnd_Active_CancleImg(bool* name, bool isActive)
+{
+	if (!*name) return;
+	menu_ReallyEnd_Cancle_Choice->SetActive(isActive);
+}
+
+/* 정말로 종료하시겠습니까? 상태에서 [취소] 버튼 CLICK */
+void UIControler::inReallyEnd_Return_To_MenuState(bool* name, bool isAcitve)
+{
+	*name = isAcitve;
+	menu_SaveAndExitButton->uiMouseEvent->enable = true;
+	menu_ReallyEnd_Img->SetActive(isAcitve);
+	menu_ReallyEnd_Cancle_Choice->SetActive(isAcitve);
+}
+
+/* 정말로 종료하시겠습니까? 상태에서 [확인] 버튼 ENTERT, EXIT */
+void UIControler::inReallyEnd_Active_CheckImg(bool* name, bool isActive)
+{
+	if (!*name) return;
+	menu_ReallyEnd_Check_Choice->SetActive(isActive);
+}
+
+/* 정말로 종료하시겠습니까? 상태에서 [확인] 버튼 CLICK */
+void UIControler::inReallyEnd_Return_To_TilteScene(string SceneName)
+{
+	SCENEMANAGER->LoadScene(SceneName);
+}
+
+void UIControler::EnemyWaveSkip()
+{
+	enemyWaveSkip->SetActive(false);			
+	enemyWaveSkipClick->SetActive(true);		
+}
+
+void UIControler::EnemyWaveSkipExit()
+{
+	enemyWaveSkip->SetActive(true);
+	enemyWaveSkipClick->SetActive(false);
+}
+
+void UIControler::EnemyWaveSkipClick()
+{
+	enemyManager->SpawnEnemy();
 }
