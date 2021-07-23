@@ -157,7 +157,7 @@ public:
     /* 정말로 종료하시겠습니까? 상태에서 [확인] 버튼 ENTERT, EXIT */
     void inReallyEnd_Active_CheckImg(bool* name, bool isActive);
     /* 정말로 종료하시겠습니까? 상태에서 [확인] 버튼 CLICK */
-    void inReallyEnd_Return_To_TilteScene(string SceneName);
+    void inReallyEnd_Return_To_TilteScene(bool* isQuit);
 
     //민재콩//
     UIBase* enemyWaveSkip;

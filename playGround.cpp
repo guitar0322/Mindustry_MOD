@@ -122,6 +122,11 @@ void playGround::render()
 	elapse.append(to_wstring(TIMEMANAGER->getElapsedTime()));
 	D2DRENDERER->RenderText(10, WINSIZEY - 100, elapse, 30, L"¸¼Àº°íµñ", D2DRenderer::DefaultBrush::Blue);
 
+	wstring campos = L"CamX : ";
+	campos.append(to_wstring((int)MainCam->transform->GetX()));
+	campos.append(L" CamY : ");
+	campos.append(to_wstring((int)MainCam->transform->GetY()));
+	D2DRENDERER->RenderText(10, WINSIZEY - 130, campos, 30, L"¸¼Àº°íµñ", D2DRenderer::DefaultBrush::Blue);
 	//D2DRENDERER->RenderText(10, 10, fps, 30, L"¸¼Àº°íµñ", D2DRenderer::DefaultBrush::White);
 	//==================================================
 	//¿©±âµµ °ÇµéÁö¸¶¶ó

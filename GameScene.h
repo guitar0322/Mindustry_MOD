@@ -20,13 +20,14 @@ class ResourceManager;
 class Core;
 class Astar;
 class Respawn;
+class DataManager;
 
 class GameScene :
     public Scene
 {
 private:
 	float _musicTime;
-
+    DataManager* _dataManager;
     Item* testCopper;
 	/* ============================================*/
 	/* =========== 플레이어 부분 -> 유림 ============*/
@@ -178,6 +179,7 @@ private:
     Button  _menu_SaveAndExitButton;        // 메뉴 [저장 후 나가기] 버튼
 
     bool    _menu_ReallyEnd;                // 정말로 종료하시겠습니까 상태
+    bool    _isQuit;
 
     UIBase  _menu_ReallyEnd_Img;            // 정말로 종료하시겠습니까? 이미지
 

@@ -10,14 +10,14 @@ class GameMap;
 
 /*******************************************************************
 * 저장해야 할 목록
-* 1.현재자원
-* 2.현재건물
-* 3.현재웨이브
-* 4.광석위치
-* 5.맵
-* 6.플레이어위치
-* 7.애너미위치
-* 8.웨이브남은시간
+* 1.현재자원+
+* 2.현재건물+
+* 3.현재웨이브+
+* 4.광석위치+
+* 5.맵+
+* 6.플레이어위치+
+* 7.애너미위치+
+* 8.웨이브남은시간+
 * 
 *******************************************************************/
 class DataManager
@@ -30,6 +30,7 @@ private:
 	GameInfo* _gameInfo;
 	ResourceManager* _resourceManager;
 	GameMap* _gameMap;
+	vector<pair<int,int>> _drillTileVector;
 public:
 	void SaveData();
 	void LoadData();
@@ -41,5 +42,15 @@ public:
 	void LinkGameInfo(GameInfo* gameInfo) { _gameInfo = gameInfo; }
 	void LinkResourceManager(ResourceManager* resourceManager) { _resourceManager = resourceManager; }
 	void LinkGameMap(GameMap* gameMap) { _gameMap = gameMap; }
+
+	void SavePropData();
+	void SaveItemData();
+	void SavePlayerData();
+	void SaveEnemyData();
+
+	void LoadPropData();
+	void LoadItemData();
+	void LoadPlayerData();
+	void LoadEnemyData();
 };
 

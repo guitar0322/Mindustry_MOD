@@ -17,9 +17,9 @@ public:
 	void Release();
 	void Update();
 	void Render();
-	void LoadTileMap();
 	void AddProp(int hashKey, Prop* newProp, PROPDIR dir);
 	Prop* GetPropMap(int hashKey);
 	void DeleteProp(int tileX, int tileY);
+	vector<Prop*> GetAllProp();
 };
 

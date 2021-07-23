@@ -117,6 +117,9 @@ void Transport::LinkConveyor(PROPDIR dir)
 	}
 	else if (_shape == I)
 	{
+		float deltaAngle = Math::Abs(transform->GetAngle() - dir * 90);
+		if (deltaAngle == 180)
+			return;
 		if (clock == false)
 		{
 			_shape = T3;
@@ -130,6 +133,10 @@ void Transport::LinkConveyor(PROPDIR dir)
 	}
 	else if (_shape == L)
 	{
+		float deltaAngle = transform->GetAngle() - dir * 90;
+		if (deltaAngle < 0) deltaAngle += 360;
+		if (deltaAngle == 90)
+			return;
 		if (Math::Abs(_outDir - dir) == 2)
 		{
 			_shape = T3;
@@ -143,6 +150,10 @@ void Transport::LinkConveyor(PROPDIR dir)
 	}
 	else if (_shape == L2)
 	{
+		float deltaAngle = dir * 90 - transform->GetAngle();
+		if (deltaAngle < 0) deltaAngle += 360;
+		if (deltaAngle == 90)
+			return;
 		if (Math::Abs(_outDir - dir) == 2)
 		{
 			_shape = T;

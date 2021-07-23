@@ -205,6 +205,7 @@ void PropFactory::CreateDrill(int tileX, int tileY)
 	drillTileV.push_back((tileY - 1) * TILENUMX + tileX - 1);
 	for (int i = 0; i < 4; i++)
 	{
+
 		tagTile tileInfo = _gameMap->GetTileInfo(drillTileV[i]);
 		if (tileInfo.resources >= RES_COPPER1 && tileInfo.resources <= RES_COPPER3)
 			newDrill->production->SetTargetResource(COPPER);
@@ -212,17 +213,20 @@ void PropFactory::CreateDrill(int tileX, int tileY)
 			newDrill->production->SetTargetResource(LEAD);
 		propContainer->AddProp(drillTileV[i], newDrill, RIGHT);
 	}
-	_previewV.erase(_previewV.begin());
-	_propQueue.pop();
-	if (_propQueue.empty() == false)
+	if (isBuilding == true)
 	{
-		if (_propQueue.front().catagory == PRODUCTION)
+		_previewV.erase(_previewV.begin());
+		_propQueue.pop();
+		if (_propQueue.empty() == false)
 		{
-			_playerControler->SetConstructLaser(_propQueue.front().x, _propQueue.front().y, 2);
-		}
-		else
-		{
-			_playerControler->SetConstructLaser(_propQueue.front().x, _propQueue.front().y, 1);
+			if (_propQueue.front().catagory == PRODUCTION)
+			{
+				_playerControler->SetConstructLaser(_propQueue.front().x, _propQueue.front().y, 2);
+			}
+			else
+			{
+				_playerControler->SetConstructLaser(_propQueue.front().x, _propQueue.front().y, 1);
+			}
 		}
 	}
 }
@@ -238,40 +242,58 @@ void PropFactory::CreateTurret(int tileX, int tileY)
 	ContainProp(tileY * TILENUMX + tileX, newDuo, RIGHT);
 }
 
-void PropFactory::Createturret(int tileX, int tileY)
-{
-	/*******************************
-	1. tileX, tileY로 터렛 transform-SetPosition 해주기
-	2. 터렛에 애너미매니저, 프로젝틸 매니저 연결
-	3. Containprop에서 PropCatainer에 추가해주기
-	****************************/
-	Duo* newDuo = new Duo();
-	EnemyManager* newEnemyManager = new EnemyManager();
-	ProjectileManager* newProjectilemanager = new ProjectileManager();
-	newDuo->collider->RefreshPartition();
-	newDuo->turret_Body->transform->SetPosition(tileX * TILESIZE + TILESIZE / 2, tileY * TILESIZE + TILESIZE / 2);
-	newDuo->turret_Head->transform->SetPosition(tileX * TILESIZE + TILESIZE / 2, tileY * TILESIZE + TILESIZE / 2);
-	ContainProp(tileY * TILENUMX + tileX, newDuo, PROPDIR(0));
-	_previewV.erase(_previewV.begin());
-	_propQueue.pop();
-}
-
 void PropFactory::ContainProp(int hashKey, Prop* newProp, PROPDIR dir)
 {
 	propContainer->AddProp(hashKey, newProp, dir);
-	_previewV.erase(_previewV.begin());
-	_propQueue.pop();
-	if (_propQueue.empty() == false)
+	if (isBuilding == true)
 	{
-		if (_propQueue.front().catagory == PRODUCTION)
+		_previewV.erase(_previewV.begin());
+		_propQueue.pop();
+		if (_propQueue.empty() == false)
 		{
-			_playerControler->SetConstructLaser(_propQueue.front().x, _propQueue.front().y, 2);
-		}
-		else
-		{
-			_playerControler->SetConstructLaser(_propQueue.front().x, _propQueue.front().y, 1);
+			if (_propQueue.front().catagory == PRODUCTION)
+			{
+				_playerControler->SetConstructLaser(_propQueue.front().x, _propQueue.front().y, 2);
+			}
+			else
+			{
+				_playerControler->SetConstructLaser(_propQueue.front().x, _propQueue.front().y, 1);
+			}
 		}
 	}
+}
+
+void PropFactory::LoadConveyor(int tileX, int tileY, PROPDIR dir)
+{
+	Conveyor* newConveyor = new Conveyor();
+	if (_isFirstConveyor == false)
+	{
+		_isFirstConveyor = true;
+		_firstConveyorAnimator = newConveyor->animator;
+	}
+	newConveyor->transform->SetPosition(tileX * TILESIZE + TILESIZE / 2, tileY * TILESIZE + TILESIZE / 2);
+	newConveyor->transform->SetAngle(dir * 90);
+	newConveyor->collider->RefreshPartition();
+	newConveyor->transport->SetX(tileX);
+	newConveyor->transport->SetY(tileY);
+	newConveyor->transport->SetOutDir(dir);
+	newConveyor->transport->SetShape(0);
+	newConveyor->transport->SetFirstAnimator(_firstConveyorAnimator);
+	newConveyor->animator->SetClip("conveyor_I", _firstConveyorAnimator->GetCurFrameX());
+	newConveyor->animator->SetFrameTime(_firstConveyorAnimator->GetFrameTime());
+	propContainer->AddProp(tileY * TILENUMX + tileX, newConveyor, dir);
+}
+
+void PropFactory::LoadDrill(int tileX, int tileY)
+{
+}
+
+void PropFactory::LoadTurret(int tileX, int tileY)
+{
+}
+
+void PropFactory::LoadCopperWall(int tileX, int tileY)
+{
 }
 
 ImageObject* PropFactory::CreatePreview(int tileX, int tileY)
