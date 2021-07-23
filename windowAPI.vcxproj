@@ -169,6 +169,7 @@
     <ClInclude Include="Core.h" />
     <ClInclude Include="CoreComponent.h" />
     <ClInclude Include="D2DRenderer.h" />
+    <ClInclude Include="DataManager.h" />
     <ClInclude Include="Drill.h" />
     <ClInclude Include="Duo.h" />
     <ClInclude Include="EditableText.h" />
@@ -279,6 +280,7 @@
     <ClCompile Include="CoreComponent.cpp" />
     <ClCompile Include="D2DRenderer+Draw.cpp" />
     <ClCompile Include="D2DRenderer.cpp" />
+    <ClCompile Include="DataManager.cpp" />
     <ClCompile Include="Drill.cpp" />
     <ClCompile Include="Duo.cpp" />
     <ClCompile Include="EditableText.cpp" />

@@ -147,7 +147,7 @@ void UIControler::Render()
 {
 	conveyorArrow.Render();
 	propPreview->Render();
-	if (_deleteRc.GetWidth() != 0)
+	if (_deleteRc.GetWidth() != 0 && _deleteRc.GetHeight() != 0)
 	{
 		D2DRENDERER->DrawRectangle(_deleteRc, D2DRenderer::DefaultBrush::Red);
 	}

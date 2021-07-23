@@ -269,7 +269,6 @@
     </ClCompile>
     <ClCompile Include="Drill.cpp" />
     <ClCompile Include="Item.cpp" />
-    <ClCompile Include="Production.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Core.cpp">
       <Filter>Prop\Object</Filter>
@@ -285,6 +284,13 @@
     <ClCompile Include="Respawn.cpp" />
     <ClCompile Include="CameraControler.cpp">
       <Filter>CameraControler</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerConstructLaser.cpp" />
+    <ClCompile Include="Production.cpp">
+      <Filter>Prop\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="DataManager.cpp">
+      <Filter>Util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -569,7 +575,6 @@
     </ClInclude>
     <ClInclude Include="Drill.h" />
     <ClInclude Include="Item.h" />
-    <ClInclude Include="Production.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Core.h">
       <Filter>Prop\Object</Filter>
@@ -585,6 +590,13 @@
     <ClInclude Include="Respawn.h" />
     <ClInclude Include="CameraControler.h">
       <Filter>CameraControler</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerConstructLaser.h" />
+    <ClInclude Include="Production.h">
+      <Filter>Prop\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="DataManager.h">
+      <Filter>Util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

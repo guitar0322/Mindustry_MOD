@@ -282,6 +282,38 @@ void GameScene::Update()
     _uiControler->Update();
     _respawn->Update();
 	InGameUIUpdate();
+
+    // 메뉴 부분 Update
+    {
+        if (KEYMANAGER->isOnceKeyDown(VK_ESCAPE))
+        {
+            if (_menu)
+            {
+                _menu = false;
+                _menuImg.SetActive(false);
+            }
+            else
+            {
+                _menu = true;
+                _menuImg.SetActive(true);
+                _menu_SaveAndExitButton.uiMouseEvent->enable = true;
+            }
+        }
+
+        if (_menu) menuUpdate();
+    }
+
+    /* 시영 */
+    // 연구 부분 Update
+    {
+        if (KEYMANAGER->isOnceKeyDown(VK_F1)) _research = true;
+        if (KEYMANAGER->isOnceKeyDown(VK_F2)) _research = false;
+        if (_research) researchUpdate();
+        _research_goBackButton.Update();
+        _coreDBButton.Update();
+        _detailDes_goBackButton.Update();
+    }
+
 	/* 플레이어 부분*/
 	_player->Update();
 	_playerWeaponL->Update();
@@ -311,36 +343,9 @@ void GameScene::Update()
 
 	_enemyManager->Update();
     
-    /* 시영 */
-    // 연구 부분 Update
-    {
-        if (KEYMANAGER->isOnceKeyDown(VK_F1)) _research = true;
-        if (KEYMANAGER->isOnceKeyDown(VK_F2)) _research = false;
-        if (_research) researchUpdate();
-        _research_goBackButton.Update();
-        _coreDBButton.Update();
-        _detailDes_goBackButton.Update();
-    }
 
-    // 메뉴 부분 Update
-    {
-        if (KEYMANAGER->isOnceKeyDown(VK_ESCAPE))
-        {
-            if (_menu)
-            {
-                _menu = false;
-                _menuImg.SetActive(false);
-            }
-            else
-            {
-                _menu = true;
-                _menuImg.SetActive(true);
-                _menu_SaveAndExitButton.uiMouseEvent->enable = true;
-            }
-        }
- 
-        if (_menu) menuUpdate();
-    }
+
+
 
     /* 사운드 작업 광철 210718 */
     _musicTime += TIMEMANAGER->getElapsedTime();

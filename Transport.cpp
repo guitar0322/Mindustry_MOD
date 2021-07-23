@@ -65,9 +65,13 @@ void Transport::OnTriggerEnter(GameObject* gameObject)
 	if (gameObject->tag != TAGMANAGER->GetTag("resource"))
 		return;
 	((Item*)gameObject)->SetConveyor((Conveyor*)this->gameObject);
+	_inResource = (Item*)gameObject;
 }
 void Transport::OnTriggerExit(GameObject* gameObject)
 {
+	if (gameObject->tag != TAGMANAGER->GetTag("resource"))
+		return;
+	_inResource = nullptr;
 	//for (int i = 0; i < _resInfo.size(); i++)
 	//{
 	//	if (gameObject == _resInfo[i].second)
@@ -128,8 +132,8 @@ void Transport::LinkConveyor(PROPDIR dir)
 	{
 		if (Math::Abs(_outDir - dir) == 2)
 		{
-			_shape = T;
-			_animator->SetClip("conveyor_T", _firstConveyorAnimator->GetCurFrameX());
+			_shape = T3;
+			_animator->SetClip("conveyor_T3", _firstConveyorAnimator->GetCurFrameX());
 		}
 		else
 		{
@@ -146,8 +150,8 @@ void Transport::LinkConveyor(PROPDIR dir)
 		}
 		else
 		{
-			_shape = T3;
-			_animator->SetClip("conveyor_T3", _firstConveyorAnimator->GetCurFrameX());
+			_shape = T2;
+			_animator->SetClip("conveyor_T2", _firstConveyorAnimator->GetCurFrameX());
 		}
 	}
 	else

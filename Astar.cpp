@@ -54,7 +54,7 @@ void Astar::Clear()
     {
         SAFE_DELETE(_closeList[i]);
     }
-
+    _propIdxV.clear();
     _openList.clear();
     _closeList.clear();
 }
@@ -155,8 +155,10 @@ bool Astar::IsValidNode(int x, int y)
     //
     Prop* prop = _propContainer->GetPropMap(y * TILENUMX + x);
     if (prop != nullptr)
+    {
+        _propIdxV.push_back(prop);
         return false;
-
+    }
 
     return true;
 }

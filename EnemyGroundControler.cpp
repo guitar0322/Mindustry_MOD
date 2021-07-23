@@ -4,6 +4,8 @@
 #include "EnemyInfo.h"
 #include "Astar.h"
 #include "TileInfo.h"
+#include "Prop.h"
+
 EnemyGroundControler::EnemyGroundControler()
 {
 }
@@ -29,6 +31,7 @@ void EnemyGroundControler::Init()
 	_attackSpeed = 0.f;
 	_enemyRadius = 57.f;
 	_pathFindTime = 5.f;
+	_attackRange = 400.f;
 
 	_chaseCore = true;
 	_isAttack = false;
@@ -48,6 +51,7 @@ void EnemyGroundControler::Update()
 		int coreTileY = _enemyInfo->GetCoreTransform()->GetY() / TILESIZE;
 		_pathFindTime = 0;
 		_corePath = _aStar->PathFind(mTileX, mTileY, coreTileX, coreTileY, gameObject);
+		_curPropV = _aStar->GetPropIdxV();
 		if (_corePath.empty() == false)
 		{
 			_targetX = _corePath[_corePath.size() - _tileIdx].first * TILESIZE + 16;
@@ -57,7 +61,7 @@ void EnemyGroundControler::Update()
 
 	transform->SetAngle(ConvertAngleD2D(_angle));
 
-	if (GetDistance(transform->position, _enemyInfo->GetCoreTransform()->position) >= 400)
+	if (GetDistance(transform->position, _enemyInfo->GetCoreTransform()->position) >= _attackRange)
 	{
 		_angle = GetAngle(transform->GetX(), transform->GetY(), _targetX, _targetY);
 		MoveTowardTo(transform, _targetX, _targetY, _enemyInfo->GetSpeed() * TIMEMANAGER->getElapsedTime());
@@ -66,75 +70,29 @@ void EnemyGroundControler::Update()
 			_targetX = _corePath[_corePath.size() - _tileIdx].first * TILESIZE + 16;
 			_targetY = _corePath[_corePath.size() - _tileIdx].second * TILESIZE + 16;
 		}
+
+		_targetIdx = -1;
+		for (int i = 0; i < _curPropV.size(); i++)
+		{
+			if (_curPropV[i]->isActive == false) continue;
+			float distance = GetDistance(transform->position, _curPropV[i]->transform->position);
+			if (distance < _attackRange)
+			{
+				_targetIdx = i;
+				break;
+			}
+		}
+		if (_targetIdx != -1)
+		{
+			_angle = GetAngle(transform->position, _curPropV[_targetIdx]->transform->position);
+			Attack();
+		}
 	}
 	else
 	{
 		_angle = GetAngle(transform->position, _enemyInfo->GetCoreTransform()->position);
-		_attackSpeed += TIMEMANAGER->getElapsedTime();
-		if (_attackSpeed >= 1.f && _leftFire == false)
-		{
-			_projectileManager->FireProjectile(transform->GetX() + cosf(_angle + _barrelAngle) * _barrelLength, transform->GetY() - sinf(_angle + _barrelAngle) * _barrelLength,
-				ConvertAngleD2D(_angle), PROJECTILE_TYPE::ENEMYGROUND);
-			_leftFire = true;
-			_attackSpeed = 0.f;
-		}
-
-		if (_attackSpeed >= 1.f && _leftFire == true)
-		{
-			_projectileManager->FireProjectile(transform->GetX() + cosf(_angle - _barrelAngle) * _barrelLength, transform->GetY() - sinf(_angle - _barrelAngle) * _barrelLength,
-				ConvertAngleD2D(_angle), PROJECTILE_TYPE::ENEMYGROUND);
-			_leftFire = false;
-			_attackSpeed = 0.f;
-		}
+		Attack();
 	}
-
-
-	//_testCoreTransform = _enemyInfo->GetCoreTransform();
-	//_speed = _enemyInfo->GetSpeed();
-
-	//if (_chaseCore)
-	//{
-	//	_deltaAngle = _angle;
-	//	_isAttack = false;
-	//}
-
-	//if (GetDistance(transform->position, _enemyInfo->GetCoreTransform()->position) >= 600)
-	//{
-	//	_chaseCore = false;
-	//	_isAttack = true;
-	//}
-
-	//if (GetDistance(transform->position, _testCoreTransform->position) > 1000 && !_chaseCore)			//700
-	//{
-	//	_chaseCore = true;
-	//}
-
-	//if (_isAttack)	
-	//{
-	//	_attackSpeed += TIMEMANAGER->getElapsedTime();
-
-	//	_deltaX = cosf(_deltaAngle) * _enemyRadius;
-	//	_deltaY = -sinf(_deltaAngle) * _enemyRadius;
-
-	//	if (_attackSpeed >= 1.f && _leftFire == false)
-	//	{
-	//		_projectileManager->FireProjectile(transform->GetX() + _deltaX + 50, transform->GetY() + _deltaY, ConvertAngleD2D(_deltaAngle), PROJECTILE_TYPE::ENEMYGROUND);
-	//		_leftFire = true;	
-	//		_attackSpeed = 0.f;
-	//	}
-
-	//	if (_attackSpeed >= 1.f && _leftFire == true)
-	//	{
-	//		_projectileManager->FireProjectile(transform->GetX() + _deltaX - 50, transform->GetY() + _deltaY, ConvertAngleD2D(_deltaAngle), PROJECTILE_TYPE::ENEMYGROUND);
-	//		_leftFire = false;
-	//		_attackSpeed = 0.f;
-	//	}
-	//}
-
-	//_speedX = cosf(_deltaAngle) * _speed * TIMEMANAGER->getElapsedTime();
-	//_speedY = -sinf(_deltaAngle) * _speed * TIMEMANAGER->getElapsedTime();
-
-	//transform->Move(_speedX, _speedY);
 }
 
 void EnemyGroundControler::Render()
@@ -142,9 +100,29 @@ void EnemyGroundControler::Render()
 	//Rect pathRect = RectMakePivot(Vector2(_corePath[_corePath.size() - _tileIdx].first * TILESIZE + 16, 
 	//	_corePath[_corePath.size() - _tileIdx].second * TILESIZE + 16), Vector2(TILESIZE, TILESIZE), Pivot::Center);
 	//D2DRENDERER->FillRectangleBack(pathRect);
-	for (int i = 0; i < _corePath.size(); i++)
+	//for (int i = 0; i < _corePath.size(); i++)
+	//{
+	//	Rect pathRect = RectMakePivot(Vector2(_corePath[i].first * TILESIZE + 16, _corePath[i].second * TILESIZE + 16), Vector2(TILESIZE, TILESIZE), Pivot::Center);
+	//	D2DRENDERER->FillRectangleBack(pathRect);
+	//}
+}
+
+void EnemyGroundControler::Attack()
+{
+	_attackSpeed += TIMEMANAGER->getElapsedTime();
+	if (_attackSpeed >= 0.5f && _leftFire == false)
 	{
-		Rect pathRect = RectMakePivot(Vector2(_corePath[i].first * TILESIZE + 16, _corePath[i].second * TILESIZE + 16), Vector2(TILESIZE, TILESIZE), Pivot::Center);
-		D2DRENDERER->FillRectangleBack(pathRect);
+		_projectileManager->FireProjectile(transform->GetX() + cosf(_angle + _barrelAngle) * _barrelLength, transform->GetY() - sinf(_angle + _barrelAngle) * _barrelLength,
+			ConvertAngleD2D(_angle), PROJECTILE_TYPE::ENEMYGROUND);
+		_leftFire = true;
+		_attackSpeed = 0.f;
+	}
+
+	if (_attackSpeed >= 1.f && _leftFire == true)
+	{
+		_projectileManager->FireProjectile(transform->GetX() + cosf(_angle - _barrelAngle) * _barrelLength, transform->GetY() - sinf(_angle - _barrelAngle) * _barrelLength,
+			ConvertAngleD2D(_angle), PROJECTILE_TYPE::ENEMYGROUND);
+		_leftFire = false;
+		_attackSpeed = 0.f;
 	}
 }

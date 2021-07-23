@@ -29,7 +29,7 @@ void Production::Update()
 	{
 		if (_linkTransport[_transportIdx] != nullptr)
 		{
-			if (_linkTransport[_transportIdx]->GetIsLeck() == false)
+			if (_linkTransport[_transportIdx]->GetIsLeck() == false && _linkTransport[_transportIdx]->GetInResource() == nullptr)
 			{
 				Item* newRes = new Item(_targetResource);
 				newRes->Init();

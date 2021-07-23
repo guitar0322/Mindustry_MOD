@@ -303,7 +303,8 @@ void PropFactory::AddDeleteQue(int startX, int startY, int endX, int endY)
 			}
 		}
 	}
-	_playerControler->SetConstructLaser(_deleteQueue.front().x, _deleteQueue.front().y, _deleteQueue.front().isDrill ? 2 : 1);
+	if(_deleteQueue.empty() == false)
+		_playerControler->SetConstructLaser(_deleteQueue.front().x, _deleteQueue.front().y, _deleteQueue.front().isDrill ? 2 : 1);
 }
 
 void PropFactory::InitPropInfo()
@@ -311,5 +312,5 @@ void PropFactory::InitPropInfo()
 	_propInfoV[TURRET].push_back({ 0.15f, 1, 0, 10, "duo" , L"듀오"});
 	_propInfoV[PRODUCTION].push_back({ 1.f, 2, 0, 10, "mechanical_drill", L"기계식 드릴" });
 	_propInfoV[RAIL].push_back({ 0.15f, 1, 0, 10, "conveyor", L"컨베이어" });
-	_propInfoV[DEFENSE].push_back({ 0.5f, 1, 0, 35, "copper_wall" ,L"구리 벽"});
+	_propInfoV[DEFENSE].push_back({ 0.1f, 1, 0, 1, "copper_wall" ,L"구리 벽"});
 }
