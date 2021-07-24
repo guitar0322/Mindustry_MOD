@@ -23,6 +23,7 @@ private:
     LINK linkInfo[4];
     PROPDIR _outDir;
     SHAPE _shape;
+    Item* _inResource;
     vector<pair<int, Item*>> _resInfo;
     int _tileX;
     int _tileY;
@@ -45,6 +46,8 @@ public:
     void SetFirstAnimator(Animator* firstAnimator) { _firstConveyorAnimator = firstAnimator; }
     void SetIsLack(bool isLack);
     bool GetIsLeck() const { return _isLack; }
+
+    Item* GetInResource() { return _inResource; }
     /*************************************************
     * 컨베이어 설계
     * 네개의 연결 고리가 있다 (구조체 LINK)

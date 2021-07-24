@@ -21,7 +21,6 @@ void PlayerLaser::Init()
 	_collectLaserFirst->transform->SetScale(0.8f, 0.8f);
 	_collectLaserFirst->SetActive(false);
 
-
 	_collectLaserEnd = new ImageObject;
 	_collectLaserEnd->Init();
 	_collectLaserEnd->renderer->Init("laser_end");

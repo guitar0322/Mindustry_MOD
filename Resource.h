@@ -2,6 +2,8 @@
 // Microsoft Visual C++에서 생성한 포함 파일입니다.
 // 다음에서 사용 windowAPI.rc
 
+#define IDI_ICON1				101
+
 #define IDS_APP_TITLE			103
 
 #define IDR_MAINFRAME			128

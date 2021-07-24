@@ -75,6 +75,12 @@ public:
 	void CreateDrill(int tileX, int tileY);
 	void CreateTurret(int tileX, int tileY);
 	void ContainProp(int hashKey, Prop* newProp, PROPDIR dir);
+
+	void LoadConveyor(int tileX, int tileY, PROPDIR dir);
+	void LoadDrill(int tileX, int tileY);
+	void LoadTurret(int tileX, int tileY);
+	void LoadCopperWall(int tileX, int tileY);
+
 	ImageObject* CreatePreview(int tileX, int tileY);
 	void AddPropElem(vector<ImageObject>& previewV, int categoryIdx, int propIdx, PROPDIR dir);
 	void AddDeleteQue(int startX, int startY, int endX, int endY);

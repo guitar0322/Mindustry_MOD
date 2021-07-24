@@ -14,6 +14,11 @@ int GameInfo::GetResourceAmount(RESOURCE resourceType)
     return _resourceAmount[resourceType];
 }
 
+void GameInfo::SetResourceAmount(RESOURCE resourceType, int amount)
+{
+    _resourceAmount[resourceType] = amount;
+}
+
 void GameInfo::AddResource(RESOURCE resourceType, int amount)
 {
     _resourceAmount[resourceType] += amount;

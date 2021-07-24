@@ -22,7 +22,7 @@ public:
 	void Load();
 
 	void SetTileImage();
-	void SetTileName(int selectNum);
+	void SetTileName();
 
 	tagTile GetTileInfo(int idx) const { return _tileInfo[idx]; }
 };

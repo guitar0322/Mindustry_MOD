@@ -205,8 +205,6 @@
     <ClCompile Include="ShootingScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="PropContainer.cpp" />
-    <ClCompile Include="PropFactory.cpp" />
     <ClCompile Include="EditText.cpp">
       <Filter>Component\Framwork</Filter>
     </ClCompile>
@@ -267,9 +265,8 @@
     <ClCompile Include="EnemyManager.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Drill.cpp" />
+    <ClCompile Include="CameraControler.cpp" />
     <ClCompile Include="Item.cpp" />
-    <ClCompile Include="Production.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Core.cpp">
       <Filter>Prop\Object</Filter>
@@ -285,6 +282,28 @@
     <ClCompile Include="Respawn.cpp" />
     <ClCompile Include="CameraControler.cpp">
       <Filter>CameraControler</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerConstructLaser.cpp" />
+    <ClCompile Include="Production.cpp">
+      <Filter>Prop\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="DataManager.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Distributor.cpp">
+      <Filter>Prop\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Drill.cpp">
+      <Filter>Prop\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="PropContainer.cpp">
+      <Filter>Prop</Filter>
+    </ClCompile>
+    <ClCompile Include="PropFactory.cpp">
+      <Filter>Prop</Filter>
+    </ClCompile>
+    <ClCompile Include="ResDistribute.cpp">
+      <Filter>Prop\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -501,8 +520,6 @@
     <ClInclude Include="ShootingScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="PropContainer.h" />
-    <ClInclude Include="PropFactory.h" />
     <ClInclude Include="EditText.h">
       <Filter>Component\Framwork</Filter>
     </ClInclude>
@@ -567,9 +584,8 @@
     <ClInclude Include="PropInfo.h">
       <Filter>헤더파일</Filter>
     </ClInclude>
-    <ClInclude Include="Drill.h" />
+    <ClInclude Include="CameraControler.h" />
     <ClInclude Include="Item.h" />
-    <ClInclude Include="Production.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Core.h">
       <Filter>Prop\Object</Filter>
@@ -586,6 +602,28 @@
     <ClInclude Include="CameraControler.h">
       <Filter>CameraControler</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerConstructLaser.h" />
+    <ClInclude Include="Production.h">
+      <Filter>Prop\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="DataManager.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Distributor.h">
+      <Filter>Prop\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Drill.h">
+      <Filter>Prop\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="PropContainer.h">
+      <Filter>Prop</Filter>
+    </ClInclude>
+    <ClInclude Include="PropFactory.h">
+      <Filter>Prop</Filter>
+    </ClInclude>
+    <ClInclude Include="ResDistribute.h">
+      <Filter>Prop\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="windowAPI.rc" />
@@ -593,6 +631,8 @@
   <ItemGroup>
     <Image Include="small.ico" />
     <Image Include="windowAPI.ico" />
+    <Image Include="..\..\..\바탕 화면\경일\14. 찐 팀 프로젝트\3. 내 작업폴더\아이콘\icon_64.png" />
+    <Image Include="Mindustryicon.ico" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="헤더파일">

@@ -16,6 +16,7 @@
 #include "CoreComponent.h"
 #include "Astar.h"
 #include "Respawn.h"
+#include "DataManager.h"
 
 HRESULT GameScene::Init()
 {
@@ -24,31 +25,44 @@ HRESULT GameScene::Init()
 	InitClip();
 	PlayerClip();
 	InGameUIClip();
+    InitIntro();
 
 	SetBackBufferSize(1600, 1600);
     COLLIDERMANAGER->PartitionArea(10, 10);
     StaticBuffer->BeginDraw();
 	MainCam->SetScreenSize(WINSIZEX, WINSIZEY);
-	MainCam->SetRenderSize(1600, 1010);
-    MainCam->transform->SetPosition(1600 / 2, 1600 / 2);
-
+    _screenRatio = (float)WINSIZEY / (float)WINSIZEX;
+    _intro = true;
+	MainCam->SetRenderSize(1600, 1600 * _screenRatio);
+    MainCam->transform->SetPosition(1600 / 2, 1600 * _screenRatio / 2);
+    MainCam->SetScreenSize(100, 100 * _screenRatio);
+    MainCam->SetScreenStart((WINSIZEX - MainCam->GetScreenWidth()) / 2, (WINSIZEY - MainCam->GetScreenHeight()) / 2);
     selectCategoryIdx = 0;
 
+    _dataManager = new DataManager();
+    _isQuit = false;
 
     _gameInfo = new GameInfo();
     _gameInfo->Init();
     _gameInfo->AddResource(COPPER, 500);
+    _gameInfo->AddResource(LEAD, 0);
+    _gameInfo->AddResource(SCRAP, 0);
+    _dataManager->LinkGameInfo(_gameInfo);
 
     _propContainer = new PropContainer();
+	_propContainer->Init();
+    _dataManager->LinkPropContainer(_propContainer);
 	_propFactory = new PropFactory();
     _propFactory->Init();
 	_propFactory->propContainer = _propContainer;
     _propFactory->LinkGameInfo(_gameInfo);
+    _dataManager->LinkPropFactory(_propFactory);
 
     _resourceManager = new ResourceManager();
     _resourceManager->propContainer = _propContainer;
     _resourceManager->Init();
     _propFactory->LinkResourceManager(_resourceManager);
+    _dataManager->LinkResourceManager(_resourceManager);
 
     _uiControler = new UIControler();
     _uiControler->Init();
@@ -64,12 +78,13 @@ HRESULT GameScene::Init()
 
     _uiControler->propFactory = _propFactory;
     _uiControler->propContainer = _propContainer;
-
     _respawn = new Respawn();
+
 	/*===================================*/
 	/*인게임 맵 초기화 -> 유림*/
 	_gameMap = new GameMap;
 	_gameMap->Init();
+    _dataManager->LinkGameMap(_gameMap);
 
     _aStar = new Astar();
     _aStar->LinkGameMap(_gameMap);
@@ -97,6 +112,11 @@ HRESULT GameScene::Init()
         _research = false;
         _inDetail = false;
 
+        _all_Resources_State = true;
+        _all_Resources_Count = 1;
+        // true = 열려있는 상태
+        // false = 닫혀있는 상태
+
         /* 메뉴부분 */
         _menu = false;
         _menu_ReallyEnd = false;
@@ -106,8 +126,13 @@ HRESULT GameScene::Init()
     {
         // 연구
         /* 전체 자원 버튼 (회색) */
+        _uiControler->all_Resources_Count = _all_Resources_Count;
         _uiControler->all_Resources_Img = &_all_Resources_Img;
+        _uiControler->all_Resources_Open1_Img = &_all_Resources_Open1_Img;
+        _uiControler->all_Resources_Open2_Img = &_all_Resources_Open2_Img;
+        _uiControler->all_Resources_Open3_Img = &_all_Resources_Open3_Img;
         _uiControler->all_Resources_Close_Img = &_all_Resources_Close_Img;
+        _uiControler->all_Resources_Text = &_all_Resources_Text;
 
         /* ? */
         _uiControler->choiceImg = &_choiceImg;
@@ -251,14 +276,46 @@ HRESULT GameScene::Init()
 	//SOUNDMANAGER->play("start", 10.0f);
 	//_musicTime = 0;
     //StaticBuffer->EndDraw();
-
+    //_dataManager->LoadData();
     return S_OK;
 }
 
 void GameScene::Update()
 {
 	MainCam->Update();
+    introCore.Update();
+    introEffect.Update();
+
+    if (_intro == true)
+    {
+        float screenWidth = MainCam->GetScreenWidth();
+        float screenHeight = MainCam->GetScreenHeight();
+
+        float curScale = introEffect.transform->GetScaleX();
+        if(curScale > 0.4f)
+            introEffect.transform->SetScale(curScale - 0.02, curScale - 0.02);
+        MainCam->SetScreenSize(screenWidth + 10, screenHeight + 10 * _screenRatio);
+        MainCam->SetScreenStart((WINSIZEX - MainCam->GetScreenWidth()) / 2, (WINSIZEY - MainCam->GetScreenHeight()) / 2);
+        if (MainCam->GetScreenWidth() > WINSIZEX)
+        {
+            MainCam->SetScreenSize(WINSIZEX, WINSIZEY);
+            MainCam->SetScreenStart(0, 0);
+            introEffect.SetActive(false);
+            introCore.SetActive(false);
+            EFFECTMANAGER->EmissionEffect("big_explosion", ScreenToWorld(Vector2(WINSIZEX / 2 + 10, WINSIZEY / 2)).x, ScreenToWorld(Vector2(WINSIZEX / 2 + 10, WINSIZEY / 2)).y, 0);
+            _intro = false;
+        }
+    }
+
     EFFECTMANAGER->Update();
+    if (KEYMANAGER->isOnceKeyDown('M'))
+    {
+        _dataManager->SaveData();
+    }
+    if (KEYMANAGER->isOnceKeyDown('N'))
+    {
+        _dataManager->LoadData();
+    }
     //07-19 플레이어와 UI간의 마우스 클릭 우선순위때문에 UI업데이트 위로 올림
     //카테고리 아이콘 업데이트
     {
@@ -282,46 +339,8 @@ void GameScene::Update()
     _uiControler->Update();
     _respawn->Update();
 	InGameUIUpdate();
-	/* 플레이어 부분*/
-	_player->Update();
-	_playerWeaponL->Update();
-	_playerWeaponR->Update();
-	_playerCell->Update();
-	_projectileManager->Update();
-    _cameraControler->Update();
 
-	// 광물 부분 -> 유림 210719
-	ResourcesUpdate();
-
-	//========================================
-	_cameraControler->Update();
-    _buildingCategoryFrame.Update();
-
-    //카테고리 아이콘 업데이트 
-    _propPreview.Update();
-	_gameMap->Update();
-	//========================================
-    _categorySelect.Update();
-    _propSelect.Update();
-
-	_core->Update();
-	
-
-	//07.20 민재 인 게임 Wave UI && Player UI 작업//
-
-	_enemyManager->Update();
-    
     /* 시영 */
-    // 연구 부분 Update
-    {
-        if (KEYMANAGER->isOnceKeyDown(VK_F1)) _research = true;
-        if (KEYMANAGER->isOnceKeyDown(VK_F2)) _research = false;
-        if (_research) researchUpdate();
-        _research_goBackButton.Update();
-        _coreDBButton.Update();
-        _detailDes_goBackButton.Update();
-    }
-
     // 메뉴 부분 Update
     {
         if (KEYMANAGER->isOnceKeyDown(VK_ESCAPE))
@@ -338,9 +357,80 @@ void GameScene::Update()
                 _menu_SaveAndExitButton.uiMouseEvent->enable = true;
             }
         }
- 
+
         if (_menu) menuUpdate();
+        if (_isQuit == true)
+        {
+            _dataManager->SaveData();
+            SCENEMANAGER->LoadScene("title");
+            return;
+        }
     }
+
+    // 연구 부분 Update
+    {
+        // 전체 자원 개수 파악
+        if (_gameInfo->GetResourceAmount(COPPER) >= 1)
+            _all_Resources_Count = 1;
+
+        if (_gameInfo->GetResourceAmount(COPPER) >= 1 && _gameInfo->GetResourceAmount(LEAD) >= 1)
+            _all_Resources_Count = 2;
+
+        if (_gameInfo->GetResourceAmount(COPPER) >= 1 && _gameInfo->GetResourceAmount(LEAD) >= 1 && _gameInfo->GetResourceAmount(SCRAP) >= 1)
+            _all_Resources_Count = 3;
+
+        // 광물 변수 카운트 출력 - 구리
+        if (_gameInfo->GetResourceAmount(COPPER) >= 1)
+            _all_Resources_Copper_Count = to_wstring(_gameInfo->GetResourceAmount(COPPER));
+
+        // 광물 변수 카운트 출력 - 납
+        if (_gameInfo->GetResourceAmount(LEAD) >= 1)
+            _all_Resources_Lead_Count = to_wstring(_gameInfo->GetResourceAmount(LEAD));
+
+        // 광물 변수 카운트 출력 - 고철
+        if (_gameInfo->GetResourceAmount(SCRAP) >= 1)
+            _all_Resources_Scrap_Count = to_wstring(_gameInfo->GetResourceAmount(SCRAP));
+
+        if (KEYMANAGER->isOnceKeyDown(VK_F1)) _research = true;
+        if (KEYMANAGER->isOnceKeyDown(VK_F2)) _research = false;
+        if (_research)
+        {
+            researchUpdate();
+            if (KEYMANAGER->isOnceKeyDown(VK_ESCAPE)) _research = false;
+        }
+        _research_goBackButton.Update();
+        _coreDBButton.Update();
+        _detailDes_goBackButton.Update();
+    }
+
+	/* 플레이어 부분*/
+	_player->Update();
+    // 플레이어 그림자 (시영 추가) ==
+    _playerShadow->Update();
+    _playerShadow->transform->SetPosition(_player->transform->GetX() - 50, _player->transform->GetY() + 50);
+    // ============================
+	_playerWeaponL->Update();
+	_playerWeaponR->Update();
+	_playerCell->Update();
+	_projectileManager->Update();
+    _cameraControler->Update();
+
+	// 광물 부분 -> 유림 210719
+	ResourcesUpdate();
+	//========================================
+	_cameraControler->Update();
+    _buildingCategoryFrame.Update();
+
+    //카테고리 아이콘 업데이트 
+    _propPreview.Update();
+	_gameMap->Update();
+	//========================================
+    _categorySelect.Update();
+    _propSelect.Update();
+	_core->Update();
+
+	//07.20 민재 인 게임 Wave UI && Player UI 작업//
+	_enemyManager->Update();
 
     /* 사운드 작업 광철 210718 */
     _musicTime += TIMEMANAGER->getElapsedTime();
@@ -368,7 +458,7 @@ void GameScene::Render()
 {
     MainCam->StaticToBackBuffer();
 	_gameMap->Render();
-
+    
     _propFactory->Render();
     _propContainer->Render();
     _resourceManager->Render();
@@ -378,16 +468,24 @@ void GameScene::Render()
 	//플레이어 관련 렌더 -> 유림
 	{
 		_player->transform->GetChild(4)->gameObject->Render();
+		_core->Render();
 		_player->Render();
+        // 플레이어 그림자 (시영 추가) ==
+        _playerShadow->Render();
+        // ============================
 		_enemyManager->Render();
-        EFFECTMANAGER->Render();
 		_player->Render();
 		_projectileManager->Render();
-		_core->Render();
+        EFFECTMANAGER->Render();
 		_cameraControler->Render();
 		MainCam->Render();
 	}
 
+    {
+        introEffect.Render();
+		introCore.Render();
+    }
+    
     //카테고리 아이콘 렌더
     {
         _buildingCategoryFrame.Render();
@@ -418,12 +516,49 @@ void GameScene::Render()
     /* 시영 */
     // 연구
     if (_research) researchRender();
+    if (_research && _all_Resources_State)
+    {
+        if (_all_Resources_Count == 1)
+        {
+            _all_Resources_Open1_Img.Render();
+
+            D2DRENDERER->RenderText(WINSIZEX / 2 - 620, WINSIZEY / 2 - 360, _all_Resources_Copper_Count, 14, L"mindustry", D2DRenderer::DefaultBrush::White);
+            _all_Resources_Mineral[0].Render();
+            D2DRENDERER->RenderText(WINSIZEX / 2 - 550, WINSIZEY / 2 - 360, L"구리", 14, L"fontello", D2DRenderer::DefaultBrush::White);
+        }
+
+        if (_all_Resources_Count == 2)
+        {
+            _all_Resources_Open2_Img.Render();
+
+            D2DRENDERER->RenderText(WINSIZEX / 2 - 620, WINSIZEY / 2 - 360, _all_Resources_Copper_Count, 14, L"mindustry", D2DRenderer::DefaultBrush::White);
+            D2DRENDERER->RenderText(WINSIZEX / 2 - 620, WINSIZEY / 2 - 330, _all_Resources_Lead_Count, 14, L"mindustry", D2DRenderer::DefaultBrush::White);
+            _all_Resources_Mineral[0].Render();
+            _all_Resources_Mineral[1].Render();
+            D2DRENDERER->RenderText(WINSIZEX / 2 - 550, WINSIZEY / 2 - 360, L"구리", 14, L"fontello", D2DRenderer::DefaultBrush::White);
+            D2DRENDERER->RenderText(WINSIZEX / 2 - 550, WINSIZEY / 2 - 330, L"납", 14, L"fontello", D2DRenderer::DefaultBrush::White);
+        }
+
+        if (_all_Resources_Count == 3)
+        {
+            _all_Resources_Open3_Img.Render();
+
+            D2DRENDERER->RenderText(WINSIZEX / 2 - 620, WINSIZEY / 2 - 360, _all_Resources_Copper_Count, 14, L"mindustry", D2DRenderer::DefaultBrush::White);
+            D2DRENDERER->RenderText(WINSIZEX / 2 - 620, WINSIZEY / 2 - 330, _all_Resources_Lead_Count, 14, L"mindustry", D2DRenderer::DefaultBrush::White);
+            D2DRENDERER->RenderText(WINSIZEX / 2 - 620, WINSIZEY / 2 - 300, _all_Resources_Scrap_Count, 14, L"mindustry", D2DRenderer::DefaultBrush::White);
+            _all_Resources_Mineral[0].Render();
+            _all_Resources_Mineral[1].Render();
+            _all_Resources_Mineral[2].Render();
+            D2DRENDERER->RenderText(WINSIZEX / 2 - 550, WINSIZEY / 2 - 360, L"구리", 14, L"fontello", D2DRenderer::DefaultBrush::White);
+            D2DRENDERER->RenderText(WINSIZEX / 2 - 550, WINSIZEY / 2 - 330, L"납", 14, L"fontello", D2DRenderer::DefaultBrush::White);
+            D2DRENDERER->RenderText(WINSIZEX / 2 - 550, WINSIZEY / 2 - 300, L"고철", 14, L"fontello", D2DRenderer::DefaultBrush::White);
+        }
+    }
+
     // 메뉴
     if (_menu) menuRender();
 
-
 	/* ================================여기 만지지 마세요 ========================================*/
-	
     //210719 유림 수정
 	StringRender();
 }
@@ -437,8 +572,25 @@ void GameScene::Release()
     SAFE_DELETE(_uiControler);
 }
 
+void GameScene::InitIntro()
+{
+    introCore.Init();
+    introCore.uiMouseEvent->enable = false;
+    introCore.uiRenderer->Init("core");
+    introCore.transform->SetScale(0.9f, 0.9f);
+    introCore.transform->SetPosition(WINSIZEX / 2 + 10, WINSIZEY / 2);
+
+    introEffect.Init();
+    introEffect.uiMouseEvent->enable = false;
+    introEffect.uiRenderer->Init("big_particle_light");
+    introEffect.transform->SetPosition(WINSIZEX / 2 + 10, WINSIZEY / 2);
+    introEffect.transform->SetScale(2.f, 2.f);
+}
+
 void GameScene::InitClip()
 {
+    CLIPMANAGER->AddClip("big_particle_light","sprites/effects/big-particle-light.png", 120, 120);
+
 	//카테고리 아이콘 클립
 	{
 		CLIPMANAGER->AddClip("turret_icon", "icons/turret.png", 32, 32);
@@ -466,12 +618,17 @@ void GameScene::InitClip()
         CLIPMANAGER->AddClip("conveyor_cross", "sprites/blocks/distribution/conveyors/conveyor-cross.png", 128, 32, 4, 1, 0.06f);
     }
 
+    //분배기 클립
+    {
+        CLIPMANAGER->AddClip("distributor", "sprites/blocks/distribution/router.png", 32, 32);
+    }
     //드릴 클립
     {
         CLIPMANAGER->AddClip("drill_body", "sprites/blocks/drills/mechanical-drill.png", 64, 64);
         CLIPMANAGER->AddClip("drill_top", "sprites/blocks/drills/mechanical-drill-top.png", 64, 64);
         CLIPMANAGER->AddClip("drill_rotator", "sprites/blocks/drills/mechanical-drill-rotator.png", 64, 64);
     }
+
     //터렛 클립
     {
         CLIPMANAGER->AddClip("duo_head", "sprites/blocks/turrets/duo-head.png", 32, 32);
@@ -497,7 +654,9 @@ void GameScene::InitClip()
     /* 연구 클립 */
     {
         // 전체 자원
-        CLIPMANAGER->AddClip("all_resources_open_null", "sprites/game/all_resources_open_null.png", 224, 80);
+        CLIPMANAGER->AddClip("all_resources_open_1", "sprites/game/all_resources_open_1.png", 224, 104);
+        CLIPMANAGER->AddClip("all_resources_open_2", "sprites/game/all_resources_open_2.png", 224, 128);
+        CLIPMANAGER->AddClip("all_resources_open_3", "sprites/game/all_resources_open_3.png", 224, 152);
         CLIPMANAGER->AddClip("all_resources_close", "sprites/game/all_resources_close.png", 224, 80);
         CLIPMANAGER->AddClip("all_resources_text", "sprites/game/all_resources_text.png", 136, 20);
         CLIPMANAGER->AddClip("all_resources_event", "sprites/game/all_resources_event.png", 200, 51);
@@ -578,7 +737,7 @@ void GameScene::InitClip()
 	{
 		CLIPMANAGER->AddClip("core", "sprites/blocks/storage/core.png", 96, 96);
 		CLIPMANAGER->AddClip("enemy_atrax", "sprites/units/enemy/enemy_atrax.png", 188, 329);
-		CLIPMANAGER->AddClip("enemy_dagger_walk", "sprites/units/enemy/enemy_dagger_walk.png", 369, 114, 3, 1, 0.8f);
+		CLIPMANAGER->AddClip("enemy_dagger_walk", "sprites/units/enemy/enemy_dagger_walk.png", 369, 114, 3, 1, 0.3f);
 		CLIPMANAGER->AddClip("projectile", "sprites/units/enemy/projectile.png", 52, 52);
 		CLIPMANAGER->AddClip("enemy_scepter", "sprites/units/enemy/enemy_scepter.png", 170, 140);
 	}
@@ -700,10 +859,14 @@ void GameScene::PlayerClip()
 	CLIPMANAGER->AddClip("player_cell", "player/alpha-cell.png", 48, 48);
 	CLIPMANAGER->AddClip("player_fire_circle", "player/alpha_fire_circle.png", 17, 17);
 	CLIPMANAGER->AddClip("player_fire", "player/alpha_fire.png", 30, 30);
+    // 플레이어 그림자 추가 (시영)
+    CLIPMANAGER->AddClip("player_shadow", "player/shadow/alpha_shadow.png", 48, 48);
 
 	//자원 클립
 	CLIPMANAGER->AddClip("copperUI", "sprites/items/item-copper.png", 32, 32);
 	CLIPMANAGER->AddClip("leadUI", "sprites/items/item-lead.png", 32, 32);
+    //자원 클립 - 고철 추가 (시영)
+    CLIPMANAGER->AddClip("scrapUI", "sprites/game/item-scrap.png", 32, 32);
 }
 
 void GameScene::PlayerInit()
@@ -713,11 +876,12 @@ void GameScene::PlayerInit()
 	_player->Init();
 	_player->tag = TAGMANAGER->GetTag("player");
 	_player->renderer->Init("player");
-	_player->transform->SetPosition(1500, 900);
+	_player->transform->SetPosition(25 * TILESIZE + 16, 32 * TILESIZE + 16);
 	_player->transform->SetAngle(0.0f);
 	_player->controler->LinkProFactory(_propFactory);
 	_propFactory->LinkPlayerControler(_player->controler);
     _uiControler->LinkPlayerControler(_player->controler);
+    _dataManager->LinkPlayer(_player);
 	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
 
 	//플레이어 포신 유림.
@@ -748,10 +912,16 @@ void GameScene::PlayerInit()
 	_player->transform->AddChild(_playerFire->transform);			//플레이어 불꽃 자식5
 	//부선기만 이곳에서 렌더하므로 초기화
 	_player->transform->GetChild(3)->SetPosition(_player->transform->GetX() , _player->transform->GetY());
-
+    // 플레이어 그림자 (시영 추가) =================
+    _playerShadow = new ImageObject();
+    _playerShadow->renderer->Init("player_shadow");
+    _playerShadow->renderer->SetAlpha(0.375f);
+    _playerShadow->transform->SetAngle(0.0f);
+    _playerShadow->SetActive(true);
+    _player->transform->AddChild(_playerShadow->transform);
+    // ===========================================
 	_player->controler->SetGameInfo(_gameInfo);
 	_player->controler->SetGameMap(_gameMap);
-
 }
 
 void GameScene::ResourcesInit()
@@ -765,7 +935,6 @@ void GameScene::ResourcesInit()
 	_resourcesUI[1].Init();
 	_resourcesUI[1].uiRenderer->Init("leadUI");
     _resourcesUI[1].transform->SetPosition(WINSIZEX / 2 + 20, 20);
-
 }
 
 void GameScene::ResourcesUpdate()
@@ -776,10 +945,11 @@ void GameScene::ResourcesUpdate()
 
 void GameScene::ResourcesRender()
 {
+    // 12시 방향 자원 표시
+    // 검은색 배경화면
 	D2DRenderer::GetInstance()->FillRectangle(_resoucesUIBackGround, D2D1::ColorF::Black, 0.7f);
-	_resourcesUI[0].Render();
-	_resourcesUI[1].Render();
-
+	_resourcesUI[0].Render();   // 구리 이미지
+	_resourcesUI[1].Render();   // 납 이미지
 
 	wstring copperAmount;
 	wstring leadAmount;
@@ -802,7 +972,7 @@ void GameScene::ResourcesRender()
 
 	if (_gameInfo->GetResourceAmount(LEAD) < 1000)
 	{
-        // 보라 콩 숫자 출력
+        // 납 숫자 출력
 		leadAmount = to_wstring(_gameInfo->GetResourceAmount(LEAD));
 	}
 	else if(_gameInfo->GetResourceAmount(LEAD) > 1000)
@@ -824,13 +994,18 @@ void GameScene::ResourcesRender()
 void GameScene::researchUpdate()
 {
     // 전체 자원
-    _all_Resources_Open_Img.Update();
+    _all_Resources_Open1_Img.Update();
+    _all_Resources_Open2_Img.Update();
+    _all_Resources_Open3_Img.Update();
     _all_Resources_Close_Img.Update();
     _all_Resources_Img.Update();
     _all_Resources_Text.Update();
     _all_Resources_Button.Update();
+    for (int i = 0; i < 3; i++)
+    {
+        _all_Resources_Mineral[i].Update();
+    }
 
-    //
     _choiceImg.Update();
     _lockImg.Update();
     _inResearchChoiceImg.Update();
@@ -881,7 +1056,6 @@ void GameScene::researchUpdate()
 void GameScene::researchRender()
 {
     // 전체 자원
-    _all_Resources_Open_Img.Render();
     _all_Resources_Close_Img.Render();
     _all_Resources_Img.Render();
     _all_Resources_Text.Render();
@@ -956,51 +1130,80 @@ void GameScene::researchRender()
 
 void GameScene::researchInitUI()
 {
-#pragma region 전체 자원 [열림]
+#pragma region 전체 자원
 
-    _all_Resources_Open_Img.uiRenderer->Init("all_resources_open_null");
-    _all_Resources_Open_Img.uiMouseEvent->enable = false;
-    _all_Resources_Open_Img.transform->SetPosition(WINSIZEX / 2 - 560, WINSIZEY / 2 - 380);
-    _all_Resources_Open_Img.transform->SetScale(1.0f, 1.0f);
-    _all_Resources_Open_Img.SetActive(true);
+    // 전체 자원 [열림]
+    _all_Resources_Open1_Img.uiRenderer->Init("all_resources_open_1");
+    _all_Resources_Open1_Img.uiMouseEvent->enable = false;
+    _all_Resources_Open1_Img.transform->SetPosition(WINSIZEX / 2 - 560, WINSIZEY / 2 - 368);
+    _all_Resources_Open1_Img.SetActive(true);
 
+    _all_Resources_Open2_Img.uiRenderer->Init("all_resources_open_2");
+    _all_Resources_Open2_Img.uiMouseEvent->enable = false;
+    _all_Resources_Open2_Img.transform->SetPosition(WINSIZEX / 2 - 560, WINSIZEY / 2 - 356);
+    _all_Resources_Open2_Img.SetActive(true);
+    
+    _all_Resources_Open3_Img.uiRenderer->Init("all_resources_open_3");
+    _all_Resources_Open3_Img.uiMouseEvent->enable = false;
+    _all_Resources_Open3_Img.transform->SetPosition(WINSIZEX / 2 - 560, WINSIZEY / 2 - 344);
+    _all_Resources_Open3_Img.SetActive(true);
+
+    // 전체 자원 [닫힘]
     _all_Resources_Close_Img.uiRenderer->Init("all_resources_close");
     _all_Resources_Close_Img.uiMouseEvent->enable = false;
     _all_Resources_Close_Img.transform->SetPosition(WINSIZEX / 2 - 560, WINSIZEY / 2 - 380);
-    _all_Resources_Close_Img.transform->SetScale(1.0f, 1.0f);
     _all_Resources_Close_Img.SetActive(false);
 
+    // 전체 자원 이미지 (충돌 - 회색)
     _all_Resources_Img.uiRenderer->Init("all_resources_event");
     _all_Resources_Img.uiMouseEvent->enable = false;
     _all_Resources_Img.transform->SetPosition(WINSIZEX / 2 - 560, WINSIZEY / 2 - 380);
-    _all_Resources_Img.transform->SetScale(1.0f, 1.0f);
     _all_Resources_Img.SetActive(false);
 
+    // 전체 자원 텍스트
     _all_Resources_Text.uiRenderer->Init("all_resources_text");
     _all_Resources_Text.uiMouseEvent->enable = false;
     _all_Resources_Text.transform->SetPosition(WINSIZEX / 2 - 580, WINSIZEY / 2 - 378);
-    _all_Resources_Text.transform->SetScale(1.0f, 1.0f);
     _all_Resources_Text.SetActive(true);
 
+    // 전체 자원 버튼
     _all_Resources_Button.Init();
-    _all_Resources_Button.uiRenderer->Init(200, 50);
+    _all_Resources_Button.uiRenderer->Init(210, 50);
     _all_Resources_Button.transform->SetPosition(WINSIZEX / 2 - 560, WINSIZEY / 2 - 380);
 
+    // 전체 자원 버튼 마우스 이벤트
     _all_Resources_Button.uiMouseEvent->RegistCallback(
         std::bind(&UIControler::inResearch_Active_Choice_Img, _uiControler,
-            true),
+            &_all_Resources_State),
         EVENT::ENTER);
 
     _all_Resources_Button.uiMouseEvent->RegistCallback(
-        std::bind(&UIControler::inResearch_Active_all_Resources_Close_Img, _uiControler,
-            true),
+        std::bind(&UIControler::inResearch_Active_all_Resources_Click_Event, _uiControler,
+            &_all_Resources_State),
         EVENT::CLICK);
     
     _all_Resources_Button.uiMouseEvent->RegistCallback(
-        std::bind(&UIControler::inResearch_Active_Choice_Img, _uiControler,
-            false),
+        std::bind(&UIControler::inResearch_InActive_Choice_Img, _uiControler),
         EVENT::EXIT);
 
+    // 전체 자원 광물 이미지 - 구리
+    _all_Resources_Mineral[0].Init();
+    _all_Resources_Mineral[0].uiRenderer->Init("copperUI");
+    _all_Resources_Mineral[0].uiMouseEvent->enable = false;
+    _all_Resources_Mineral[0].transform->SetPosition(WINSIZEX / 2 - 575, WINSIZEY / 2 - 345);
+
+    // 전체 자원 광물 이미지 - 납
+    _all_Resources_Mineral[1].Init();
+    _all_Resources_Mineral[1].uiRenderer->Init("leadUI");
+    _all_Resources_Mineral[1].uiMouseEvent->enable = false;
+    _all_Resources_Mineral[1].transform->SetPosition(WINSIZEX / 2 - 575, WINSIZEY / 2 - 315);
+    
+    // 전체 자원 광물 이미지 - 고철
+    _all_Resources_Mineral[2].Init();
+    _all_Resources_Mineral[2].uiRenderer->Init("scrapUI");
+    _all_Resources_Mineral[2].uiMouseEvent->enable = false;
+    _all_Resources_Mineral[2].transform->SetPosition(WINSIZEX / 2 - 575, WINSIZEY / 2 - 285);
+   
 #pragma endregion
 
 #pragma region ChoiceImg
@@ -1722,7 +1925,7 @@ void GameScene::menuInitUI()
     
     _menu_ReallyEnd_Check_Button.uiMouseEvent->RegistCallback(
         std::bind(&UIControler::inReallyEnd_Return_To_TilteScene, _uiControler,
-            "title"),
+            &_isQuit),
         EVENT::CLICK);
     
     _menu_ReallyEnd_Check_Button.uiMouseEvent->RegistCallback(
@@ -1802,7 +2005,7 @@ void GameScene::SetCore()
 	_core = new Core();
 	_core->Init();
 	_core->tag = TAGMANAGER->GetTag("prop");
-	_core->transform->SetPosition(25 * TILESIZE + 16, 36 * TILESIZE + 16);
+	_core->transform->SetPosition(25 * TILESIZE + 16, 32 * TILESIZE + 16);
 	_core->collider->RefreshPartition();
     _core->coreComponent->LinkResourceManager(_resourceManager);
     _core->coreComponent->LinkGameInfo(_gameInfo);
@@ -1820,6 +2023,7 @@ void GameScene::SetEnemyManager()
     _aStar->LinkEnemyManager(_enemyManager->GetComponent<EnemyManager>());
 	_uiControler->SetEnemyManager(_enemyManager->GetComponent<EnemyManager>());
     _propFactory->LinkEnemyManager(_enemyManager->GetComponent<EnemyManager>());
+    _dataManager->LinkEnemeyManager(_enemyManager->GetComponent<EnemyManager>());
 }
 
 void GameScene::SetCameraControler()
@@ -1877,6 +2081,7 @@ void GameScene::InGameUIRender()
 	_enemyWaveSkipClick.Render();
 	_enemyWaveSkip.Render();
 	_enemyWaveSkipButton.Render();
+	_enemyWaveSkipClick.Render();
 	
 	wstring second = to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeSecond());
 	wstring minute = to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeMinute());
@@ -1891,7 +2096,6 @@ void GameScene::InGameUIRender()
 	D2DRENDERER->RenderText(173, 55, L"분", 20, L"fontello", D2DRenderer::DefaultBrush::White);
 	D2DRENDERER->RenderText(198, 58, second, 20, L"mindustry", D2DRenderer::DefaultBrush::White);
 	D2DRENDERER->RenderText(230, 55, L"초", 20, L"fontello", D2DRenderer::DefaultBrush::White);
-
 }
 
 void GameScene::InGameUIClip()
@@ -1913,7 +2117,6 @@ void GameScene::StringRender()
 	//wstring wstrangle = L"Angle : ";
 	//wstrangle.append(to_wstring(_player->controler->GetTargetAngle()));
 	//D2DRENDERER->RenderText(100, 150, wstrangle, 20, L"맑은고딕", D2DRenderer::DefaultBrush::White);
-
 
 	//wstring time = L"MusicTime: ";
 	//time.append(to_wstring(_musicTime));

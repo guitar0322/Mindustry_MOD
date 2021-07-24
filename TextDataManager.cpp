@@ -65,6 +65,9 @@ vector<string> TextDataManager::charArraySeparation(char charArray[])
 	const char* separator = ",";
 	char* token;
 
+	if (strlen(charArray) == 0) {
+		return vArray;
+	}
 	token = strtok_s(charArray, separator, &temp);
 	vArray.push_back(token);
 

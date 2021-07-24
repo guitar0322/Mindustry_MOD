@@ -58,12 +58,17 @@ public:
 	void EnemyRender();
 	void SpawnEnemy();
 	void DeadEvent();
-	
 
 	int GetTimeSecond() const { return _timeSecond; }
+	void SetTimeSecond(int second) { _timeSecond = second; }
 	int GetTimeMinute() const { return _timeMinute; }
+	void SetTimeMinute(int minute) { _timeMinute = minute; }
 	int GetCurWave() const { return _curWave; }
+	void SetCurWave(int wave) { _curWave = wave; }
+
 	vector<EnemyObject*> GetCurWaveEnemy();
+	vector<int> GetWave(int wave) { return _waveV[wave]; }
+	EnemyObject* GetEnemy(int idx);
 	void SetWaveSkip(bool waveskip) { _waveSkip = waveskip; }
 
 	void SetProjectileManager(ProjectileManager* projectileManager){ _projectileManager = projectileManager; }

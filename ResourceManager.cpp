@@ -52,6 +52,17 @@ void ResourceManager::AddResource(Item* item)
 	_resV.push_back(item);
 }
 
+void ResourceManager::AddResource(int resource, float x, float y)
+{
+	Item* newItem = new Item((RESOURCE)resource);
+	newItem->Init();
+	newItem->transform->SetX(x);
+	newItem->transform->SetY(y);
+	newItem->collider->RefreshPartition();
+	newItem->SetLinkPropContainer(propContainer);
+	_resV.push_back(newItem);
+}
+
 void ResourceManager::RemoveResource(Item* item)
 {
 	for (int i = 0; i < _resV.size(); i++)

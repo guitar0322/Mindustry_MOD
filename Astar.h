@@ -3,6 +3,7 @@
 class GameMap;
 class EnemyManager;
 class PropContainer;
+class Prop;
 
 class Astar
 {
@@ -24,6 +25,7 @@ private:
 private:
 	vector<NODE*> _openList;
 	vector<NODE*> _closeList;
+	vector<Prop*> _propIdxV;
 	NODE* _curNode;
 	NODE* _endNode;
 	NODE* _startNode;
@@ -39,6 +41,7 @@ public:
 	int IsExistOpenList(int x, int y);
 	bool IsValidNode(int x, int y);
 	int GetMinOpenListNode();
+	vector<Prop*> GetPropIdxV() { return _propIdxV; }
 	float CalcG(int startX, int startY, int endX, int endY);
 	void LinkGameMap(GameMap* gameMap) { _gameMap = gameMap; }
 	void LinkEnemyManager(EnemyManager* enemyManager) { _enemyManager = enemyManager; }

@@ -12,14 +12,13 @@ void PlayerControler::Init()
 {
 	PlayerUIInit();
 
-	_accel = 150.f;
+	_accel = 300.f;
 	_targetAngle = 0.f;
-	_friction = 0.f;
+	_friction = 300.f;
 	_respawnTime = 0.f;
-	_angleSpeed = 4.f;
+	_angleSpeed = 10.f;
 	_hp = 92;
 	hpUI = 0;
-	reduceHP = 0;
 	reduceTime = 0;
 	_copperAmount, _leadAmount = 0;
 	_boosterTime = 0;
@@ -28,7 +27,7 @@ void PlayerControler::Init()
 	_weaponRTrackRadius = DEFAULT_WEAPON_DISTANCE;
 	_weaponLTrackAngle = DEFAULT_WEAPON_ANGLE;
 	_weaponRTrackAngle = DEFAULT_WEAPON_ANGLE;
-	_barrelLength = 30.f;
+	_barrelLength = 37.f;
 	_playerLaser = new PlayerLaser;
 	_playerLaser->Init();
 
@@ -55,7 +54,6 @@ void PlayerControler::Update()
 
 	if (_isSlow == true)
 	{
-		_friction = 180.f;
 		_speed -= _friction * TIMEMANAGER->getElapsedTime();
 
 		if (_speed < 0)
@@ -129,7 +127,6 @@ void PlayerControler::Update()
 
 				if (_attackSpeed >= 0.3f)
 				{
-					_weaponLTrackRadius = 9.13;
 					if (_isLeft == false) // 만약에 왼쪽이 발동 안할 경우
 					{
 						_weaponRTrackRadius = 9.13;
@@ -172,6 +169,7 @@ void PlayerControler::Update()
 		}
 
 		ShootResoucesLaser();
+
 		if (_isCollecting)
 		{
 			ResoucesCollect();
@@ -311,22 +309,19 @@ void PlayerControler::KeyHandle()
 	{
 		_isSlow = false;
 		_speed += _accel * TIMEMANAGER->getElapsedTime();
-		_isSlow = false;
 
-		if (_speed >= 250.f)
+		if (_speed >= 350.f)
 		{
-			_speed = 250.f;
+			_speed = 350.f;
 		}
 	}
 }
 
 void PlayerControler::PlayerDirection()
 {
-
-	float deltaAngle = _targetAngle - transform->GetAngle();
-
+	float deltaAngle = _targetAngle - transform->GetAngle(); //타겟앵글과 시계방향 각도차이
 	if (deltaAngle < 0) deltaAngle += 360;
-
+	//시계방향으로 가면 180도 이상이기떄문에 반시계방향으로 돌아야한다
 	if (deltaAngle > 180)
 	{
 		if (Math::FloatEqual(_targetAngle, transform->GetAngle()) == false)
@@ -341,6 +336,7 @@ void PlayerControler::PlayerDirection()
 				transform->GetChild(3)->SetAngle(_targetAngle);
 				transform->GetChild(4)->SetAngle(_targetAngle);
 				transform->GetChild(5)->SetAngle(_targetAngle);
+				transform->GetChild(6)->SetAngle(_targetAngle);
 				transform->GetChild(0)->SetAngle(_targetAngle);
 			}
 		}
@@ -350,7 +346,9 @@ void PlayerControler::PlayerDirection()
 		if (Math::FloatEqual(_targetAngle, transform->GetAngle()) == false)
 		{
 			transform->Rotate(_angleSpeed);
-			if (_targetAngle < transform->GetAngle())
+			float deltaAngle = _targetAngle - transform->GetAngle();
+			if (deltaAngle < 0) deltaAngle += 360;
+			if (_targetAngle < transform->GetAngle() && deltaAngle > 180)
 			{
 				transform->SetAngle(_targetAngle);
 				transform->GetChild(1)->SetAngle(_targetAngle);
@@ -358,6 +356,7 @@ void PlayerControler::PlayerDirection()
 				transform->GetChild(3)->SetAngle(_targetAngle);
 				transform->GetChild(4)->SetAngle(_targetAngle);
 				transform->GetChild(5)->SetAngle(_targetAngle);
+				transform->GetChild(6)->SetAngle(_targetAngle);
 				transform->GetChild(0)->SetAngle(_targetAngle);
 			}
 		}
@@ -518,6 +517,9 @@ void PlayerControler::Hit(float damage)
 
 	if (_hp <= 0 && _isDead == false)
 	{
+		_hp = 0;
+		hpUI = 92;
+		playerHpUI.uiRenderer->SetClipY(hpUI);
 		Dead();
 	}
 }
@@ -536,11 +538,11 @@ void PlayerControler::Dead()
 void PlayerControler::Respawn()
 {
 	gameObject->transform->SetPosition(25 * TILESIZE + 16, 36 * TILESIZE + 16);
-	transform->GetChild(2)->SetPosition(25 * TILESIZE + 16, 36 * TILESIZE + 16);
+	transform->GetChild(3)->SetPosition(25 * TILESIZE + 16, 36 * TILESIZE + 16);
 	gameObject->SetActive(true);
-	transform->GetChild(3)->gameObject->SetActive(true);
 	transform->GetChild(4)->gameObject->SetActive(true);
-	_hp = 100;
+	transform->GetChild(5)->gameObject->SetActive(true);
+	_hp = 92;
 	_isDead = false;
 }
 
@@ -622,22 +624,13 @@ void PlayerControler::PlayerUIUpdate()
 
 void PlayerControler::PlayerHpAlpha()
 {
-	float reduceHP = 0;
-	float standNum = 1;
-	
-	if (_isHit)
+	reduceTime += TIMEMANAGER->getElapsedTime();
+	if (reduceTime >= 0.05f)
 	{
-		if (reduceHP > _damage)
-		{
-			reduceHP = 0;
-			hpUI = abs(_hp - 92 - _damage);
-
-		}
-		else
-		{
-			reduceHP += standNum * 0.05f;
-			hpUI += reduceHP;
-		}
-
+		reduceTime = 0;
+		if (hpUI < 92 - _hp)
+			hpUI += 1;
+		else if(hpUI > 92 - _hp)
+			hpUI -= 2;
 	}
 }

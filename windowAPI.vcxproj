@@ -169,6 +169,8 @@
     <ClInclude Include="Core.h" />
     <ClInclude Include="CoreComponent.h" />
     <ClInclude Include="D2DRenderer.h" />
+    <ClInclude Include="DataManager.h" />
+    <ClInclude Include="Distributor.h" />
     <ClInclude Include="Drill.h" />
     <ClInclude Include="Duo.h" />
     <ClInclude Include="EditableText.h" />
@@ -220,6 +222,7 @@
     <ClInclude Include="randomFunction.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="ResDistribute.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Respawn.h" />
     <ClInclude Include="SampleScene.h" />
@@ -279,6 +282,8 @@
     <ClCompile Include="CoreComponent.cpp" />
     <ClCompile Include="D2DRenderer+Draw.cpp" />
     <ClCompile Include="D2DRenderer.cpp" />
+    <ClCompile Include="DataManager.cpp" />
+    <ClCompile Include="Distributor.cpp" />
     <ClCompile Include="Drill.cpp" />
     <ClCompile Include="Duo.cpp" />
     <ClCompile Include="EditableText.cpp" />
@@ -326,6 +331,7 @@
     <ClCompile Include="PropStat.cpp" />
     <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="ResDistribute.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Respawn.cpp" />
     <ClCompile Include="SampleScene.cpp" />
@@ -369,6 +375,8 @@
     <ResourceCompile Include="windowAPI.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\..\바탕 화면\경일\14. 찐 팀 프로젝트\3. 내 작업폴더\아이콘\icon_64.png" />
+    <Image Include="Mindustryicon.ico" />
     <Image Include="small.ico" />
     <Image Include="windowAPI.ico" />
   </ItemGroup>

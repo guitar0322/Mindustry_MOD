@@ -6,6 +6,8 @@
 #include "GameMap.h"
 #include "EnemyManager.h"
 #include "PlayerControler.h"
+#include "GameInfo.h"
+
 UIControler::UIControler()
 	:_previewDir(false), _previewNum(0)
 {
@@ -147,7 +149,7 @@ void UIControler::Render()
 {
 	conveyorArrow.Render();
 	propPreview->Render();
-	if (_deleteRc.GetWidth() != 0)
+	if (_deleteRc.GetWidth() != 0 && _deleteRc.GetHeight() != 0)
 	{
 		D2DRENDERER->DrawRectangle(_deleteRc, D2DRenderer::DefaultBrush::Red);
 	}
@@ -420,16 +422,61 @@ void UIControler::inResearch_ActiveChoiceImg(Transform* menuTr, bool isActive)
 	choiceImg->SetActive(isActive);
 }
 
-/* 연구 상태에서 [전체자원] 버튼 ENTER, EXIT */
-void UIControler::inResearch_Active_Choice_Img(bool isActive)
+/* 연구 상태에서 [전체자원] 버튼 EVENT */
+void UIControler::inResearch_Active_Choice_Img(bool* name)
 {
-	all_Resources_Img->SetActive(isActive);
+	// true = 열려 있는 상태
+	// false = 닫혀있는 상태
+	if (*name)
+	{
+		all_Resources_Img->SetActive(true);
+	}
+	else
+	{
+		all_Resources_Img->SetActive(false);
+	}
 }
 
-/* 연구 상태에서 [전체자원] 버튼 CLICK */
-void UIControler::inResearch_Active_all_Resources_Close_Img(bool isActive)
+/* 연구 상태에서 [전체자원] 버튼 CLICK*/
+void UIControler::inResearch_Active_all_Resources_Click_Event(bool* name)
 {
-	all_Resources_Close_Img->SetActive(isActive);
+	if (*name) // true = 열려 있는 상태
+	{
+		*name = false;
+		all_Resources_Img->SetActive(false);
+		if (all_Resources_Count == 1) all_Resources_Open1_Img->SetActive(false);
+		if (all_Resources_Count == 2) all_Resources_Open2_Img->SetActive(false);
+		if (all_Resources_Count == 3) all_Resources_Open3_Img->SetActive(false);
+		all_Resources_Text->SetActive(false);
+		all_Resources_Close_Img->SetActive(true);
+
+		//광물 1개 이상인지 파악 - 구리
+		//if (gameInfo->GetResourceAmount(COPPER) >= 1)
+		//{
+		//	float heightRange = 0;
+		//	heightRange += TIMEMANAGER->getElapsedTime();
+		//	all_Resources_Add->transform->SetScaleY(heightRange);
+		//
+		//	if (heightRange > 5)
+		//    {
+		//		heightRange = 0;
+		//    }
+		//    //_all_Resources_Bottom_Border.transform->SetPosition(_all_Resources_LR_Border.transform->SetX(), _all_Resources_LR_Border.transform->SetY());
+		//}
+	}
+	else // false = 닫혀있는 상태
+	{
+		*name = true;
+		all_Resources_Open1_Img->SetActive(true);
+		all_Resources_Text->SetActive(true);
+		all_Resources_Close_Img->SetActive(false);
+	}
+}
+
+/* 연구 상태에서 [전체자원] 버튼 EXIT */
+void UIControler::inResearch_InActive_Choice_Img()
+{
+	all_Resources_Img->SetActive(false);
 }
 
 /* 연구 상태에서 [돌아가기] 버튼 ENTER, EXIT */
@@ -588,9 +635,9 @@ void UIControler::inReallyEnd_Active_CheckImg(bool* name, bool isActive)
 }
 
 /* 정말로 종료하시겠습니까? 상태에서 [확인] 버튼 CLICK */
-void UIControler::inReallyEnd_Return_To_TilteScene(string SceneName)
+void UIControler::inReallyEnd_Return_To_TilteScene(bool* isQuit)
 {
-	SCENEMANAGER->LoadScene(SceneName);
+	*isQuit = true;
 }
 
 void UIControler::EnemyWaveSkip()
