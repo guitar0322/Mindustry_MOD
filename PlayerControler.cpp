@@ -321,7 +321,6 @@ void PlayerControler::KeyHandle()
 void PlayerControler::PlayerDirection()
 {
 	float deltaAngle = _targetAngle - transform->GetAngle(); //타겟앵글과 시계방향 각도차이
-	cout << transform->GetAngle() << endl;
 	if (deltaAngle < 0) deltaAngle += 360;
 	//시계방향으로 가면 180도 이상이기떄문에 반시계방향으로 돌아야한다
 	if (deltaAngle > 180)

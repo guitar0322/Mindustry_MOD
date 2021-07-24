@@ -79,7 +79,7 @@ void GameMap::Load()
 		_tile[i / 2].renderer->Init(_tileName[env]);
 		_tile[i / 2].renderer->RenderStatic();
 
-		_resourcesTile[i / 2].renderer->Init(_tileName[res + 23]);
+		_resourcesTile[i / 2].renderer->Init(_tileName[res + 26]);
 		if(_tileInfo[i / 2].resources != RES_NONE)
 			_resourcesTile[i / 2].renderer->RenderStatic();
 	}
@@ -174,19 +174,20 @@ void GameMap::SetTileName()
 	_tileName[idx++] = "ice3";
 	_tileName[idx++] = "ice_wall1";
 	_tileName[idx++] = "ice_wall2";
-	_tileName[idx++] = "copper1";
-	_tileName[idx++] = "copper3";		//24
+	_tileName[idx++] = "space";			
+	_tileName[idx++] = "space";			//24
+	_tileName[idx++] = "space";			
+	_tileName[idx++] = "copper1";		//26
+	_tileName[idx++] = "copper3";		
 	_tileName[idx++] = "copper3";
 	_tileName[idx++] = "lead1";
 	_tileName[idx++] = "lead2";
-	_tileName[idx++] = "lead3";
-	_tileName[idx++] = "scrap1";			//29
+	_tileName[idx++] = "lead3";			//31
+	_tileName[idx++] = "scrap1";			
 	_tileName[idx++] = "scrap2";
-	_tileName[idx++] = "scrap3";
+	_tileName[idx++] = "scrap3";		//34
 	_tileName[idx++] = "enemy_spawn";
-	_tileName[idx++] = "space";			//33
-	_tileName[idx++] = "space";			//33
-	_tileName[idx++] = "space";			//33
+
 
 	//switch (selectNum)
 	//{

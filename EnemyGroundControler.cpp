@@ -23,7 +23,7 @@ void EnemyGroundControler::Init()
 	_speedX = 0.f;
 	_speedY = 0.f;
 	_barrelLength = 50.f;
-	_barrelAngle = Math::PI / 10.f;
+	_barrelAngle = Math::PI / 6.f;
 	_deltaX = 0.f;
 	_deltaY = 0.f;
 	_deltaAngle = 0.f;
@@ -65,6 +65,7 @@ void EnemyGroundControler::Update()
 	{
 		_angle = GetAngle(transform->GetX(), transform->GetY(), _targetX, _targetY);
 		MoveTowardTo(transform, _targetX, _targetY, _enemyInfo->GetSpeed() * TIMEMANAGER->getElapsedTime());
+		gameObject->GetComponent<Animator>()->Resume();
 		if (GetDistance(transform->position, Vector2(_targetX, _targetY)) <= 2 && _corePath.empty() == false) {
 			_tileIdx++;
 			_targetX = _corePath[_corePath.size() - _tileIdx].first * TILESIZE + 16;
@@ -90,6 +91,7 @@ void EnemyGroundControler::Update()
 	}
 	else
 	{
+		gameObject->GetComponent<Animator>()->Pause();
 		_angle = GetAngle(transform->position, _enemyInfo->GetCoreTransform()->position);
 		Attack();
 	}
@@ -100,28 +102,35 @@ void EnemyGroundControler::Render()
 	//Rect pathRect = RectMakePivot(Vector2(_corePath[_corePath.size() - _tileIdx].first * TILESIZE + 16, 
 	//	_corePath[_corePath.size() - _tileIdx].second * TILESIZE + 16), Vector2(TILESIZE, TILESIZE), Pivot::Center);
 	//D2DRENDERER->FillRectangleBack(pathRect);
-	//for (int i = 0; i < _corePath.size(); i++)
-	//{
-	//	Rect pathRect = RectMakePivot(Vector2(_corePath[i].first * TILESIZE + 16, _corePath[i].second * TILESIZE + 16), Vector2(TILESIZE, TILESIZE), Pivot::Center);
-	//	D2DRENDERER->FillRectangleBack(pathRect);
-	//}
+	if (KEYMANAGER->isToggleKey(VK_TAB))
+	{
+		for (int i = 0; i < _corePath.size(); i++)
+		{
+			Rect pathRect = RectMakePivot(Vector2(_corePath[i].first * TILESIZE + 16, _corePath[i].second * TILESIZE + 16), Vector2(TILESIZE, TILESIZE), Pivot::Center);
+			D2DRENDERER->FillRectangleBack(pathRect);
+		}
+	}
 }
 
 void EnemyGroundControler::Attack()
 {
 	_attackSpeed += TIMEMANAGER->getElapsedTime();
-	if (_attackSpeed >= 0.5f && _leftFire == false)
+	if (_attackSpeed >= 0.3f && _leftFire == false)
 	{
 		_projectileManager->FireProjectile(transform->GetX() + cosf(_angle + _barrelAngle) * _barrelLength, transform->GetY() - sinf(_angle + _barrelAngle) * _barrelLength,
 			ConvertAngleD2D(_angle), PROJECTILE_TYPE::ENEMYGROUND);
+		EFFECTMANAGER->EmissionEffect("shoot", transform->GetX() + cosf(_angle + _barrelAngle) * _barrelLength, transform->GetY() - sinf(_angle + _barrelAngle) * _barrelLength,
+			ConvertAngleD2D(_angle));
 		_leftFire = true;
 		_attackSpeed = 0.f;
 	}
 
-	if (_attackSpeed >= 1.f && _leftFire == true)
+	if (_attackSpeed >= 0.3f && _leftFire == true)
 	{
 		_projectileManager->FireProjectile(transform->GetX() + cosf(_angle - _barrelAngle) * _barrelLength, transform->GetY() - sinf(_angle - _barrelAngle) * _barrelLength,
 			ConvertAngleD2D(_angle), PROJECTILE_TYPE::ENEMYGROUND);
+		EFFECTMANAGER->EmissionEffect("shoot", transform->GetX() + cosf(_angle - _barrelAngle) * _barrelLength, transform->GetY() - sinf(_angle - _barrelAngle) * _barrelLength,
+			ConvertAngleD2D(_angle));
 		_leftFire = false;
 		_attackSpeed = 0.f;
 	}
