@@ -3,12 +3,14 @@
 #include "PropInfo.h"
 class Prop;
 class GameInfo;
+class ResourceManager;
 
 class PropContainer
 {
 private:
 	map<int, Prop*> _propMap;
 	map<int, Prop*>::iterator _propMapIter;
+	ResourceManager* _resourceManager;
 public:
 	GameInfo* gameInfo;
 	PropContainer();
@@ -21,5 +23,6 @@ public:
 	Prop* GetPropMap(int hashKey);
 	void DeleteProp(int tileX, int tileY);
 	vector<Prop*> GetAllProp();
+	void LinkResourceManager(ResourceManager* resourceManager) { _resourceManager = resourceManager; }
 };
 

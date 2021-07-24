@@ -1,20 +1,29 @@
 #pragma once
 #include "Component.h"
 #include "PropInfo.h"
-
+#include <queue>
 #define RESOURCE_NUM 3
-class Transport;
+class Prop;
+class ResourceManager;
 
 class ResDistribute :
     public Component
 {
 private:
-    int _resourceNum[RESOURCE_NUM];
+    queue<int> _resQue;
+    float _distributeTime;
+    int _distributeDir;
+    ResourceManager* _resourceManager;
+
 public:
     ResDistribute();
     ~ResDistribute();
 
-    Transport* linkTransport[4];
-    void Link(PROPDIR dir);
+    virtual void Update();
+    virtual void OnTriggerEnter(GameObject* gameObject);
+    void AddResource(int resourceType);
+    Prop* linkProp[4];
+    void Link(PROPDIR dir, Prop* linkProp);
+    void LinkResourceManager(ResourceManager* resourceManager) { _resourceManager = resourceManager; }
 };
 

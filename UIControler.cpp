@@ -208,7 +208,7 @@ void UIControler::ClickPropIcon(GameObject* clickedButton, int propIdx)
 		propSelect->SetActive(true);
 		propPreview->SetActive(true);
 
-		if (_selectCategoryIdx == RAIL)
+		if (_selectCategoryIdx == RAIL && propIdx == 0)
 		{
 			propPreview->transform->SetAngle(_dir * 90);
 			conveyorArrow.transform->SetAngle((_dir + 1) % 4 * 90);

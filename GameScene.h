@@ -71,6 +71,7 @@ private:
     UIBase _mechanicDrillIcon;
     UIBase _duoIcon;
     UIBase _conveyorIcon;
+    UIBase _distributorIcon;
 
     vector<GameObject*> _wallIconV;
     vector<GameObject*> _drillIconV;

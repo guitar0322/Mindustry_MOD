@@ -6,7 +6,9 @@
 #include "TileInfo.h"
 #include "Drill.h"
 #include "Production.h"
-
+#include "Distributor.h"
+#include "ResDistribute.h"
+#include "Duo.h"
 int conveyorDir[4][2] = { {1,0}, {0,1}, {-1,0}, {0,-1} };
 
 PropContainer::PropContainer()
@@ -53,6 +55,22 @@ void PropContainer::AddProp(int hashKey, Prop* newProp, PROPDIR dir)
 	{
 		_propMap.insert(pair<int, Prop*>(hashKey, newProp));
 	}
+	Duo* duoCast = dynamic_cast<Duo*>(newProp);
+	if (duoCast != nullptr)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			int nextX = tileX + conveyorDir[i][0];
+			int nextY = tileY + conveyorDir[i][1];
+			int nextHashKey = nextY * TILENUMX + nextX;
+			Prop* prop = GetPropMap(nextHashKey);
+			Distributor* nearDistributor = dynamic_cast<Distributor*>(prop);
+			if (nearDistributor != nullptr)
+			{
+				nearDistributor->resDistribute->Link(PROPDIR((i + 2) % 4), duoCast);
+			}
+		}
+	}
 	Conveyor* conveyorCast = dynamic_cast<Conveyor*>(newProp);
 	if (conveyorCast != nullptr)
 	{
@@ -64,6 +82,7 @@ void PropContainer::AddProp(int hashKey, Prop* newProp, PROPDIR dir)
 			Prop* prop = GetPropMap(nextHashKey);
 			Conveyor* nearConveyor = dynamic_cast<Conveyor*>(prop);
 			Drill* nearDrill = dynamic_cast<Drill*>(prop);
+			Distributor* nearDistributor = dynamic_cast<Distributor*>(prop);
 			if (nearConveyor != nullptr)
 			{
 				if (i == conveyorCast->transport->GetOutDir())
@@ -80,6 +99,11 @@ void PropContainer::AddProp(int hashKey, Prop* newProp, PROPDIR dir)
 			{
 				conveyorCast->transport->LinkConveyor(PROPDIR(i));
 				nearDrill->production->Link(tileX, tileY, conveyorCast->transport);
+			}
+			if (nearDistributor != nullptr && i != conveyorCast->transport->GetOutDir())
+			{
+				conveyorCast->transport->LinkConveyor(PROPDIR(i));
+				nearDistributor->resDistribute->Link(PROPDIR((i + 2) % 4), conveyorCast);
 			}
 		}
 	}
@@ -98,6 +122,38 @@ void PropContainer::AddProp(int hashKey, Prop* newProp, PROPDIR dir)
 			{
 				nearConveyor->transport->LinkConveyor(PROPDIR((i + 2) % 4));
 				drillCast->production->Link(nextX, nextY, nearConveyor->transport);
+			}
+		}
+	}
+
+	Distributor* distributorCast = dynamic_cast<Distributor*>(newProp);
+	if (distributorCast != nullptr)
+	{
+		distributorCast->resDistribute->LinkResourceManager(_resourceManager);
+		for (int i = 0; i < 4; i++)
+		{
+			int nextX = tileX + conveyorDir[i][0];
+			int nextY = tileY + conveyorDir[i][1];
+			int nextHashKey = nextY * TILENUMX + nextX;
+			Prop* prop = GetPropMap(nextHashKey);
+			Conveyor* nearConveyor = dynamic_cast<Conveyor*>(prop);
+			Duo* nearDuo = dynamic_cast<Duo*>(prop);
+			Distributor* nearDistributor = dynamic_cast<Distributor*>(prop);
+			if (nearConveyor != nullptr)
+			{
+				if (nearConveyor->transport->GetOutDir() != (i + 2) % 4)
+				{
+					nearConveyor->transport->LinkConveyor(PROPDIR((i + 2) % 4));
+					distributorCast->resDistribute->Link(PROPDIR(i), nearConveyor);
+				}
+			}
+			if (nearDuo != nullptr)
+			{
+				distributorCast->resDistribute->Link(PROPDIR(i), nearDuo);
+			}
+			if (nearDistributor != nullptr)
+			{
+				nearDistributor->resDistribute->Link(PROPDIR((i + 2) % 4), distributorCast);
 			}
 		}
 	}

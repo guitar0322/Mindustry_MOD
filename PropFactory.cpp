@@ -15,7 +15,7 @@
 #include "Turret.h"
 #include "ProjectileManager.h"
 #include "PlayerControler.h"
-
+#include "Distributor.h"
 PropFactory::PropFactory()
 {
 }
@@ -61,6 +61,7 @@ ImageObject* PropFactory::CreateProp(int tileX, int tileY)
 	{
 		newPropCast->transform->SetPosition(tileX * TILESIZE + TILESIZE / 2, tileY * TILESIZE + TILESIZE / 2);
 		newPropCast->GetComponent<BoxCollider>()->RefreshPartition();
+		newPropCast->GetComponent<BoxCollider>()->CheckCollision();
 	}
 	ContainProp(tileY * TILENUMX + tileX, newPropCast, PROPDIR(0));
 	return nullptr;
@@ -127,6 +128,9 @@ void PropFactory::Building()
 			{
 			case 0:
 				CreateConveyor(buildProp.x, buildProp.y, buildProp.dir);
+				break;
+			case 1:
+				CreateProp<Distributor>(buildProp.x, buildProp.y);
 				break;
 			}
 			break;
@@ -353,5 +357,6 @@ void PropFactory::InitPropInfo()
 	_propInfoV[TURRET].push_back({ 0.15f, 1, 0, 10, "duo" , L"듀오"});
 	_propInfoV[PRODUCTION].push_back({ 1.f, 2, 0, 10, "mechanical_drill", L"기계식 드릴" });
 	_propInfoV[RAIL].push_back({ 0.15f, 1, 0, 10, "conveyor", L"컨베이어" });
+	_propInfoV[RAIL].push_back({ 0.15f, 1, 0, 10, "distributor", L"분배기" });
 	_propInfoV[DEFENSE].push_back({ 0.1f, 1, 0, 1, "copper_wall" ,L"구리 벽"});
 }

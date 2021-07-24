@@ -594,7 +594,7 @@ void MapTool::Load()
 		tileInfo[i / 2].environment = (ENVIRONMENT)env;
 		tileInfo[i / 2].resources = (RESOURCES)res;
 		tile[i / 2].renderer->Init(tileName[env]);
-		resourcesTile[i / 2].renderer->Init(tileName[res+23]);
+		resourcesTile[i / 2].renderer->Init(tileName[res+26]);
 	}
 }
 

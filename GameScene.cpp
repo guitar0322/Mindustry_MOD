@@ -63,6 +63,7 @@ HRESULT GameScene::Init()
     _resourceManager->Init();
     _propFactory->LinkResourceManager(_resourceManager);
     _dataManager->LinkResourceManager(_resourceManager);
+    _propContainer->LinkResourceManager(_resourceManager);
 
     _uiControler = new UIControler();
     _uiControler->Init();
@@ -331,6 +332,7 @@ void GameScene::Update()
         _mechanicDrillIcon.Update();
         _duoIcon.Update();
         _conveyorIcon.Update();
+        _distributorIcon.Update();
     }
 
     _propFactory->Update();
@@ -500,6 +502,7 @@ void GameScene::Render()
         _mechanicDrillIcon.Render();
         _duoIcon.Render();
         _conveyorIcon.Render();
+        _distributorIcon.Render();
     }
     _categorySelect.Render();
     _propSelect.Render();
@@ -816,6 +819,12 @@ void GameScene::InitPropUI()
         _conveyorIcon.uiMouseEvent->RegistCallback(
             std::bind(&UIControler::ClickPropIcon, _uiControler, &_conveyorIcon, 0), EVENT::CLICK);
         _railIconV.push_back(&_conveyorIcon);
+
+        _distributorIcon.uiRenderer->Init("distributor");
+        _distributorIcon.transform->SetPosition(PROP_UI_STARTX + 40, PROP_UI_STARTY);
+        _distributorIcon.uiMouseEvent->RegistCallback(
+            std::bind(&UIControler::ClickPropIcon, _uiControler, &_distributorIcon, 1), EVENT::CLICK);
+        _railIconV.push_back(&_distributorIcon);
 
         for (int i = 0; i < _railIconV.size(); i++)
         {

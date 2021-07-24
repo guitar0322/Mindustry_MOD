@@ -26,6 +26,7 @@ Item::Item(RESOURCE type)
 	collider = new BoxCollider();
 	AddComponent(collider);
 	collider->Init();
+	collider->SetIsTrigger(false);
 	collider->SetSize(20, 16);
 }
 
@@ -36,15 +37,15 @@ Item::~Item()
 void Item::Update()
 {
 	GameObject::Update();
-	if (collider->GetIsTrigger() == true)
-	{
-		_colliderDelay += TIMEMANAGER->getElapsedTime();
-		if (_colliderDelay >= 0.5f)
-		{
-			_colliderDelay = 0;
-			collider->SetIsTrigger(false);
-		}
-	}
+	//if (collider->GetIsTrigger() == true)
+	//{
+	//	_colliderDelay += TIMEMANAGER->getElapsedTime();
+	//	if (_colliderDelay >= 0.5f)
+	//	{
+	//		_colliderDelay = 0;
+	//		collider->SetIsTrigger(false);
+	//	}
+	//}
 	int tileX = transform->GetX() / TILESIZE;
 	int tileY = transform->GetY() / TILESIZE;
 	if (_preTile.first != tileX || _preTile.second != tileY)
