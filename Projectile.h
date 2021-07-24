@@ -11,8 +11,8 @@ private:
 	float _angle;
 	float _speedX, _speedY;
 	int _damage;
-	string _targetTag;
-	//Vector2 _targetTag;
+
+	vector<string> _targetTag;
 	Vector2 _firePt;
 
 public:
@@ -32,8 +32,10 @@ public:
 	int GetDamage()  const { return _damage; }
 	void SetDamage(int damage) { _damage = damage; }
 
-	void SetTargetTag(string targetTag) { _targetTag = targetTag; }
-	//void SetTargetTag(Vector2 targetTag) { _targetTag = targetTag; }
+	void AddTargetTag(string targetTag) {_targetTag.push_back(targetTag); }
+
+	//Projecitle
+	//addTagerTag해서 호출될때마다 걔가 벡터에 추가
 
 	void Move();
 

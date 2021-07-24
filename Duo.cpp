@@ -15,7 +15,7 @@ Duo::Duo()
 	base->renderer->Init("duo_base");
 
 	stat->SetSize(2);
-	stat->SetHP(50);
+	stat->SetHP(25);
 
 	collider->SetSize(stat->GetSize() * TILESIZE, stat->GetSize() * TILESIZE);
 

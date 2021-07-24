@@ -115,7 +115,7 @@ void PlayerControler::Update()
 					_weaponRTrackRadius = DEFAULT_WEAPON_DISTANCE;
 			}
 		}
-
+		
 		if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 		{
 			_worldX = ScreenToWorld(_ptMouse).x;
@@ -152,7 +152,7 @@ void PlayerControler::Update()
 				}
 			}
 		}
-
+		
 		if (_isCollecting == true)
 		{
 			if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
@@ -189,7 +189,6 @@ void PlayerControler::Render()
 
 	_playerLaser->Render();
 	playerConstructLaser->Render();
-
 }
 
 void PlayerControler::KeyHandle()
@@ -462,9 +461,8 @@ void PlayerControler::ShootResoucesLaser()
 				}
 			}
 		}
-
 	}
-
+	
 	_playerLaser->Update();
 
 	if (_playerLaser->GetLaserDistance() >= 400)
@@ -538,10 +536,10 @@ void PlayerControler::Dead()
 void PlayerControler::Respawn()
 {
 	gameObject->transform->SetPosition(25 * TILESIZE + 16, 36 * TILESIZE + 16);
-	transform->GetChild(2)->SetPosition(25 * TILESIZE + 16, 36 * TILESIZE + 16);
+	transform->GetChild(3)->SetPosition(25 * TILESIZE + 16, 36 * TILESIZE + 16);
 	gameObject->SetActive(true);
-	transform->GetChild(3)->gameObject->SetActive(true);
 	transform->GetChild(4)->gameObject->SetActive(true);
+	transform->GetChild(5)->gameObject->SetActive(true);
 	_hp = 92;
 	_isDead = false;
 }

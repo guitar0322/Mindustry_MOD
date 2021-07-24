@@ -18,7 +18,7 @@ void Core::Init()
 	renderer->Init("core");
 
 	stat->SetSize(3);
-	stat->SetHP(30);
+	stat->SetHP(500);
 
 	collider->SetSize(stat->GetSize() * TILESIZE, stat->GetSize() * TILESIZE);
 
