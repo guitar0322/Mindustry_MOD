@@ -176,7 +176,7 @@ void PlayerControler::Update()
 		}
 	}
 
-	PlayerHpAlpha();
+	PlayerHpBar();
 }
 
 void PlayerControler::Render()
@@ -513,7 +513,6 @@ void PlayerControler::Hit(float damage)
 	_hp -= damage;
 	_damage = damage;
 	_isHit = true;
-	//playerHpUIAlpha.SetActive(true);
 
 	if (_hp <= 0 && _isDead == false)
 	{
@@ -529,8 +528,8 @@ void PlayerControler::Dead()
 	EFFECTMANAGER->EmissionEffect("explosion", transform->GetX(), transform->GetY(), 0);
 	EFFECTMANAGER->ActiveSmokeParticle(transform->GetX(), transform->GetY());
 	gameObject->SetActive(false);
-	transform->GetChild(3)->gameObject->SetActive(false);
 	transform->GetChild(4)->gameObject->SetActive(false);
+	transform->GetChild(5)->gameObject->SetActive(false);
 	_playerLaser->OffLaser();
 	_isDead = true;
 }
@@ -585,7 +584,6 @@ void PlayerControler::PlayerUIInit()
 	{
 		CLIPMANAGER->AddClip("playerui", "sprites/ingameui/playerui.png", 70, 70);
 		CLIPMANAGER->AddClip("playerhpui", "sprites/ingameui/playerhpui.png", 133, 92);
-		CLIPMANAGER->AddClip("playerhpui_alpha", "sprites/ingameui/playerhpui_alpha.png", 133, 92);
 		CLIPMANAGER->AddClip("playerhpui_pane", "sprites/ingameui/playerhpui_pane.png", 133, 92);
 	}
 
@@ -602,27 +600,17 @@ void PlayerControler::PlayerUIInit()
 	playerHpUI.uiRenderer->Init("playerhpui");
 	playerHpUI.transform->SetPosition(65, 50);
 	playerHpUI.uiRenderer->SetClipY(hpUI);
-
-
-	playerHpUIAlpha.Init();
-	playerHpUIAlpha.uiRenderer->Init("playerhpui_alpha");
-	playerHpUIAlpha.transform->SetPosition(65, 50);
-	playerHpUIAlpha.uiRenderer->SetClipY(hpUI);
-	playerHpUIAlpha.SetActive(false);
-
 }
 
 void PlayerControler::PlayerUIUpdate()
 {
 	playerUI.Update();
 	playerHpUI.Update();
-	playerHpUIAlpha.Update();
 	playerHpUIPane.Update();
-	playerHpUIAlpha.uiRenderer->SetClipY(hpUI);
 	playerHpUI.uiRenderer->SetClipY(hpUI);
 }
 
-void PlayerControler::PlayerHpAlpha()
+void PlayerControler::PlayerHpBar()
 {
 	reduceTime += TIMEMANAGER->getElapsedTime();
 	if (reduceTime >= 0.05f)

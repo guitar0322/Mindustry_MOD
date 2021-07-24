@@ -66,6 +66,5 @@ public:
 	bool RectinTile();		//채우기
 	bool MouseInTile();		//연필
 
-	void SetFileName(string fileName);
 };
 

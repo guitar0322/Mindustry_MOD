@@ -29,8 +29,12 @@ private:
 	float _musicTime;
     float _screenRatio;
     bool _intro;
+	float slowTime;
+
     UIBase introCore;
-    UIBase introEffect;
+	//210724 유림
+	UIBase _introEffect;
+
     DataManager* _dataManager;
     Item* testCopper;
 	/* ============================================*/
@@ -79,7 +83,8 @@ private:
 
 	//인게임 맵 -> 유림
 	GameMap* _gameMap;
-
+	UIBase _miniMap;
+	Rect _miniPlayer;
 	//인게임 자원UI 관련 -> 유림
 	Rect _resoucesUIBackGround;
 	UIBase _resourcesUI[2];

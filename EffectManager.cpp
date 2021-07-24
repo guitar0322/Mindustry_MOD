@@ -17,6 +17,9 @@ void EffectManager::Init()
 	CLIPMANAGER->AddClip("smoke", "sprites/effects/smoke-particle.png", 160, 40, 4, 1, 0.12f)->SetIsLoop(false);
 	CLIPMANAGER->AddClip("explosion", "sprites/effects/explosion.png", 585, 117, 5, 1, 0.08f)->SetIsLoop(false);
 	CLIPMANAGER->AddClip("big_explosion", "sprites/effects/big_explosion.png", 1170, 234, 5, 1, 0.08f)->SetIsLoop(false);
+	CLIPMANAGER->AddClip("core_landing", "sprites/effects/core_landing.png", 2000, 500, 4, 1, 0.08f)->SetIsLoop(false);
+	CLIPMANAGER->AddClip("core_start_landing", "sprites/effects/core_start_landing.png", 1200, 200, 6, 1, 0.08f)->SetIsLoop(false);
+
 
 	for (int i = 0; i < EFFECT_MIN; i++)
 	{

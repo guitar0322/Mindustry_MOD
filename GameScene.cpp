@@ -277,6 +277,8 @@ HRESULT GameScene::Init()
 	//_musicTime = 0;
     //StaticBuffer->EndDraw();
     //_dataManager->LoadData();
+
+	slowTime = 0;
     return S_OK;
 }
 
@@ -284,25 +286,37 @@ void GameScene::Update()
 {
 	MainCam->Update();
     introCore.Update();
-    introEffect.Update();
+	//210724 유림
+	_introEffect.Update();
 
     if (_intro == true)
     {
         float screenWidth = MainCam->GetScreenWidth();
         float screenHeight = MainCam->GetScreenHeight();
+		slowTime += 0.05f;
 
-        float curScale = introEffect.transform->GetScaleX();
-        if(curScale > 0.4f)
-            introEffect.transform->SetScale(curScale - 0.02, curScale - 0.02);
-        MainCam->SetScreenSize(screenWidth + 10, screenHeight + 10 * _screenRatio);
+		if (slowTime > 0.7f)
+		{
+			_introEffect.SetActive(true);
+			_introEffect.GetComponent<UIAnimator>()->Pause();
+
+		}
+		if (slowTime > 0.75f)
+		{
+			_introEffect.GetComponent<UIAnimator>()->Resume();
+			slowTime = 0.7f;
+		}
+
+		MainCam->SetScreenSize(screenWidth + 20, screenHeight + 20 * _screenRatio);
         MainCam->SetScreenStart((WINSIZEX - MainCam->GetScreenWidth()) / 2, (WINSIZEY - MainCam->GetScreenHeight()) / 2);
+
         if (MainCam->GetScreenWidth() > WINSIZEX)
         {
             MainCam->SetScreenSize(WINSIZEX, WINSIZEY);
             MainCam->SetScreenStart(0, 0);
-            introEffect.SetActive(false);
+            _introEffect.SetActive(false);
             introCore.SetActive(false);
-            EFFECTMANAGER->EmissionEffect("big_explosion", ScreenToWorld(Vector2(WINSIZEX / 2 + 10, WINSIZEY / 2)).x, ScreenToWorld(Vector2(WINSIZEX / 2 + 10, WINSIZEY / 2)).y, 0);
+            EFFECTMANAGER->EmissionEffect("core_landing", ScreenToWorld(Vector2(WINSIZEX / 2 + 10, WINSIZEY / 2)).x, ScreenToWorld(Vector2(WINSIZEX / 2 + 10, WINSIZEY / 2)).y, 0);
             _intro = false;
         }
     }
@@ -482,7 +496,7 @@ void GameScene::Render()
 	}
 
     {
-        introEffect.Render();
+        _introEffect.Render();
 		introCore.Render();
     }
     
@@ -511,7 +525,6 @@ void GameScene::Render()
 	_player->controler->playerUI.Render();
 	_player->controler->playerHpUIPane.Render();
 	_player->controler->playerHpUI.Render();
-	_player->controler->playerHpUIAlpha.Render();
 
     /* 시영 */
     // 연구
@@ -561,6 +574,7 @@ void GameScene::Render()
 	/* ================================여기 만지지 마세요 ========================================*/
     //210719 유림 수정
 	StringRender();
+
 }
 
 void GameScene::Release()
@@ -580,16 +594,20 @@ void GameScene::InitIntro()
     introCore.transform->SetScale(0.9f, 0.9f);
     introCore.transform->SetPosition(WINSIZEX / 2 + 10, WINSIZEY / 2);
 
-    introEffect.Init();
-    introEffect.uiMouseEvent->enable = false;
-    introEffect.uiRenderer->Init("big_particle_light");
-    introEffect.transform->SetPosition(WINSIZEX / 2 + 10, WINSIZEY / 2);
-    introEffect.transform->SetScale(2.f, 2.f);
+	_introEffect.AddComponent(new UIAnimator);
+	_introEffect.GetComponent<UIAnimator>()->Init();
+	_introEffect.GetComponent<UIAnimator>()->AddClip("core_start_landing");
+	_introEffect.GetComponent<UIAnimator>()->SetClip("core_start_landing");
+	_introEffect.GetComponent<UIAnimator>()->uiRenderer->Init("core_start_landing");
+	_introEffect.GetComponent<UIAnimator>()->transform->SetPosition(WINSIZEX / 2 + 10, WINSIZEY / 2);
+	_introEffect.GetComponent<UIAnimator>()->transform->SetScale(0.7f, 0.7f);
+	_introEffect.SetActive(false);
 }
 
 void GameScene::InitClip()
 {
     CLIPMANAGER->AddClip("big_particle_light","sprites/effects/big-particle-light.png", 120, 120);
+	CLIPMANAGER->AddClip("core_start_landing", "sprites/effects/core_start_landing.png", 1200, 200, 6, 1, 2.4f);
 
 	//카테고리 아이콘 클립
 	{
@@ -2064,6 +2082,15 @@ void GameScene::SetGameUIInit()
 
 	_enemyWaveSkipButton.uiMouseEvent->RegistCallback(
 		std::bind(&UIControler::EnemyWaveSkipExit, _uiControler), EVENT::EXIT);
+
+	//210724 유림 미니맵
+	_miniMap.Init();
+	_miniMap.uiRenderer->Init("miniMap");
+	_miniMap.transform->SetPosition(WINSIZEX - 108, 108);
+
+
+		
+
 }
 
 void GameScene::InGameUIUpdate()
@@ -2072,6 +2099,10 @@ void GameScene::InGameUIUpdate()
 	_enemyWaveSkip.Update();
 	_enemyWaveSkipButton.Update();
 	_enemyWaveSkipClick.Update();
+	//210724유림 미니맵
+	_miniMap.Update();
+	_miniPlayer = RectMakeCenter(Vector2(WINSIZEX - 213 + (_player->transform->GetX() / 7.5f), _player->transform->GetY() / 7.5f), Vector2(4, 4));
+
 }
 
 void GameScene::InGameUIRender()
@@ -2081,6 +2112,9 @@ void GameScene::InGameUIRender()
 	_enemyWaveSkip.Render();
 	_enemyWaveSkipButton.Render();
 	_enemyWaveSkipClick.Render();
+	//210724유림 미니맵
+	_miniMap.Render();
+	D2DRenderer::GetInstance()->FillRectangle(_miniPlayer, D2D1::ColorF::Red, 0.8f);
 	
 	wstring second = to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeSecond());
 	wstring minute = to_wstring(_enemyManager->GetComponent<EnemyManager>()->GetTimeMinute());
@@ -2105,6 +2139,10 @@ void GameScene::InGameUIClip()
 		CLIPMANAGER->AddClip("waveskipui", "sprites/ingameui/waveskipui.png", 36, 77);
 		CLIPMANAGER->AddClip("waveskipuienter", "sprites/ingameui/waveskipuienter.png", 36, 77);
 	}
+
+	//210724 유림 미니맵
+	CLIPMANAGER->AddClip("miniMap", "sprites/ingameui/miniMap.png", 213, 213);
+
 }
 
 void GameScene::StringRender()

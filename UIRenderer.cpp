@@ -94,3 +94,45 @@ void UIRenderer::Render()
 	D2DRENDERER->GetRenderTarget()->DrawBitmap(_targetBitmap, backbufferArea, _alpha, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, clipArea);
 	D2DRENDERER->GetRenderTarget()->SetTransform(D2D1::Matrix3x2F::Identity());
 }
+
+/***********************************************
+렌더러의 대상 비트맵을 변경(클립변경)
+프레임 인덱스를 0으로 초기화
+newBitmap : 새로운 대상 비트맵
+frameWidth : 새로운 비트맵의 프레임당 넓이
+frameHeight : 새로운 비트맵의 새로운 높이
+***********************************************/
+void UIRenderer::ChangeTargetBitmap(string newClipName)
+{
+	AnimationClip* targetClip = CLIPMANAGER->FindClip(newClipName);
+	if (targetClip == nullptr)
+	{
+		throw("uiRenderer error");
+	}
+	_clipName = newClipName;
+	_targetBitmap = targetClip->GetBitmap();
+	_frameWidth = targetClip->GetFrameWidth();
+	_frameHeight = targetClip->GetFrameHeight();
+	_curFrameX = 0;
+}
+
+/***********************************************
+렌더러의 대상 비트맵을 변경(클립변경)
+newBitmap : 새로운 대상 비트맵
+frameWidth : 새로운 비트맵의 프레임당 넓이
+frameHeight : 새로운 비트맵의 새로운 높이
+inInitFrmae : true면 프레임 인덱스를 0으로 초기화
+***********************************************/
+void UIRenderer::ChangeTargetBitmap(string newClipName, int startFrame)
+{
+	AnimationClip* targetClip = CLIPMANAGER->FindClip(newClipName);
+	if (targetClip == nullptr)
+	{
+		throw("renderer error");
+	}
+	_clipName = newClipName;
+	_targetBitmap = targetClip->GetBitmap();
+	_frameWidth = targetClip->GetFrameWidth();
+	_frameHeight = targetClip->GetFrameHeight();
+	_curFrameX = startFrame;
+}

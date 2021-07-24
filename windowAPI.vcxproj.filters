@@ -234,8 +234,6 @@
     <ClCompile Include="Prop.cpp">
       <Filter>Prop\Object</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="PlayerControler.cpp" />
     <ClCompile Include="CopperWall.cpp">
       <Filter>Prop\Object</Filter>
     </ClCompile>
@@ -249,7 +247,6 @@
       <Filter>Prop\Object</Filter>
     </ClCompile>
     <ClCompile Include="TitleUIControler.cpp" />
-    <ClCompile Include="PlayerLaser.cpp" />
     <ClCompile Include="TitleUIControler.cpp" />
     <ClCompile Include="GameInfo.cpp" />
     <ClCompile Include="TitleScene.cpp" />
@@ -283,7 +280,6 @@
     <ClCompile Include="CameraControler.cpp">
       <Filter>CameraControler</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerConstructLaser.cpp" />
     <ClCompile Include="Production.cpp">
       <Filter>Prop\Component</Filter>
     </ClCompile>
@@ -304,6 +300,21 @@
     </ClCompile>
     <ClCompile Include="ResDistribute.cpp">
       <Filter>Prop\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="UIAnimator.cpp">
+      <Filter>Component\Framwork</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerConstructLaser.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerControler.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerLaser.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -550,8 +561,6 @@
     <ClInclude Include="Prop.h">
       <Filter>Prop\Object</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="PlayerControler.h" />
     <ClInclude Include="CopperWall.h">
       <Filter>Prop\Object</Filter>
     </ClInclude>
@@ -565,7 +574,6 @@
       <Filter>Prop\Object</Filter>
     </ClInclude>
     <ClInclude Include="TitleUIControler.h" />
-    <ClInclude Include="PlayerLaser.h" />
     <ClInclude Include="TitleUIControler.h" />
     <ClInclude Include="GameInfo.h" />
     <ClInclude Include="TitleScene.h" />
@@ -602,7 +610,6 @@
     <ClInclude Include="CameraControler.h">
       <Filter>CameraControler</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerConstructLaser.h" />
     <ClInclude Include="Production.h">
       <Filter>Prop\Component</Filter>
     </ClInclude>
@@ -623,6 +630,21 @@
     </ClInclude>
     <ClInclude Include="ResDistribute.h">
       <Filter>Prop\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="UIAnimator.h">
+      <Filter>Component\Framwork</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerConstructLaser.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerControler.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerLaser.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -691,6 +713,9 @@
     </Filter>
     <Filter Include="CameraControler">
       <UniqueIdentifier>{94b91f6c-578d-4156-885b-7c0595d0845e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{a57180a7-7a45-4871-9ba0-c7fe2bc6aea5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

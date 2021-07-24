@@ -7,6 +7,7 @@
 #include "BoxCollider.h"
 #include "UIRenderer.h"
 #include "UIMouseEvent.h"
+#include "UIAnimator.h"
 #include "EditText.h"
 #include "Cam.h"
 #include "Camera.h"

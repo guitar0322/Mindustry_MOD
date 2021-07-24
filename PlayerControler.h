@@ -117,14 +117,13 @@ public:
 	//UI ->À¯¸² 210721
 	UIBase playerUI;
 	UIBase playerHpUI;
-	UIBase playerHpUIAlpha;
 	UIBase playerHpUIPane;
 	float hpUI;
 	float reduceTime;
 
 	void PlayerUIInit();
 	void PlayerUIUpdate();
-	void PlayerHpAlpha();
+	void PlayerHpBar();
 	/*===================================================================*/
 
 };

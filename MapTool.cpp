@@ -393,128 +393,6 @@ void MapTool::SetTileName()
 	tileName[idx++] = "scrap3";			//34
 	tileName[idx++] = "enemy_spawn";
 
-
-
-	//switch (selectNum)
-	//{
-	//case 0:
-	//	tileName[selectNum] = "water";
-	//break;
-	//case 1:
-	//	tileUI[selectNum].uiRenderer->Init("deep_water");
-	//	tileName[selectNum] = "deep_water";
-	//break;
-	//case 2:
-	//	tileUI[selectNum].uiRenderer->Init("sand1");
-	//	tileName[selectNum] = "sand1";
-	//break;
-	//case 3:
-	//	tileUI[selectNum].uiRenderer->Init("sand2");
-	//	tileName[selectNum] = "sand2";
-	//break;
-	//case 4:
-	//	tileUI[selectNum].uiRenderer->Init("sand3");
-	//	tileName[selectNum] = "sand3";
-	//break;
-	//case 5:
-	//	tileUI[selectNum].uiRenderer->Init("darksand_water");
-	//	tileName[selectNum] = "darksand_water";
-	//break;
-	//case 6:
-	//	tileUI[selectNum].uiRenderer->Init("dirt1");
-	//	tileName[selectNum] = "dirt1";
-	//break;
-	//case 7:
-	//	tileUI[selectNum].uiRenderer->Init("dirt2");
-	//	tileName[selectNum] = "dirt2";
-	//break;
-	//case 8:
-	//	tileUI[selectNum].uiRenderer->Init("dirt3");
-	//	tileName[selectNum] = "dirt3";
-	//break;
-	//case 9:
-	//	tileUI[selectNum].uiRenderer->Init("stone1");
-	//	tileName[selectNum] = "stone1";
-	//break;
-	//case 10:
-	//	tileUI[selectNum].uiRenderer->Init("stone2");
-	//	tileName[selectNum] = "stone2";
-	//break;
-	//case 11:
-	//	tileUI[selectNum].uiRenderer->Init("stone3");
-	//	tileName[selectNum] = "stone3";
-	//break;
-	//case 12:
-	//	tileUI[selectNum].uiRenderer->Init("basalt1");
-	//	tileName[selectNum] = "basalt1";
-	//break;
-	//case 13:
-	//	tileUI[selectNum].uiRenderer->Init("basalt2");
-	//	tileName[selectNum] = "basalt2";
-	//break;
-	//case 14:
-	//	tileUI[selectNum].uiRenderer->Init("basalt3");
-	//	tileName[selectNum] = "basalt3"; 
-	//break;
-	//case 15:
-	//	tileUI[selectNum].uiRenderer->Init("snow1");
-	//	tileName[selectNum] = "snow1"; 
-	//break;
-	//case 16:
-	//	tileUI[selectNum].uiRenderer->Init("snow2");
-	//	tileName[selectNum] = "snow2";
-	//break;
-	//case 17:
-	//	tileUI[selectNum].uiRenderer->Init("snow3");
-	//	tileName[selectNum] = "snow3";
-	//break;
-	//case 18:
-	//	tileUI[selectNum].uiRenderer->Init("copper1");
-	//	tileName[selectNum] = "copper1";
-	//break;
-	//case 19:
-	//	tileUI[selectNum].uiRenderer->Init("copper2");
-	//	tileName[selectNum] = "copper3";
-	//break;
-	//case 20:
-	//	tileUI[selectNum].uiRenderer->Init("copper3");
-	//	tileName[selectNum] = "copper3";
-	//break;
-	//case 21:
-	//	tileUI[selectNum].uiRenderer->Init("lead1");
-	//	tileName[selectNum] = "lead1";
-	//break;
-	//case 22:
-	//	tileUI[selectNum].uiRenderer->Init("lead2");
-	//	tileName[selectNum] = "lead2";
-	//break;
-	//case 23:
-	//	tileUI[selectNum].uiRenderer->Init("lead3");
-	//	tileName[selectNum] = "lead3";
-	//break;
-	//case 24:
-	//	tileUI[selectNum].uiRenderer->Init("scrap1");
-	//	tileName[selectNum] = "scrap1";
-
-	//break;
-	//case 25:
-	//	tileUI[selectNum].uiRenderer->Init("scrap3");
-	//	tileName[selectNum] = "scrap2";
-	//break;
-	//case 26:
-	//	tileUI[selectNum].uiRenderer->Init("scrap3");
-	//	tileName[selectNum] = "scrap3";
-	//break;
-	//case 27:
-	//	tileUI[selectNum].uiRenderer->Init("enemy_spawn");
-	//	tileName[selectNum] = "enemy_spawn";
-	//break;
-	//case 28:
-	//	tileUI[selectNum].uiRenderer->Init("space");
-	//	tileName[selectNum] = "space";
-	//break;
-	//}
-
 }
 
 void MapTool::SetToolImage()
@@ -594,7 +472,7 @@ void MapTool::Load()
 		tileInfo[i / 2].environment = (ENVIRONMENT)env;
 		tileInfo[i / 2].resources = (RESOURCES)res;
 		tile[i / 2].renderer->Init(tileName[env]);
-		resourcesTile[i / 2].renderer->Init(tileName[res+23]);
+		resourcesTile[i / 2].renderer->Init(tileName[res+26]);
 	}
 }
 
@@ -691,8 +569,4 @@ bool MapTool::MouseInTile()
 	}
 
 	return true;
-}
-
-void MapTool::SetFileName(string fileName)
-{
 }

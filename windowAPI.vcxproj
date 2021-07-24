@@ -248,6 +248,7 @@
     <ClInclude Include="Transport.h" />
     <ClInclude Include="TriggerTest.h" />
     <ClInclude Include="Turret.h" />
+    <ClInclude Include="UIAnimator.h" />
     <ClInclude Include="UIBase.h" />
     <ClInclude Include="UIControler.h" />
     <ClInclude Include="UIManager.h" />
@@ -359,6 +360,7 @@
     <ClCompile Include="Transport.cpp" />
     <ClCompile Include="TriggerTest.cpp" />
     <ClCompile Include="Turret.cpp" />
+    <ClCompile Include="UIAnimator.cpp" />
     <ClCompile Include="UIBase.cpp" />
     <ClCompile Include="UIControler.cpp" />
     <ClCompile Include="UIManager.cpp" />

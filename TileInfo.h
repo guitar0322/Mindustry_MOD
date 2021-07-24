@@ -42,30 +42,11 @@ enum RESOURCES
 	RES_NONE
 };
 
-//오브젝트
-/*오브젝트 이름
-코어, 드릴, 포탑, 컨베이어(레일), 분배기, 에너미스팟, 월, 배터리
-*/
-enum OBJECT
-{
-	OBJ_CORE, OBJ_DRILL, OBJ_TURRECT, OBJ_CONVEYOR, 
-	OBJ_DISTRIBUTOR, OBJ_ENEMYSPAWN, OBJ_WALL, OBJ_BATTERY, 
-	OBJ_NONE
-};
-
-//포지션
-enum POS
-{
-	POS_CORE
-};
-
 //타일 조각 구조체
 struct tagTile
 {
 	ENVIRONMENT		environment;
 	RESOURCES		resources;
-	OBJECT			object;
-
 };
 
 struct tagTileSet

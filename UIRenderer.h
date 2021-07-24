@@ -29,5 +29,9 @@ public:
     string GetClipName() const { return _clipName; }
 	void SetClipX(float clipX) { _clipX = clipX; }
 	void SetClipY(float clipY) { _clipY = clipY; }
+	void ChangeTargetBitmap(string newClipName);
+	void ChangeTargetBitmap(string newClipName, int startFrame);
+	void SetFrameX(int frameX) { _curFrameX = frameX; }
+	void SetFrameY(int frameY) { _curFrameY = frameY; }
 };
 
