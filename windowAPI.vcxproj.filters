@@ -297,7 +297,12 @@
       <Filter>Prop</Filter>
     </ClCompile>
     <ClCompile Include="MouseManager.cpp" />
-    <ClCompile Include="UIAnimator.cpp" />
+    <ClCompile Include="ResDistribute.cpp">
+      <Filter>Prop\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Distributor.cpp">
+      <Filter>Prop\Object</Filter>
+    </ClCompile>
     <ClCompile Include="DataManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -609,9 +614,14 @@
     <ClInclude Include="PropFactory.h">
       <Filter>Prop</Filter>
     </ClInclude>
-    <ClInclude Include="MouseManager.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="UIAnimator.h" />
+    <ClInclude Include="MouseManager.h" />
+    <ClInclude Include="ResDistribute.h">
+      <Filter>Prop\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Distributor.h">
+      <Filter>Prop\Object</Filter>
+    </ClInclude>
     <ClInclude Include="DataManager.h" />
   </ItemGroup>
   <ItemGroup>
@@ -622,12 +632,12 @@
     <Image Include="windowAPI.ico" />
     <Image Include="..\..\..\바탕 화면\경일\14. 찐 팀 프로젝트\3. 내 작업폴더\아이콘\icon_64.png" />
     <Image Include="Mindustryicon.ico" />
-    <Image Include="..\..\..\바탕 화면\경일\14. 찐 팀 프로젝트\3. 내 작업폴더\game\cursors\cursor.png" />
-    <Image Include="..\..\..\바탕 화면\경일\14. 찐 팀 프로젝트\3. 내 작업폴더\game\cursors\drill.png" />
-    <Image Include="..\..\..\바탕 화면\경일\14. 찐 팀 프로젝트\3. 내 작업폴더\game\cursors\hand.png" />
     <Image Include="sprites\cursors\cursor.png" />
     <Image Include="sprites\cursors\drill.png" />
     <Image Include="sprites\cursors\hand.png" />
+    <Image Include="..\..\..\바탕 화면\경일\14. 찐 팀 프로젝트\3. 내 작업폴더\game\cursors\cursor.png" />
+    <Image Include="..\..\..\바탕 화면\경일\14. 찐 팀 프로젝트\3. 내 작업폴더\game\cursors\drill.png" />
+    <Image Include="..\..\..\바탕 화면\경일\14. 찐 팀 프로젝트\3. 내 작업폴더\game\cursors\hand.png" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="헤더파일">
@@ -689,8 +699,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="cur00001.cur" />
     <None Include="cursor1.cur" />
     <None Include="cursor2.cur" />
+    <None Include="cur00001.cur" />
   </ItemGroup>
 </Project>
