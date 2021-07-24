@@ -12,7 +12,7 @@ GameMap::~GameMap()
 HRESULT GameMap::Init()
 {
 	SetTileImage();
-
+	SetTileName();
 	//맵 셋팅
 	for (int i = 0; i < TILENUMY; ++i)
 	{
@@ -29,8 +29,6 @@ HRESULT GameMap::Init()
 
 			_tileInfo[i * TILENUMX + j].environment = ENV_WATER;
 			_tileInfo[i * TILENUMX + j].resources = RES_NONE;
-			
-			SetTileName(i* TILESETX + j);
 		}
 	}
 
@@ -86,7 +84,7 @@ void GameMap::Load()
 		_tile[i / 2].renderer->Init(_tileName[env]);
 		_tile[i / 2].renderer->RenderStatic();
 
-		_resourcesTile[i / 2].renderer->Init(_tileName[res + 18]);
+		_resourcesTile[i / 2].renderer->Init(_tileName[res + 23]);
 		if(_tileInfo[i / 2].resources != RES_NONE)
 			_resourcesTile[i / 2].renderer->RenderStatic();
 	}
@@ -123,6 +121,15 @@ void GameMap::SetTileImage()
 	CLIPMANAGER->AddClip("snow2", "sprites/blocks/environment/snow2.png", 32, 32);
 	CLIPMANAGER->AddClip("snow3", "sprites/blocks/environment/snow3.png", 32, 32);
 
+	//얼음
+	CLIPMANAGER->AddClip("ice1", "sprites/blocks/environment/ice1.png", 32, 32);
+	CLIPMANAGER->AddClip("ice2", "sprites/blocks/environment/ice2.png", 32, 32);
+	CLIPMANAGER->AddClip("ice3", "sprites/blocks/environment/ice3.png", 32, 32);
+
+	//얼음벽
+	CLIPMANAGER->AddClip("ice_wall1", "sprites/blocks/environment/ice-wall1.png", 32, 32);
+	CLIPMANAGER->AddClip("ice_wall2", "sprites/blocks/environment/ice-wall2.png", 32, 32);
+
 	//스페이스
 	CLIPMANAGER->AddClip("space", "sprites/blocks/environment/space.png", 32, 32);
 
@@ -146,96 +153,134 @@ void GameMap::SetTileImage()
 
 }
 
-void GameMap::SetTileName(int selectNum)
+void GameMap::SetTileName()
 {
-	switch (selectNum)
-	{
-	case 0:
-		_tileName[selectNum] = "water";
-		break;
-	case 1:
-		_tileName[selectNum] = "deep_water";
-		break;
-	case 2:
-		_tileName[selectNum] = "sand1";
-		break;
-	case 3:
-		_tileName[selectNum] = "sand2";
-		break;
-	case 4:
-		_tileName[selectNum] = "sand3";
-		break;
-	case 5:
-		_tileName[selectNum] = "darksand_water";
-		break;
-	case 6:
-		_tileName[selectNum] = "dirt1";
-		break;
-	case 7:
-		_tileName[selectNum] = "dirt2";
-		break;
-	case 8:
-		_tileName[selectNum] = "dirt3";
-		break;
-	case 9:
-		_tileName[selectNum] = "stone1";
-		break;
-	case 10:
-		_tileName[selectNum] = "stone2";
-		break;
-	case 11:
-		_tileName[selectNum] = "stone3";
-		break;
-	case 12:
-		_tileName[selectNum] = "basalt1";
-		break;
-	case 13:
-		_tileName[selectNum] = "basalt2";
-		break;
-	case 14:
-		_tileName[selectNum] = "basalt3";
-		break;
-	case 15:
-		_tileName[selectNum] = "snow1";
-		break;
-	case 16:
-		_tileName[selectNum] = "snow2";
-		break;
-	case 17:
-		_tileName[selectNum] = "snow3";
-		break;
-	case 18:
-		_tileName[selectNum] = "copper1";
-		break;
-	case 19:
-		_tileName[selectNum] = "copper3";
-		break;
-	case 20:
-		_tileName[selectNum] = "copper3";
-		break;
-	case 21:
-		_tileName[selectNum] = "lead1";
-		break;
-	case 22:
-		_tileName[selectNum] = "lead2";
-		break;
-	case 23:
-		_tileName[selectNum] = "lead3";
-		break;
-	case 24:
-		_tileName[selectNum] = "scrap1";
-		break;
-	case 25:
-		_tileName[selectNum] = "scrap2";
-		break;
-	case 26:
-		_tileName[selectNum] = "scrap3";
-		break;
-	case 27:
-		_tileName[selectNum] = "enemy_spawn";
-		break;
-	case 28:
-		_tileName[selectNum] = "space";
-		break;
-	}
+	int idx = 0;
+	_tileName[idx++] = "water";
+	_tileName[idx++] = "deep_water";
+	_tileName[idx++] = "sand1";
+	_tileName[idx++] = "sand2";
+	_tileName[idx++] = "sand3";			//4
+	_tileName[idx++] = "darksand_water";
+	_tileName[idx++] = "dirt1";
+	_tileName[idx++] = "dirt2";
+	_tileName[idx++] = "dirt3";
+	_tileName[idx++] = "stone1";			//9
+	_tileName[idx++] = "stone2";
+	_tileName[idx++] = "stone3";
+	_tileName[idx++] = "basalt1";
+	_tileName[idx++] = "basalt2";
+	_tileName[idx++] = "basalt3";		//14
+	_tileName[idx++] = "snow1";
+	_tileName[idx++] = "snow2";
+	_tileName[idx++] = "snow3";
+	_tileName[idx++] = "ice1";
+	_tileName[idx++] = "ice2";			//19
+	_tileName[idx++] = "ice3";
+	_tileName[idx++] = "ice_wall1";
+	_tileName[idx++] = "ice_wall2";
+	_tileName[idx++] = "copper1";
+	_tileName[idx++] = "copper3";		//24
+	_tileName[idx++] = "copper3";
+	_tileName[idx++] = "lead1";
+	_tileName[idx++] = "lead2";
+	_tileName[idx++] = "lead3";
+	_tileName[idx++] = "scrap1";			//29
+	_tileName[idx++] = "scrap2";
+	_tileName[idx++] = "scrap3";
+	_tileName[idx++] = "enemy_spawn";
+	_tileName[idx++] = "space";			//33
+	_tileName[idx++] = "space";			//33
+	_tileName[idx++] = "space";			//33
+
+	//switch (selectNum)
+	//{
+	//case 0:
+	//	_tileName[selectNum] = "water";
+	//	break;
+	//case 1:
+	//	_tileName[selectNum] = "deep_water";
+	//	break;
+	//case 2:
+	//	_tileName[selectNum] = "sand1";
+	//	break;
+	//case 3:
+	//	_tileName[selectNum] = "sand2";
+	//	break;
+	//case 4:
+	//	_tileName[selectNum] = "sand3";
+	//	break;
+	//case 5:
+	//	_tileName[selectNum] = "darksand_water";
+	//	break;
+	//case 6:
+	//	_tileName[selectNum] = "dirt1";
+	//	break;
+	//case 7:
+	//	_tileName[selectNum] = "dirt2";
+	//	break;
+	//case 8:
+	//	_tileName[selectNum] = "dirt3";
+	//	break;
+	//case 9:
+	//	_tileName[selectNum] = "stone1";
+	//	break;
+	//case 10:
+	//	_tileName[selectNum] = "stone2";
+	//	break;
+	//case 11:
+	//	_tileName[selectNum] = "stone3";
+	//	break;
+	//case 12:
+	//	_tileName[selectNum] = "basalt1";
+	//	break;
+	//case 13:
+	//	_tileName[selectNum] = "basalt2";
+	//	break;
+	//case 14:
+	//	_tileName[selectNum] = "basalt3";
+	//	break;
+	//case 15:
+	//	_tileName[selectNum] = "snow1";
+	//	break;
+	//case 16:
+	//	_tileName[selectNum] = "snow2";
+	//	break;
+	//case 17:
+	//	_tileName[selectNum] = "snow3";
+	//	break;
+	//case 18:
+	//	_tileName[selectNum] = "copper1";
+	//	break;
+	//case 19:
+	//	_tileName[selectNum] = "copper3";
+	//	break;
+	//case 20:
+	//	_tileName[selectNum] = "copper3";
+	//	break;
+	//case 21:
+	//	_tileName[selectNum] = "lead1";
+	//	break;
+	//case 22:
+	//	_tileName[selectNum] = "lead2";
+	//	break;
+	//case 23:
+	//	_tileName[selectNum] = "lead3";
+	//	break;
+	//case 24:
+	//	_tileName[selectNum] = "scrap1";
+	//	break;
+	//case 25:
+	//	_tileName[selectNum] = "scrap2";
+	//	break;
+	//case 26:
+	//	_tileName[selectNum] = "scrap3";
+	//	break;
+	//case 27:
+	//	_tileName[selectNum] = "enemy_spawn";
+	//	break;
+	//case 28:
+	//	_tileName[selectNum] = "space";
+	//	break;
+	//}
 }

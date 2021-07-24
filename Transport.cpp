@@ -65,9 +65,13 @@ void Transport::OnTriggerEnter(GameObject* gameObject)
 	if (gameObject->tag != TAGMANAGER->GetTag("resource"))
 		return;
 	((Item*)gameObject)->SetConveyor((Conveyor*)this->gameObject);
+	_inResource = (Item*)gameObject;
 }
 void Transport::OnTriggerExit(GameObject* gameObject)
 {
+	if (gameObject->tag != TAGMANAGER->GetTag("resource"))
+		return;
+	_inResource = nullptr;
 	//for (int i = 0; i < _resInfo.size(); i++)
 	//{
 	//	if (gameObject == _resInfo[i].second)
@@ -113,6 +117,9 @@ void Transport::LinkConveyor(PROPDIR dir)
 	}
 	else if (_shape == I)
 	{
+		float deltaAngle = Math::Abs(transform->GetAngle() - dir * 90);
+		if (deltaAngle == 180)
+			return;
 		if (clock == false)
 		{
 			_shape = T3;
@@ -126,10 +133,14 @@ void Transport::LinkConveyor(PROPDIR dir)
 	}
 	else if (_shape == L)
 	{
+		float deltaAngle = transform->GetAngle() - dir * 90;
+		if (deltaAngle < 0) deltaAngle += 360;
+		if (deltaAngle == 90)
+			return;
 		if (Math::Abs(_outDir - dir) == 2)
 		{
-			_shape = T;
-			_animator->SetClip("conveyor_T", _firstConveyorAnimator->GetCurFrameX());
+			_shape = T3;
+			_animator->SetClip("conveyor_T3", _firstConveyorAnimator->GetCurFrameX());
 		}
 		else
 		{
@@ -139,6 +150,10 @@ void Transport::LinkConveyor(PROPDIR dir)
 	}
 	else if (_shape == L2)
 	{
+		float deltaAngle = dir * 90 - transform->GetAngle();
+		if (deltaAngle < 0) deltaAngle += 360;
+		if (deltaAngle == 90)
+			return;
 		if (Math::Abs(_outDir - dir) == 2)
 		{
 			_shape = T;
@@ -146,8 +161,8 @@ void Transport::LinkConveyor(PROPDIR dir)
 		}
 		else
 		{
-			_shape = T3;
-			_animator->SetClip("conveyor_T3", _firstConveyorAnimator->GetCurFrameX());
+			_shape = T2;
+			_animator->SetClip("conveyor_T2", _firstConveyorAnimator->GetCurFrameX());
 		}
 	}
 	else

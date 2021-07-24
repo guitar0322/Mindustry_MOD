@@ -149,7 +149,7 @@ void UIControler::Render()
 {
 	conveyorArrow.Render();
 	propPreview->Render();
-	if (_deleteRc.GetWidth() != 0)
+	if (_deleteRc.GetWidth() != 0 && _deleteRc.GetHeight() != 0)
 	{
 		D2DRENDERER->DrawRectangle(_deleteRc, D2DRenderer::DefaultBrush::Red);
 	}
@@ -635,9 +635,9 @@ void UIControler::inReallyEnd_Active_CheckImg(bool* name, bool isActive)
 }
 
 /* 정말로 종료하시겠습니까? 상태에서 [확인] 버튼 CLICK */
-void UIControler::inReallyEnd_Return_To_TilteScene(string SceneName)
+void UIControler::inReallyEnd_Return_To_TilteScene(bool* isQuit)
 {
-	SCENEMANAGER->LoadScene(SceneName);
+	*isQuit = true;
 }
 
 void UIControler::EnemyWaveSkip()

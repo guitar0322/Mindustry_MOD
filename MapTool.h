@@ -53,7 +53,7 @@ public:
 
 	//타일 이미지 관련
 	void SetTileImage();
-	void SetTileName(int selectNum);
+	void SetTileName();
 
 	//툴 이미지 관련
 	void SetToolImage();

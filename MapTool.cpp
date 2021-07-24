@@ -11,17 +11,18 @@ void MapTool::Init()
 	_isDraw = true;
 	_isFill = false;
 
+	SetTileName();
+
 	for (int i = 0; i < TILESETY; ++i)
 	{
 		for (int j = 0; j < TILESETX; ++j)
 		{
 			tileUI[i* TILESETX + j].Init();
-			tileUI[i* TILESETX + j].uiRenderer->Init("water");
+			tileUI[i * TILESETX + j].uiRenderer->Init(tileName[i * TILESETX + j]);
 			tileUI[i * TILESETX + j].uiMouseEvent->enable = false;
-			tileUI[i* TILESETX + j].transform->SetPosition(WINSIZEX - 40*j -50, 100 + 40*i);
+			tileUI[i* TILESETX + j].transform->SetPosition(WINSIZEX - 40*j - 70, 100 + 40*i);
 			
 			//각 타일에 이미지 부여
-			SetTileName(i* TILESETX + j);
 		}
 	}
 
@@ -44,20 +45,33 @@ void MapTool::Update()
 {
 	if (KEYMANAGER->isStayKeyDown('W'))
 	{
-		MainCam->transform->MoveY(-15.f);
+		MainCam->transform->MoveY(-5.f);
 	}
 	if (KEYMANAGER->isStayKeyDown('A'))
 	{
-		MainCam->transform->MoveX(-15.f);
+		MainCam->transform->MoveX(-5.f);
 	}
 	if (KEYMANAGER->isStayKeyDown('S'))
 	{
-		MainCam->transform->MoveY(15.f);
+		MainCam->transform->MoveY(5.f);
 	}
 	if (KEYMANAGER->isStayKeyDown('D'))
 	{
-		MainCam->transform->MoveX(15.f);
+		MainCam->transform->MoveX(5.f);
 	}
+
+	//if (MainCam->transform->GetX() <= MainCam->GetRenderWidth() / 2)
+	//	MainCam->transform->SetX(MainCam->GetRenderWidth() / 2);
+	//if (MainCam->transform->GetX() >= MAPWIDTH - MainCam->GetRenderWidth() / 2)
+	//	MainCam->transform->SetX(MAPWIDTH - MainCam->GetRenderWidth() / 2);
+
+	//if (MainCam->transform->GetY() <= MainCam->GetRenderHeight() / 2)
+	//	MainCam->transform->SetY(MainCam->GetRenderHeight() / 2);
+	//if (MainCam->transform->GetY() >= MAPHEIGHT - MainCam->GetRenderHeight() / 2)
+	//	MainCam->transform->SetY(MAPHEIGHT - MainCam->GetRenderHeight() / 2);
+
+	MainCam->Update();
+
 	/* =====UI 구현=====*/
 
 	//타일셋
@@ -80,16 +94,23 @@ void MapTool::Update()
 
 
 	/* =====맵 구현=====*/
-	int tileStart = MainCam->GetCameraStartX() / TILESIZE - 2;
-	if (tileStart < 0)
-		tileStart = 0;
-	int tileEnd = (MainCam->GetCameraStartX() + MainCam->GetRenderWidth()) / TILESIZE + 2;
-	if (tileEnd > TILENUMX - 1)
-		tileEnd = TILENUMX - 1;
+	int tileStartX = MainCam->GetCameraStartX() / TILESIZE - 2;
+	if (tileStartX < 0)
+		tileStartX = 0;
+	int tileEndX = (MainCam->GetCameraStartX() + MainCam->GetRenderWidth()) / TILESIZE + 2;
+	if (tileEndX > TILENUMX - 1)
+		tileEndX = TILENUMX - 1;
 
-	for (int i = tileStart; i < tileEnd; ++i)
+	int tileStartY = MainCam->GetCameraStartY() / TILESIZE - 2;
+	if (tileStartY < 0)
+		tileStartY = 0;
+	int tileEndY = (MainCam->GetCameraStartY() + MainCam->GetRenderHeight()) / TILESIZE + 2;
+	if (tileEndY > TILENUMX - 1)
+		tileEndY = TILENUMX - 1;
+
+	for (int i = tileStartY; i < tileEndY; ++i)
 	{
-		for (int j = tileStart; j < tileEnd; ++j)
+		for (int j = tileStartX; j < tileEndX; ++j)
 		{
 			tile[i * TILENUMX + j].Update();
 		}
@@ -131,12 +152,8 @@ void MapTool::Update()
 		{
 			if (_ptMouse.x >= MainCam->GetScreenStart().first && _ptMouse.x <= MainCam->GetScreenStart().first + MainCam->GetScreenWidth())
 			{
-				endMouseWorldX = ScreenToWorld(_ptMouse).x;
-				endMouseWorldY = ScreenToWorld(_ptMouse).y;
-				endX = endMouseWorldX / TILESIZE;
-				endY = endMouseWorldY / TILESIZE;
-
 				RectinTile();
+				dragRc = Rect();
 			}
 		}
 		
@@ -187,6 +204,20 @@ void MapTool::Update()
 
 	if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 	{
+
+		if (_isFill == true)
+		{
+			if (_ptMouse.x >= MainCam->GetScreenStart().first && _ptMouse.x <= MainCam->GetScreenStart().first + MainCam->GetScreenWidth())
+			{
+				endMouseWorldX = ScreenToWorld(_ptMouse).x;
+				endMouseWorldY = ScreenToWorld(_ptMouse).y;
+				endX = endMouseWorldX / TILESIZE + 1;
+				endY = endMouseWorldY / TILESIZE + 1;
+				dragRcWidth = endX - startX;
+				dragRcHeight = endY - startY;
+				dragRc = RectMakePivot(Vector2(startX * TILESIZE, startY * TILESIZE), Vector2(dragRcWidth * TILESIZE, dragRcHeight * TILESIZE), Pivot::LeftTop);
+			}
+		}
 		MouseInTile();
 	}
 }
@@ -209,16 +240,22 @@ void MapTool::Render()
 		}
 	}
 
-	int tileStart = MainCam->GetCameraStartX() / TILESIZE - 2;
-	if (tileStart < 0)
-		tileStart = 0;
-	int tileEnd = (MainCam->GetCameraStartX() + MainCam->GetRenderWidth()) / TILESIZE + 2;
-	if (tileEnd > TILENUMX - 1)
-		tileEnd = TILENUMX - 1;
-	cout << tileEnd << endl;
-	for (int i = tileStart; i < tileEnd; ++i)
+	int tileStartX = MainCam->GetCameraStartX() / TILESIZE - 2;
+	if (tileStartX < 0)
+		tileStartX = 0;
+	int tileEndX = (MainCam->GetCameraStartX() + MainCam->GetRenderWidth()) / TILESIZE + 2;
+	if (tileEndX > TILENUMX - 1)
+		tileEndX = TILENUMX - 1;
+
+	int tileStartY = MainCam->GetCameraStartY() / TILESIZE - 2;
+	if (tileStartY < 0)
+		tileStartY = 0;
+	int tileEndY = (MainCam->GetCameraStartY() + MainCam->GetRenderHeight()) / TILESIZE + 2;
+	if (tileEndY > TILENUMX - 1)
+		tileEndY = TILENUMX - 1;
+	for (int i = tileStartY; i < tileEndY; ++i)
 	{
-		for (int j = tileStart; j < tileEnd; ++j)
+		for (int j = tileStartX; j < tileEndX; ++j)
 		{
 			tile[i * TILENUMX + j].Render();
 			if (tileInfo[i * TILENUMX + j].resources != RES_NONE)
@@ -227,8 +264,7 @@ void MapTool::Render()
 	}
 
 	if(_isFill) 
-	D2DRENDERER->DrawRectangle(dragRc, D2DRenderer::DefaultBrush::Red);
-
+		D2DRENDERER->DrawRectangle(dragRc, D2DRenderer::DefaultBrush::Red);
 }
 
 void MapTool::Setup()
@@ -278,6 +314,14 @@ void MapTool::SetTileImage()
 	CLIPMANAGER->AddClip("snow1", "sprites/blocks/environment/snow1.png", 32, 32);
 	CLIPMANAGER->AddClip("snow2", "sprites/blocks/environment/snow2.png", 32, 32);
 	CLIPMANAGER->AddClip("snow3", "sprites/blocks/environment/snow3.png", 32, 32);
+	//얼음
+	CLIPMANAGER->AddClip("ice1", "sprites/blocks/environment/ice1.png", 32, 32);
+	CLIPMANAGER->AddClip("ice2", "sprites/blocks/environment/ice2.png", 32, 32);
+	CLIPMANAGER->AddClip("ice3", "sprites/blocks/environment/ice3.png", 32, 32);
+
+	//얼음벽
+	CLIPMANAGER->AddClip("ice_wall1", "sprites/blocks/environment/ice-wall1.png", 32, 32);
+	CLIPMANAGER->AddClip("ice_wall2", "sprites/blocks/environment/ice-wall2.png", 32, 32);
 
 	//스페이스
 	CLIPMANAGER->AddClip("space", "sprites/blocks/environment/space.png", 32, 32);
@@ -309,127 +353,166 @@ void MapTool::SetTileImage()
 
 }
 
-void MapTool::SetTileName(int selectNum)
+void MapTool::SetTileName()
 {
-	switch (selectNum)
-	{
-	case 0:
-		tileName[selectNum] = "water";
-	break;
-	case 1:
-		tileUI[selectNum].uiRenderer->Init("deep_water");
-		tileName[selectNum] = "deep_water";
-	break;
-	case 2:
-		tileUI[selectNum].uiRenderer->Init("sand1");
-		tileName[selectNum] = "sand1";
-	break;
-	case 3:
-		tileUI[selectNum].uiRenderer->Init("sand2");
-		tileName[selectNum] = "sand2";
-	break;
-	case 4:
-		tileUI[selectNum].uiRenderer->Init("sand3");
-		tileName[selectNum] = "sand3";
-	break;
-	case 5:
-		tileUI[selectNum].uiRenderer->Init("darksand_water");
-		tileName[selectNum] = "darksand_water";
-	break;
-	case 6:
-		tileUI[selectNum].uiRenderer->Init("dirt1");
-		tileName[selectNum] = "dirt1";
-	break;
-	case 7:
-		tileUI[selectNum].uiRenderer->Init("dirt2");
-		tileName[selectNum] = "dirt2";
-	break;
-	case 8:
-		tileUI[selectNum].uiRenderer->Init("dirt3");
-		tileName[selectNum] = "dirt3";
-	break;
-	case 9:
-		tileUI[selectNum].uiRenderer->Init("stone1");
-		tileName[selectNum] = "stone1";
-	break;
-	case 10:
-		tileUI[selectNum].uiRenderer->Init("stone2");
-		tileName[selectNum] = "stone2";
-	break;
-	case 11:
-		tileUI[selectNum].uiRenderer->Init("stone3");
-		tileName[selectNum] = "stone3";
-	break;
-	case 12:
-		tileUI[selectNum].uiRenderer->Init("basalt1");
-		tileName[selectNum] = "basalt1";
-	break;
-	case 13:
-		tileUI[selectNum].uiRenderer->Init("basalt2");
-		tileName[selectNum] = "basalt2";
-	break;
-	case 14:
-		tileUI[selectNum].uiRenderer->Init("basalt3");
-		tileName[selectNum] = "basalt3"; 
-	break;
-	case 15:
-		tileUI[selectNum].uiRenderer->Init("snow1");
-		tileName[selectNum] = "snow1"; 
-	break;
-	case 16:
-		tileUI[selectNum].uiRenderer->Init("snow2");
-		tileName[selectNum] = "snow2";
-	break;
-	case 17:
-		tileUI[selectNum].uiRenderer->Init("snow3");
-		tileName[selectNum] = "snow3";
-	break;
-	case 18:
-		tileUI[selectNum].uiRenderer->Init("copper1");
-		tileName[selectNum] = "copper1";
-	break;
-	case 19:
-		tileUI[selectNum].uiRenderer->Init("copper2");
-		tileName[selectNum] = "copper3";
-	break;
-	case 20:
-		tileUI[selectNum].uiRenderer->Init("copper3");
-		tileName[selectNum] = "copper3";
-	break;
-	case 21:
-		tileUI[selectNum].uiRenderer->Init("lead1");
-		tileName[selectNum] = "lead1";
-	break;
-	case 22:
-		tileUI[selectNum].uiRenderer->Init("lead2");
-		tileName[selectNum] = "lead2";
-	break;
-	case 23:
-		tileUI[selectNum].uiRenderer->Init("lead3");
-		tileName[selectNum] = "lead3";
-	break;
-	case 24:
-		tileUI[selectNum].uiRenderer->Init("scrap1");
-		tileName[selectNum] = "scrap1";
+	int idx = 0;
+	tileName[idx++] = "water";
+	tileName[idx++] = "deep_water";
+	tileName[idx++] = "sand1";
+	tileName[idx++] = "sand2";
+	tileName[idx++] = "sand3";			//4
+	tileName[idx++] = "darksand_water";
+	tileName[idx++] = "dirt1";
+	tileName[idx++] = "dirt2";
+	tileName[idx++] = "dirt3";
+	tileName[idx++] = "stone1";			//9
+	tileName[idx++] = "stone2";
+	tileName[idx++] = "stone3";
+	tileName[idx++] = "basalt1";
+	tileName[idx++] = "basalt2";
+	tileName[idx++] = "basalt3";		//14
+	tileName[idx++] = "snow1";
+	tileName[idx++] = "snow2";
+	tileName[idx++] = "snow3";
+	tileName[idx++] = "ice1";
+	tileName[idx++] = "ice2";			//19
+	tileName[idx++] = "ice3";
+	tileName[idx++] = "ice_wall1";
+	tileName[idx++] = "ice_wall2";
+	tileName[idx++] = "copper1";
+	tileName[idx++] = "copper3";		//24
+	tileName[idx++] = "copper3";
+	tileName[idx++] = "lead1";
+	tileName[idx++] = "lead2";
+	tileName[idx++] = "lead3";
+	tileName[idx++] = "scrap1";			//29
+	tileName[idx++] = "scrap2";
+	tileName[idx++] = "scrap3";
+	tileName[idx++] = "enemy_spawn";
+	tileName[idx++] = "space";			//33
+	tileName[idx++] = "space";			//33
+	tileName[idx++] = "space";			//33
 
-	break;
-	case 25:
-		tileUI[selectNum].uiRenderer->Init("scrap3");
-		tileName[selectNum] = "scrap2";
-	break;
-	case 26:
-		tileUI[selectNum].uiRenderer->Init("scrap3");
-		tileName[selectNum] = "scrap3";
-	break;
-	case 27:
-		tileUI[selectNum].uiRenderer->Init("enemy_spawn");
-		tileName[selectNum] = "enemy_spawn";
-	break;
-	case 28:
-		tileUI[selectNum].uiRenderer->Init("space");
-		tileName[selectNum] = "space";
-	break;
-	}
+
+	//switch (selectNum)
+	//{
+	//case 0:
+	//	tileName[selectNum] = "water";
+	//break;
+	//case 1:
+	//	tileUI[selectNum].uiRenderer->Init("deep_water");
+	//	tileName[selectNum] = "deep_water";
+	//break;
+	//case 2:
+	//	tileUI[selectNum].uiRenderer->Init("sand1");
+	//	tileName[selectNum] = "sand1";
+	//break;
+	//case 3:
+	//	tileUI[selectNum].uiRenderer->Init("sand2");
+	//	tileName[selectNum] = "sand2";
+	//break;
+	//case 4:
+	//	tileUI[selectNum].uiRenderer->Init("sand3");
+	//	tileName[selectNum] = "sand3";
+	//break;
+	//case 5:
+	//	tileUI[selectNum].uiRenderer->Init("darksand_water");
+	//	tileName[selectNum] = "darksand_water";
+	//break;
+	//case 6:
+	//	tileUI[selectNum].uiRenderer->Init("dirt1");
+	//	tileName[selectNum] = "dirt1";
+	//break;
+	//case 7:
+	//	tileUI[selectNum].uiRenderer->Init("dirt2");
+	//	tileName[selectNum] = "dirt2";
+	//break;
+	//case 8:
+	//	tileUI[selectNum].uiRenderer->Init("dirt3");
+	//	tileName[selectNum] = "dirt3";
+	//break;
+	//case 9:
+	//	tileUI[selectNum].uiRenderer->Init("stone1");
+	//	tileName[selectNum] = "stone1";
+	//break;
+	//case 10:
+	//	tileUI[selectNum].uiRenderer->Init("stone2");
+	//	tileName[selectNum] = "stone2";
+	//break;
+	//case 11:
+	//	tileUI[selectNum].uiRenderer->Init("stone3");
+	//	tileName[selectNum] = "stone3";
+	//break;
+	//case 12:
+	//	tileUI[selectNum].uiRenderer->Init("basalt1");
+	//	tileName[selectNum] = "basalt1";
+	//break;
+	//case 13:
+	//	tileUI[selectNum].uiRenderer->Init("basalt2");
+	//	tileName[selectNum] = "basalt2";
+	//break;
+	//case 14:
+	//	tileUI[selectNum].uiRenderer->Init("basalt3");
+	//	tileName[selectNum] = "basalt3"; 
+	//break;
+	//case 15:
+	//	tileUI[selectNum].uiRenderer->Init("snow1");
+	//	tileName[selectNum] = "snow1"; 
+	//break;
+	//case 16:
+	//	tileUI[selectNum].uiRenderer->Init("snow2");
+	//	tileName[selectNum] = "snow2";
+	//break;
+	//case 17:
+	//	tileUI[selectNum].uiRenderer->Init("snow3");
+	//	tileName[selectNum] = "snow3";
+	//break;
+	//case 18:
+	//	tileUI[selectNum].uiRenderer->Init("copper1");
+	//	tileName[selectNum] = "copper1";
+	//break;
+	//case 19:
+	//	tileUI[selectNum].uiRenderer->Init("copper2");
+	//	tileName[selectNum] = "copper3";
+	//break;
+	//case 20:
+	//	tileUI[selectNum].uiRenderer->Init("copper3");
+	//	tileName[selectNum] = "copper3";
+	//break;
+	//case 21:
+	//	tileUI[selectNum].uiRenderer->Init("lead1");
+	//	tileName[selectNum] = "lead1";
+	//break;
+	//case 22:
+	//	tileUI[selectNum].uiRenderer->Init("lead2");
+	//	tileName[selectNum] = "lead2";
+	//break;
+	//case 23:
+	//	tileUI[selectNum].uiRenderer->Init("lead3");
+	//	tileName[selectNum] = "lead3";
+	//break;
+	//case 24:
+	//	tileUI[selectNum].uiRenderer->Init("scrap1");
+	//	tileName[selectNum] = "scrap1";
+
+	//break;
+	//case 25:
+	//	tileUI[selectNum].uiRenderer->Init("scrap3");
+	//	tileName[selectNum] = "scrap2";
+	//break;
+	//case 26:
+	//	tileUI[selectNum].uiRenderer->Init("scrap3");
+	//	tileName[selectNum] = "scrap3";
+	//break;
+	//case 27:
+	//	tileUI[selectNum].uiRenderer->Init("enemy_spawn");
+	//	tileName[selectNum] = "enemy_spawn";
+	//break;
+	//case 28:
+	//	tileUI[selectNum].uiRenderer->Init("space");
+	//	tileName[selectNum] = "space";
+	//break;
+	//}
 
 }
 
@@ -510,7 +593,7 @@ void MapTool::Load()
 		tileInfo[i / 2].environment = (ENVIRONMENT)env;
 		tileInfo[i / 2].resources = (RESOURCES)res;
 		tile[i / 2].renderer->Init(tileName[env]);
-		resourcesTile[i / 2].renderer->Init(tileName[res+18]);
+		resourcesTile[i / 2].renderer->Init(tileName[res+23]);
 	}
 }
 
@@ -535,10 +618,7 @@ bool MapTool::RectinTile()
 	if (_ptMouse.x <= MainCam->GetScreenStart().first || _ptMouse.x >= MainCam->GetScreenStart().first + MainCam->GetScreenWidth())
 		return false;
 
-	dragRcWidth = endX - startX;
-	dragRcHeight = endY - startY;
 
-	dragRc= RectMakePivot(Vector2(startX * TILESIZE, startY* TILESIZE), Vector2(dragRcWidth* TILESIZE, dragRcHeight* TILESIZE), Pivot::LeftTop);
 	
 	for (int i = startY; i < endY; i++)
 	{
@@ -546,9 +626,9 @@ bool MapTool::RectinTile()
 		{
 			_undoHash.insert(pair<int, tagTile>(i * TILENUMX + j, tileInfo[i * TILENUMX + j]));
 
-			if (_selectTile >= 18 && _selectTile <= 26)
+			if (_selectTile >= 23 && _selectTile <= 31)
 			{
-				tileInfo[i * TILENUMX + j].resources = (RESOURCES)(_selectTile - 18);
+				tileInfo[i * TILENUMX + j].resources = (RESOURCES)(_selectTile - 23);
 				resourcesTile[i * TILENUMX + j].renderer->Init(tileName[_selectTile]);
 			}
 			else
@@ -556,7 +636,6 @@ bool MapTool::RectinTile()
 				tileInfo[i * TILENUMX + j].environment = (ENVIRONMENT)_selectTile;
 				tile[i * TILENUMX + j].renderer->Init(tileName[_selectTile]);
 			}
-
 		}
 	}
 
@@ -596,9 +675,9 @@ bool MapTool::MouseInTile()
 	{
 		if (_isDraw)
 		{
-			if (_selectTile >= 18 && _selectTile <= 26)
+			if (_selectTile >= 23 && _selectTile <= 31)
 			{
-				tileInfo[tileY * TILENUMX + tileX].resources = (RESOURCES)(_selectTile - 18);
+				tileInfo[tileY * TILENUMX + tileX].resources = (RESOURCES)(_selectTile - 23);
 				resourcesTile[tileY * TILENUMX + tileX].renderer->Init(tileName[_selectTile]);
 			}
 			else

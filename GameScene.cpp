@@ -16,6 +16,7 @@
 #include "CoreComponent.h"
 #include "Astar.h"
 #include "Respawn.h"
+#include "DataManager.h"
 
 HRESULT GameScene::Init()
 {
@@ -34,24 +35,30 @@ HRESULT GameScene::Init()
 
     selectCategoryIdx = 0;
 
+    _dataManager = new DataManager();
+    _isQuit = false;
 
     _gameInfo = new GameInfo();
     _gameInfo->Init();
     _gameInfo->AddResource(COPPER, 500);
     _gameInfo->AddResource(LEAD, 0);
     _gameInfo->AddResource(SCRAP, 0);
+    _dataManager->LinkGameInfo(_gameInfo);
 
     _propContainer = new PropContainer();
 	_propContainer->Init();
+    _dataManager->LinkPropContainer(_propContainer);
 	_propFactory = new PropFactory();
     _propFactory->Init();
 	_propFactory->propContainer = _propContainer;
     _propFactory->LinkGameInfo(_gameInfo);
+    _dataManager->LinkPropFactory(_propFactory);
 
     _resourceManager = new ResourceManager();
     _resourceManager->propContainer = _propContainer;
     _resourceManager->Init();
     _propFactory->LinkResourceManager(_resourceManager);
+    _dataManager->LinkResourceManager(_resourceManager);
 
     _uiControler = new UIControler();
     _uiControler->Init();
@@ -73,6 +80,7 @@ HRESULT GameScene::Init()
 	/*인게임 맵 초기화 -> 유림*/
 	_gameMap = new GameMap;
 	_gameMap->Init();
+    _dataManager->LinkGameMap(_gameMap);
 
     _aStar = new Astar();
     _aStar->LinkGameMap(_gameMap);
@@ -264,7 +272,7 @@ HRESULT GameScene::Init()
 	//SOUNDMANAGER->play("start", 10.0f);
 	//_musicTime = 0;
     //StaticBuffer->EndDraw();
-
+    //_dataManager->LoadData();
     return S_OK;
 }
 
@@ -272,6 +280,14 @@ void GameScene::Update()
 {
 	MainCam->Update();
     EFFECTMANAGER->Update();
+    if (KEYMANAGER->isOnceKeyDown('M'))
+    {
+        _dataManager->SaveData();
+    }
+    if (KEYMANAGER->isOnceKeyDown('N'))
+    {
+        _dataManager->LoadData();
+    }
     //07-19 플레이어와 UI간의 마우스 클릭 우선순위때문에 UI업데이트 위로 올림
     //카테고리 아이콘 업데이트
     {
@@ -315,6 +331,12 @@ void GameScene::Update()
         }
 
         if (_menu) menuUpdate();
+        if (_isQuit == true)
+        {
+            _dataManager->SaveData();
+            SCENEMANAGER->LoadScene("title");
+            return;
+        }
     }
 
     // 연구 부분 Update
@@ -804,6 +826,7 @@ void GameScene::PlayerInit()
 	_player->controler->LinkProFactory(_propFactory);
 	_propFactory->LinkPlayerControler(_player->controler);
     _uiControler->LinkPlayerControler(_player->controler);
+    _dataManager->LinkPlayer(_player);
 	MainCam->transform->SetPosition(_player->transform->position.x, _player->transform->position.y);
 
 	//플레이어 포신 유림.
@@ -842,7 +865,6 @@ void GameScene::PlayerInit()
     _playerShadow->SetActive(true);
     _player->transform->AddChild(_playerShadow->transform);
     // ===========================================
-
 	_player->controler->SetGameInfo(_gameInfo);
 	_player->controler->SetGameMap(_gameMap);
 }
@@ -1848,7 +1870,7 @@ void GameScene::menuInitUI()
     
     _menu_ReallyEnd_Check_Button.uiMouseEvent->RegistCallback(
         std::bind(&UIControler::inReallyEnd_Return_To_TilteScene, _uiControler,
-            "title"),
+            &_isQuit),
         EVENT::CLICK);
     
     _menu_ReallyEnd_Check_Button.uiMouseEvent->RegistCallback(
@@ -1946,6 +1968,7 @@ void GameScene::SetEnemyManager()
 	_uiControler->SetEnemyManager(_enemyManager->GetComponent<EnemyManager>());
 	_enemyManager->GetComponent<EnemyManager>()->SetPlayerTransform(_player->transform);
     _propFactory->LinkEnemyManager(_enemyManager->GetComponent<EnemyManager>());
+    _dataManager->LinkEnemeyManager(_enemyManager->GetComponent<EnemyManager>());
 }
 
 void GameScene::SetCameraControler()

@@ -43,10 +43,6 @@ void PropContainer::Render()
 	}
 }
 
-void PropContainer::LoadTileMap()
-{
-}
-
 void PropContainer::AddProp(int hashKey, Prop* newProp, PROPDIR dir)
 {
 	SOUNDMANAGER->play("complete", 10.0f);
@@ -125,4 +121,14 @@ void PropContainer::DeleteProp(int tileX, int tileY)
 		_propMap.erase(tileY * TILENUMX + tileX);
 		SAFE_DELETE(targetProp);
 	}
+}
+
+vector<Prop*> PropContainer::GetAllProp()
+{
+	vector<Prop*> result;
+	for (_propMapIter = _propMap.begin(); _propMapIter != _propMap.end(); _propMapIter++)
+	{
+		result.push_back(_propMapIter->second);
+	}
+	return result;
 }

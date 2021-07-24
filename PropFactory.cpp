@@ -205,6 +205,7 @@ void PropFactory::CreateDrill(int tileX, int tileY)
 	drillTileV.push_back((tileY - 1) * TILENUMX + tileX - 1);
 	for (int i = 0; i < 4; i++)
 	{
+
 		tagTile tileInfo = _gameMap->GetTileInfo(drillTileV[i]);
 		if (tileInfo.resources >= RES_COPPER1 && tileInfo.resources <= RES_COPPER3)
 			newDrill->production->SetTargetResource(COPPER);
@@ -212,17 +213,20 @@ void PropFactory::CreateDrill(int tileX, int tileY)
 			newDrill->production->SetTargetResource(LEAD);
 		propContainer->AddProp(drillTileV[i], newDrill, RIGHT);
 	}
-	_previewV.erase(_previewV.begin());
-	_propQueue.pop();
-	if (_propQueue.empty() == false)
+	if (isBuilding == true)
 	{
-		if (_propQueue.front().catagory == PRODUCTION)
+		_previewV.erase(_previewV.begin());
+		_propQueue.pop();
+		if (_propQueue.empty() == false)
 		{
-			_playerControler->SetConstructLaser(_propQueue.front().x, _propQueue.front().y, 2);
-		}
-		else
-		{
-			_playerControler->SetConstructLaser(_propQueue.front().x, _propQueue.front().y, 1);
+			if (_propQueue.front().catagory == PRODUCTION)
+			{
+				_playerControler->SetConstructLaser(_propQueue.front().x, _propQueue.front().y, 2);
+			}
+			else
+			{
+				_playerControler->SetConstructLaser(_propQueue.front().x, _propQueue.front().y, 1);
+			}
 		}
 	}
 }
@@ -241,19 +245,55 @@ void PropFactory::CreateTurret(int tileX, int tileY)
 void PropFactory::ContainProp(int hashKey, Prop* newProp, PROPDIR dir)
 {
 	propContainer->AddProp(hashKey, newProp, dir);
-	_previewV.erase(_previewV.begin());
-	_propQueue.pop();
-	if (_propQueue.empty() == false)
+	if (isBuilding == true)
 	{
-		if (_propQueue.front().catagory == PRODUCTION)
+		_previewV.erase(_previewV.begin());
+		_propQueue.pop();
+		if (_propQueue.empty() == false)
 		{
-			_playerControler->SetConstructLaser(_propQueue.front().x, _propQueue.front().y, 2);
-		}
-		else
-		{
-			_playerControler->SetConstructLaser(_propQueue.front().x, _propQueue.front().y, 1);
+			if (_propQueue.front().catagory == PRODUCTION)
+			{
+				_playerControler->SetConstructLaser(_propQueue.front().x, _propQueue.front().y, 2);
+			}
+			else
+			{
+				_playerControler->SetConstructLaser(_propQueue.front().x, _propQueue.front().y, 1);
+			}
 		}
 	}
+}
+
+void PropFactory::LoadConveyor(int tileX, int tileY, PROPDIR dir)
+{
+	Conveyor* newConveyor = new Conveyor();
+	if (_isFirstConveyor == false)
+	{
+		_isFirstConveyor = true;
+		_firstConveyorAnimator = newConveyor->animator;
+	}
+	newConveyor->transform->SetPosition(tileX * TILESIZE + TILESIZE / 2, tileY * TILESIZE + TILESIZE / 2);
+	newConveyor->transform->SetAngle(dir * 90);
+	newConveyor->collider->RefreshPartition();
+	newConveyor->transport->SetX(tileX);
+	newConveyor->transport->SetY(tileY);
+	newConveyor->transport->SetOutDir(dir);
+	newConveyor->transport->SetShape(0);
+	newConveyor->transport->SetFirstAnimator(_firstConveyorAnimator);
+	newConveyor->animator->SetClip("conveyor_I", _firstConveyorAnimator->GetCurFrameX());
+	newConveyor->animator->SetFrameTime(_firstConveyorAnimator->GetFrameTime());
+	propContainer->AddProp(tileY * TILENUMX + tileX, newConveyor, dir);
+}
+
+void PropFactory::LoadDrill(int tileX, int tileY)
+{
+}
+
+void PropFactory::LoadTurret(int tileX, int tileY)
+{
+}
+
+void PropFactory::LoadCopperWall(int tileX, int tileY)
+{
 }
 
 ImageObject* PropFactory::CreatePreview(int tileX, int tileY)
@@ -304,7 +344,8 @@ void PropFactory::AddDeleteQue(int startX, int startY, int endX, int endY)
 			}
 		}
 	}
-	_playerControler->SetConstructLaser(_deleteQueue.front().x, _deleteQueue.front().y, _deleteQueue.front().isDrill ? 2 : 1);
+	if(_deleteQueue.empty() == false)
+		_playerControler->SetConstructLaser(_deleteQueue.front().x, _deleteQueue.front().y, _deleteQueue.front().isDrill ? 2 : 1);
 }
 
 void PropFactory::InitPropInfo()
@@ -312,5 +353,5 @@ void PropFactory::InitPropInfo()
 	_propInfoV[TURRET].push_back({ 0.15f, 1, 0, 10, "duo" , L"듀오"});
 	_propInfoV[PRODUCTION].push_back({ 1.f, 2, 0, 10, "mechanical_drill", L"기계식 드릴" });
 	_propInfoV[RAIL].push_back({ 0.15f, 1, 0, 10, "conveyor", L"컨베이어" });
-	_propInfoV[DEFENSE].push_back({ 0.5f, 1, 0, 35, "copper_wall" ,L"구리 벽"});
+	_propInfoV[DEFENSE].push_back({ 0.1f, 1, 0, 1, "copper_wall" ,L"구리 벽"});
 }

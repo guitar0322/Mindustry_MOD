@@ -128,7 +128,6 @@ void PlayerControler::Update()
 
 				if (_attackSpeed >= 0.3f)
 				{
-					_weaponLTrackRadius = 9.13;
 					if (_isLeft == false) // 만약에 왼쪽이 발동 안할 경우
 					{
 						_weaponRTrackRadius = 9.13;

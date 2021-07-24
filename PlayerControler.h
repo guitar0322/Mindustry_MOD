@@ -94,6 +94,7 @@ public:
 	void BoosterFireScale();
 
 	float GetHp() const { return _hp; }
+	void SetHp(int hp) { _hp = hp; }
 	float GetSpeed() const { return _speed; }
 	float GetTargetAngle() const { return _targetAngle; }
 	bool GetPlayerDead() const { return _isDead; }

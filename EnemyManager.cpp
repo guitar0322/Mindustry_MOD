@@ -216,3 +216,8 @@ vector<EnemyObject*> EnemyManager::GetCurWaveEnemy()
 	}
 	return result;
 }
+
+EnemyObject* EnemyManager::GetEnemy(int idx)
+{
+	return _enemyV[idx];
+}
