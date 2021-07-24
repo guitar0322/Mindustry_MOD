@@ -27,6 +27,10 @@ class GameScene :
 {
 private:
 	float _musicTime;
+    float _screenRatio;
+    bool _intro;
+    UIBase introCore;
+    UIBase introEffect;
     DataManager* _dataManager;
     Item* testCopper;
 	/* ============================================*/
@@ -208,6 +212,8 @@ public:
     virtual void Update();
     virtual void Render();
     virtual void Release();
+
+    void InitIntro();
     void InitClip();
     void InitCategoryUI();
     void InitPropUI();

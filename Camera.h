@@ -17,9 +17,9 @@
 class Camera : public Component
 {
 private :
-	int _screenWidth, _screenHeight;
-	int _screenStartX, _screenStartY;
-	int _renderWidth, _renderHeight;
+	float _screenWidth, _screenHeight;
+	float _screenStartX, _screenStartY;
+	float _renderWidth, _renderHeight;
 	float _cameraStartX, _cameraStartY;
 	bool _isShake;
 	int _shakeWeight;
@@ -38,7 +38,7 @@ public:
 	virtual void Render();
 	virtual void Update();
 
-	void SetScreenStart(int x, int y) { _screenStartX = x; _screenStartY = y; }
+	void SetScreenStart(float x, float y) { _screenStartX = x; _screenStartY = y; }
 	pair<int, int> GetScreenStart() { return { _screenStartX, _screenStartY }; }
 
 	float GetCameraStartX() { return _cameraStartX; }
@@ -46,12 +46,12 @@ public:
 
 	//pair<float, float> GetCameraStart() { return { _cameraStartX, _cameraStartY }; }
 
-	void SetScreenWidth(int width) { _screenWidth = width; }
-	void SetScreenHeight(int height) { _screenHeight = height; }
-	void SetScreenSize(int width, int height) { _screenWidth = width; _screenHeight = height; }
-	int GetScreenWidth() { return _screenWidth; }
-	int GetScreenHeight() { return _screenHeight; }
-	pair<int, int> GetScreenSize() { return { _screenWidth, _screenHeight }; }
+	void SetScreenWidth(float width) { _screenWidth = width; }
+	void SetScreenHeight(float height) { _screenHeight = height; }
+	void SetScreenSize(float width, float height) { _screenWidth = width; _screenHeight = height; }
+	float GetScreenWidth() { return _screenWidth; }
+	float GetScreenHeight() { return _screenHeight; }
+	pair<float, float> GetScreenSize() { return { _screenWidth, _screenHeight }; }
 
 	void SetRenderWidth(int width) { _renderWidth = width; }
 	void SetRenderHeight(int height) { _renderHeight = height; }
