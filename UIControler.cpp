@@ -24,6 +24,7 @@ void UIControler::Init()
 	conveyorArrow.SetActive(false);
 	_dir = RIGHT;
 }
+
 void UIControler::Update()
 {
 	propPreview->Update();
@@ -137,6 +138,9 @@ void UIControler::Update()
 		_previewV[i].Update();
 	}
 	conveyorArrow.Update();
+
+	//if (!isMineral)
+	//	inGame_Crash_To_Mineral_Cursor();
 }
 
 void UIControler::Release()
@@ -223,7 +227,6 @@ void UIControler::ClickPropIcon(GameObject* clickedButton, int propIdx)
 void UIControler::RefreshPreview()
 {
 	_previewV.clear();
-
 	_previewNum = 0;
 	_previewDir = false;
 }
@@ -280,7 +283,6 @@ void UIControler::SetPreview(float deltaX, float deltaY)
 	}
 	_previewNum = bigNum;
 	_previewDir = curDir;
-
 }
 
 void UIControler::SetPreviewTwo(float deltaX, float deltaY)
@@ -416,8 +418,53 @@ void UIControler::CheckValidTile()
 	return;
 }
 
+/* 커서 (광물) 전용 함수 */
+void UIControler::inGame_Crash_To_Mineral_Cursor()
+{
+	Vector2 worldMouse = ScreenToWorld(_ptMouse);
+	int mouseTileX = worldMouse.x / TILESIZE;
+	int mouseTileY = worldMouse.y / TILESIZE;
+	tagTile tileInfo = gameMap->GetTileInfo(mouseTileY * TILENUMX + mouseTileX);
+
+	if (tileInfo.resources != RES_NONE)
+	{
+		CURSOR->uiRenderer->Init("cursor_drill");
+	}
+	else
+	{
+		CURSOR->uiRenderer->Init("cursor_cursor");
+	}
+}
+
+/* 게임 상태에서 [아이콘] ENTERT, EXIT */
+void UIControler::inGame_Acitve_Choice_Img(GameObject* clickedButton, bool isAcitve)
+{ 
+	if (isAcitve)
+	{
+		CURSOR->uiRenderer->Init("cursor_hand");
+	}
+	else
+	{
+		CURSOR->uiRenderer->Init("cursor_cursor");
+	}
+
+	inGame_TouchToIcon->transform->SetPosition(clickedButton->transform->GetX(), clickedButton->transform->GetY());
+	inGame_TouchToIcon->SetActive(isAcitve);
+}
+
+/* 게임 상태에서 [연구 아이콘] CLICK */
+void UIControler::inGame_Acitve_State(bool* name, bool isAcitve)
+{
+	*name = isAcitve;
+}
+
 void UIControler::inResearch_ActiveChoiceImg(Transform* menuTr, bool isActive)
 {
+	if (isActive)
+		CURSOR->uiRenderer->Init("cursor_hand");
+	else
+		CURSOR->uiRenderer->Init("cursor_cursor");
+
 	choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
 	choiceImg->SetActive(isActive);
 }
@@ -430,10 +477,12 @@ void UIControler::inResearch_Active_Choice_Img(bool* name)
 	if (*name)
 	{
 		all_Resources_Img->SetActive(true);
+		CURSOR->uiRenderer->Init("cursor_hand");
 	}
 	else
 	{
 		all_Resources_Img->SetActive(false);
+		CURSOR->uiRenderer->Init("cursor_hand");
 	}
 }
 
@@ -449,20 +498,6 @@ void UIControler::inResearch_Active_all_Resources_Click_Event(bool* name)
 		if (all_Resources_Count == 3) all_Resources_Open3_Img->SetActive(false);
 		all_Resources_Text->SetActive(false);
 		all_Resources_Close_Img->SetActive(true);
-
-		//광물 1개 이상인지 파악 - 구리
-		//if (gameInfo->GetResourceAmount(COPPER) >= 1)
-		//{
-		//	float heightRange = 0;
-		//	heightRange += TIMEMANAGER->getElapsedTime();
-		//	all_Resources_Add->transform->SetScaleY(heightRange);
-		//
-		//	if (heightRange > 5)
-		//    {
-		//		heightRange = 0;
-		//    }
-		//    //_all_Resources_Bottom_Border.transform->SetPosition(_all_Resources_LR_Border.transform->SetX(), _all_Resources_LR_Border.transform->SetY());
-		//}
 	}
 	else // false = 닫혀있는 상태
 	{
@@ -476,12 +511,18 @@ void UIControler::inResearch_Active_all_Resources_Click_Event(bool* name)
 /* 연구 상태에서 [전체자원] 버튼 EXIT */
 void UIControler::inResearch_InActive_Choice_Img()
 {
+	CURSOR->uiRenderer->Init("cursor_cursor");
 	all_Resources_Img->SetActive(false);
 }
 
 /* 연구 상태에서 [돌아가기] 버튼 ENTER, EXIT */
 void UIControler::inResearch_ActiveGoBackImg(bool isActive)
 {
+	if (isActive)
+		CURSOR->uiRenderer->Init("cursor_hand");
+	else
+		CURSOR->uiRenderer->Init("cursor_cursor");
+
 	research_goBackChoiceImg->SetActive(isActive);
 }
 
@@ -494,6 +535,11 @@ void UIControler::inResearch_ReturnToGameScene(bool* name, bool isActive)
 /* 연구 상태에서 [코어 DB] 버튼 ENTER, EXIT */
 void UIControler::inResearch_ActiveCoreDBImg(bool isActive)
 {
+	if (isActive)
+		CURSOR->uiRenderer->Init("cursor_hand");
+	else
+		CURSOR->uiRenderer->Init("cursor_cursor");
+
 	coreDBChoiceImg->SetActive(isActive);
 }
 
@@ -509,6 +555,7 @@ void UIControler::inResearch_ActiveChoiceImgWithBasicDes(Transform* menuTr, UIBa
 {
 	if (*name3) return;
 
+	CURSOR->uiRenderer->Init("cursor_hand");
 	choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
 	name->SetActive(isActive);
 	name2->SetActive(isActive);
@@ -521,6 +568,7 @@ void UIControler::inResearch_inActiveChoiceImgWithBasicDes(Transform* menuTr, UI
 	if (*name2) return;
 	else
 	{
+		CURSOR->uiRenderer->Init("cursor_cursor");
 		name->SetActive(isActive);
 		name3->SetActive(isActive);
 		choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
@@ -532,6 +580,7 @@ void UIControler::inResearch_inActiveChoiceImgWithBasicDes(Transform* menuTr, UI
 void UIControler::inResearch_inBasicDes(Transform* menuTr, UIBase* name, bool* name2, bool isActive)
 {
 	*name2 = isActive;
+	CURSOR->uiRenderer->Init("cursor_cursor");
 	choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
 	choiceImg->SetActive(isActive);
 	name->SetActive(isActive);
@@ -541,6 +590,7 @@ void UIControler::inResearch_inBasicDes(Transform* menuTr, UIBase* name, bool* n
 void UIControler::inResearch_disableInBasicDes(Transform* menuTr, UIBase* name, bool* name2, Button* name3, bool isActive)
 {
 	*name2 = isActive;
+	CURSOR->uiRenderer->Init("cursor_cursor");
 	name3->SetActive(isActive);
 	choiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
 	choiceImg->SetActive(isActive);
@@ -550,6 +600,11 @@ void UIControler::inResearch_disableInBasicDes(Transform* menuTr, UIBase* name, 
 /* 연구 상태에서 [상세 설명] 버튼 ENTER, EXIT */
 void UIControler::inResearch_ActiveInResearchChoiceImg(Transform* menuTr, bool isActive)
 {
+	if (isActive)
+		CURSOR->uiRenderer->Init("cursor_hand");
+	else
+		CURSOR->uiRenderer->Init("cursor_cursor");
+
 	inResearchChoiceImg->transform->SetPosition(menuTr->GetX(), menuTr->GetY());
 	inResearchChoiceImg->SetActive(isActive);
 }
@@ -567,6 +622,12 @@ void UIControler::inResearch_ActiveDetailImg(UIBase* name, bool* name2, bool isA
 void UIControler::inDetailDes_ActiveGoBackImg(bool* name, bool isActive)
 {
 	if (!*name) return;
+
+	if (isActive)
+		CURSOR->uiRenderer->Init("cursor_hand");
+	else
+		CURSOR->uiRenderer->Init("cursor_cursor");
+
 	detailDes_GoBackChoiceImg->SetActive(isActive);
 }
 
@@ -588,6 +649,11 @@ void UIControler::inDetailDes_ReturnToResearch(bool isActive)
 /* 메뉴 상태에서 [돌아가기] 버튼 ENTERT, EXIT */
 void UIControler::inMenu_ActiveChoiceImg_GoBack(bool isActive)
 {
+	if (isActive)
+		CURSOR->uiRenderer->Init("cursor_hand");
+	else
+		CURSOR->uiRenderer->Init("cursor_cursor");
+
 	menu_GoBackChoiceImg->SetActive(isActive);
 }
 
@@ -600,6 +666,11 @@ void UIControler::inMenu_ReturnToGameScene(bool* name, bool isActive)
 /* 메뉴 상태에서 [저장 후 나가기] 버튼 ENTER, EXIT */
 void UIControler::inMenu_AcitveChoiceImg_SaveAndExit(bool isActive)
 {
+	if (isActive)
+		CURSOR->uiRenderer->Init("cursor_hand");
+	else
+		CURSOR->uiRenderer->Init("cursor_cursor");
+
 	menu_SaveAndExitChoiceImg->SetActive(isActive);
 }
 
@@ -615,6 +686,12 @@ void UIControler::inMenu_AcitveRellayEnd(bool* name, bool isAcitve)
 void UIControler::inReallyEnd_Active_CancleImg(bool* name, bool isActive)
 {
 	if (!*name) return;
+
+	if (isActive)
+		CURSOR->uiRenderer->Init("cursor_hand");
+	else
+		CURSOR->uiRenderer->Init("cursor_cursor");
+
 	menu_ReallyEnd_Cancle_Choice->SetActive(isActive);
 }
 
@@ -631,6 +708,12 @@ void UIControler::inReallyEnd_Return_To_MenuState(bool* name, bool isAcitve)
 void UIControler::inReallyEnd_Active_CheckImg(bool* name, bool isActive)
 {
 	if (!*name) return;
+
+	if (isActive)
+		CURSOR->uiRenderer->Init("cursor_hand");
+	else
+		CURSOR->uiRenderer->Init("cursor_cursor");
+
 	menu_ReallyEnd_Check_Choice->SetActive(isActive);
 }
 
@@ -642,6 +725,7 @@ void UIControler::inReallyEnd_Return_To_TilteScene(string SceneName)
 
 void UIControler::EnemyWaveSkip()
 {
+	CURSOR->uiRenderer->Init("cursor_hand");
 	enemyWaveSkip->SetActive(false);			
 	enemyWaveSkipClick->SetActive(true);		
 }

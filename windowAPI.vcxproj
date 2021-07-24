@@ -202,6 +202,7 @@
     <ClInclude Include="MapScene.h" />
     <ClInclude Include="MapTool.h" />
     <ClInclude Include="Math.h" />
+    <ClInclude Include="MouseManager.h" />
     <ClInclude Include="Outline.h" />
     <ClInclude Include="ParticleObject.h" />
     <ClInclude Include="ParticleSystem.h" />
@@ -220,6 +221,7 @@
     <ClInclude Include="randomFunction.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Respawn.h" />
     <ClInclude Include="SampleScene.h" />
@@ -310,6 +312,7 @@
     <ClCompile Include="MapScene.cpp" />
     <ClCompile Include="MapTool.cpp" />
     <ClCompile Include="Math.cpp" />
+    <ClCompile Include="MouseManager.cpp" />
     <ClCompile Include="Outline.cpp" />
     <ClCompile Include="ParticleObject.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
@@ -369,10 +372,21 @@
     <ResourceCompile Include="windowAPI.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\..\바탕 화면\경일\14. 찐 팀 프로젝트\3. 내 작업폴더\game\cursors\cursor.png" />
+    <Image Include="..\..\..\바탕 화면\경일\14. 찐 팀 프로젝트\3. 내 작업폴더\game\cursors\drill.png" />
+    <Image Include="..\..\..\바탕 화면\경일\14. 찐 팀 프로젝트\3. 내 작업폴더\game\cursors\hand.png" />
     <Image Include="..\..\..\바탕 화면\경일\14. 찐 팀 프로젝트\3. 내 작업폴더\아이콘\icon_64.png" />
     <Image Include="Mindustryicon.ico" />
     <Image Include="small.ico" />
+    <Image Include="sprites\cursors\cursor.png" />
+    <Image Include="sprites\cursors\drill.png" />
+    <Image Include="sprites\cursors\hand.png" />
     <Image Include="windowAPI.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cur00001.cur" />
+    <None Include="cursor1.cur" />
+    <None Include="cursor2.cur" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

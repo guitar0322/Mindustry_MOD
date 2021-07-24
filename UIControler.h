@@ -51,7 +51,15 @@ public:
     void SetPreviewTwo(float deltaX, float deltaY);
     void CheckValidTile();
     void LinkPlayerControler(PlayerControler* playerControler) { _playerControler = playerControler; }
+
     /* 시영 */
+    bool* isMineral;
+
+    /* 아이콘 */
+    UIBase* coreDBIcon;                         // 코어 데이터베이스 아이콘
+    UIBase* researchIcon;                       // 연구 아이콘
+    UIBase* inGame_TouchToIcon;                 // 게임화면 내에서 카테고리 아이콘에 ENTER 됐을 경우 나오는 회색 이미지
+
     // 연구
     /* 전체 자원 버튼 (회색) */
     int     all_Resources_Count;
@@ -93,6 +101,15 @@ public:
     UIBase* menu_ReallyEnd_Check_Choice;        // 정말로 종료하시겠습니까? [확인] 선택 상태 이미지
     UIBase* menu_ReallyEnd_Cancle_Idle;         // 정말로 종료하시겠습니까? [취소] 기본 상태 이미지b
     UIBase* menu_ReallyEnd_Cancle_Choice;       // 정말로 종료하시겠습니까? [취소] 선택 상태 이미지
+
+    /* 커서 (광물) 전용 함수 */
+    void inGame_Crash_To_Mineral_Cursor();
+
+    /* 게임 상태에서 [아이콘] ENTERT, EXIT */
+    void inGame_Acitve_Choice_Img(GameObject* clickedButton, bool isAcitve);
+
+    /* 게임 상태에서 [연구 아이콘] CLICK */
+    void inGame_Acitve_State(bool* name, bool isAcitve);
 
     void inResearch_ActiveChoiceImg(Transform* menuTr, bool isActive);
 

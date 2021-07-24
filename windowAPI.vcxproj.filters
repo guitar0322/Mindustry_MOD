@@ -286,6 +286,8 @@
     <ClCompile Include="CameraControler.cpp">
       <Filter>CameraControler</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerConstructLaser.cpp" />
+    <ClCompile Include="MouseManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h" />
@@ -586,6 +588,9 @@
     <ClInclude Include="CameraControler.h">
       <Filter>CameraControler</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerConstructLaser.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="MouseManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="windowAPI.rc" />
@@ -595,6 +600,12 @@
     <Image Include="windowAPI.ico" />
     <Image Include="..\..\..\바탕 화면\경일\14. 찐 팀 프로젝트\3. 내 작업폴더\아이콘\icon_64.png" />
     <Image Include="Mindustryicon.ico" />
+    <Image Include="sprites\cursors\cursor.png" />
+    <Image Include="sprites\cursors\drill.png" />
+    <Image Include="sprites\cursors\hand.png" />
+    <Image Include="..\..\..\바탕 화면\경일\14. 찐 팀 프로젝트\3. 내 작업폴더\game\cursors\cursor.png" />
+    <Image Include="..\..\..\바탕 화면\경일\14. 찐 팀 프로젝트\3. 내 작업폴더\game\cursors\drill.png" />
+    <Image Include="..\..\..\바탕 화면\경일\14. 찐 팀 프로젝트\3. 내 작업폴더\game\cursors\hand.png" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="헤더파일">
@@ -654,5 +665,10 @@
     <Filter Include="CameraControler">
       <UniqueIdentifier>{94b91f6c-578d-4156-885b-7c0595d0845e}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cursor1.cur" />
+    <None Include="cursor2.cur" />
+    <None Include="cur00001.cur" />
   </ItemGroup>
 </Project>

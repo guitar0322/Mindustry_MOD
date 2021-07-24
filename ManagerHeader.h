@@ -13,3 +13,4 @@
 #include "ClipManager.h"
 #include "EffectManager.h"
 #include "UIManager.h"
+#include "MouseManager.h"
