@@ -287,12 +287,6 @@
     <ClCompile Include="Production.cpp">
       <Filter>Prop\Component</Filter>
     </ClCompile>
-    <ClCompile Include="DataManager.cpp">
-      <Filter>Util</Filter>
-    </ClCompile>
-    <ClCompile Include="Distributor.cpp">
-      <Filter>Prop\Object</Filter>
-    </ClCompile>
     <ClCompile Include="Drill.cpp">
       <Filter>Prop\Object</Filter>
     </ClCompile>
@@ -302,10 +296,14 @@
     <ClCompile Include="PropFactory.cpp">
       <Filter>Prop</Filter>
     </ClCompile>
+    <ClCompile Include="MouseManager.cpp" />
     <ClCompile Include="ResDistribute.cpp">
       <Filter>Prop\Component</Filter>
     </ClCompile>
-    <ClCompile Include="MouseManager.cpp" />
+    <ClCompile Include="Distributor.cpp">
+      <Filter>Prop\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="DataManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="commonMacroFunction.h" />
@@ -607,12 +605,6 @@
     <ClInclude Include="Production.h">
       <Filter>Prop\Component</Filter>
     </ClInclude>
-    <ClInclude Include="DataManager.h">
-      <Filter>Util</Filter>
-    </ClInclude>
-    <ClInclude Include="Distributor.h">
-      <Filter>Prop\Object</Filter>
-    </ClInclude>
     <ClInclude Include="Drill.h">
       <Filter>Prop\Object</Filter>
     </ClInclude>
@@ -622,11 +614,15 @@
     <ClInclude Include="PropFactory.h">
       <Filter>Prop</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="MouseManager.h" />
     <ClInclude Include="ResDistribute.h">
       <Filter>Prop\Component</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="MouseManager.h" />
+    <ClInclude Include="Distributor.h">
+      <Filter>Prop\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="DataManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="windowAPI.rc" />
