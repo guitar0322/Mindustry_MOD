@@ -11,9 +11,14 @@ private:
 	float _angle;
 	float _speedX, _speedY;
 	int _damage;
+
 	string _targetTag;
-	//Vector2 _targetTag;
 	Vector2 _firePt;
+
+	//Vector2 _targetTag1;
+	//Vector2 _targetTag;
+	//string _targetTag1;
+	//string _targetTag2;
 
 public:
 	Projectile();
@@ -33,7 +38,11 @@ public:
 	void SetDamage(int damage) { _damage = damage; }
 
 	void SetTargetTag(string targetTag) { _targetTag = targetTag; }
-	//void SetTargetTag(Vector2 targetTag) { _targetTag = targetTag; }
+	//Projecitle
+	//addTagerTag해서 호출될때마다 걔가 벡터에 추가
+	
+	//void SetTargetTag1(Vector2 targetTag){ _targetTag1 = targetTag;}
+	//void SetTargetTag1(string targetTag, string targetTag1) { _targetTag1 = targetTag;  _targetTag2 = targetTag1; }
 
 	void Move();
 

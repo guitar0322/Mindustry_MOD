@@ -67,6 +67,7 @@ void EnemyGroundControler::Update()
 			_targetY = _corePath[_corePath.size() - _tileIdx].second * TILESIZE + 16;
 		}
 	}
+
 	else
 	{
 		_angle = GetAngle(transform->position, _enemyInfo->GetCoreTransform()->position);

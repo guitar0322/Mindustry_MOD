@@ -9,6 +9,7 @@
 #include "EnemyInfo.h"
 #include "EnemyObject.h"
 #include "Astar.h"
+
 EnemyManager::EnemyManager()
 {
 }
@@ -73,20 +74,20 @@ void EnemyManager::SetEnemy()
 		_enemyGround->SetActive(false);
 		_enemyV.push_back(_enemyGround);
 	}
+
 	for (int i = 8; i < 30; i++)
 	{
 		_enemyPlane = new EnemyPlane();
 		_enemyPlane->tag = TAGMANAGER->GetTag("enemy");
-		_enemyPlane->GetComponent<Renderer>()->Init("enemy_atrax");
+		_enemyPlane->GetComponent<Renderer>()->Init("enemy_scepter");
 		_enemyPlane->GetComponent<EnemyInfo>()->SetEnemyManager(this);
 		_enemyPlane->GetComponent<EnemyInfo>()->SetTestCore(_testCore);
 		_enemyPlane->GetComponent<EnemyInfo>()->GetCoreAngle();
-		_enemyPlane->GetComponent<EnemyInfo>()->SetSpeed(400.f);
+		_enemyPlane->GetComponent<EnemyInfo>()->SetSpeed(450);								//450
 		_enemyPlane->GetComponent<EnemyInfo>()->SetHp(100);
 		_enemyPlane->transform->SetScale(0.5f, 0.5f);
 		_enemyPlane->GetComponent<EnemyPlaneControler>()->SetProjectileManager(_projectileManager);
-		//_enemyPlane->GetComponent<EnemyPlaneControler>()->SetPlayerTransform(_player->transform);
-		
+		_enemyPlane->GetComponent<EnemyPlaneControler>()->SetPlayerTransform(_playerTr);
 		_enemyPlane->SetActive(false);
 		_enemyV.push_back(_enemyPlane);
 	}
@@ -189,7 +190,7 @@ void EnemyManager::SpawnEnemy()
 			continue;
 
 		_enemyV[_waveV[_curWave][i]]->SetActive(true);
-		_enemyV[_waveV[_curWave][i]]->transform->SetPosition(100 + 200 * i ,-100);
+		_enemyV[_waveV[_curWave][i]]->transform->SetPosition(100 + 200 * i ,-500);
 	}
 	_enemySpawnTime = 0.f;
 }

@@ -580,6 +580,7 @@ void GameScene::InitClip()
 		CLIPMANAGER->AddClip("enemy_atrax", "sprites/units/enemy/enemy_atrax.png", 188, 329);
 		CLIPMANAGER->AddClip("enemy_dagger_walk", "sprites/units/enemy/enemy_dagger_walk.png", 369, 114, 3, 1, 0.8f);
 		CLIPMANAGER->AddClip("projectile", "sprites/units/enemy/projectile.png", 52, 52);
+		CLIPMANAGER->AddClip("enemy_scepter", "sprites/units/enemy/enemy_scepter.png", 170, 140);
 	}
 }
 
@@ -1814,10 +1815,10 @@ void GameScene::SetEnemyManager()
 	_enemyManager->GetComponent<EnemyManager>()->SetTestCoreTransform(_core);
 	_enemyManager->GetComponent<EnemyManager>()->SetProjectileManager(_projectileManager->GetComponent<ProjectileManager>());
     _enemyManager->GetComponent<EnemyManager>()->SetAstar(_aStar);
+	_enemyManager->GetComponent<EnemyManager>()->SetPlayerTransform(_player->transform);
 	_enemyManager->GetComponent<EnemyManager>()->Init();
     _aStar->LinkEnemyManager(_enemyManager->GetComponent<EnemyManager>());
 	_uiControler->SetEnemyManager(_enemyManager->GetComponent<EnemyManager>());
-	_enemyManager->GetComponent<EnemyManager>()->SetPlayerTransform(_player->transform);
     _propFactory->LinkEnemyManager(_enemyManager->GetComponent<EnemyManager>());
 }
 
