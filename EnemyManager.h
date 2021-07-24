@@ -22,6 +22,7 @@ private:
 	EnemyPlane* _enemyPlane;
 	EnemyGround* _enemyGround;
 
+
 	EnemyInfo* _enemyInfo;
 
 	ProjectileManager* _projectileManager;

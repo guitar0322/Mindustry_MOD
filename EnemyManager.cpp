@@ -22,6 +22,7 @@ void EnemyManager::Init()
 {
 	SetEnemyTime();
 	SetEnemy();
+
 	_curWave = 0;
 	SOUNDMANAGER->addSound("wave", "sounds/wave.ogg", true, false);
 	SOUNDMANAGER->addSound("explosion", "sounds/bang.ogg", true, false);
@@ -29,17 +30,15 @@ void EnemyManager::Init()
 
 void EnemyManager::Update()
 {
-	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
-	{
-		SpawnEnemy();
-	}
 	EnemyTimer();
 	EnemyUpdate();
+
 }
 
 void EnemyManager::Render()
 {
 	EnemyRender();
+
 }
 
 void EnemyManager::SetEnemyTime()
@@ -66,7 +65,7 @@ void EnemyManager::SetEnemy()
 		_enemyGround->GetComponent<EnemyInfo>()->GetCoreAngle();
 		_enemyGround->GetComponent<EnemyInfo>()->SetSpeed(150.f);
 		_enemyGround->GetComponent<EnemyInfo>()->SetHp(100);
-		_enemyGround->transform->SetScale(0.5f, 0.5f);
+		_enemyGround->transform->SetScale(1.5f, 1.5f);
 		_enemyGround->GetComponent<EnemyGroundControler>()->SetProjectileManager(_projectileManager);
 		_enemyGround->GetComponent<EnemyGroundControler>()->SetAstar(_aStar);
 		_enemyGround->GetComponent<BoxCollider>()->SetSize(48, 48);
@@ -155,6 +154,8 @@ void EnemyManager::EnemyTimer()
 			_enemySpawnTime = 124.f;
 		}
 	}
+	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
+		SpawnEnemy();
 }
 
 void EnemyManager::EnemyUpdate()

@@ -39,27 +39,30 @@ void Projectile::Move()
 
 void Projectile::OnTriggerEnter(GameObject* gameObject)
 {
-	if (gameObject->tag == TAGMANAGER->GetTag(_targetTag))
+	for (int i = 0; i < _targetTag.size(); i++)
 	{
-		if (_targetTag.compare("player") == 0)
+		if (gameObject->tag == TAGMANAGER->GetTag(_targetTag[i]))
 		{
-			this->gameObject->SetActive(false);
-			EFFECTMANAGER->ActiveSmallParticle(transform->GetX(), transform->GetY());
-			gameObject->GetComponent<PlayerControler>()->Hit(_damage);
+			if (_targetTag[i].compare("player") == 0)
+			{
+				this->gameObject->SetActive(false);
+				EFFECTMANAGER->ActiveSmallParticle(transform->GetX(), transform->GetY());
+				gameObject->GetComponent<PlayerControler>()->Hit(_damage);
 
-		}
-		if (_targetTag.compare("enemy") == 0)
-		{
-			this->gameObject->SetActive(false);
-			EFFECTMANAGER->ActiveSmallParticle(transform->GetX(), transform->GetY());
-			gameObject->GetComponent<EnemyInfo>()->Hit(_damage);
+			}
+			if (_targetTag[i].compare("enemy") == 0)
+			{
+				this->gameObject->SetActive(false);
+				EFFECTMANAGER->ActiveSmallParticle(transform->GetX(), transform->GetY());
+				gameObject->GetComponent<EnemyInfo>()->Hit(_damage);
 
-		}
-		if (_targetTag.compare("prop") == 0)
-		{
-			this->gameObject->SetActive(false);
-			EFFECTMANAGER->ActiveSmallParticle(transform->GetX(), transform->GetY());
-			gameObject->GetComponent<PropStat>()->Hit(_damage);
+			}
+			if (_targetTag[i].compare("prop") == 0)
+			{
+				this->gameObject->SetActive(false);
+				EFFECTMANAGER->ActiveSmallParticle(transform->GetX(), transform->GetY());
+				gameObject->GetComponent<PropStat>()->Hit(_damage);
+			}
 		}
 	}
 }

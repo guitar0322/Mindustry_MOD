@@ -189,7 +189,6 @@ void PlayerControler::Render()
 
 	_playerLaser->Render();
 	playerConstructLaser->Render();
-
 }
 
 void PlayerControler::KeyHandle()
@@ -462,7 +461,6 @@ void PlayerControler::ShootResoucesLaser()
 				}
 			}
 		}
-
 	}
 
 	_playerLaser->Update();

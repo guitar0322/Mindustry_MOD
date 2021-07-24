@@ -649,7 +649,7 @@ void GameScene::InitClip()
 		CLIPMANAGER->AddClip("player_weapon_R", "player/small-basic-weapon-R.png", 48, 48);
 	}
 	CLIPMANAGER->AddClip("button_select", "sprites/ui/button-select.10.png", 52, 52);
-
+		
     /* 시영 */
     /* 연구 클립 */
     {
@@ -737,9 +737,13 @@ void GameScene::InitClip()
 	{
 		CLIPMANAGER->AddClip("core", "sprites/blocks/storage/core.png", 96, 96);
 		CLIPMANAGER->AddClip("enemy_atrax", "sprites/units/enemy/enemy_atrax.png", 188, 329);
-		CLIPMANAGER->AddClip("enemy_dagger_walk", "sprites/units/enemy/enemy_dagger_walk.png", 369, 114, 3, 1, 0.3f);
+		CLIPMANAGER->AddClip("enemy_dagger_walk", "sprites/units/enemy/enemy_dagger_walk1.png", 200, 33, 5, 1, 0.3f);
 		CLIPMANAGER->AddClip("projectile", "sprites/units/enemy/projectile.png", 52, 52);
 		CLIPMANAGER->AddClip("enemy_scepter", "sprites/units/enemy/enemy_scepter.png", 170, 140);
+
+		CLIPMANAGER->AddClip("dagger_weapon_left", "sprites/units/enemy/dagger_weapon_left.png",	7,21);
+		CLIPMANAGER->AddClip("dagger_weapon_right", "sprites/units/enemy/dagger_weapon_right.png", 7,21);
+		CLIPMANAGER->AddClip("enemy_scepter_shadow", "sprites/units/enemy/scepter-base.png", 128, 128);
 	}
 }
 

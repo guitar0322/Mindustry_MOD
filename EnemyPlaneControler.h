@@ -18,6 +18,8 @@ private:
 	Transform* _coreTransform;
 	ProjectileManager* _projectileManager;
 	Transform* _playerTr;
+	ImageObject* _shadow;
+
 
 public:
 	EnemyPlaneControler();
@@ -25,9 +27,9 @@ public:
 
 	virtual void Init();
 	virtual void Update();
-
+	virtual void Render();
+	void SetShadow();
 	void RandomAngle();				// Core와의 범위내에서 angle값 바꿔주는 함수
-	void Test();
 
 	void SetTestCore(GameObject* testCore) { _testCore = testCore; _coreTransform = testCore->transform;}
 	void SetProjectileManager(ProjectileManager* projectileManager) { _projectileManager = projectileManager; }

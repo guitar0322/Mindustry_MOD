@@ -31,6 +31,7 @@ void EnemyPlaneControler::Init()
 
 	_deltaAngle = 0.f;
 	_enemyRadius = 85.f;
+	SetShadow();
 }
 
 void EnemyPlaneControler::Update()
@@ -38,6 +39,10 @@ void EnemyPlaneControler::Update()
 	_angle = _enemyInfo->GetCoreAngle();						//deltaAngle값을 저장
 	_coreTransform = _enemyInfo->GetCoreTransform();
 	_speed = _enemyInfo->GetSpeed();
+	_shadow->Update();
+
+	transform->GetChild(0)->SetPosition(transform->GetX() - 50, transform->GetY() + 50 );
+	transform->GetChild(0)->SetAngle(transform->GetAngle());
 
 	if (_chaseCore)
 	{
@@ -80,6 +85,24 @@ void EnemyPlaneControler::Update()
 	transform->SetAngle(ConvertAngleD2D(_deltaAngle));
 }
 
+void EnemyPlaneControler::Render()
+{
+	_shadow->Render();
+}
+
+void EnemyPlaneControler::SetShadow()
+{
+	_shadow = new ImageObject();
+	_shadow->Init();
+	_shadow->renderer->Init("enemy_scepter_shadow");
+	_shadow->transform->SetScale(0.65f, 0.65f);
+	_shadow->renderer->SetAlpha(0.5f);
+	transform->AddChild(_shadow->transform);
+
+	transform->GetChild(0)->SetPosition(transform->GetX() - 50, transform->GetY() + 50);
+	transform->GetChild(0)->SetAngle(ConvertAngleD2D(transform->GetAngle()));
+}
+
 
 void EnemyPlaneControler::RandomAngle()
 {
@@ -89,5 +112,4 @@ void EnemyPlaneControler::RandomAngle()
 	}
 	else
 		_deltaAngle -= 1.f * TIMEMANAGER->getElapsedTime();					//deltaAngle
-
 }
