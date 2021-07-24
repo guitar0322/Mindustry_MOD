@@ -115,7 +115,7 @@ void PlayerControler::Update()
 					_weaponRTrackRadius = DEFAULT_WEAPON_DISTANCE;
 			}
 		}
-
+		
 		if (KEYMANAGER->isStayKeyDown(VK_LBUTTON))
 		{
 			_worldX = ScreenToWorld(_ptMouse).x;
@@ -152,7 +152,7 @@ void PlayerControler::Update()
 				}
 			}
 		}
-
+		
 		if (_isCollecting == true)
 		{
 			if (KEYMANAGER->isOnceKeyUp(VK_RBUTTON))
@@ -462,7 +462,7 @@ void PlayerControler::ShootResoucesLaser()
 			}
 		}
 	}
-
+	
 	_playerLaser->Update();
 
 	if (_playerLaser->GetLaserDistance() >= 400)

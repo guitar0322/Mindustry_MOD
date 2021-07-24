@@ -20,6 +20,7 @@ playGround::~playGround()
 //초기화는 여기다 하세요 제발
 HRESULT playGround::init()
 {
+	ShowCursor(false);
 	CLIPMANAGER->AddClip("ui_frame", "sprites/ui/pane-build.png", 378, 318);
 
 	gameNode::init(true);
@@ -90,6 +91,7 @@ void playGround::update()
 	//	_camShakeFrame = 0;
 	//	_mainCam.camera->Shake(6, 2); 
 	//}
+	MOUSEMANAGER->Update();
 	oldTime = curTime;
 	curTime = clock();
 	SCENEMANAGER->Update();
@@ -114,6 +116,8 @@ void playGround::render()
 	//demoParticleSys->Render();
 
 	SCENEMANAGER->Render();
+	MOUSEMANAGER->Render();
+
 	wstring fps = L"FPS : ";
 	fps.append(to_wstring(TIMEMANAGER->getFPS()));
 	D2DRENDERER->RenderText(10, WINSIZEY - 50, fps, 30, L"맑은고딕", D2DRenderer::DefaultBrush::Blue);

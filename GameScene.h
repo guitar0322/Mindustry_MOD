@@ -35,7 +35,6 @@ private:
     Item* testCopper;
 	/* ============================================*/
 	/* =========== 플레이어 부분 -> 유림 ============*/
-
 	Player* _player;
 	ImageObject* _playerWeaponL;
 	ImageObject* _playerWeaponR;
@@ -87,6 +86,15 @@ private:
 
     int selectCategoryIdx;
 
+    /* 시영 - 게임부분 */ 
+    // 커서
+    bool    _isMineral;
+
+    /* 아이콘 */
+    UIBase  _coreDBIcon;                     // 코어 데이터베이스 아이콘
+    UIBase  _researchIcon;                   // 연구 아이콘
+    UIBase  _inGame_TouchToIcon;             // 게임화면 내에서 카테고리 아이콘에 ENTER 됐을 경우 나오는 회색 이미지
+
     /* 시영 - 연구부분 */
     bool    _lockDes;
     bool    _research;                       // 연구 상태
@@ -106,6 +114,7 @@ private:
     wstring _all_Resources_Lead_Count;
     wstring _all_Resources_Scrap_Count;
 
+    UIBase  _research_bg;                    // 연구상태 배경화면
     UIBase  _choiceImg;
     UIBase  _lockImg;                        // 연구 상태 자물쇠 이미지
     UIBase  _inResearchChoiceImg;            // 연구상태 내 기본설명 볼 때 i에 마우스 충돌이 일어났을 경우에 나오는 회색선택창
@@ -227,7 +236,6 @@ public:
 	void ResourcesUpdate();
 	void ResourcesRender();
 
-    /* 시영 */
     // 연구
     void researchInitUI();
     void researchUpdate();

@@ -37,7 +37,11 @@ HRESULT GameMap::Init()
 
 void GameMap::Update()
 {
-
+	//엔터누르면 저장된 맵 로드
+	if (KEYMANAGER->isOnceKeyDown(VK_RETURN))
+	{
+		Load();
+	}
 }
 
 void GameMap::Render()
