@@ -1,4 +1,4 @@
-ï»¿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -170,6 +170,7 @@
     <ClInclude Include="CoreComponent.h" />
     <ClInclude Include="D2DRenderer.h" />
     <ClInclude Include="DataManager.h" />
+    <ClInclude Include="Distributor.h" />
     <ClInclude Include="Drill.h" />
     <ClInclude Include="Duo.h" />
     <ClInclude Include="EditableText.h" />
@@ -222,6 +223,7 @@
     <ClInclude Include="randomFunction.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="ResDistribute.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Respawn.h" />
@@ -284,6 +286,7 @@
     <ClCompile Include="D2DRenderer+Draw.cpp" />
     <ClCompile Include="D2DRenderer.cpp" />
     <ClCompile Include="DataManager.cpp" />
+    <ClCompile Include="Distributor.cpp" />
     <ClCompile Include="Drill.cpp" />
     <ClCompile Include="Duo.cpp" />
     <ClCompile Include="EditableText.cpp" />
@@ -332,6 +335,7 @@
     <ClCompile Include="PropStat.cpp" />
     <ClCompile Include="Rect.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="ResDistribute.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Respawn.cpp" />
     <ClCompile Include="SampleScene.cpp" />
@@ -376,10 +380,10 @@
     <ResourceCompile Include="windowAPI.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\ë°”íƒ• í™”ë©´\ê²½ì¼\14. ì° íŒ€ í”„ë¡œì íŠ¸\3. ë‚´ ìž‘ì—…í´ë”\game\cursors\cursor.png" />
-    <Image Include="..\..\..\ë°”íƒ• í™”ë©´\ê²½ì¼\14. ì° íŒ€ í”„ë¡œì íŠ¸\3. ë‚´ ìž‘ì—…í´ë”\game\cursors\drill.png" />
-    <Image Include="..\..\..\ë°”íƒ• í™”ë©´\ê²½ì¼\14. ì° íŒ€ í”„ë¡œì íŠ¸\3. ë‚´ ìž‘ì—…í´ë”\game\cursors\hand.png" />
-    <Image Include="..\..\..\ë°”íƒ• í™”ë©´\ê²½ì¼\14. ì° íŒ€ í”„ë¡œì íŠ¸\3. ë‚´ ìž‘ì—…í´ë”\ì•„ì´ì½˜\icon_64.png" />
+    <Image Include="..\..\..\¹ÙÅÁ È­¸é\°æÀÏ\14. Âð ÆÀ ÇÁ·ÎÁ§Æ®\3. ³» ÀÛ¾÷Æú´õ\game\cursors\cursor.png" />
+    <Image Include="..\..\..\¹ÙÅÁ È­¸é\°æÀÏ\14. Âð ÆÀ ÇÁ·ÎÁ§Æ®\3. ³» ÀÛ¾÷Æú´õ\game\cursors\drill.png" />
+    <Image Include="..\..\..\¹ÙÅÁ È­¸é\°æÀÏ\14. Âð ÆÀ ÇÁ·ÎÁ§Æ®\3. ³» ÀÛ¾÷Æú´õ\game\cursors\hand.png" />
+    <Image Include="..\..\..\¹ÙÅÁ È­¸é\°æÀÏ\14. Âð ÆÀ ÇÁ·ÎÁ§Æ®\3. ³» ÀÛ¾÷Æú´õ\¾ÆÀÌÄÜ\icon_64.png" />
     <Image Include="Mindustryicon.ico" />
     <Image Include="small.ico" />
     <Image Include="sprites\cursors\cursor.png" />
