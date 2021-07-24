@@ -20,7 +20,7 @@ void MapTool::Init()
 			tileUI[i* TILESETX + j].Init();
 			tileUI[i * TILESETX + j].uiRenderer->Init(tileName[i * TILESETX + j]);
 			tileUI[i * TILESETX + j].uiMouseEvent->enable = false;
-			tileUI[i* TILESETX + j].transform->SetPosition(WINSIZEX - 40*j -50, 100 + 40*i);
+			tileUI[i* TILESETX + j].transform->SetPosition(WINSIZEX - 40*j - 70, 100 + 40*i);
 			
 			//각 타일에 이미지 부여
 		}
@@ -325,6 +325,11 @@ void MapTool::SetTileImage()
 
 	//스페이스
 	CLIPMANAGER->AddClip("space", "sprites/blocks/environment/space.png", 32, 32);
+
+	/*WALL*/
+
+
+
 
 	/*======자원======*/
 	//구리

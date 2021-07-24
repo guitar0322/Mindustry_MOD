@@ -919,8 +919,6 @@ void GameScene::PlayerInit()
     _playerShadow->SetActive(true);
     _player->transform->AddChild(_playerShadow->transform);
     // ===========================================
-	
-
 	_player->controler->SetGameInfo(_gameInfo);
 	_player->controler->SetGameMap(_gameMap);
 }

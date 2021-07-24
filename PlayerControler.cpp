@@ -19,7 +19,6 @@ void PlayerControler::Init()
 	_angleSpeed = 10.f;
 	_hp = 92;
 	hpUI = 0;
-	reduceHP = 0;
 	reduceTime = 0;
 	_copperAmount, _leadAmount = 0;
 	_boosterTime = 0;
@@ -518,6 +517,9 @@ void PlayerControler::Hit(float damage)
 
 	if (_hp <= 0 && _isDead == false)
 	{
+		_hp = 0;
+		hpUI = 92;
+		playerHpUI.uiRenderer->SetClipY(hpUI);
 		Dead();
 	}
 }
@@ -540,7 +542,7 @@ void PlayerControler::Respawn()
 	gameObject->SetActive(true);
 	transform->GetChild(3)->gameObject->SetActive(true);
 	transform->GetChild(4)->gameObject->SetActive(true);
-	_hp = 100;
+	_hp = 92;
 	_isDead = false;
 }
 
@@ -622,22 +624,13 @@ void PlayerControler::PlayerUIUpdate()
 
 void PlayerControler::PlayerHpAlpha()
 {
-	float reduceHP = 0;
-	float standNum = 1;
-	
-	if (_isHit)
+	reduceTime += TIMEMANAGER->getElapsedTime();
+	if (reduceTime >= 0.05f)
 	{
-		if (reduceHP > _damage)
-		{
-			reduceHP = 0;
-			hpUI = abs(_hp - 92 - _damage);
-
-		}
-		else
-		{
-			reduceHP += standNum * 0.05f;
-			hpUI += reduceHP;
-		}
-
+		reduceTime = 0;
+		if (hpUI < 92 - _hp)
+			hpUI += 1;
+		else if(hpUI > 92 - _hp)
+			hpUI -= 2;
 	}
 }
