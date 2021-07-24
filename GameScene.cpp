@@ -618,6 +618,10 @@ void GameScene::InitClip()
         CLIPMANAGER->AddClip("conveyor_cross", "sprites/blocks/distribution/conveyors/conveyor-cross.png", 128, 32, 4, 1, 0.06f);
     }
 
+    //분배기 클립
+    {
+        CLIPMANAGER->AddClip("distributor", "sprites/blocks/distribution/router.png", 32, 32);
+    }
     //드릴 클립
     {
         CLIPMANAGER->AddClip("drill_body", "sprites/blocks/drills/mechanical-drill.png", 64, 64);

@@ -189,7 +189,7 @@ void EnemyManager::SpawnEnemy()
 			continue;
 
 		_enemyV[_waveV[_curWave][i]]->SetActive(true);
-		_enemyV[_waveV[_curWave][i]]->transform->SetPosition(100 + 200 * i ,-100);
+		_enemyV[_waveV[_curWave][i]]->transform->SetPosition(10 * 32 , 2 * 32);
 	}
 	_enemySpawnTime = 0.f;
 }

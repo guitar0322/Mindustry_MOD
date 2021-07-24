@@ -147,12 +147,13 @@ bool Astar::IsValidNode(int x, int y)
         }
 
     }
-    //애너미가 있는곳도 경로에서 제외시켜야한다
-    //현재 애너미 웨이브를 받아온다
-    //애너미의 충돌 박스가 차지하고 있는 타일들을 구한다.
-    //자기자신은 제외시킨다.
-    //호출자 포인터를 가지고 있어야한다
-    //
+
+    tagTile tileInfo = _gameMap->GetTileInfo(y * TILENUMX + x);
+    if ((tileInfo.environment >= ENV_ICE_WALL1 && tileInfo.environment <= ENV_ICE_WALL2) || tileInfo.environment >= ENV_NONE)
+    {
+        return false;
+    }
+
     Prop* prop = _propContainer->GetPropMap(y * TILENUMX + x);
     if (prop != nullptr)
     {

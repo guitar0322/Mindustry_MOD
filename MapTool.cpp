@@ -379,19 +379,20 @@ void MapTool::SetTileName()
 	tileName[idx++] = "ice3";
 	tileName[idx++] = "ice_wall1";
 	tileName[idx++] = "ice_wall2";
-	tileName[idx++] = "copper1";
-	tileName[idx++] = "copper3";		//24
+	tileName[idx++] = "space";			
+	tileName[idx++] = "space";			//24
+	tileName[idx++] = "space";			
+	tileName[idx++] = "copper1";		//26
+	tileName[idx++] = "copper3";		
 	tileName[idx++] = "copper3";
 	tileName[idx++] = "lead1";
 	tileName[idx++] = "lead2";
-	tileName[idx++] = "lead3";
-	tileName[idx++] = "scrap1";			//29
+	tileName[idx++] = "lead3";			//31
+	tileName[idx++] = "scrap1";			
 	tileName[idx++] = "scrap2";
-	tileName[idx++] = "scrap3";
+	tileName[idx++] = "scrap3";			//34
 	tileName[idx++] = "enemy_spawn";
-	tileName[idx++] = "space";			//33
-	tileName[idx++] = "space";			//33
-	tileName[idx++] = "space";			//33
+
 
 
 	//switch (selectNum)
@@ -626,9 +627,9 @@ bool MapTool::RectinTile()
 		{
 			_undoHash.insert(pair<int, tagTile>(i * TILENUMX + j, tileInfo[i * TILENUMX + j]));
 
-			if (_selectTile >= 23 && _selectTile <= 31)
+			if (_selectTile >= 26 && _selectTile <= 34)
 			{
-				tileInfo[i * TILENUMX + j].resources = (RESOURCES)(_selectTile - 23);
+				tileInfo[i * TILENUMX + j].resources = (RESOURCES)(_selectTile - 26);
 				resourcesTile[i * TILENUMX + j].renderer->Init(tileName[_selectTile]);
 			}
 			else
@@ -675,9 +676,9 @@ bool MapTool::MouseInTile()
 	{
 		if (_isDraw)
 		{
-			if (_selectTile >= 23 && _selectTile <= 31)
+			if (_selectTile >= 26 && _selectTile <= 34)
 			{
-				tileInfo[tileY * TILENUMX + tileX].resources = (RESOURCES)(_selectTile - 23);
+				tileInfo[tileY * TILENUMX + tileX].resources = (RESOURCES)(_selectTile - 26);
 				resourcesTile[tileY * TILENUMX + tileX].renderer->Init(tileName[_selectTile]);
 			}
 			else

@@ -5,8 +5,9 @@
 #include "EnemyManager.h"
 #include "EnemyObject.h"
 #include "ProjectileManager.h"
+#include "Item.h";
 Turret::Turret()
-	:_preWave(-1)
+	:_preWave(-1), _bulletNum(0)
 {
 }
 
@@ -39,9 +40,18 @@ void Turret::Render()
 
 }
 
+void Turret::OnTriggerEnter(GameObject* gameObject)
+{
+	if (gameObject->tag != TAGMANAGER->GetTag("resource"))
+		return;
+
+	gameObject->SetActive(false);
+	_bulletNum++;
+}
+
 void Turret::Fire()
 {
-	if (_curWaveEnemyV[_nearEnemyIdx]->isActive == false)
+	if (_curWaveEnemyV[_nearEnemyIdx]->isActive == false || _bulletNum == 0)
 	{
 		return;
 	}
@@ -53,6 +63,7 @@ void Turret::Fire()
 		_projectileManager->FireProjectile(transform->GetX() + cosf(angle) * _barrelLength, transform->GetY() - sinf(angle) * _barrelLength, ConvertAngleD2D(angle), PLAYER);
 		EFFECTMANAGER->EmissionEffect("shoot", transform->GetX() + cosf(angle) * _barrelLength, transform->GetY() - sinf(angle) * _barrelLength, ConvertAngleD2D(angle));
 		_attackSpeed = 0;
+		_bulletNum--;
 	}
 }
 void Turret::ProbeEnemy()

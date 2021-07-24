@@ -205,8 +205,6 @@
     <ClCompile Include="ShootingScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="PropContainer.cpp" />
-    <ClCompile Include="PropFactory.cpp" />
     <ClCompile Include="EditText.cpp">
       <Filter>Component\Framwork</Filter>
     </ClCompile>
@@ -268,7 +266,6 @@
       <Filter>Enemy</Filter>
     </ClCompile>
     <ClCompile Include="CameraControler.cpp" />
-    <ClCompile Include="Drill.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Core.cpp">
@@ -292,6 +289,21 @@
     </ClCompile>
     <ClCompile Include="DataManager.cpp">
       <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Distributor.cpp">
+      <Filter>Prop\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Drill.cpp">
+      <Filter>Prop\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="PropContainer.cpp">
+      <Filter>Prop</Filter>
+    </ClCompile>
+    <ClCompile Include="PropFactory.cpp">
+      <Filter>Prop</Filter>
+    </ClCompile>
+    <ClCompile Include="ResDistribute.cpp">
+      <Filter>Prop\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -508,8 +520,6 @@
     <ClInclude Include="ShootingScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="PropContainer.h" />
-    <ClInclude Include="PropFactory.h" />
     <ClInclude Include="EditText.h">
       <Filter>Component\Framwork</Filter>
     </ClInclude>
@@ -575,7 +585,6 @@
       <Filter>헤더파일</Filter>
     </ClInclude>
     <ClInclude Include="CameraControler.h" />
-    <ClInclude Include="Drill.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Core.h">
@@ -599,6 +608,21 @@
     </ClInclude>
     <ClInclude Include="DataManager.h">
       <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Distributor.h">
+      <Filter>Prop\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Drill.h">
+      <Filter>Prop\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="PropContainer.h">
+      <Filter>Prop</Filter>
+    </ClInclude>
+    <ClInclude Include="PropFactory.h">
+      <Filter>Prop</Filter>
+    </ClInclude>
+    <ClInclude Include="ResDistribute.h">
+      <Filter>Prop\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
