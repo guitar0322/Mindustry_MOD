@@ -82,11 +82,14 @@ using namespace HDY_UTIL;
 #define CLIPMANAGER ClipManager::getSingleton()
 #define EFFECTMANAGER EffectManager::getSingleton()
 #define UIMANAGER UIManager::getSingleton()
+#define MOUSEMANAGER MouseManager::getSingleton()
 #define D2DRENDERER D2DRenderer::GetInstance()
 
 #define MainCam CAMERAMANAGER->GetMainCam()
 #define BackBuffer D2DRenderer::GetInstance()->GetBackBuffer()
 #define StaticBuffer D2DRenderer::GetInstance()->GetStaticBuffer()
+#define CURSOR MouseManager::getSingleton()->GetMouseCursor()
+
 #define MAPWIDTH BackBuffer->GetSize().width
 #define MAPHEIGHT BackBuffer->GetSize().height
 

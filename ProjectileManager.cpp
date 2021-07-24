@@ -23,7 +23,8 @@ void ProjectileManager::Init()
 		enemyPlaneProjectile->name = L"plane_projecilte";
 		enemyPlaneProjectile->GetProjectileComponent()->SetSpeed(1000.f);
 		enemyPlaneProjectile->GetProjectileComponent()->SetDamage(20);
-		enemyPlaneProjectile->GetProjectileComponent()->SetTargetTag("player");
+		enemyPlaneProjectile->GetProjectileComponent()->AddTargetTag("player");
+		enemyPlaneProjectile->GetProjectileComponent()->AddTargetTag("prop");
 		enemyPlaneProjectile->GetColliderComponent()->SetSize(16, 16);
 		enemyPlaneProjectile->SetActive(false);
 		_enemyPlaneProjectileV.push_back(enemyPlaneProjectile);
@@ -35,7 +36,8 @@ void ProjectileManager::Init()
 		enemyGroundProjectile->GetRendererComponent()->Init("projectile");
 		enemyGroundProjectile->GetProjectileComponent()->SetSpeed(1000.f);
 		enemyGroundProjectile->GetProjectileComponent()->SetDamage(5);
-		enemyGroundProjectile->GetProjectileComponent()->SetTargetTag("player");
+		enemyGroundProjectile->GetProjectileComponent()->AddTargetTag("player");
+		enemyGroundProjectile->GetProjectileComponent()->AddTargetTag("prop");
 		enemyGroundProjectile->GetColliderComponent()->SetSize(16, 16);
 		enemyGroundProjectile->SetActive(false);
 		_enemyGroundProjectileV.push_back(enemyGroundProjectile);
@@ -49,7 +51,7 @@ void ProjectileManager::Init()
 		playerProjectile->transform->SetScale(0.7f, 0.7f);
 		playerProjectile->GetProjectileComponent()->SetSpeed(800.f);
 		playerProjectile->GetProjectileComponent()->SetDamage(5);
-		playerProjectile->GetProjectileComponent()->SetTargetTag("enemy");
+		playerProjectile->GetProjectileComponent()->AddTargetTag("enemy");
 		playerProjectile->GetColliderComponent()->SetSize(16, 16);
 		playerProjectile->SetActive(false);
 		_playerProjectileV.push_back(playerProjectile);

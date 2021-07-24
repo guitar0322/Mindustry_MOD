@@ -17,6 +17,7 @@
 #include "Astar.h"
 #include "Respawn.h"
 #include "DataManager.h"
+#include "resource.h"
 
 HRESULT GameScene::Init()
 {
@@ -45,6 +46,7 @@ HRESULT GameScene::Init()
     _gameInfo = new GameInfo();
     _gameInfo->Init();
     _gameInfo->AddResource(COPPER, 500);
+    // 자원추가 (시영)
     _gameInfo->AddResource(LEAD, 0);
     _gameInfo->AddResource(SCRAP, 0);
     _dataManager->LinkGameInfo(_gameInfo);
@@ -63,6 +65,7 @@ HRESULT GameScene::Init()
     _resourceManager->Init();
     _propFactory->LinkResourceManager(_resourceManager);
     _dataManager->LinkResourceManager(_resourceManager);
+    _propContainer->LinkResourceManager(_resourceManager);
 
     _uiControler = new UIControler();
     _uiControler->Init();
@@ -107,6 +110,9 @@ HRESULT GameScene::Init()
 
     // BOOL 변수 초기화 
     {
+        // 커서 
+        _isMineral = true;
+
         /* 연구부분 */
         _lockDes = false;
         _research = false;
@@ -124,6 +130,12 @@ HRESULT GameScene::Init()
 
     // _uiControler 이미지 연동
     {
+        _uiControler->isMineral = &_isMineral;
+        /* 게임화면 내에서 카테고리 아이콘에 ENTER 됐을 경우 나오는 회색 이미지 */
+        _uiControler->coreDBIcon = &_coreDBIcon;
+        _uiControler->researchIcon = &_researchIcon;
+        _uiControler->inGame_TouchToIcon = &_inGame_TouchToIcon;
+
         // 연구
         /* 전체 자원 버튼 (회색) */
         _uiControler->all_Resources_Count = _all_Resources_Count;
@@ -337,6 +349,13 @@ void GameScene::Update()
         _railIcon.Update();
         _turretIcon.Update();
         _productionIcon.Update();
+
+        // 코어 데이터베이스, 연구 아이콘 추가 (시영)
+        _coreDBIcon.Update();
+        _researchIcon.Update();
+
+        // 게임화면 내에서 카테고리 아이콘에 ENTER 됐을 경우 나오는 회색 이미지 (시영)
+        _inGame_TouchToIcon.Update();
     }
 
     //설치물 아이콘 업데이트
@@ -345,6 +364,7 @@ void GameScene::Update()
         _mechanicDrillIcon.Update();
         _duoIcon.Update();
         _conveyorIcon.Update();
+        _distributorIcon.Update();
     }
 
     _propFactory->Update();
@@ -405,8 +425,6 @@ void GameScene::Update()
         if (_gameInfo->GetResourceAmount(SCRAP) >= 1)
             _all_Resources_Scrap_Count = to_wstring(_gameInfo->GetResourceAmount(SCRAP));
 
-        if (KEYMANAGER->isOnceKeyDown(VK_F1)) _research = true;
-        if (KEYMANAGER->isOnceKeyDown(VK_F2)) _research = false;
         if (_research)
         {
             researchUpdate();
@@ -471,6 +489,7 @@ void GameScene::Update()
 void GameScene::Render()
 {
     MainCam->StaticToBackBuffer();
+
 	_gameMap->Render();
     
     _propFactory->Render();
@@ -502,11 +521,17 @@ void GameScene::Render()
     
     //카테고리 아이콘 렌더
     {
+        // 게임화면 내에서 카테고리 아이콘에 ENTER 됐을 경우 나오는 회색 이미지 (시영)
+        _inGame_TouchToIcon.Render();
+
         _buildingCategoryFrame.Render();
         _defenseIcon.Render();
         _railIcon.Render();
         _turretIcon.Render();
         _productionIcon.Render();
+        // 코어 데이터베이스, 연구 아이콘 추가 (시영)
+        _coreDBIcon.Render();
+        _researchIcon.Render();
     }
     //설치물 아이콘 렌더
     {
@@ -514,6 +539,7 @@ void GameScene::Render()
         _mechanicDrillIcon.Render();
         _duoIcon.Render();
         _conveyorIcon.Render();
+        _distributorIcon.Render();
     }
     _categorySelect.Render();
     _propSelect.Render();
@@ -574,7 +600,6 @@ void GameScene::Render()
 	/* ================================여기 만지지 마세요 ========================================*/
     //210719 유림 수정
 	StringRender();
-
 }
 
 void GameScene::Release()
@@ -615,6 +640,12 @@ void GameScene::InitClip()
 		CLIPMANAGER->AddClip("production_icon", "icons/production.png", 32, 32);
 		CLIPMANAGER->AddClip("rail_icon", "icons/distribution.png", 32, 32);
 		CLIPMANAGER->AddClip("defense_icon", "icons/defense.png", 32, 32);
+        // 코어 데이터베이스, 연구 아이콘 추가 (시영)
+        CLIPMANAGER->AddClip("core_db_icon", "sprites/game/book.png", 14, 14);
+        CLIPMANAGER->AddClip("research_icon", "sprites/game/tree.png", 14, 14);
+
+        // 게임화면 내에서 카테고리 아이콘에 ENTER 됐을 경우 나오는 회색 이미지
+        CLIPMANAGER->AddClip("in_game_touch_to_icon", "sprites/game/in_game_touch_to_icon.png", 48, 48);
 	}
 
 	//설치물 아이콘 클립
@@ -667,7 +698,7 @@ void GameScene::InitClip()
 		CLIPMANAGER->AddClip("player_weapon_R", "player/small-basic-weapon-R.png", 48, 48);
 	}
 	CLIPMANAGER->AddClip("button_select", "sprites/ui/button-select.10.png", 52, 52);
-
+		
     /* 시영 */
     /* 연구 클립 */
     {
@@ -680,6 +711,7 @@ void GameScene::InitClip()
         CLIPMANAGER->AddClip("all_resources_event", "sprites/game/all_resources_event.png", 200, 51);
 
         // 연구
+        CLIPMANAGER->AddClip("research_bg", "sprites/game/research_background.png", 1600, 1010);
         CLIPMANAGER->AddClip("research_choice", "sprites/game/choice.png", 75, 56);
         CLIPMANAGER->AddClip("research_lock", "sprites/game/lock.png", 74, 56);
         CLIPMANAGER->AddClip("in_research_choice", "sprites/game/in_research_choice.png", 50, 60);
@@ -755,8 +787,13 @@ void GameScene::InitClip()
 	{
 		CLIPMANAGER->AddClip("core", "sprites/blocks/storage/core.png", 96, 96);
 		CLIPMANAGER->AddClip("enemy_atrax", "sprites/units/enemy/enemy_atrax.png", 188, 329);
-		CLIPMANAGER->AddClip("enemy_dagger_walk", "sprites/units/enemy/enemy_dagger_walk.png", 369, 114, 3, 1, 0.3f);
+		CLIPMANAGER->AddClip("enemy_dagger_walk", "sprites/units/enemy/enemy_dagger_walk1.png", 200, 33, 5, 1, 0.3f);
 		CLIPMANAGER->AddClip("projectile", "sprites/units/enemy/projectile.png", 52, 52);
+		CLIPMANAGER->AddClip("enemy_scepter", "sprites/units/enemy/enemy_scepter.png", 170, 140);
+
+		CLIPMANAGER->AddClip("dagger_weapon_left", "sprites/units/enemy/dagger_weapon_left.png",	7,21);
+		CLIPMANAGER->AddClip("dagger_weapon_right", "sprites/units/enemy/dagger_weapon_right.png", 7,21);
+		CLIPMANAGER->AddClip("enemy_scepter_shadow", "sprites/units/enemy/scepter-base.png", 128, 128);
 	}
 }
 
@@ -796,6 +833,47 @@ void GameScene::InitCategoryUI()
     _defenseIcon.uiMouseEvent->RegistCallback(
         std::bind(&UIControler::ClickCategoryIcon, _uiControler, &_defenseIcon, 3), EVENT::CLICK);
 
+    // 코어 데이터베이스 아이콘 추가 (시영)
+    _coreDBIcon.uiRenderer->Init("core_db_icon");
+    _coreDBIcon.transform->SetScale(2.5f, 2.5f);
+    _coreDBIcon.transform->SetPosition(WINSIZEX / 2 + 435, WINSIZEY - 25);
+
+    //_coreDBIcon.uiMouseEvent->RegistCallback(
+    //    std::bind(&UIControler::inGame_Acitve_Choice_Img, _uiControler,
+    //        &_coreDBIcon, &_isMineral, true),
+    //    EVENT::ENTER);
+
+    /* 코어 데이터베이스 클릭 아직 없음 (07/23) */
+
+    //_coreDBIcon.uiMouseEvent->RegistCallback(
+    //    std::bind(&UIControler::inGame_Acitve_Choice_Img, _uiControler,
+    //        &_coreDBIcon, &_isMineral, false),
+    //    EVENT::EXIT);
+
+    // 연구 아이콘 추가 (시영)
+    _researchIcon.uiRenderer->Init("research_icon");
+    _researchIcon.transform->SetScale(2.5f, 2.5f);
+    _researchIcon.transform->SetPosition(WINSIZEX / 2 + 477, WINSIZEY - 25);
+
+    _researchIcon.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inGame_Acitve_Choice_Img, _uiControler,
+            &_researchIcon, true),
+        EVENT::ENTER);
+
+    _researchIcon.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inGame_Acitve_State, _uiControler,
+            &_research, true),
+        EVENT::CLICK);
+
+    _researchIcon.uiMouseEvent->RegistCallback(
+        std::bind(&UIControler::inGame_Acitve_Choice_Img, _uiControler,
+            &_researchIcon, false),
+        EVENT::EXIT);
+
+    // 게임화면 내에서 카테고리 아이콘에 ENTER 됐을 경우 나오는 회색 이미지 (시영)
+    _inGame_TouchToIcon.uiRenderer->Init("in_game_touch_to_icon");
+    _inGame_TouchToIcon.SetActive(false);
+
     _categorySelect.uiRenderer->Init("button_select");
     _categorySelect.transform->SetPosition(_turretIcon.transform->GetX(), _turretIcon.transform->GetY());
 }
@@ -834,6 +912,12 @@ void GameScene::InitPropUI()
         _conveyorIcon.uiMouseEvent->RegistCallback(
             std::bind(&UIControler::ClickPropIcon, _uiControler, &_conveyorIcon, 0), EVENT::CLICK);
         _railIconV.push_back(&_conveyorIcon);
+
+        _distributorIcon.uiRenderer->Init("distributor");
+        _distributorIcon.transform->SetPosition(PROP_UI_STARTX + 40, PROP_UI_STARTY);
+        _distributorIcon.uiMouseEvent->RegistCallback(
+            std::bind(&UIControler::ClickPropIcon, _uiControler, &_distributorIcon, 1), EVENT::CLICK);
+        _railIconV.push_back(&_distributorIcon);
 
         for (int i = 0; i < _railIconV.size(); i++)
         {
@@ -1010,6 +1094,9 @@ void GameScene::ResourcesRender()
 
 void GameScene::researchUpdate()
 {
+    // 배경화면
+    _research_bg.Update();
+
     // 전체 자원
     _all_Resources_Open1_Img.Update();
     _all_Resources_Open2_Img.Update();
@@ -1072,6 +1159,9 @@ void GameScene::researchUpdate()
 
 void GameScene::researchRender()
 {
+    // 배경화면
+    _research_bg.Render();
+
     // 전체 자원
     _all_Resources_Close_Img.Render();
     _all_Resources_Img.Render();
@@ -1100,21 +1190,21 @@ void GameScene::researchRender()
     _titan.Render();
     _metaglass.Render();
     _scrapMetal.Render();
-    _mineral.Render();
+    //_mineral.Render();
     _coal.Render();
-    _largeCopperWall.Render();
-    _titanWall.Render();
-    _hail.Render();
+    //_largeCopperWall.Render();
+    //_titanWall.Render();
+    //_hail.Render();
     _scorch.Render();
     _launchPad.Render();
     _router.Render();
     _sorter.Render();
     _container.Render();
     _bridgeConveyor.Render();
-    _invertedSorter.Render();
-    _overflowGate.Render();
-    _titaniumConveyor.Render();
-    _underflowGate.Render();
+    //_invertedSorter.Render();
+    //_overflowGate.Render();
+    //_titaniumConveyor.Render();
+    //_underflowGate.Render();
 
     /* Lock, Choice, 회색 Choice */
     _lockImg.Render();
@@ -1221,6 +1311,17 @@ void GameScene::researchInitUI()
     _all_Resources_Mineral[2].uiMouseEvent->enable = false;
     _all_Resources_Mineral[2].transform->SetPosition(WINSIZEX / 2 - 575, WINSIZEY / 2 - 285);
    
+#pragma endregion
+
+#pragma region 배경화면
+
+    _research_bg.uiRenderer->Init("research_bg");
+    _research_bg.uiMouseEvent->enable = false;
+    _research_bg.transform->SetPosition(0, 0);
+    _research_bg.transform->SetScale(2.0f, 2.0f);
+    _research_bg.uiRenderer->SetAlpha(0.8f);
+    _research_bg.SetActive(true);
+
 #pragma endregion
 
 #pragma region ChoiceImg
@@ -1578,7 +1679,9 @@ void GameScene::researchInitUI()
 
 #pragma region 고철
 
-    _scrapMetal.uiRenderer->Init("research_developed_scrapMetal");
+    //_scrapMetal.uiRenderer->Init("research_developed_scrapMetal");
+    _scrapMetal.uiRenderer->Init("research_lock");
+
     _scrapMetal.transform->SetPosition(WINSIZEX / 2 + 575, WINSIZEY / 2 + 150);
     _scrapMetal.transform->SetScale(0.75f, 0.75f);
 
@@ -2035,10 +2138,10 @@ void GameScene::SetEnemyManager()
 	_enemyManager->GetComponent<EnemyManager>()->SetTestCoreTransform(_core);
 	_enemyManager->GetComponent<EnemyManager>()->SetProjectileManager(_projectileManager->GetComponent<ProjectileManager>());
     _enemyManager->GetComponent<EnemyManager>()->SetAstar(_aStar);
+	_enemyManager->GetComponent<EnemyManager>()->SetPlayerTransform(_player->transform);
 	_enemyManager->GetComponent<EnemyManager>()->Init();
     _aStar->LinkEnemyManager(_enemyManager->GetComponent<EnemyManager>());
 	_uiControler->SetEnemyManager(_enemyManager->GetComponent<EnemyManager>());
-	_enemyManager->GetComponent<EnemyManager>()->SetPlayerTransform(_player->transform);
     _propFactory->LinkEnemyManager(_enemyManager->GetComponent<EnemyManager>());
     _dataManager->LinkEnemeyManager(_enemyManager->GetComponent<EnemyManager>());
 }
@@ -2055,6 +2158,7 @@ void GameScene::SetGameUIInit()
 {
 	_wavePane.Init();
 	_wavePane.uiRenderer->Init("uiwavepane");
+    _wavePane.uiMouseEvent->enable = false;
 	_wavePane.transform->SetPosition(183, 45);
 
 	_enemyWaveSkip.Init();

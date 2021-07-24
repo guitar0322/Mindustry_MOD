@@ -26,13 +26,13 @@ void ResourceManager::Init()
 void ResourceManager::Update()
 {
 	for (int i = 0; i < _resV.size(); i++) {
+		_resV[i]->Update();
 		if (_resV[i]->isActive == false)
 		{
 			NEW_SAFE_RELEASE(_resV[i]);
 			SAFE_DELETE(_resV[i]);
 			_resV.erase(_resV.begin() + i);
 		}
-		_resV[i]->Update();
 	}
 }
 

@@ -7,7 +7,7 @@
 #include "ProjectileManager.h"
 #include "Item.h";
 Turret::Turret()
-	:_preWave(-1), _bulletNum(0)
+	:_preWave(-1), _bulletNum(0), _isMax(false)
 {
 }
 
@@ -44,9 +44,19 @@ void Turret::OnTriggerEnter(GameObject* gameObject)
 {
 	if (gameObject->tag != TAGMANAGER->GetTag("resource"))
 		return;
-
+	if (_isMax == true)
+		return;
 	gameObject->SetActive(false);
 	_bulletNum++;
+	if (_bulletNum >= BULLET_MAX)
+		_isMax = true;
+}
+
+void Turret::AddBullet()
+{
+	_bulletNum++;
+	if (_bulletNum >= BULLET_MAX)
+		_isMax = true;
 }
 
 void Turret::Fire()
@@ -64,6 +74,7 @@ void Turret::Fire()
 		EFFECTMANAGER->EmissionEffect("shoot", transform->GetX() + cosf(angle) * _barrelLength, transform->GetY() - sinf(angle) * _barrelLength, ConvertAngleD2D(angle));
 		_attackSpeed = 0;
 		_bulletNum--;
+		_isMax = false;
 	}
 }
 void Turret::ProbeEnemy()

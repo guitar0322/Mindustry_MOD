@@ -9,7 +9,7 @@ CopperWall::CopperWall()
 	renderer->Init("copper_wall");
 
 	stat->SetSize(1);
-	stat->SetHP(100);
+	stat->SetHP(30);
 
 	collider->SetSize(stat->GetSize() * TILESIZE, stat->GetSize() * TILESIZE);
 	this->tag = TAGMANAGER->GetTag("prop");

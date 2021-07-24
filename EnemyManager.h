@@ -22,12 +22,14 @@ private:
 	EnemyPlane* _enemyPlane;
 	EnemyGround* _enemyGround;
 
+
 	EnemyInfo* _enemyInfo;
 
 	ProjectileManager* _projectileManager;
 
 	GameObject* _testCore;
 	Transform* _testCoreTransform;
+
 	Astar* _aStar;
 
 	Transform* _playerTr;
@@ -74,6 +76,6 @@ public:
 	void SetTestCoreTransform(GameObject* testCore) { _testCore = testCore; _testCoreTransform = testCore->transform; }
 	void SetEnemyInfo(EnemyInfo* enemyInfo) { _enemyInfo = enemyInfo; }
 	void SetAstar(Astar* aStar) { _aStar = aStar; }
-	void SetPlayerTransform(Transform* playertr) {_playerTr = playertr;}
+	void SetPlayerTransform(Transform* playetr) { _playerTr = playetr;}
 };
 

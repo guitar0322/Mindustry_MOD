@@ -5,6 +5,7 @@ class ProjectileManager;
 class EnemyManager;
 class EnemyObject;
 
+#define BULLET_MAX 20
 class Turret :
     public Component
 {
@@ -17,6 +18,7 @@ private:
     int _nearEnemyIdx;
     int _bulletNum;
     float _distance;
+    bool _isMax;
     ProjectileManager* _projectileManager;
     EnemyManager* _enemyManager;
     EnemyObject* _nearEnemy;
@@ -28,6 +30,8 @@ public:
     virtual void Update();
     virtual void Render();
     virtual void OnTriggerEnter(GameObject* gameObject);
+
+    void AddBullet();
 
     void SetAttackRange(float range) { _attackRange = range; }
     float GetAttackRange() const { return _attackRange; }
@@ -42,5 +46,6 @@ public:
     void LinkProjectileManager(ProjectileManager* projectileManager) { _projectileManager = projectileManager; }
     void LinkEnemyManager(EnemyManager* enemyManager) { _enemyManager = enemyManager; }
 
+    bool GetIsMax() const { return _isMax; }
 };
 

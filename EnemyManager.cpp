@@ -9,6 +9,7 @@
 #include "EnemyInfo.h"
 #include "EnemyObject.h"
 #include "Astar.h"
+
 EnemyManager::EnemyManager()
 {
 }
@@ -21,6 +22,7 @@ void EnemyManager::Init()
 {
 	SetEnemyTime();
 	SetEnemy();
+
 	_curWave = 0;
 	SOUNDMANAGER->addSound("wave", "sounds/wave.ogg", true, false);
 	SOUNDMANAGER->addSound("explosion", "sounds/bang.ogg", true, false);
@@ -28,17 +30,15 @@ void EnemyManager::Init()
 
 void EnemyManager::Update()
 {
-	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
-	{
-		SpawnEnemy();
-	}
 	EnemyTimer();
 	EnemyUpdate();
+
 }
 
 void EnemyManager::Render()
 {
 	EnemyRender();
+
 }
 
 void EnemyManager::SetEnemyTime()
@@ -65,7 +65,7 @@ void EnemyManager::SetEnemy()
 		_enemyGround->GetComponent<EnemyInfo>()->GetCoreAngle();
 		_enemyGround->GetComponent<EnemyInfo>()->SetSpeed(150.f);
 		_enemyGround->GetComponent<EnemyInfo>()->SetHp(100);
-		_enemyGround->transform->SetScale(0.5f, 0.5f);
+		_enemyGround->transform->SetScale(1.5f, 1.5f);
 		_enemyGround->GetComponent<EnemyGroundControler>()->SetProjectileManager(_projectileManager);
 		_enemyGround->GetComponent<EnemyGroundControler>()->SetAstar(_aStar);
 		_enemyGround->GetComponent<BoxCollider>()->SetSize(48, 48);
@@ -73,20 +73,20 @@ void EnemyManager::SetEnemy()
 		_enemyGround->SetActive(false);
 		_enemyV.push_back(_enemyGround);
 	}
+
 	for (int i = 8; i < 30; i++)
 	{
 		_enemyPlane = new EnemyPlane();
 		_enemyPlane->tag = TAGMANAGER->GetTag("enemy");
-		_enemyPlane->GetComponent<Renderer>()->Init("enemy_atrax");
+		_enemyPlane->GetComponent<Renderer>()->Init("enemy_scepter");
 		_enemyPlane->GetComponent<EnemyInfo>()->SetEnemyManager(this);
 		_enemyPlane->GetComponent<EnemyInfo>()->SetTestCore(_testCore);
 		_enemyPlane->GetComponent<EnemyInfo>()->GetCoreAngle();
-		_enemyPlane->GetComponent<EnemyInfo>()->SetSpeed(400.f);
+		_enemyPlane->GetComponent<EnemyInfo>()->SetSpeed(450);								//450
 		_enemyPlane->GetComponent<EnemyInfo>()->SetHp(100);
 		_enemyPlane->transform->SetScale(0.5f, 0.5f);
 		_enemyPlane->GetComponent<EnemyPlaneControler>()->SetProjectileManager(_projectileManager);
-		_enemyPlane->GetComponent<EnemyPlaneControler>()->SetPlayerTrasnform(_playerTr);
-		
+		_enemyPlane->GetComponent<EnemyPlaneControler>()->SetPlayerTransform(_playerTr);
 		_enemyPlane->SetActive(false);
 		_enemyV.push_back(_enemyPlane);
 	}
@@ -154,11 +154,8 @@ void EnemyManager::EnemyTimer()
 			_enemySpawnTime = 124.f;
 		}
 	}
-
-	/*if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
-	{
+	if (KEYMANAGER->isOnceKeyDown(VK_SPACE))
 		SpawnEnemy();
-	}*/
 }
 
 void EnemyManager::EnemyUpdate()

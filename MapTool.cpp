@@ -485,7 +485,6 @@ void MapTool::Undo()
 		tagTile preTile = _undoHashIter->second;
 		tileInfo[tileY * TILENUMX + tileX].environment = preTile.environment;
 		tileInfo[tileY * TILENUMX + tileX].resources = preTile.resources;
-		tileInfo[tileY * TILENUMX + tileX].object = preTile.object;
 		tile[tileY * TILENUMX + tileX].renderer->Init(tileName[preTile.environment]);
 	}
 }
