@@ -65,7 +65,6 @@ void PlayerLaser::ShootLaser()
 	_laserDistance = GetDistance(_laserStartX, _laserStartY, _laserX, _laserY);
 	float laserCenterX = (_laserX + _laserStartX) / 2.f;
 	float laserCenterY = (_laserY + _laserStartY) / 2.f;
-
 	_collectLaserEnd->transform->SetPosition(Vector2(_laserX, _laserY));
 	_detectRC->transform->SetPosition(Vector2(_laserX, _laserY));
 	_collectLaserFirst->transform->SetPosition(Vector2(_laserStartX, _laserStartY));

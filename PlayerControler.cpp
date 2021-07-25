@@ -36,8 +36,7 @@ void PlayerControler::Init()
 	//건설용 렉트 -> 자식 0번째
 	transform->AddChild(playerConstructLaser->_constructLaserRC->transform);
 	transform->GetChild(0)->SetPosition(transform->GetX(), transform->GetY());
-
-
+	SOUNDMANAGER->addSound("harvest", "sounds/minebeam.ogg", true, true);
 	_attackSpeed = 0;
 	_correctingTIme = 0;
 	_isLeft = false;
@@ -159,6 +158,7 @@ void PlayerControler::Update()
 			{
 				_playerLaser->OffLaser();
 				_isCollecting = false;
+				SOUNDMANAGER->stop("harvest");
 			}
 		}
 
@@ -393,7 +393,6 @@ void PlayerControler::PlayerDirection()
 
 void PlayerControler::ResoucesCollect()
 {
-
 	_correctingTIme += TIMEMANAGER->getElapsedTime();
 
 	if (_correctingTIme >= 0.2f)
@@ -424,7 +423,6 @@ void PlayerControler::ShootResoucesLaser()
 {
 	float laserStartX = transform->GetX() + cosf(ConvertAngleAPI(transform->GetAngle())) * 18;
 	float laserStartY = transform->GetY() - sinf(ConvertAngleAPI(transform->GetAngle())) * 18;
-
 	_playerLaser->SetLaserStartPoint(laserStartX, laserStartY);
 	
 	if (KEYMANAGER->isOnceKeyUp(VK_LBUTTON))
@@ -443,6 +441,7 @@ void PlayerControler::ShootResoucesLaser()
 			if (tileInfo.resources != RES_NONE)
 			{
 				_isCollecting = true;
+				SOUNDMANAGER->play("harvest", 10.0f);
 				_collectTile.x = _worldX / TILESIZE;
 				_collectTile.y = _worldY / TILESIZE;
 				_playerLaser->SetLaserEndPoint(_collectTile.x, _collectTile.y);
@@ -467,6 +466,7 @@ void PlayerControler::ShootResoucesLaser()
 
 	if (_playerLaser->GetLaserDistance() >= 400)
 	{
+		SOUNDMANAGER->stop("harvest");
 		_playerLaser->OffLaser();
 		_isCollecting = false;
 	}

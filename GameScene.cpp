@@ -281,12 +281,12 @@ HRESULT GameScene::Init()
 	_uiControler->enemyWaveSkipClick = &_enemyWaveSkipClick;
 
     /* »ç¿îµå ÀÛ¾÷ ±¤Ã¶ 210718 */
-	//SOUNDMANAGER->addSound("start", "music/land.mp3", true, false);
-	//SOUNDMANAGER->addSound("bgm1", "music/game1.mp3", true, false);
-	//SOUNDMANAGER->addSound("bgm2", "music/game2.mp3", true, false);
-	//SOUNDMANAGER->addSound("bgm3", "music/game9.mp3", true, false);
-	//SOUNDMANAGER->play("start", 10.0f);
-	//_musicTime = 0;
+	SOUNDMANAGER->addSound("start", "music/land.mp3", true, false);
+	SOUNDMANAGER->addSound("bgm1", "music/game1.mp3", true, false);
+	SOUNDMANAGER->addSound("bgm2", "music/game2.mp3", true, false);
+	SOUNDMANAGER->addSound("bgm3", "music/game9.mp3", true, false);
+	SOUNDMANAGER->play("start", 10.0f);
+	_musicTime = 0;
     //StaticBuffer->EndDraw();
     //_dataManager->LoadData();
 
@@ -472,15 +472,15 @@ void GameScene::Update()
         {
         case 0:
             _musicTime = -90.0f;
-            SOUNDMANAGER->play("bgm1", 10.0f);
+            SOUNDMANAGER->play("bgm1", 5.0f);
             break;
         case 1:
             _musicTime = -90.0f;
-            SOUNDMANAGER->play("bgm2", 10.0f);
+            SOUNDMANAGER->play("bgm2", 5.0f);
             break;
         case 2:
             _musicTime = -180.0f;
-            SOUNDMANAGER->play("bgm3", 10.0f);
+            SOUNDMANAGER->play("bgm3", 5.0f);
             break;
         }
     }
